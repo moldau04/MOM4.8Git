@@ -1,0 +1,334 @@
+﻿@{
+    ViewData["Title"] = "List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<style>
+    .selectedna v {
+        background-color: #1565C0;
+        color: #fff;
+    }
+</style>
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    function AddCustomerClick(hyperlink) {
+        
+        var id = $("#hdnAddeOwner").val();
+        if (id == "Y") {
+            return true;
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function EditCustomerClick(hyperlink) {
+
+        var id = $("#hdnEditeOwner").val();
+        if (id == "Y") { return true; } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function DeleteCustomerClick(hyperlink) {
+        var id = $("#hdnDeleteeOwner").val();
+        if (id == "Y") {
+            return SelectedRowDelete('<%= RadGrid_Customer.ClientID%>', 'customer');
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function CopyCustomerClick(hyperlink) {
+        var id = $("#hdnAddeOwner").val();
+        if (id == "Y") {
+            return true;
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    $(document).keypress(function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+
+</script>
+
+<!--start container-->
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-communication-contacts"></i>&nbsp;Customers</div>
+                                <div class="buttonContainer">
+
+                                    <div class="btnlinks">
+                                        <a id="lnkAddnew" onclick="return AddCustomerClick(this)" href="@Url.Action("Index","AddCustomer")">
+                                            Add
+                                        </a>
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a id="btnEdit" onclick="return EditCustomerClick(this)">
+                                            Edit
+                                        </a>
+                                    </div>
+
+                                    <div class="btnlinks menuAction">
+                                        <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                            Actions
+                                        </a>
+                                    </div>
+
+                                    <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a id="btnCopy" onclick="return AddCustomerClick(this)">
+                                                    Copy
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a id="btnDelete" onclick="return DeleteCustomerClick(this)">
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a id="btnExcel">Export to Excel</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <ul id="dropdown1" class="dropdown-content">
+                                                <li>
+                                                    <a href="CustomersReport.aspx?type=Customer" class="-text">Add New</a>
+                                                </li>
+                                                <li>
+                                                    <a href="CustomerLabel5160.aspx" class="-text">Customer Label 5160</a>
+                                                </li>
+                                                <li>
+                                                    <a href="CustomerLabel5163.aspx" class="-text">Customer Label 5163</a>
+                                                </li>
+                                            </ul>
+                                            <div class="btnlinks">
+                                                <a class="dropdown-button" data-beloworigin="true" href="#!" data-activates="dropdown1">
+                                                    Reports
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a id="lnkSyncQB" style="display:none">Sync with QB</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a href="~/dashboard/home/index" class="mdi-content-clear" id="lnkClose" title="Close"><i></i></a>
+                                </div>
+                                <div class="rght-content">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="text-align: center;">
+
+    <div class="row">
+
+        <div class="srchpane">
+            <div class="srchtitle" style="padding-left: 15px;">
+                Search
+            </div>
+            <div class="srchinputwrap">
+                <select id="ddlSearch" onchange="showfilter();return false;" class="browser-default selectsml selectst">
+                    <option>Select</option>
+                    <option value="r.name">Name</option>
+                    <option value="r.Address">Address</option>
+                    <option value="o.Status">Status</option>
+                    <option value="o.type">Type</option>
+                    <option value="r.City">City</option>
+                    <option value="r.Phone">Phone</option>
+                    <option value="Website">Website</option>
+                    <option value="Email">Email</option>
+                    <option value="Cellular">Cellular</option>
+                    <option value="sageid">Sage ID</option>
+                    <option value="r.Zip">Zip Code</option>
+                    <option value="B.Name">Company</option>
+                    <option value="r.State">State</option>
+                    <option value="o.Custom1">Custom 1</option>
+                    <option value="o.Custom2">Custom 2</option>
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_rbStatus" style="display: none">
+                <select name="rbStatus" id="rbStatus" class="browser-default selectst">
+                    <option value="0">Active</option>
+                    <option value="1">Inactive</option>
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_ddlUserType" style="display: none">
+                <select name="ddlUserType" id="ddlUserType" class="browser-default selectst" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_ddlCompany" style="display: none">
+                <select name="ddlUserType" id="ddlCompany" class="browser-default selectst" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_txtSearch" style="display: block">
+                <input type="text" ID="txtSearch" class="srchcstm" placeholder="Search..." />
+            </div>
+            <div class="srchinputwrap srchclr btnlinksicon" style="margin-left: -10px; margin-top: -2px;">
+                <a ID="lnkSearch" CausesValidation="false">
+                    <i class="mdi-action-search"></i>
+                </a>
+
+            </div>
+
+            <div class="col lblsz2 lblszfloat">
+                <div class="row">
+
+                    <span class="tro trost">
+                        <input type="checkbox" id="lnkChk" />
+                        <label for="lnkChk" class="css-checkbox">Incl. Inactive</label><br>
+                    </span>
+                    <span class="tro trost">
+                        <a ID="lnkShowAll" onclick="resetShowAll();">Show All </a>
+                    </span>
+                    <span class="tro trost">
+                        <a ID="lnkClear" onclick="resetShowAll();">Clear</a>
+                    </span>
+
+                    <span class="tro trost">
+                        <a ID="lblRecordCount" style="font-size:14px!important;font-weight:900;">Record(s) found</a>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+        <div class="grid_container">
+            <div class="form-section-row" aria-autocomplete="none" style="margin-bottom: 0 !important;">
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@Html.Hidden("hdnAddeOwner", "Y")
+@Html.Hidden("hdnEditeOwner", "Y")
+@Html.Hidden("hdnDeleteeOwner", "Y")
+@Html.Hidden("hdnViewOwner", "Y")
+
+<!--end container-->
+<script>
+    $(document).ready(function () {
+        debugger;
+        //$("#<%=RadGrid_Customer.ClientID%>").attr("autocomplete", "off");
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $('#divButtons').addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $('#divButtons').removeClass('fixed-header');
+            }
+        });
+
+
+        $('.dropdown-button').dropdown({
+            inDuration: 300,
+            outDuration: 225,
+            constrainWidth: false, // Does not change width of dropdown to that of the activator
+            hover: true, // Activate on hover
+            gutter: 0, // Spacing from edge
+            belowOrigin: true, // Displays dropdown below the button
+            alignment: 'left', // Displays dropdown with edge aligned to the left of button
+            stopPropagation: false // Stops event propagation
+        }
+        );
+    });
+</script>
+<script>
+    function showfilter() {
+        debugger;
+        var ddlSearch = $("#ddlSearch").val();
+
+
+        var div_rbStatus = $("#div_rbStatus").val();
+        var div_txtSearch = $("#div_txtSearch").val();
+        var div_ddlCompany = $("#div_ddlCompany").val();
+        var div_ddlUserType = $("#div_ddlUserType").val();
+        var div_ddlUserType = $("#div_ddlUserType").val();
+
+        try {
+
+            $("#rbStatus").val($("#rbStatus option:first").val());
+            $("#ddlUserType").val($("#ddlUserType option:first").val());
+
+        } catch (ex) { }
+
+        $("#div_rbStatus").css('display', 'none');
+        $("#div_txtSearch").css('display', 'none');
+        $("#div_ddlCompany").css('display', 'none');
+        $("#div_ddlUserType").css('display', 'none');
+
+        switch (String(ddlSearch)) {
+            case "o.Status":
+                $("#div_rbStatus").css('display', 'block');
+                break;
+            case "o.type":
+                  $("#div_ddlUserType").css('display', 'block');
+                break;
+            case "B.Name":
+                $("#div_ddlCompany").css('display', 'block');
+                break;
+
+            default:
+                 $("#div_txtSearch").css('display', 'block');
+                $("#txtSearch").val("");
+                break;
+        }
+    }
+
+    function resetShowAll() {
+        debugger;
+        try {
+
+            $("#rbStatus").val($("#rbStatus option:first").val());
+            $("#ddlUserType").val($("#ddlUserType option:first").val());
+
+        } catch (ex) { }
+
+        var ddlSearch = $("#ddlSearch").val();
+        $("#ddlSearch").val("Select");
+        $("#txtSearch").val("");
+        var rbStatus = $("#div_rbStatus").val();
+        var txtSearch = $("#div_txtSearch").val();
+        var ddlCompany = $("#div_ddlCompany").val();
+        var ddlUserType = $("#div_ddlUserType").val();
+
+        
+        $("#div_rbStatus").css('display', 'none');
+        $("#div_ddlCompany").css('display', 'none');
+        $("#div_ddlUserType").css('display', 'none');
+        $("#div_txtSearch").css('display', 'block');
+
+    }
+</script>

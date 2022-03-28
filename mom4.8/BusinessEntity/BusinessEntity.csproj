@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{200EB34E-61C4-4522-A273-B2E8A481145E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BusinessEntity</RootNamespace>
+    <AssemblyName>BusinessEntity</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AuthorizeNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AuthorizeNet.2.0.2\lib\AuthorizeNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountDetails.cs" />
+    <Compile Include="APModels\AutoSelectPaymentViewModel.cs" />
+    <Compile Include="APModels\BankViewModel.cs" />
+    <Compile Include="APModels\BillReportDetails.cs" />
+    <Compile Include="APModels\BOMTViewModel.cs" />
+    <Compile Include="APModels\CDRecurrViewModel.cs" />
+    <Compile Include="APModels\CDViewModel.cs" />
+    <Compile Include="APModels\ChartViewModel.cs" />
+    <Compile Include="APModels\CompanyOfficeViewModel.cs" />
+    <Compile Include="APModels\CustomerReportViewModel.cs" />
+    <Compile Include="APModels\CustomViewModel.cs" />
+    <Compile Include="APModels\GetAllBankNamesViewModel.cs" />
+    <Compile Include="APModels\GetAllCDViewModel.cs" />
+    <Compile Include="APModels\GetAllPJDetailsViewModel.cs" />
+    <Compile Include="APModels\GetAllPJRecurrDetailsViewModel.cs" />
+    <Compile Include="APModels\GetAllVenderAjaxSearchModel.cs" />
+    <Compile Include="APModels\GetAPAging360ByDateViewModel.cs" />
+    <Compile Include="APModels\GetAPAgingByDateViewModel.cs" />
+    <Compile Include="APModels\GetAPExpensesViewModel.cs" />
+    <Compile Include="APModels\GetAPGLRegViewModel.cs" />
+    <Compile Include="APModels\GetAutoFillOnHandBalanceViewModel.cs" />
+    <Compile Include="APModels\GetAutoSelectPaymentViewModel.cs" />
+    <Compile Include="APModels\GetBankByIDViewModel.cs" />
+    <Compile Include="APModels\GetBillHistoryPaymentViewModel.cs" />
+    <Compile Include="APModels\GetBillingItemsViewModel.cs" />
+    <Compile Include="APModels\GetBillRecurrTransactionsViewModel.cs" />
+    <Compile Include="APModels\GetBillReportFiltersValueViewModel.cs" />
+    <Compile Include="APModels\GetBillsDetails360ByDueViewModel.cs" />
+    <Compile Include="APModels\GetBillsDetailsByDueViewModel.cs" />
+    <Compile Include="APModels\GetBillTransDetailsViewModel.cs" />
+    <Compile Include="APModels\GetCDByIDViewModel.cs" />
+    <Compile Include="APModels\GetCheckDetailsByBankAndRefViewModel.cs" />
+    <Compile Include="APModels\GetCompanyDetailsViewModel.cs" />
+    <Compile Include="APModels\GetHistoryTransactionViewModel.cs" />
+    <Compile Include="APModels\GetInventoryItemStatusViewModel.cs" />
+    <Compile Include="APModels\GetOutStandingPOByIdViewModel.cs" />
+    <Compile Include="APModels\GetPJAcctDetailByIDViewModel.cs" />
+    <Compile Include="APModels\GetPJDetailByBatchViewModel.cs" />
+    <Compile Include="APModels\GetPJDetailByIDViewModel.cs" />
+    <Compile Include="APModels\GetPJRecurrDetailByIDViewModel.cs" />
+    <Compile Include="APModels\GetPOReceivePOByIdViewModel.cs" />
+    <Compile Include="APModels\GetReceivePOListViewModel.cs" />
+    <Compile Include="APModels\GetRecurCDByIDViewModel.cs" />
+    <Compile Include="APModels\GetRecurrBillDetailByIDViewModel.cs" />
+    <Compile Include="APModels\GetUseTaxViewModel.cs" />
+    <Compile Include="APModels\GetUTaxLocReportViewModel.cs" />
+    <Compile Include="APModels\GetVendorContactByRolIDViewModel.cs" />
+    <Compile Include="APModels\GetVendorTypeViewModel.cs" />
+    <Compile Include="APModels\InventoryViewModel.cs" />
+    <Compile Include="APModels\JobIViewModel.cs" />
+    <Compile Include="APModels\LogViewModel.cs" />
+    <Compile Include="APModels\OpenAPViewModel.cs" />
+    <Compile Include="APModels\PaidViewModel.cs" />
+    <Compile Include="APModels\PJViewModel.cs" />
+    <Compile Include="APModels\POModel.cs" />
+    <Compile Include="APModels\RolViewModel.cs" />
+    <Compile Include="APModels\StateViewModel.cs" />
+    <Compile Include="APModels\STaxViewModel.cs" />
+    <Compile Include="APModels\TermsViewModel.cs" />
+    <Compile Include="APModels\TransactionViewModel.cs" />
+    <Compile Include="APModels\UserViewModel.cs" />
+    <Compile Include="APModels\VendorViewModel.cs" />
+    <Compile Include="ColumnSettings.cs" />
+    <Compile Include="CommonModel\APIIntegrationModel.cs" />
+    <Compile Include="CustomersModel\GetAccountLabelViewModel.cs" />
+    <Compile Include="CustomersModel\GetActiveBillingCodeViewModel.cs" />
+    <Compile Include="CustomersModel\GetActiveServiceTypeViewModel.cs" />
+    <Compile Include="CustomersModel\GetAlertsViewModel.cs" />
+    <Compile Include="CustomersModel\GetAlertTypeViewModel.cs" />
+    <Compile Include="CustomersModel\GetAllDepositsViewModel.cs" />
+    <Compile Include="CustomersModel\GetAllInvoiceByDepViewModel.cs" />
+    <Compile Include="CustomersModel\GetAllReceivePaymentForDepViewModel.cs" />
+    <Compile Include="CustomersModel\GetAllReceivePaymentViewModel.cs" />
+    <Compile Include="CustomersModel\GetARAging360ByAsOfDateViewModel.cs" />
+    <Compile Include="CustomersModel\GetARAgingByAsOfDateDepViewModel.cs" />
+    <Compile Include="CustomersModel\GetARAgingByAsOfDateViewModel.cs" />
+    <Compile Include="CustomersModel\GetARAgingByLocTypeDetailViewModel.cs" />
+    <Compile Include="CustomersModel\GetARAgingByLocTypeViewModel.cs" />
+    <Compile Include="CustomersModel\GetARAgingByTerritoryViewModel.cs" />
+    <Compile Include="CustomersModel\GetARAgingDepViewModel.cs" />
+    <Compile Include="CustomersModel\GetARAgingViewModel.cs" />
+    <Compile Include="CustomersModel\GetARRevenueCustShowAllViewModel.cs" />
+    <Compile Include="CustomersModel\GetARRevenueViewModel.cs" />
+    <Compile Include="CustomersModel\GetAutoCompleteBillCodesViewModel.cs" />
+    <Compile Include="CustomersModel\GetBTViewModel.cs" />
+    <Compile Include="CustomersModel\GetBuildingElevViewModel.cs" />
+    <Compile Include="CustomersModel\GetCallHistoryViewModel.cs" />
+    <Compile Include="CustomersModel\GetCollectionsViewModel.cs" />
+    <Compile Include="CustomersModel\GetCompanyByUserIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetCompletedTicketViewModel.cs" />
+    <Compile Include="CustomersModel\GetContactByRolIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetContactLogByCustomerIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetContactLogByLocIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomerLabelViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomersLogsViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomerStatementByLocViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomerStatementCollectionViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomerUnAppliedCreditViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomTemplateViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustStatementInvSouthernViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustTemplateItemByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetDefaultRouteTerrViewModel.cs" />
+    <Compile Include="CustomersModel\GetDepByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetDepHeadByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetDepositListByDateViewModel.cs" />
+    <Compile Include="CustomersModel\GetElevByTicketIDsViewModel.cs" />
+    <Compile Include="CustomersModel\GetElevByTicketViewModel.cs" />
+    <Compile Include="CustomersModel\GetEmailDetailByLocViewModel.cs" />
+    <Compile Include="CustomersModel\GetEmailLogsViewModel.cs" />
+    <Compile Include="CustomersModel\GetequipByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetEquipmentInspectionViewModel.cs" />
+    <Compile Include="CustomersModel\GetEquipmentShutdownForReportViewModel.cs" />
+    <Compile Include="CustomersModel\GetEquipmentTestsViewModel.cs" />
+    <Compile Include="CustomersModel\GetEquipmentViewModel.cs" />
+    <Compile Include="CustomersModel\GetequipREPDetailsViewModel.cs" />
+    <Compile Include="CustomersModel\GetEquipReportFiltersValueViewModel.cs" />
+    <Compile Include="CustomersModel\GetEquipShutdownActivityForReportViewModel.cs" />
+    <Compile Include="CustomersModel\GetEquipShutdownLogsViewModel.cs" />
+    <Compile Include="CustomersModel\GetEquiptypeViewModel.cs" />
+    <Compile Include="CustomersModel\GetGCandHowerLocIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetGCCustomerViewModel.cs" />
+    <Compile Include="CustomersModel\GetGLAccountViewModel.cs" />
+    <Compile Include="CustomersModel\GetInvoiceByCustomerIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetInvoiceByDateViewModel.cs" />
+    <Compile Include="CustomersModel\GetInvoiceByListViewModel.cs" />
+    <Compile Include="CustomersModel\GetInvoiceItemByRefViewModel.cs" />
+    <Compile Include="CustomersModel\GetInvoiceNosChangeViewModel.cs" />
+    <Compile Include="CustomersModel\GetInvoicesByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetInvoicesByReceivedPayMultiViewModel.cs" />
+    <Compile Include="CustomersModel\GetInvoicesByReceivedPayViewModel.cs" />
+    <Compile Include="CustomersModel\GetInvoicesByRefViewModel.cs" />
+    <Compile Include="CustomersModel\GetJobProjectViewModel.cs" />
+    <Compile Include="CustomersModel\GetLeadEquipByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationByBusinessTypeViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationByCustomerIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationDataSearchViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationDetailsReportViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationDetailsViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationDocumentsViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationEquipmentListViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationLogViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationReportFiltersValueViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationServiceTypeinfoViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocationTypeViewModel.cs" />
+    <Compile Include="CustomersModel\GetLocContactByRolIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetMaintenanceUnitCountRouteViewModel.cs" />
+    <Compile Include="CustomersModel\GetMaintenanceUnitCountViewModel.cs" />
+    <Compile Include="CustomersModel\GetOpportunityNewViewModel.cs" />
+    <Compile Include="CustomersModel\GetOpportunityOfCustomerViewModel.cs" />
+    <Compile Include="CustomersModel\GetPastDueMCPDataViewModel.cs" />
+    <Compile Include="CustomersModel\GetReceivedPaymentByDepViewModel.cs" />
+    <Compile Include="CustomersModel\GetReceivePaymentByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetRepTemplateNameViewModel.cs" />
+    <Compile Include="CustomersModel\GetScreensByUserViewModel.cs" />
+    <Compile Include="CustomersModel\GetShutdownReasonsViewModel.cs" />
+    <Compile Include="CustomersModel\GetTicketIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetUndepositeAcctViewModel.cs" />
+    <Compile Include="EmailSignature.cs" />
+    <Compile Include="EmailTemplate.cs" />
+    <Compile Include="Emp.cs" />
+    <Compile Include="CustomersModel\GetRouteViewModel.cs" />
+    <Compile Include="CustomersModel\getSalesTax2ViewModel.cs" />
+    <Compile Include="CustomersModel\GetSingleConsultantViewModel.cs" />
+    <Compile Include="CustomersModel\GetTemplateItemByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetTerritoryViewModel.cs" />
+    <Compile Include="CustomersModel\GetZoneViewModel.cs" />
+    <Compile Include="OnlinePayment.cs" />
+    <Compile Include="FilterModel.cs" />
+    <Compile Include="PayrollRegister.cs" />
+    <Compile Include="Recurring\GetContractsDataViewModel.cs" />
+    <Compile Include="Recurring\GetContractViewModel.cs" />
+    <Compile Include="Recurring\GetDiagnosticCategoryViewModel.cs" />
+    <Compile Include="Recurring\GetElevContractViewModel.cs" />
+    <Compile Include="Recurring\GetEscalationContractsViewModel.cs" />
+    <Compile Include="Recurring\GetEscalationDetailsViewModel.cs" />
+    <Compile Include="Recurring\GetEscalationReportFiltersValueViewModel.cs" />
+    <Compile Include="Recurring\GetEstimateByIDViewModel.cs" />
+    <Compile Include="Recurring\GetJstatusViewModel.cs" />
+    <Compile Include="Recurring\GetLocationAutojqueryViewModel.cs" />
+    <Compile Include="Recurring\GetMonthlyRecurringHoursTEIViewModel.cs" />
+    <Compile Include="Recurring\GetMonthlyRecurringHoursViewModel.cs" />
+    <Compile Include="Recurring\GetMultipleStockReportsViewModel.cs" />
+    <Compile Include="Recurring\GetOpenMaintenanceByEquipmentViewModel.cs" />
+    <Compile Include="Recurring\GetRecurringContractLogsViewModel.cs" />
+    <Compile Include="Recurring\GetRecurringCustomViewModel.cs" />
+    <Compile Include="Recurring\GetRecurringDetailsViewModel.cs" />
+    <Compile Include="Recurring\GetRouteActiveViewModel.cs" />
+    <Compile Include="Recurring\GetServiceTypeByTypeViewModel.cs" />
+    <Compile Include="LoginModel\loginModel.cs" />
+    <Compile Include="PRReg.cs" />
+    <Compile Include="ProjectWIP.cs" />
+    <Compile Include="TaskCategory.cs" />
+    <Compile Include="CommonModel\GetUserPermissionByUserIDViewModel.cs" />
+    <Compile Include="ComparativeStatementRequest.cs" />
+    <Compile Include="CustomersModel\GetAllLocationOnCustomerViewModel.cs" />
+    <Compile Include="CustomersModel\GetARRevenueCustViewModel.cs" />
+    <Compile Include="CustomersModel\GetCategoryViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomerByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomerSearchViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomersViewModel.cs" />
+    <Compile Include="CustomersModel\GetCustomerTypeViewModel.cs" />
+    <Compile Include="CustomersModel\GetElevViewModel.cs" />
+    <Compile Include="CustomersModel\GetMSMCustomersViewModel.cs" />
+    <Compile Include="CustomersModel\GetMSMCustomertypeViewModel.cs" />
+    <Compile Include="CustomersModel\GetMSMLocationViewModel.cs" />
+    <Compile Include="CustomersModel\GetMSMLoctypeViewModel.cs" />
+    <Compile Include="CustomersModel\GetMSMSalesTaxViewModel.cs" />
+    <Compile Include="CustomersModel\GetProspectByIDViewModel.cs" />
+    <Compile Include="CustomersModel\GetQBCustomersViewModel.cs" />
+    <Compile Include="CustomersModel\GetQBLocationViewModel.cs" />
+    <Compile Include="EmailLog.cs" />
+    <Compile Include="InventoryModel\CheckStatusOfChartViewModel.cs" />
+    <Compile Include="InventoryModel\CommodityViewModel.cs" />
+    <Compile Include="InventoryModel\GetAllInvAdjustmentByDateViewModel.cs" />
+    <Compile Include="InventoryModel\GetALLInventoryViewModel.cs" />
+    <Compile Include="InventoryModel\GetAllItemQuantityByInvIDViewModel.cs" />
+    <Compile Include="InventoryModel\GetCustReportFiltersValueViewModel.cs" />
+    <Compile Include="InventoryModel\GetDocumentsViewModel.cs" />
+    <Compile Include="InventoryModel\GetEMPViewModel.cs" />
+    <Compile Include="InventoryModel\GetInventoryActiveWarehouseViewModel.cs" />
+    <Compile Include="InventoryModel\GetInventoryAdjustmentByIDViewModel.cs" />
+    <Compile Include="InventoryModel\GetInventoryTransViewModel.cs" />
+    <Compile Include="InventoryModel\GetInventoryViewModel.cs" />
+    <Compile Include="InventoryModel\GetItemPurchaseOrderByInvIDViewModel.cs" />
+    <Compile Include="InventoryModel\GetPOWeeklyViewModel.cs" />
+    <Compile Include="InventoryModel\GetSearchInventoryViewModel.cs" />
+    <Compile Include="InventoryModel\InventoryTransactionByInvIDViewModel.cs" />
+    <Compile Include="InventoryModel\PostInventoryItemsToProjectViewModel.cs" />
+    <Compile Include="InventoryWHTrans.cs" />
+    <Compile Include="InvoicingFromTicketScreen.cs" />
+    <Compile Include="MapDataNew.cs" />
+    <Compile Include="Payroll\ControlViewModel.cs" />
+    <Compile Include="Payroll\CustomerFilterViewModel.cs" />
+    <Compile Include="Payroll\GeneralViewModel.cs" />
+    <Compile Include="Payroll\GetControlViewModel.cs" />
+    <Compile Include="Payroll\HeaderFooterDetailViewModel.cs" />
+    <Compile Include="Payroll\JobTypeViewModel.cs" />
+    <Compile Include="Payroll\PayrollViewModel.cs" />
+    <Compile Include="Payroll\SageExportTickets.cs" />
+    <Compile Include="Payroll\SMTPEmailViewModel.cs" />
+    <Compile Include="Payroll\SuperUserViewModel.cs" />
+    <Compile Include="Payroll\TicketViewModel.cs" />
+    <Compile Include="Programs\AddEditServiceTypeViewDataModel.cs" />
+    <Compile Include="Projects\Project.cs" />
+    <Compile Include="Projects\ProjectListGridModel.cs" />
+    <Compile Include="Projects\ProjectDepartmentModel.cs" />
+    <Compile Include="Proposal.cs" />
+    <Compile Include="Payroll\eTimesheetViewModel.cs" />
+    <Compile Include="Payroll\eTimesheetparamViewModel.cs" />
+    <Compile Include="TeamMemberTitle.cs" />
+    <Compile Include="TestSetupForm.cs" />
+    <Compile Include="Accounts.cs" />
+    <Compile Include="AccountType.cs" />
+    <Compile Include="BT.cs" />
+    <Compile Include="Budget.cs" />
+    <Compile Include="CollectionContacts.cs" />
+    <Compile Include="CollectionModel.cs" />
+    <Compile Include="CompanyOffice.cs" />
+    <Compile Include="TimeCard.cs" />
+    <Compile Include="UserCustom.cs" />
+    <Compile Include="UserDash.cs" />
+    <Compile Include="EstimateForm.cs" />
+    <Compile Include="EstimateTemplate.cs" />
+    <Compile Include="Lead.cs" />
+    <Compile Include="MailSender.cs" />
+    <Compile Include="PhoneModel.cs" />
+    <Compile Include="Planner.cs" />
+    <Compile Include="Reports\IncomeStatements\ComparativeFSWithCenterParam.cs" />
+    <Compile Include="RetainFilter.cs" />
+    <Compile Include="Schedule\Tickets.cs" />
+    <Compile Include="Service.cs" />
+    <Compile Include="STax.cs" />
+    <Compile Include="Recurring\SafetyTest.cs" />
+    <Compile Include="tblConsult.cs" />
+    <Compile Include="TestCustom.cs" />
+    <Compile Include="EquipTestPrice.cs" />
+    <Compile Include="TestTypes.cs" />
+    <Compile Include="EstimateCalculation.cs" />
+    <Compile Include="Alerts.cs" />
+    <Compile Include="APStatus.cs" />
+    <Compile Include="Bank.cs" />
+    <Compile Include="CD.cs" />
+    <Compile Include="Chart.cs" />
+    <Compile Include="Commodity.cs" />
+    <Compile Include="ContractBill.cs" />
+    <Compile Include="Contracts.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="Dep.cs" />
+    <Compile Include="DepositDetails.cs" />
+    <Compile Include="Frequency.cs" />
+    <Compile Include="General.cs" />
+    <Compile Include="GenerateCheck.cs" />
+    <Compile Include="ChartDetails.cs" />
+    <Compile Include="InventoryAdjustment.cs" />
+    <Compile Include="Stage.cs" />
+    <Compile Include="TicketI.cs" />
+    <Compile Include="TroubleCallsByEquipmentGraphRequest.cs" />
+    <Compile Include="UnitOfMeasure.cs" />
+    <Compile Include="Inv.cs" />
+    <Compile Include="Inventory.cs" />
+    <Compile Include="Invoices.cs" />
+    <Compile Include="JobI.cs" />
+    <Compile Include="JobT.cs" />
+    <Compile Include="Journal.cs" />
+    <Compile Include="Loc.cs" />
+    <Compile Include="MapData.cs" />
+    <Compile Include="OpenAP.cs" />
+    <Compile Include="OpenAR.cs" />
+    <Compile Include="Owner.cs" />
+    <Compile Include="Paid.cs" />
+    <Compile Include="PaymentDetails.cs" />
+    <Compile Include="Phase.cs" />
+    <Compile Include="PJ.cs" />
+    <Compile Include="PO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReceivedPayment.cs" />
+    <Compile Include="ReportData.cs" />
+    <Compile Include="Rol.cs" />
+    <Compile Include="State.cs" />
+    <Compile Include="Transaction.cs" />
+    <Compile Include="TransBankAdj.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="UserRole.cs" />
+    <Compile Include="UserModel\UserModel.cs" />
+    <Compile Include="Utility\APIUtility.cs" />
+    <Compile Include="Utility\MOMUtility.cs" />
+    <Compile Include="Vendor.cs" />
+    <Compile Include="PRDed.cs" />
+    <Compile Include="Wage.cs" />
+    <Compile Include="WebMethodHeader.cs" />
+    <Compile Include="WebMethodResponse.cs" />
+    <Compile Include="YearEndMonth.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Localization\ar.xml" />
+    <Content Include="Localization\be.xml" />
+    <Content Include="Localization\bg.xml" />
+    <Content Include="Localization\ca-ES.xml" />
+    <Content Include="Localization\cs.xml" />
+    <Content Include="Localization\de.ext.xml" />
+    <Content Include="Localization\de.xml" />
+    <Content Include="Localization\el-GR.xml" />
+    <Content Include="Localization\en-GB.xml" />
+    <Content Include="Localization\en.ext.xml" />
+    <Content Include="Localization\en.xml" />
+    <Content Include="Localization\es.xml" />
+    <Content Include="Localization\eu-ES.xml" />
+    <Content Include="Localization\fa.xml" />
+    <Content Include="Localization\fr.ext.xml" />
+    <Content Include="Localization\fr.xml" />
+    <Content Include="Localization\gl-ES.xml" />
+    <Content Include="Localization\hr.xml" />
+    <Content Include="Localization\hu.xml" />
+    <Content Include="Localization\id.xml" />
+    <Content Include="Localization\it.xml" />
+    <Content Include="Localization\ka.xml" />
+    <Content Include="Localization\Lt-sr-SP.xml" />
+    <Content Include="Localization\lt.xml" />
+    <Content Include="Localization\nb-NO.xml" />
+    <Content Include="Localization\nl.xml" />
+    <Content Include="Localization\pl.xml" />
+    <Content Include="Localization\pt-BR.xml" />
+    <Content Include="Localization\pt.xml" />
+    <Content Include="Localization\ro.xml" />
+    <Content Include="Localization\ru.ext.xml" />
+    <Content Include="Localization\ru.xml" />
+    <Content Include="Localization\sk.xml" />
+    <Content Include="Localization\sv.ext.xml" />
+    <Content Include="Localization\sv.xml" />
+    <Content Include="Localization\tr.xml" />
+    <Content Include="Localization\uk.xml" />
+    <Content Include="Localization\zh-CHS.xml" />
+    <Content Include="Localization\zh-CHT.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

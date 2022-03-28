@@ -1,0 +1,948 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <CacheAllData>True</CacheAllData>
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="0" />
+    <DataSources isList="true" count="3">
+      <Invoice Ref="2" type="DataTableSource" isKey="true">
+        <Alias>Invoice</Alias>
+        <Columns isList="true" count="17">
+          <value>Pay,System.String</value>
+          <value>ToOrder,System.String</value>
+          <value>InvoiceDate,System.DateTime</value>
+          <value>CheckAmount,System.String</value>
+          <value>ToOrderAddress,System.String</value>
+          <value>State,System.String</value>
+          <value>PayDate,System.DateTime</value>
+          <value>CheckNo,System.String</value>
+          <value>VendorID,System.Int32</value>
+          <value>VendorName,System.String</value>
+          <value>Type,System.Int32</value>
+          <value>Description,System.String</value>
+          <value>Ref,System.String</value>
+          <value>Disc,System.Double</value>
+          <value>Reference,System.String</value>
+          <value>Total,System.Double</value>
+          <value>AmountPay,System.Double</value>
+        </Columns>
+        <Dictionary isRef="1" />
+        <Key>fcfa53030cfc41019fa07a991036a199</Key>
+        <Name>Invoice</Name>
+        <NameInSource>Invoice</NameInSource>
+      </Invoice>
+      <Check Ref="3" type="DataTableSource" isKey="true">
+        <Alias>Check</Alias>
+        <Columns isList="true" count="12">
+          <value>Pay,System.String</value>
+          <value>Date,System.DateTime</value>
+          <value>CheckAmount,System.String</value>
+          <value>ToOrderAddress,System.String</value>
+          <value>State,System.String</value>
+          <value>ToOrder,System.String</value>
+          <value>Zip,_x202C__x202C_Zip,System.String</value>
+          <value>VendorAddress,System.String</value>
+          <value>RemitAddress,System.String</value>
+          <value>Memo,System.String</value>
+          <value>TotalAmountPay,System.Double</value>
+          <value>VendorAcct,System.String</value>
+        </Columns>
+        <Dictionary isRef="1" />
+        <Key>45c0bb9003c84f3086afffb156c3f64a</Key>
+        <Name>Check</Name>
+        <NameInSource>Check</NameInSource>
+      </Check>
+      <ControlBranch Ref="4" type="DataTableSource" isKey="true">
+        <Alias>ControlBranch</Alias>
+        <Columns isList="true" count="10">
+          <value>Name,System.String</value>
+          <value>Address,System.String</value>
+          <value>City,System.String</value>
+          <value>State,System.String</value>
+          <value>Zip,System.String</value>
+          <value>Phone,System.String</value>
+          <value>Email,System.String</value>
+          <value>Fax,System.String</value>
+          <value>Logo,System.String</value>
+          <value>WebAddress,System.String</value>
+        </Columns>
+        <Dictionary isRef="1" />
+        <Key>bb3fc78a4eb348e7bce775678b6d899c</Key>
+        <Name>ControlBranch</Name>
+        <NameInSource>ControlBranch</NameInSource>
+      </ControlBranch>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Resources isList="true" count="0" />
+    <Variables isList="true" count="3">
+      <value>,TotalAmountPay,TotalAmountPay,Total_x0020_of_x0020_Amount_x0020_Pay,System.Double,,False,False,False,False</value>
+      <value>,Memo,Memo,Memo,System.String,,False,False,False,False</value>
+      <value>,InvoiceCount,InvoiceCount,InvoiceCount,System.Single,,False,False,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Key>772ef666a2d64ba0a41daef49fee2383</Key>
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="5" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="8">
+        <Text1 Ref="6" type="Text" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0.6,1.04,7.1,0.25</ClientRectangle>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Font>Arial,10</Font>
+          <Guid>39dfed8089ca47b1989fa9a5bc97d715</Guid>
+          <Margins>2,0,0,0</Margins>
+          <Name>Text1</Name>
+          <Page isRef="5" />
+          <Parent isRef="5" />
+          <Text>{Check.Pay} </Text>
+          <TextBrush>[0:0:0]</TextBrush>
+          <TextFormat Ref="7" type="CurrencyFormat" isKey="true">
+            <DecimalDigits>2</DecimalDigits>
+            <GroupSeparator>,</GroupSeparator>
+            <NegativePattern>0</NegativePattern>
+            <PositivePattern>0</PositivePattern>
+          </TextFormat>
+          <Type>Expression</Type>
+        </Text1>
+        <Text23 Ref="8" type="Text" isKey="true">
+          <Brush>EmptyBrush</Brush>
+          <ClientRectangle>5.05,1.34,1.09,0.25</ClientRectangle>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Font>Arial,10</Font>
+          <Guid>c9168b4125974010bb011c921ce86e9c</Guid>
+          <Margins>0,0,0,0</Margins>
+          <Name>Text23</Name>
+          <Page isRef="5" />
+          <Parent isRef="5" />
+          <Text>{Format("{0:MM/dd/yyyy}", Check.Date)}</Text>
+          <TextBrush>[0:0:0]</TextBrush>
+          <Type>Expression</Type>
+          <VertAlignment>Center</VertAlignment>
+        </Text23>
+        <Text25 Ref="9" type="Text" isKey="true">
+          <Border>All;Black;1;None;False;4;Black</Border>
+          <Brush>EmptyBrush</Brush>
+          <ClientRectangle>6.68,1.34,0.82,0.25</ClientRectangle>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Font>Arial,10</Font>
+          <Guid>278c27b9473e441ba8cbfae8db8ea7d9</Guid>
+          <Margins>0,0,0,0</Margins>
+          <Name>Text25</Name>
+          <Page isRef="5" />
+          <Parent isRef="5" />
+          <Text>{IIF(TotalAmountPay == 0.00, Format("{0:C2}", Check.TotalAmountPay), Format("{0:C2}", TotalAmountPay))}</Text>
+          <TextBrush>[0:0:0]</TextBrush>
+          <Type>Expression</Type>
+          <VertAlignment>Center</VertAlignment>
+        </Text25>
+        <Text21 Ref="10" type="Text" isKey="true">
+          <Border>All;Black;1;None;False;4;Black</Border>
+          <Brush>EmptyBrush</Brush>
+          <ClientRectangle>1,1.42,4.4,0.74</ClientRectangle>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Font>Arial,10</Font>
+          <Guid>cb275162bacf4b518f7d4d3923187890</Guid>
+          <Margins>0,0,0,0</Margins>
+          <Name>Text21</Name>
+          <Page isRef="5" />
+          <Parent isRef="5" />
+          <Text>{IIF(Check.RemitAddress == "", Check.ToOrder,Check.RemitAddress)}
+{IIF(Check.RemitAddress == "", Check.VendorAddress, "")}
+{IIF(Check.RemitAddress == "", Check.State, "")} {IIF(Check.RemitAddress == "", Check.Zip, "")}</Text>
+          <TextBrush>[0:0:0]</TextBrush>
+          <Type>Expression</Type>
+        </Text21>
+        <Panel1 Ref="11" type="Panel" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,4.2,7.7,3.3</ClientRectangle>
+          <Components isList="true" count="4">
+            <Text27 Ref="12" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.2,3,4.5,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,10</Font>
+              <Guid>3b49f80219fe4bba83ebe37bceed9c03</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text27</Name>
+              <Page isRef="5" />
+              <Parent isRef="11" />
+              <Text>{IIF(InvoiceCount &gt; 12, "Please see voucher for additional info","")}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text27>
+            <HeaderBand2 Ref="13" type="HeaderBand" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.2,7.7,0.3</ClientRectangle>
+              <Components isList="true" count="6">
+                <Text3 Ref="14" type="Text" isKey="true">
+                  <Border>All;LightGray;1;Solid;False;4;Black</Border>
+                  <Brush>GlassBrush,LightGray,True,0.2</Brush>
+                  <ClientRectangle>1.8,0,3,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold,Point,False,0</Font>
+                  <Guid>521f3b836cac4ef3961c45c1f4c8b076</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text3</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="13" />
+                  <Text>Description</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text3>
+                <Text4 Ref="15" type="Text" isKey="true">
+                  <Border>All;LightGray;1;Solid;False;4;Black</Border>
+                  <Brush>GlassBrush,LightGray,True,0.2</Brush>
+                  <ClientRectangle>4.8,0,1.1,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold,Point,False,0</Font>
+                  <Guid>11668bdc14f84be8b76021b82666e648</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text4</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="13" />
+                  <Text>Invoice Total</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text4>
+                <Text5 Ref="16" type="Text" isKey="true">
+                  <Border>All;LightGray;1;Solid;False;4;Black</Border>
+                  <Brush>GlassBrush,LightGray,True,0.2</Brush>
+                  <ClientRectangle>5.9,0,0.8,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold,Point,False,0</Font>
+                  <Guid>ae00098c15204b2aa00159cfe73b810d</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text5</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="13" />
+                  <Text>Disc Taken</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text5>
+                <Text9 Ref="17" type="Text" isKey="true">
+                  <Border>All;LightGray;1;Solid;False;4;Black</Border>
+                  <Brush>GlassBrush,LightGray,True,0.2</Brush>
+                  <ClientRectangle>6.7,0,1,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold,Point,False,0</Font>
+                  <Guid>b1151eaa792a4482928af63123a1b20a</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text9</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="13" />
+                  <Text>Paid</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text9>
+                <Text14 Ref="18" type="Text" isKey="true">
+                  <Border>All;LightGray;1;Solid;False;4;Black</Border>
+                  <Brush>GlassBrush,LightGray,True,0.2</Brush>
+                  <ClientRectangle>1,0,0.8,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold,Point,False,0</Font>
+                  <Guid>3cd0e4dd554646e398cb2ae439985370</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text14</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="13" />
+                  <Text>Invoice #</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text14>
+                <Text18 Ref="19" type="Text" isKey="true">
+                  <Brush>GlassBrush,LightGray,True,0.2</Brush>
+                  <ClientRectangle>0,0,1,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold</Font>
+                  <Guid>ea2d6910ef6c4bec914efd4161373670</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text18</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="13" />
+                  <Text>Invoice Date</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text18>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Guid>ecc92d6d048a44858e2b28d0f01b9913</Guid>
+              <Name>HeaderBand2</Name>
+              <Page isRef="5" />
+              <Parent isRef="11" />
+            </HeaderBand2>
+            <DataBand2 Ref="20" type="DataBand" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>EmptyBrush</Brush>
+              <BusinessObjectGuid isNull="true" />
+              <ClientRectangle>0,0.9,7.7,0.2</ClientRectangle>
+              <Components isList="true" count="6">
+                <Text22 Ref="21" type="Text" isKey="true">
+                  <Border>None;[211:211:211];1;Solid;False;4;[0:0:0]</Border>
+                  <Brush>White</Brush>
+                  <ClientRectangle>1,0,0.8,0.2</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8</Font>
+                  <Guid>5ecc7e3aa83544379018824bdc7a636f</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text22</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="20" />
+                  <Text>{Invoice.Ref}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <Type>DataColumn</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text22>
+                <Text32 Ref="22" type="Text" isKey="true">
+                  <Border>None;[211:211:211];1;Solid;False;4;[0:0:0]</Border>
+                  <Brush>White</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>4.8,0,1.1,0.2</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8</Font>
+                  <Guid>afcd2d37a3014a83a5d2344549c7affc</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text32</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="20" />
+                  <Text>{Format("{0:C2}", Invoice.Total)}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text32>
+                <Text33 Ref="23" type="Text" isKey="true">
+                  <Border>None;[211:211:211];1;Solid;False;4;[0:0:0]</Border>
+                  <Brush>White</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>5.9,0,0.8,0.2</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8</Font>
+                  <Guid>61442a9588a64773bae2fc2e78d982fc</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text33</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="20" />
+                  <Text>{Format("{0:C2}", Invoice.Disc)}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text33>
+                <Text34 Ref="24" type="Text" isKey="true">
+                  <Border>None;[211:211:211];1;Solid;False;4;[0:0:0]</Border>
+                  <Brush>White</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>6.7,0,1,0.2</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8</Font>
+                  <Guid>72b922d5a0ed4463ac42f2b61413023d</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text34</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="20" />
+                  <Text>{Format("{0:C2}", Invoice.AmountPay)}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text34>
+                <Text35 Ref="25" type="Text" isKey="true">
+                  <Border>None;[211:211:211];1;Solid;False;4;[0:0:0]</Border>
+                  <Brush>White</Brush>
+                  <ClientRectangle>1.8,0,2.9,0.2</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8</Font>
+                  <Guid>f1c31d0e38c142a1951107db599f36af</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text35</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="20" />
+                  <Text>{Replace(Invoice.Description,"\r\n","")}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text35>
+                <Text36 Ref="26" type="Text" isKey="true">
+                  <Border>None;[211:211:211];1;Solid;False;4;[0:0:0]</Border>
+                  <Brush>White</Brush>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0,0,1,0.2</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8</Font>
+                  <Guid>9e30eb3c7a0e4d178a06e33e588868b2</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text36</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="20" />
+                  <Text>{Format("{0:MM/dd/yyyy}", Invoice.InvoiceDate)}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text36>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <DataSourceName>Invoice</DataSourceName>
+              <Expressions isList="true" count="0" />
+              <Filters isList="true" count="0" />
+              <Guid>1aa8eadb465743f1a724bf79a25bcb17</Guid>
+              <MaxHeight>5</MaxHeight>
+              <Name>DataBand2</Name>
+              <Page isRef="5" />
+              <Parent isRef="11" />
+              <Sort isList="true" count="0" />
+            </DataBand2>
+            <FooterBand1 Ref="27" type="FooterBand" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,1.5,7.7,0.4</ClientRectangle>
+              <Components isList="true" count="4">
+                <Text37 Ref="28" type="Text" isKey="true">
+                  <Brush>LightGray</Brush>
+                  <ClientRectangle>0,0,1.5,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold,Point,False,0</Font>
+                  <Guid>01ffa9ec725a4f37b70922363e0e975e</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text37</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="27" />
+                  <Text>Check #
+{Invoice.CheckNo}</Text>
+                  <TextBrush>[0:0:0]</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text37>
+                <Text38 Ref="29" type="Text" isKey="true">
+                  <Brush>LightGray</Brush>
+                  <ClientRectangle>1.5,0,1.5,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold,Point,False,0</Font>
+                  <Guid>260bcd26fc5a4589b43589f156ab4d8d</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text38</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="27" />
+                  <Text>{Format("{0:MM/dd/yyyy}", Invoice.PayDate)}</Text>
+                  <TextBrush>[0:0:0]</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text38>
+                <Text39 Ref="30" type="Text" isKey="true">
+                  <Brush>LightGray</Brush>
+                  <ClientRectangle>3,0,3,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold,Point,False,0</Font>
+                  <Guid>c98de9e5e3d24df593987a9455ead787</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text39</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="27" />
+                  <Text>Net Paid for this Vendor 
+{Invoice.VendorName}</Text>
+                  <TextBrush>[0:0:0]</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text39>
+                <Text40 Ref="31" type="Text" isKey="true">
+                  <Brush>LightGray</Brush>
+                  <ClientRectangle>6,0,1.7,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Arial,8.5,Bold,Point,False,0</Font>
+                  <Guid>1ab41924fa41413794dc3311e35d3eea</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text40</Name>
+                  <Page isRef="5" />
+                  <Parent isRef="27" />
+                  <Text>{IIF(TotalAmountPay == 0.00, Format("{0:C2}", Check.TotalAmountPay), Format("{0:C2}", TotalAmountPay))}</Text>
+                  <TextBrush>[0:0:0]</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text40>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Guid>1b1e2db8b01e411d97f047ef81bd7ace</Guid>
+              <Name>FooterBand1</Name>
+              <Page isRef="5" />
+              <Parent isRef="11" />
+            </FooterBand1>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Guid>2f08e98b5f474d2697255288550d32e4</Guid>
+          <Name>Panel1</Name>
+          <Page isRef="5" />
+          <Parent isRef="5" />
+        </Panel1>
+        <Panel3 Ref="32" type="Panel" isKey="true">
+          <Border>All;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+          <Brush>EmptyBrush</Brush>
+          <ClientRectangle>0,3.5,6.2,0.6</ClientRectangle>
+          <Components isList="true" count="10">
+            <Text26 Ref="33" type="Text" isKey="true">
+              <Border>All;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>0,0,1,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text26</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text26>
+            <Text41 Ref="34" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>0.1,0.1,0.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8.5,Bold</Font>
+              <Guid>81b31a1499bc4ac49943acf7129fbd58</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text41</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <Text>Payee</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text41>
+            <Text42 Ref="35" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>0.1,0.3,0.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8.5,Bold</Font>
+              <Guid>e0a4eb69acec43928a07f660e1985dfc</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text42</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <Text>Account #</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text42>
+            <Text28 Ref="36" type="Text" isKey="true">
+              <Border>All;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>3.8,0,1,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>e9d982b80df64419936e525e00b6941d</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text28</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text28>
+            <Text43 Ref="37" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>3.9,0.1,0.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8.5,Bold</Font>
+              <Guid>342411541e954613bc316fa5d16acee6</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text43</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <Text>Date</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text43>
+            <Text44 Ref="38" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>3.9,0.3,0.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8.5,Bold</Font>
+              <Guid>3601c9ffce5c45a485dd6807016ca720</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text44</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <Text>Amount</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text44>
+            <Text45 Ref="39" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.1,0.1,2.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>cf7196d42c674525b8464b6296aed130</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text45</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <Text>{Check.ToOrder}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text45>
+            <Text46 Ref="40" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.9,0.1,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>c2b7f03cfb52465da452d6e7bed0426e</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text46</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <Text>{Format("{0:MM/dd/yyyy}", Check.Date)}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text46>
+            <Text47 Ref="41" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.9,0.3,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>b6704625943a4cbd84769d470f894ed9</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text47</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <Text>{IIF(TotalAmountPay == 0.00, Format("{0:N2}", Check.TotalAmountPay), Format("{0:N2}", TotalAmountPay))}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text47>
+            <Text17 Ref="42" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.1,0.3,2.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>7e172ca2830744bf85dd2c7754aaa6a3</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text17</Name>
+              <Page isRef="5" />
+              <Parent isRef="32" />
+              <Text>{Check.VendorAcct}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text17>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>Panel3</Name>
+          <Page isRef="5" />
+          <Parent isRef="5" />
+        </Panel3>
+        <Text16 Ref="43" type="Text" isKey="true">
+          <Border>All;Black;1;None;False;4;Black</Border>
+          <Brush>EmptyBrush</Brush>
+          <ClientRectangle>1,9.3,4.4,0.74</ClientRectangle>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Font>Arial,9.75,Regular,Point,False,0</Font>
+          <Guid>e66569e49d7e4db8a329ad2a8ee3f389</Guid>
+          <Margins>0,0,0,0</Margins>
+          <Name>Text16</Name>
+          <Page isRef="5" />
+          <Parent isRef="5" />
+          <Text>{IIF(Check.RemitAddress == "", Check.ToOrder,Check.RemitAddress)}
+{IIF(Check.RemitAddress == "", Check.VendorAddress, "")}
+{IIF(Check.RemitAddress == "", Check.State, "")} {IIF(Check.RemitAddress == "", Check.Zip, "")}</Text>
+          <TextBrush>[0:0:0]</TextBrush>
+          <Type>Expression</Type>
+        </Text16>
+        <Panel2 Ref="44" type="Panel" isKey="true">
+          <Border>All;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+          <Brush>EmptyBrush</Brush>
+          <ClientRectangle>0,7.5,6.2,0.6</ClientRectangle>
+          <Components isList="true" count="10">
+            <Text2 Ref="45" type="Text" isKey="true">
+              <Border>All;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>0,0,1,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>df61bbf4b9d442e985213692648f0654</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text2>
+            <Text6 Ref="46" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>0.1,0.1,0.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8.5,Bold</Font>
+              <Guid>7971e604547642f0a589f918cfec8645</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <Text>Payee</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text6>
+            <Text7 Ref="47" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>0.1,0.3,0.8,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8.5,Bold</Font>
+              <Guid>88d6c2e6ecc64413b61518581a305ff7</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text7</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <Text>Account #</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text7>
+            <Text8 Ref="48" type="Text" isKey="true">
+              <Border>All;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>3.8,0,1,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>5f87697d2bb344e28082565e1f8a4fe8</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text8</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text8>
+            <Text10 Ref="49" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>3.9,0.1,0.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8.5,Bold</Font>
+              <Guid>994a6f7e525241d3803e4eab2f0a6f48</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text10</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <Text>Date</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text10>
+            <Text11 Ref="50" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>[208:206:206]</Brush>
+              <ClientRectangle>3.9,0.3,0.7,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8.5,Bold</Font>
+              <Guid>d86556bcce694e678ea61909877a26b4</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text11</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <Text>Amount</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text11>
+            <Text12 Ref="51" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.1,0.1,2.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>3b5af3cfda0a4e818c89e469e516139a</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text12</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <Text>{Check.ToOrder}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text12>
+            <Text13 Ref="52" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.9,0.1,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>cd568358260145808e0387da375d1f1f</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text13</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <Text>{Format("{0:MM/dd/yyyy}", Check.Date)}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text13>
+            <Text15 Ref="53" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.9,0.3,1.1,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>28b94f4c86f642a6a8ee3810ddefc082</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text15</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <Text>{IIF(TotalAmountPay == 0.00, Format("{0:N2}", Check.TotalAmountPay), Format("{0:N2}", TotalAmountPay))}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text15>
+            <Text19 Ref="54" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.1,0.3,2.6,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>71977ad0beca42f09bbb817c73d921d0</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text19</Name>
+              <Page isRef="5" />
+              <Parent isRef="44" />
+              <Text>{Check.VendorAcct}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text19>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Guid>2ea2b8f48c3549ff95622e7b1c242ea0</Guid>
+          <Name>Panel2</Name>
+          <Page isRef="5" />
+          <Parent isRef="5" />
+        </Panel2>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>bffe1123ecfe45de9e92f611283a11a5</Guid>
+      <Margins>0.39,0.39,0.39,0.39</Margins>
+      <Name>Page1</Name>
+      <PageHeight>11</PageHeight>
+      <PageWidth>8.5</PageWidth>
+      <PaperSize>Letter</PaperSize>
+      <Report isRef="0" />
+    </Page1>
+  </Pages>
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>9/8/2021 12:10:37 PM</ReportChanged>
+  <ReportCreated>2/21/2018 1:44:42 PM</ReportCreated>
+  <ReportFile>D:\TFS\MOM-NewDesign-Staging\MOMWebApp\StimulsoftReports\APChecks\APTopCheck\ApTopCheckDefaultAlbanyNew- 12.mrt</ReportFile>
+  <ReportGuid>27bb4ef4098d417b812df3af718febd2</ReportGuid>
+  <ReportName>Report</ReportName>
+  <ReportUnit>Inches</ReportUnit>
+  <ReportVersion>2020.5.2.0</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="0" />
+</StiSerializer>

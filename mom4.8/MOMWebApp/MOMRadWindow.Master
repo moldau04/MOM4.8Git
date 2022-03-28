@@ -1,0 +1,173 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MOMRadWindow.master.cs" Inherits="MOMWebApp.MOMRadWindow" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>MOM v5.0</title>
+
+    <link rel="icon" href="Design/images/favicon.png" sizes="32x32">
+    <link href="Design/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="Design/css/style.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="Design/css/custom/custom.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="Design/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="Design/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="Design/css/pikaday.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/827cb0cf39.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&key=AIzaSyCndNAw_XYuJaz2SLtNd40zaVw8e2S8N2Q"></script>
+
+
+    <script src="Design/js/UI/jquery-ui.js"></script>
+    <script src="Design/js/materialize-plugins/forms.js"></script>
+    <script src="Design/js/Notifyjs/jquery.noty.js"></script>
+    <script src="Design/js/Notifyjs/themes/default.js"></script>
+    <script src="Design/js/Notifyjs/layouts/topCenter.js"></script>
+    <link href="Design/css/grid.css" rel="stylesheet" />
+
+    <%--<link href="css/bootstrap.css" rel="stylesheet" />--%>
+    <script src="js/date.format.js"></script>
+    <script src="js/tether.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-notify.js"></script>
+    <script src="js/datediff.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('[id*=chkboxSelectAll]').click(function () {
+                //debugger;
+                $("[id*='chkSelect']").attr('checked', this.checked);
+            });
+        });
+    </script>
+ 
+
+    <script>
+        (function ($) {
+            $(window).load(function () {
+                $(".content").mCustomScrollbar({
+                    theme: "minimal"
+                });
+            });
+        })(jQuery);
+
+
+    </script>
+    <style>
+        .RadWindow_Material .rwTitleBar {
+            border-top-left-radius: 6px !important;
+            border-top-right-radius: 6px !important;
+            background-color: #1c5fb1 !important;
+            height:40px !important;
+        }
+        .RadWindow RadWindow_Material
+        {
+            height:auto !important;
+        }
+
+        .todo_notify {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+            background-color: #ffffff;
+            width: 500px;
+            opacity: 0.9;
+            font-size: 12px;
+            padding-right: 25px;
+            padding-left: 50px;
+            -webkit-box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+            -moz-box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+            box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+        }
+        .todo_notify > button.close{
+            padding: 0;
+            cursor: pointer;
+            background: transparent;
+            border: 0;
+            -webkit-appearance: none;
+            float: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            opacity: .5;
+        }
+        .todo_notify > span[data-notify="title"]{
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .todo_notify > .notifyIcon {
+            display: inline-block;
+            background-image: url(images/application_view_list.ico);
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            top: 15px;
+            left: 10px
+        }
+        
+    </style>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body>
+    <form id="form1" runat="server" autocomplete="off">
+         <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" ScriptMode="Release"
+            AsyncPostBackTimeout="360000">
+        </asp:ToolkitScriptManager>  
+        
+            <div class="wrapper">   
+                 
+          
+               <%-- <section id="content" style="margin-left: 0px !important;">--%>
+
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+
+            <%--    </section> --%>
+                
+            </div> 
+      
+    </form>
+
+    <script src="Design/js/jquery.mCustomScrollbar.js"></script>
+    <%--<script type="text/javascript" src="Design/js/plugins/jquery-1.11.2.min.js"></script>--%>
+    <script type="text/javascript" src="Design/js/materialize.js"></script>
+    <script type="text/javascript" src="Design/js/plugins/prism/prism.js"></script>
+    <script type="text/javascript" src="Design/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="Design/js/plugins.js"></script>
+    <script type="text/javascript" src="Design/js/custom-script.js"></script>
+    <%--Calendar Scripts--%>
+    <script src="Design/js/moment.js"></script>
+    <script src="Design/js/pikaday.js"></script>
+    <script src="Design/js/pikaday.jquery.js"></script>
+    <%--    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js'></script>
+    <script src='https://rawgit.com/tieppt/Pikaday/master/pikaday.js'></script>--%>
+
+    <%--Calendar Scripts--%>
+
+    <%--Masked Input Scripts--%>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+    <%--Masked Input Scripts--%>
+  
+
+    <script>
+
+</script>
+    <asp:ContentPlaceHolder ID="javascriptHolder" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>

@@ -1,0 +1,852 @@
+﻿<!DOCTYPE html>
+@using Telerik.Web.UI;
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>MOM v5.0</title>
+
+    <link rel="icon" href="~/Content/ImgMVC/favicon.png" sizes="32x32">
+    <link href="~/Content/CSSMVC/materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="~/Content/CSSMVC/style.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="~/Content/CSSMVC/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="~/Content/CSSMVC/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/827cb0cf39.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&key=AIzaSyCndNAw_XYuJaz2SLtNd40zaVw8e2S8N2Q"></script>
+
+</head>
+<body>
+
+    @{ Html.RenderAction("Page_Load", "Master"); }
+
+    <header id="header" class="page-topbar">
+        <div class="navbar-fixed" id="divHeader" runat="server">
+
+            <nav class="navbar-color">
+                <div class="nav-wrapper">
+                    <ul class="left">
+                        <li>
+                            <h1 class="logo-wrapper">
+                                <a href="Home.aspx" class="brand-logo darken-1">
+                                    <img src="../Design/images/mom-logo.png" alt="MOM logo">
+                                </a> <span class="logo-text"></span>
+                            </h1>
+                        </li>
+                    </ul>
+                    <ul class="right hide-on-med-and-down">
+                        @if (TempData["Qbvisible"].ToString() != "0")
+                        {
+
+                            <li>
+                                <div class="qb-wrp">
+                                    <div id="divBreadCrumbWithQB" runat="server">
+                                        <div runat="server" id="divQBContents">
+                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                                <ContentTemplate>
+                                                    @*<asp:LinkButton Style="float: left !important;" ID="lnkLastsync" CausesValidation="false" runat="server" OnClick="lnkQBLastSync_Click"></asp:LinkButton>*@
+                                                    @Html.ActionLink("", "QBLastSync", "Master")
+                                                    @*<asp:Label ID="lblQblastSync" runat="server"></asp:Label>*@
+                                                    <span>Quickbooks Last Sync : @TempData["lblQblastSync"].ToString() </span>
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        <li>
+                            <a href="javascript:void(0);" class="waves-effect waves-block waves-light toggle-fullscreen"><i class="mdi-action-settings-overscan"></i></a>
+                        </li>
+
+                        <li>
+                            @if (TempData["todoNotify"].ToString() == "True")
+                            {
+                                <asp:Panel id="todoNotify" runat="server">
+                                    <a href="#" onclick="bell_alert(); return false;" class="waves-effect waves-block waves-light notification-button">
+                                        <i class="mdi-social-notifications">
+                                            <small class="notification-badge">
+                                                @*<asp:Label ID="lblTodoNumber" runat="server"></asp:Label>*@
+                                                <span>Quickbooks Last Sync : @TempData["lblTodoNumber"].ToString() </span>
+                                            </small>
+                                        </i>
+                                    </a>
+                                </asp:Panel>
+                            }
+                        </li>
+                        <li>
+                            <a href="#" data-activates="chat-out" class="waves-effect waves-block waves-light chat-collapse">
+                                <div class="userinfoimg-btn">
+                                    <img runat="server" id="imgProfileImage" src=@TempData["imgProfileImage"].ToString() />
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul id="notifications" class="dropdown-content" runat="server">
+                        <li>
+                            <h5>NOTIFICATIONS <span class="new badge">5</span></h5>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#!"><i class="mdi-action-add-shopping-cart"></i>A new order has been placed!</a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">2 hours ago</time>
+                        </li>
+                        <li>
+                            <a href="#!"><i class="mdi-action-stars"></i>Completed the task</a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">3 days ago</time>
+                        </li>
+                        <li>
+                            <a href="#!"><i class="mdi-action-settings"></i>Settings updated</a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">4 days ago</time>
+                        </li>
+                        <li>
+                            <a href="#!"><i class="mdi-editor-insert-invitation"></i>Director meeting started</a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">6 days ago</time>
+                        </li>
+                        <li>
+                            <a href="#!"><i class="mdi-action-trending-up"></i>Generate monthly report</a>
+                            <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">1 week ago</time>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav"></ul>
+    </div>
+
+
+
+
+
+    @if ((Session["type"] == null) || (Session["type"] != null && Session["type"].ToString() != "c"))
+    {
+        <aside id="menu" runat="server">
+            <ul id="slide-out" class="side-nav fixed leftside-navigation" style="width: 170px;">
+                <li class="user-details cyan darken-2" style="display: none;">
+                    <div class="row">
+                        <div class="col col s4 m4 l4 profile-img">
+                            <img src="../Design/images/avatar.jpg" alt="" class="circle responsive-img valign profile-image">
+                        </div>
+                        <div class="col col s8 m8 l8">
+                            <ul id="profile-dropdown" class="dropdown-content">
+                                <li class="prof">
+                                    <a href="UserProfile.aspx"><i class="mdi-action-face-unlock proficon"></i>Profile</a>
+                                </li>
+                                <li class="prof">
+                                    <a href="#"><i class="mdi-action-settings proficon"></i>Settings</a>
+                                </li>
+                                <li class="prof">
+                                    <a href="#"><i class="mdi-communication-live-help proficon"></i>Help</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li class="prof">
+                                    <a href="#"><i class="mdi-action-lock-outline proficon"></i>Lock</a>
+                                </li>
+                                <li class="prof"></li>
+                            </ul>
+                            <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">
+                                <i class="mdi-navigation-arrow-drop-down right font-color-white" style="color: #fff !important"></i>
+                            </a>
+                            <p class="user-roal">
+                            </p>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            <a class=" waves-effect waves-cyan collapsible-height-nl">
+                                <i class="mdi-action-assessment no-collapse"></i>
+                                @*<asp:Label runat="server" ID="lblCompany"></asp:Label>*@
+                                <span>@TempData["lblCompany"].ToString() </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @if (TempData["liSelectCompany"].ToString() == "True")
+                {
+                    <li class="no-padding border-btm" id="liSelectCompany" runat="server">
+                        <ul class="collapsible collapsible-accordion">
+                            <li class="bold">
+                                <a class=" waves-effect waves-cyan collapsible-height-nl modal-trigger" href="javascript:OpenRadWindow();">
+                                    <i class="mdi-communication-business no-collapse"></i>
+                                    @*<asp:Label ID="lblSelectCompany" runat="server"></asp:Label><asp:Label ID="lblSelectCompanyCount" runat="server"></asp:Label>*@
+                                    <span>@TempData["lblSelectCompany"].ToString() </span><span>@TempData["lblSelectCompanyCount"].ToString() </span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                }
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            <a href="@Url.Action("Home", "Master")" class="waves-effect waves-cyan collapsible-height-nl">
+                                <i class="mdi-action-dashboard no-collapse"></i>
+                                <span>
+                                    <strong>Dashboard</strong>
+                                </span>
+                            </a>
+
+
+
+                            @*<asp:HyperLink runat="server" ID="linkDashboardMenu" Visible="false" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-dashboard no-collapse"></i>Dashboard </asp:HyperLink>
+                                    <asp:ListView ID="listDashboardMenu" runat="server" Visible="false">
+                                        <LayoutTemplate>
+                                            <div runat="server" id="Div1" class="collapsible-body">
+                                                <ul>
+                                                    <asp:PlaceHolder ID="itemPlaceholder" runat="server" />
+                                                </ul>
+                                            </div>
+                                        </LayoutTemplate>
+                                        <ItemTemplate>
+                                <li id="Li2" runat="server" class="border-btm">
+                                    <asp:HyperLink ID="HyperLink2" NavigateUrl='<%# String.Format("~/Home.aspx?id={0}", Eval("ID"))%>' runat="server"><i class="mdi-image-navigate-next"></i><%#Eval("Name")%></asp:HyperLink>
+                                </li>
+                                </ItemTemplate>
+                                </asp:ListView>*@
+                        </li>
+                    </ul>
+                </li>
+                @if (Session["MSM"].ToString() == "ADMIN")
+                {
+                    <li class="no-padding border-btm" id="liChangePassword" runat="server">
+                        <ul class="collapsible collapsible-accordion">
+                            <li class="bold">
+                                <a class=" waves-effect waves-cyan collapsible-height-nl modal-trigger" href="javascript:OpenRadChangePasswordWindow();">
+                                    <i class="mdi-communication-vpn-key no-collapse"></i>
+                                    @*<asp:Label ID="Label1" runat="server"></asp:Label><asp:Label ID="Label2" runat="server" Text="Change Password"></asp:Label>*@
+                                    <asp:Label ID="Label1" runat="server"></asp:Label><span>Change Password</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li class="no-padding border-btm" id="liGPSSetting" runat="server">
+                        <ul class="collapsible collapsible-accordion">
+                            <li class="bold">
+                                <a class=" waves-effect waves-cyan collapsible-height-nl modal-trigger" href="javascript:OpenRadGPSWindow();">
+                                    <i class="mdi-maps-my-location no-collapse"></i>
+                                    @*<asp:Label ID="Label3" runat="server"></asp:Label><asp:Label ID="Label4" runat="server" Text="GPS Settings"></asp:Label>*@
+                                    <asp:Label ID="Label3" runat="server"></asp:Label><span>GPS Settings</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                }
+                @*<li class="no-padding border-btm" id="liSelectOffice" visible="false" runat="server">
+                        <ul class="collapsible collapsible-accordion">
+                            <li class="bold">
+                                <a class="waves-effect waves-cyan collapsible-height-nl" href="#modal2">
+                                    <i class="mdi-action-assessment no-collapse"></i>
+                                    <asp:Label runat="server" ID="lblSelectOffice">Select Office</asp:Label>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>*@
+
+                @*@if (Session["MSM"].ToString() != "ADMIN")
+                    {*@
+
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<asp:HyperLink runat="server" ID="cstmMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-social-people"></i>Customers </asp:HyperLink>*@
+                            @*<a runat="server" ID="cstmMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-social-people"></i>Customers</a>*@
+
+
+
+                            @Html.Raw(TempData["cstmMgr"])
+                            @*<div>
+
+                                    @ViewBag.abcd
+                                </div>*@
+                            @*@Html.ActionLink("Customer", "Index",new  { @class="collapsible-header waves-effect waves-cyan collapsible-height-nl" })*@
+                            <div runat="server" id="cstmMgrSub" class="collapsible-body">
+                                <ul>
+                                    <li id="navCustomer" runat="server" class="border-btm">
+                                        @*<asp:HyperLink ID="lnkCustomersSmenu" NavigateUrl="~/Customers.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Customers</asp:HyperLink>*@
+                                        @*<a ID="lnkCustomersSmenu" href="~/Customers.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Customers</a>*@
+                                        @Html.Raw(TempData["lnkCustomersSmenu"])
+                                    </li>
+                                    <li id="navLocation" runat="server" class="border-btm">
+                                        @*<asp:HyperLink ID="lnkLocationsSMenu" NavigateUrl="~/locations.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Locations</asp:HyperLink>*@
+                                        @*<a ID="lnkLocationsSMenu" href="~/locations.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Locations</a>*@
+                                        @Html.Raw(TempData["lnkLocationsSMenu"])
+                                    </li>
+                                    <li id="navEquipment" runat="server" class="border-btm">
+                                        @*<a ID="lnkEquipmentsSMenu" href="~/Equipments.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Equipment</a>*@
+                                        @Html.Raw(TempData["lnkEquipmentsSMenu"])
+                                    </li>
+                                    <li id="navReceivePayment" runat="server" class="border-btm">
+                                        @*<a ID="lnkReceivePayment" href="~/receivepayment.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Receive Payment</a>*@
+                                        @Html.Raw(TempData["lnkReceivePayment"])
+                                    </li>
+                                    <li id="navMakeDeposit" runat="server" class="border-btm">
+                                        @*<a ID="lnkDeposit" href="~/managedeposit.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Make Deposit</a>*@
+                                        @Html.Raw(TempData["lnkDeposit"])
+                                    </li>
+                                    <li id="navCollections" runat="server" class="border-btm">
+                                        @*<a ID="lnkCollections" href="~/iCollections.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Collections</a>*@
+                                        @Html.Raw(TempData["lnkCollections"])
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="cntractsMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-notification-sync"></i>Recurring </a>*@
+                            @Html.Raw(TempData["cntractsMgr"])
+                            <div id="recurMgrSub" runat="server" class="collapsible-body">
+                                <ul>
+                                    <li id="navRecurringContracts" runat="server" class="border-btm">
+                                        @*<a ID="lnkContractsMenu" href="~/RecContracts.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Recurring Contracts</a>*@
+                                        @Html.Raw(TempData["lnkContractsMenu"])
+                                    </li>
+
+                                    <li class="border-btm">
+                                        @*<a ID="lnkInvoicesMenu" href="~/recurringinvoices.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Recurring Invoices</a>*@
+                                        @Html.Raw(TempData["lnkInvoicesMenu"])
+                                    </li>
+
+                                    <li class="border-btm">
+                                        @*<a ID="lnkTicketsMenu" href="~/RecurringTickets.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Recurring Tickets</a>*@
+                                        @Html.Raw(TempData["lnkTicketsMenu"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnk" href="~/SafetyTest.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Safety Tests</a>*@
+                                        @Html.Raw(TempData["lnk"])
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="schMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-insert-invitation"></i>Schedule </a>*@
+                            @Html.Raw(TempData["schMgr"])
+                            <div id="schdMgrSub" runat="server" class="collapsible-body">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkScheduleMenu" href="~/Scheduler.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Schedule</a>*@
+                                        @Html.Raw(TempData["lnkScheduleMenu"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkListView" href="~/TicketListView.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Ticket List</a>*@
+                                        @Html.Raw(TempData["lnkListView"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="HyperLink1" href="~/ManualTimeCard.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Timesheet Entry</a>*@
+                                        @Html.Raw(TempData["HyperLink1"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkTimesheet" href="~/etimesheet.aspx" runat="server"><i class="mdi-image-navigate-next"></i>e-Timesheet</a>*@
+                                        @Html.Raw(TempData["lnkTimesheet"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkMapMenu" href="~/Map.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Map</a>*@
+                                        @Html.Raw(TempData["lnkMapMenu"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkRouteBuilder" href="~/RouteBuilder.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Route Builder</a>*@
+                                        @Html.Raw(TempData["lnkRouteBuilder"])
+                                    </li>
+                                    <li class="border-btm" style="display:none;">
+                                        @*<a ID="lnkRoutes" href="~/Routes.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Routes</a>*@
+                                        @Html.Raw(TempData["lnkRoutes"])
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="acctMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-payment"></i>Billing </a>*@
+                            @Html.Raw(TempData["acctMgr"])
+                            <div id="billMgrSub" runat="server" class="collapsible-body">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkInvoicesSMenu" href="~/invoices.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Invoices</a>*@
+                                        @Html.Raw(TempData["lnkInvoicesSMenu"])
+                                    </li>
+
+                                    <li class="border-btm">
+                                        @*<a ID="lnkBillcodeSMenu" href="~/billingcodes.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Billing Codes</a>*@
+                                        @Html.Raw(TempData["lnkBillcodeSMenu"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkPaymentHistory" href="~/paymenthistory.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Online Payment</a>*@
+                                        @Html.Raw(TempData["lnkPaymentHistory"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a Visible="false" ID="lnkPartsSMenu" href="~/parts.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Parts</a>*@
+                                        @Html.Raw(TempData["lnkPartsSMenu"])
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="acctPayable" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-account-balance"></i>AP</a>*@
+                            @Html.Raw(TempData["acctPayable"])
+                            <div runat="server" id="acctPayableSub" class="collapsible-body">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkVendors" href="~/vendors.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Vendors</a>*@
+                                        @Html.Raw(TempData["lnkVendors"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkAddBill" href="~/managebills.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Bills</a>*@
+                                        @*@Html.ActionLink("Bills", "ViewBill", "Addbill")*@
+                                        @Html.Raw(TempData["lnkAddBill"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkWriteCheck2" href="~/managechecks.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Manage Checks</a>*@
+                                        @Html.Raw(TempData["lnkWriteCheck2"])
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                @*}*@
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="purchaseMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-work"></i>Purchasing </a>*@
+                            @Html.Raw(TempData["purchaseMgr"])
+                            <div class="collapsible-body" runat="server" id="purchaseMgrSub">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkPO" href="~/managepo.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Purchase Orders</a>*@
+                                        @Html.Raw(TempData["lnkPO"])
+                                    </li>
+                                    <li class="border-btm" runat="server" id="liReceivePO">
+                                        @*<a ID="lnkReceivePO" href="~/managereceivepo.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Receive PO</a>*@
+                                        @Html.Raw(TempData["lnkReceivePO"])
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                @*@if (Session["MSM"].ToString() != "ADMIN")
+                    {*@
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="SalesMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-wallet-travel"></i>Sales </a>*@
+                            @Html.Raw(TempData["SalesMgr"])
+                            <div runat="server" id="SalesMgrSub" class="collapsible-body">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkProspect" href="~/prospects.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Leads</a>*@
+                                        @Html.Raw(TempData["lnkProspect"])
+                                    </li>
+
+                                    <li class="border-btm">
+                                        @*<a ID="lnkTasks" href="~/tasks.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Tasks</a>*@
+                                        @Html.Raw(TempData["lnkTasks"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkOpportunities" href="~/opportunity.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Opportunities</a>*@
+                                        @Html.Raw(TempData["lnkOpportunities"])
+                                    </li>
+
+                                    <li class="border-btm">
+                                        @*<a ID="lnkEstimate" href="~/estimate.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Estimate</a>*@
+                                        @Html.Raw(TempData["lnkEstimate"])
+                                    </li>
+
+
+                                    <li class="border-btm">
+                                        @*<a ID="lnkEstimateTempl" href="~/estimatetemplate.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Templates</a>*@
+                                        @Html.Raw(TempData["lnkEstimateTempl"])
+                                    </li>
+
+                                    <li class="border-btm">
+                                        @*<a ID="lnkSalesSetup" href="~/salessetup.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Sales Setup</a>*@
+                                        @Html.Raw(TempData["lnkSalesSetup"])
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                @*}
+                    @if (Session["MSM"].ToString() != "ADMIN")
+                    {*@
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a ID="ProjectMgr" runat="server" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-assignment"></i>Projects </a>*@
+                            @Html.Raw(TempData["ProjectMgr"])
+                            <div runat="server" id="ProjectMgrSub" class="collapsible-body">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkProject" href="~/project.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Projects</a>*@
+                                        @Html.Raw(TempData["lnkProject"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkDepartments" href="~/setup.aspx?tab=1" runat="server"><i class="mdi-image-navigate-next"></i>Departments</a>*@
+                                        @Html.Raw(TempData["lnkDepartments"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkProjectTempl" href="~/projecttemplate.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Project Templates</a>*@
+                                        @Html.Raw(TempData["lnkProjectTempl"])
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                @*}
+                    @if (Session["MSM"].ToString() != "ADMIN")
+                    {*@
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="InventoryMgr" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-format-align-justify"></i>Inventory </a>*@
+                            @Html.Raw(TempData["InventoryMgr"])
+                            <div runat="server" id="ulInventoryMgr" class="collapsible-body">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkItemMaster" href="~/Inventory.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Item Master</a>*@
+                                        @Html.Raw(TempData["lnkItemMaster"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkAdjustment" href="~/InventoryAdjustments.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Item Adjustment</a>*@
+                                        @Html.Raw(TempData["lnkAdjustment"])
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="financeMgr" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-attach-money"></i>Financials </a>*@
+                            @Html.Raw(TempData["financeMgr"])
+                            <div runat="server" id="financeMgrSub" class="collapsible-body">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkCOA" href="~/chartofaccount.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Chart of Accounts</a>*@
+                                        @Html.Raw(TempData["lnkCOA"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkJournalEntry" href="~/journalentry.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Journal Entry</a>*@
+                                        @Html.Raw(TempData["lnkJournalEntry"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkWriteCheck" href="~/managechecks.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Manage Checks</a>*@
+                                        @Html.Raw(TempData["lnkWriteCheck"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkBankRecon" href="~/bankrecon.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Bank Reconciliation</a>*@
+                                        @Html.Raw(TempData["lnkBankRecon"])
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                @*@if (Session["user"] != null && (bool)Session["FinanceStatement"].Equals(true))
+                    {*@
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="financialStatement" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-attach-money"></i>Statements</a>*@
+                            @Html.Raw(TempData["financialStatement"])
+                            <div class="collapsible-body" runat="server" id="financeStateSub">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkTrialBalance" href="~/trialbalance.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Trial Balance</a>*@
+                                        @Html.Raw(TempData["lnkTrialBalance"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkIncomeStatement" href="~/incomestatement.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Profit and Loss</a>*@
+                                        @Html.Raw(TempData["lnkIncomeStatement"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkComparativeStatement" href="~/ComparativeStatement.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Comparative Report</a>*@
+                                        @Html.Raw(TempData["lnkComparativeStatement"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkBalanceSheet" href="~/balancesheet.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Balance Sheet</a>*@
+                                        @Html.Raw(TempData["lnkBalanceSheet"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkBudgets" href="~/Budgets.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Budgets</a>*@
+                                        @Html.Raw(TempData["lnkBudgets"])
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                @*}*@
+                <li class="no-padding border-btm" runat="server" id="ReportMgr" style="display: none;">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-insert-chart"></i>Reports </a>*@
+                            @Html.Raw(TempData["ReportMgr"])
+                            <div class="collapsible-body">
+                                <ul runat="server" id="ReportMgrSub">
+                                    <li class="border-btm">
+                                        <a ID="lnkCustMgrReport" href="~/Reports.aspx?type=Customer" runat="server"><i class="mdi-image-navigate-next"></i>Customer Manager</a>
+                                    </li>
+                                    <li class="border-btm">
+                                        <a ID="lnkRecMgrReport" href="~/Reports.aspx?type=Recurring" runat="server"><i class="mdi-image-navigate-next"></i>Recurring Manager</a>
+                                    </li>
+                                    <li class="border-btm">
+                                        <a ID="lnkSchdMgrReport" href="~/Reports.aspx?type=Scheduler" runat="server"><i class="mdi-image-navigate-next"></i>Schedule Manager</a>
+                                    </li>
+                                    <li class="border-btm">
+                                        <a ID="lnkBlngMgrReport" href="~/Reports.aspx?type=Billing" runat="server"><i class="mdi-image-navigate-next"></i>Billing Manager</a>
+                                    </li>
+                                    <li class="border-btm">
+                                        <a ID="lnkSalesMgrReport" href="~/Reports.aspx?type=Sales" runat="server"><i class="mdi-image-navigate-next"></i>Sales Manager</a>
+                                    </li>
+                                    <li class="border-btm">
+                                        <a ID="lnkPrjMgrReport" href="~/Reports.aspx?type=Project" runat="server"><i class="mdi-image-navigate-next"></i>Project Manager</a>
+                                    </li>
+                                    <li class="border-btm">
+                                        <a ID="lnkFnclMgrReport" href="~/Reports.aspx?type=Financial" runat="server"><i class="mdi-image-navigate-next"></i>Financial Manager</a>
+                                    </li>
+                                    <li class="border-btm">
+                                        <a ID="lnkPrgmMgrReport" href="~/Reports.aspx?type=Program" runat="server"><i class="mdi-image-navigate-next"></i>Program Manager</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="no-padding border-btm">
+                    <ul class="collapsible collapsible-accordion">
+                        <li class="bold">
+                            @*<a runat="server" ID="progMgr" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-extension"></i>Programs </a>*@
+                            @Html.Raw(TempData["progMgr"])
+                            <div runat="server" id="progMgrSub" class="collapsible-body">
+                                <ul>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkUsersSMenu" href="~/Users.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Users</a>*@
+                                        @Html.Raw(TempData["lnkUsersSMenu"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkSetup" href="~/setup.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Setup</a>*@
+                                        @Html.Raw(TempData["lnkSetup"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkCntrlPnl" href="~/controlpanel.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Control Panel</a>*@
+                                        @Html.Raw(TempData["lnkCntrlPnl"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkCustomFields" href="~/CustomFields.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Custom Labels</a>*@
+                                        @Html.Raw(TempData["lnkCustomFields"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkPeriodCloseOut" href="~/periodcloseout.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Period Close Out</a>*@
+                                        @Html.Raw(TempData["lnkPeriodCloseOut"])
+                                    </li>
+                                    <li class="border-btm">
+                                        @*<a ID="lnkManageCompanies" href="~/ManageCompanies.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Manage Companies</a>*@
+                                        @Html.Raw(TempData["lnkManageCompanies"])
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                @*}*@
+                <li class="st-stat" style="height: 200px !important;"></li>
+            </ul>
+            <a href="#" data-activates="slide-out" class="sidenav-button sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan"><i class="mdi-navigation-menu"></i></a>
+        </aside>
+    }
+
+    <div class="wrapper" style="padding-left:175px; width:100%;margin:0px!important;">
+        @RenderBody()
+    </div>
+
+
+
+    <aside id="right-sidebar-nav">
+        <ul id="chat-out" class="side-nav rightsidenav rightside-navigation side-nav-ht">
+            <li class="li-hover">
+                <a href="#" data-activates="chat-out" class="chat-close-collapse right"><i class="mdi-navigation-close"></i></a>
+                <div id="right-search" class="row">
+                    <div class="userinfo">
+                        <div class="userinfoimg">
+                            @*<img src="Design/images/avatar.jpg" />*@
+                            <img runat="server" id="imgProfileImageLg" src=@TempData["imgProfileImageLg"].ToString() />
+                        </div>
+                        <div class="usernamewrp">
+                            @*<asp:Label ID="lblUser" runat="server"></asp:Label>*@
+                            <span>@TempData["lblUser"].ToString() </span>
+                        </div>
+                        <div class="usernamewrpdept">
+                            <asp:Label ID="lblSuper" class="small-text" runat="server" Visible="false">Mode : Supervisor</asp:Label>
+                        </div>
+                        <div class="userlstwrap">
+                            <ul class="userlst">
+                                <li><a href="../UserProfile.aspx">Profile</a></li>
+                                <li>
+                                    @*<asp:LinkButton ID="lnkLogout" OnClick="lnkLogout_Click" runat="server" CausesValidation="false">Logout</asp:LinkButton>*@
+                                    @Html.ActionLink("Logout", "Logout", "Master")
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="li-hover" style="display: none;">
+                <ul class="chat-collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header white-text active mgn-btm1"><i class="mdi-social-whatshot"></i>Recent Activity</div>
+                        <div class="collapsible-body recent-activity">
+                            <div class="recent-activity-list chat-out-list row">
+                                <div class="col s3 recent-activity-list-icon">
+                                    <i class="mdi-action-add-shopping-cart"></i>
+                                </div>
+                                <div class="col s9 recent-activity-list-text">
+                                    <a href="#">just now</a>
+                                    <p>Jim Doe Purchased new equipments for zonal office.</p>
+                                </div>
+                            </div>
+                            <div class="recent-activity-list chat-out-list row">
+                                <div class="col s3 recent-activity-list-icon">
+                                    <i class="mdi-device-airplanemode-on"></i>
+                                </div>
+                                <div class="col s9 recent-activity-list-text">
+                                    <a href="#">Yesterday</a>
+                                    <p>Your Next flight for USA will be on 15th August 2015.</p>
+                                </div>
+                            </div>
+                            <div class="recent-activity-list chat-out-list row">
+                                <div class="col s3 recent-activity-list-icon">
+                                    <i class="mdi-action-settings-voice"></i>
+                                </div>
+                                <div class="col s9 recent-activity-list-text">
+                                    <a href="#">5 Days Ago</a>
+                                    <p>Natalya Parker Send you a voice mail for next conference.</p>
+                                </div>
+                            </div>
+                            <div class="recent-activity-list chat-out-list row">
+                                <div class="col s3 recent-activity-list-icon">
+                                    <i class="mdi-action-store"></i>
+                                </div>
+                                <div class="col s9 recent-activity-list-text">
+                                    <a href="#">Last Week</a>
+                                    <p>Jessy Jay open a new store at S.G Road.</p>
+                                </div>
+                            </div>
+                            <div class="recent-activity-list chat-out-list row">
+                                <div class="col s3 recent-activity-list-icon">
+                                    <i class="mdi-action-settings-voice"></i>
+                                </div>
+                                <div class="col s9 recent-activity-list-text">
+                                    <a href="#">5 Days Ago</a>
+                                    <p>Natalya Parker Send you a voice mail for next conference.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header white-text active mgn-btm1"><i class="mdi-editor-attach-money"></i>Sales Report</div>
+                        <div class="collapsible-body sales-repoart">
+                            <div class="sales-repoart-list  chat-out-list row">
+                                <div class="col s8">Target Salse</div>
+                                <div class="col s4">
+                                    <span id="sales-line-1"></span>
+                                </div>
+                            </div>
+                            <div class="sales-repoart-list chat-out-list row">
+                                <div class="col s8">Payment Due</div>
+                                <div class="col s4">
+                                    <span id="sales-bar-1"></span>
+                                </div>
+                            </div>
+                            <div class="sales-repoart-list chat-out-list row">
+                                <div class="col s8">Total Delivery</div>
+                                <div class="col s4">
+                                    <span id="sales-line-2"></span>
+                                </div>
+                            </div>
+                            <div class="sales-repoart-list chat-out-list row">
+                                <div class="col s8">Total Progress</div>
+                                <div class="col s4">
+                                    <span id="sales-bar-2"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <telerik:RadWindowManager ID="RadWindowManagerCompnay" runat="server">
+        <Windows>
+            <telerik:RadWindow ID="RadWindowCompany" Skin="Material" VisibleTitlebar="true" Title="Select Company" Behaviors="Default" CenterIfModal="true"
+                               Animation="FlyIn" AnimationDuration="200" RenderMode="Auto" VisibleStatusbar="false" MinWidth="450" ReloadOnShow="false"
+                               runat="server" Modal="true" Width="600" NavigateUrl="Companypopup.aspx" ShowContentDuringLoad="false" Height="520">
+            </telerik:RadWindow>
+            <telerik:RadWindow ID="RadWindowChangePassword" Skin="Material" VisibleTitlebar="true" Title="Change Password" Behaviors="Default" CenterIfModal="true"
+                               Animation="FlyIn" AnimationDuration="200" RenderMode="Auto" VisibleStatusbar="false" MinWidth="450" ReloadOnShow="false"
+                               runat="server" Modal="true" Width="400" NavigateUrl="ChangePasswordpopup.aspx" ShowContentDuringLoad="false" Height="320">
+            </telerik:RadWindow>
+            <telerik:RadWindow ID="RadWindowGPS" Skin="Material" VisibleTitlebar="true" Title="GPS Settings" Behaviors="Default" CenterIfModal="true"
+                               Animation="FlyIn" AnimationDuration="200" RenderMode="Auto" VisibleStatusbar="false" MinWidth="450" ReloadOnShow="false"
+                               runat="server" Modal="true" Width="400" NavigateUrl="GPSSettingpopup.aspx" ShowContentDuringLoad="false" Height="220">
+            </telerik:RadWindow>
+        </Windows>
+    </telerik:RadWindowManager>
+
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)*@ 
+
+    <script type="text/javascript" src="~/Content/JSMVC/jquery.mCustomScrollbar.js"></script>
+    <script type="text/javascript" src="~/Content/JSMVC/materialize.js"></script>
+    <script type="text/javascript" src="~/Content/JSMVC/prism.js"></script>
+    <script type="text/javascript" src="~/Content/JSMVC/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="~/Content/JSMVC/plugins.js"></script>
+     
+     
+</body>
+</html>

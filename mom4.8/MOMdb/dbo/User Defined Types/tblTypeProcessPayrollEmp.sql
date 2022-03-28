@@ -1,0 +1,35 @@
+﻿CREATE TYPE [dbo].[tblTypeProcessPayrollEmp] AS TABLE(
+	[ID] [int] NULL,
+	[Name] [varchar](max) NULL,
+	[Reg] [numeric](30, 4) NULL,
+	[OT] [numeric](30, 4) NULL,
+	[DT] [numeric](30, 4) NULL,
+	[TT] [numeric](30, 4) NULL,
+	[NT] [numeric](30, 4) NULL,
+	[Zone] [numeric](30, 4) NULL,
+	[Milage] [numeric](30, 4) NULL,
+	[Toll] [numeric](30, 4) NULL,
+	[OtherE] [numeric](30, 4) NULL,
+	[pay] [numeric](30, 4) NULL,
+	[holiday] [numeric](30, 4) NULL,
+	[vacation] [numeric](30, 4) NULL,
+	[sicktime] [numeric](30, 4) NULL,
+	[reimb] [numeric](30, 4) NULL,
+	[bonus] [numeric](30, 4) NULL,
+	[paymethod] [varchar](max) NULL,
+	[pmethod] [int] NULL,
+	[userid] [int] NULL,
+	[usertype] [varchar](max) NULL,
+	[total] [numeric](30, 4) NULL,
+	[phour] [numeric](30, 4) NULL,
+	[salary] [numeric](30, 4) NULL,
+	[HourlyRate] [numeric](30, 4) NULL,
+	[FIT] [numeric](30, 4) NULL,
+	[SIT] [numeric](30, 4) NULL,
+	[LOCAL] [numeric](30, 4) NULL,
+	[MEDI] [numeric](30, 4) NULL,
+	[FICA] [numeric](30, 4) NULL
+)
+GO
+
+

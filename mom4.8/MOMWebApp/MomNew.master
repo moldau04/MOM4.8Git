@@ -1,0 +1,1330 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" Inherits="MomNew" Codebehind="MomNew.master.cs" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>MOM v5.0</title>
+
+    <link rel="icon" href="Design/images/favicon.png" sizes="32x32">
+    <link href="Design/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="Design/css/style.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <%--<link href="Design/css/custom/custom.css" type="text/css" rel="stylesheet" media="screen,projection">--%>
+    <link href="Design/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="Design/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="Design/css/pikaday.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/827cb0cf39.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&key=AIzaSyCndNAw_XYuJaz2SLtNd40zaVw8e2S8N2Q"></script>
+
+
+    <script src="Design/js/UI/jquery-ui.js"></script>
+    <script src="Design/js/materialize-plugins/forms.js"></script>
+    <script src="Design/js/Notifyjs/jquery.noty.js"></script>
+    <script src="Design/js/Notifyjs/themes/default.js"></script>
+    <script src="Design/js/Notifyjs/layouts/topCenter.js"></script>
+    <link href="Design/css/grid.css" rel="stylesheet" />
+
+    <script src="DashboardNew/js/bootstrap/bootstrap.bundle.js"></script>
+    <%--<link href="css/bootstrap.css" rel="stylesheet" />--%>
+    <script src="js/date.format.js"></script>
+    <script src="js/tether.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-notify.js"></script>
+    <script src="js/datediff.js"></script>
+
+
+    <%--suraj--%>
+    <link href="DashboardNew/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="DashboardNew/css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="DashboardNew/css/custom.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="DashboardNew/jvectormap/jquery-jvectormap.css" rel="stylesheet" />
+    <link href="DashboardNew/assets/owl.carousel.min.css" rel="stylesheet" />
+    <link href="DashboardNew/assets/owl.theme.default.min.css" rel="stylesheet" />
+    <script src="DashboardNew/js/jquery.min.js"></script>
+    <%--suraj end--%>
+
+
+
+    <script>
+
+        $(document).ready(function () {
+            $('[id*=chkboxSelectAll]').click(function () {
+                //debugger;
+                $("[id*='chkSelect']").attr('checked', this.checked);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        //$(document).ready(function () {
+        //    function executeQuery() {
+        //        $.ajax({
+        //            url: 'CustomerAuto.asmx/GetRequestForServiceCall',
+        //            type: 'post',
+        //            cache: false,
+        //            dataType: 'text',
+        //            contentType: "application/json",
+        //            data: "",
+        //            success: function (data) {
+        //                var obj = jQuery.parseJSON(data);
+        //                //console.log(obj.d); 
+        //                if (parseInt(obj.d) == 0) {
+        //                    $('#aresults').hide();
+        //                }
+        //                else {
+        //                    $('#aresults').show();
+        //                    $('#results').text(obj.d);
+        //                }
+        //            },
+        //            error: function (xhr, status) {
+
+        //            }
+        //        });
+        //        setTimeout(executeQuery, 5000); // you could choose not to continue on failure...
+        //    }
+
+        //    $(document).ready(function () {
+        //        // run the first time; all subsequent calls will take care of themselves
+        //        executeQuery();
+        //    });
+        //});
+    </script>
+    <script src="Design/js/jquery.mCustomScrollbar.js"></script>
+    <script type="text/javascript">
+        (function ($) {
+            $(window).load(function () {
+                $(".content").mCustomScrollbar({
+                    theme: "minimal"
+                });
+            });
+        })(jQuery);
+        function disableButton(btn, validgrp) {
+            //if (Page_IsValid) {
+            if (Page_ClientValidate(validgrp)) {
+                document.getElementById(btn.id).disabled = true;
+                $('#MOMloading').show();
+            }
+        }
+
+    </script>
+    <style>
+        .RadWindow_Material .rwTitleBar {
+            border-top-left-radius: 6px !important;
+            border-top-right-radius: 6px !important;
+            background-color: #1c5fb1 !important;
+            height: 40px !important;
+        }
+
+        .RadWindow RadWindow_Material {
+            height: auto !important;
+        }
+
+        .todo_notify {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+            background-color: #ffffff;
+            width: 500px;
+            opacity: 0.9;
+            font-size: 12px;
+            padding-right: 25px;
+            padding-left: 50px;
+            -webkit-box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+            -moz-box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+            box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+        }
+
+            .todo_notify > button.close {
+                padding: 0;
+                cursor: pointer;
+                background: transparent;
+                border: 0;
+                -webkit-appearance: none;
+                float: right;
+                font-size: 1.5rem;
+                font-weight: bold;
+                line-height: 1;
+                color: #000;
+                text-shadow: 0 1px 0 #fff;
+                opacity: .5;
+            }
+
+            .todo_notify > span[data-notify="title"] {
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .todo_notify > .notifyIcon {
+                display: inline-block;
+                background-image: url(images/application_view_list.ico);
+                width: 32px;
+                height: 32px;
+                position: absolute;
+                top: 15px;
+                left: 10px
+            }
+
+        #MOMloading {
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            position: fixed;
+            display: none;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #MOMloading-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 100;
+        }
+
+        ul.side-nav.leftside-navigation {
+	top: 60px !important;
+}
+    </style>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body>
+    <form id="form1" runat="server" autocomplete="off">
+        <div id="MOMloading">
+            <img id="MOMloading-image" src="images/1loader_wheel.gif" alt="Loading..." />
+        </div>
+        <asp:HiddenField ID="hdnItemJSON" runat="server" />
+        <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" ScriptMode="Release"
+            AsyncPostBackTimeout="360000">
+        </asp:ToolkitScriptManager>
+        <header id="header" class="page-topbar">
+            <div class="navbar-fixed" id="divHeader" runat="server">
+
+                <nav class="navbar-color" style="height: 60px !important; line-height: 60px !important;">
+                    <div class="nav-wrapper">
+                        <%--<ul class="left">
+                            
+                            <li>
+                                <h1 class="logo-wrapper"><a href="Home.aspx" class="brand-logo darken-1">
+                                    <img src="Design/images/mom-logo.png" alt="MOM logo"></a> <span class="logo-text"></span></h1>
+                            </li>
+                        </ul>--%>
+
+
+                        <h1 class="logo-wrapper"><a href="Home.aspx" class="brand-logo darken-1">
+                        <img src="Design/images/mom-logo.png" alt="MOM logo"></a> <span class="logo-text"></span></h1>
+                        <ul id="sortable" style="margin-left: 250px;">
+                            
+                            <li class="hide-on-med-and-down">
+                                <a href="#"><span style="line-height: 50px; font-size: 15px;">Sales</span></a>
+                            </li>
+                            <!-- <li class="hide-on-med-and-down">
+                                <a href="#"><span style="line-height: 50px;     font-size: 15px;">Operations</span></a>
+                            </li>
+                            <li class="hide-on-med-and-down">
+                                <a href="#"><span style="line-height: 50px;     font-size: 15px;">Finance</span></a>
+                            </li> -->
+                        </ul>
+                        
+                        <div class="right hide-on-med-and-up show-on-medium" role="button" id="dropdownMenuLink12" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="Large mdi-action-dashboard" style="font-size: xx-large; margin: auto 10px;"></i>
+                            <!-- <img src="Design/images/avatar.jpg" style="height: 30px; width: 30px; margin: 10px;"/> -->
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink12">
+                            <li class="dropdown-item">
+                                <a href="#"><span style="font-size: 19px; color: black;">Sales</span></a>
+                            </li>
+                            <!-- <li class="dropdown-item">
+                                <a href="#"><span style="font-size: 19px; color: black;">Marketing</span></a>
+                            </li> -->
+                        </ul>
+
+
+
+                        <ul class="right hide-on-med-and-down">
+                            <%--Suraj--%>
+                            <li>
+                            <%--<form>--%>
+                                <div class="input-group searchbar" style="width: 155px; margin:9px 5px;">
+                                    <input type="text" class="form-control search-bar sm-height" aria-label="Text input with dropdown button " style="border: 1px solid white; background: white; padding: 0px 10px; margin: 5px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; font-size: 12px;" placeholder="Search...">
+                                    <div style="display: flex;">
+                                        <button class="btn btn-outline-secondary search-bar-btn sm-height" type="button" style="border: 1px solid white; margin: 5px 0px 5px -8px; background: white;     border-top-right-radius: 20px; border-bottom-right-radius: 20px; border: 1px solid white;"><i class="Small mdi-action-search" style="line-height: 20px; font-weight: bold; color: #272c32 !important;"></i></button>
+                                    </div>
+                                </div>
+                            <%--</form>--%>
+                            </li>
+                            <%--Suraj end--%>
+                            <li>
+                                <div class="qb-wrp">
+                                    <div id="divBreadCrumbWithQB" runat="server">
+                                        <div runat="server" id="divQBContents">
+                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                                <ContentTemplate>
+                                                    <asp:LinkButton Style="float: left !important;" ID="lnkLastsync" CausesValidation="false" runat="server" OnClick="lnkQBLastSync_Click"></asp:LinkButton>
+                                                    <asp:Label ID="lblQblastSync" runat="server"></asp:Label>
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect waves-block waves-light toggle-fullscreen" style="margin: 5px 3px;"><i class="mdi-action-settings-overscan"></i></a>
+                            </li>
+                            <%-- <li>
+                                <a href="javascript:void(0);" class="waves-effect waves-block waves-light notification-button" data-activates="notifications-dropdown">
+                                    <i class="mdi-social-notifications"><small class="notification-badge">5</small></i>
+
+                                </a>
+                            </li>--%>
+                            <li>
+                                <asp:Panel ID="todoNotify" runat="server">
+                                    <a href="#" onclick="bell_alert(); return false;" class="waves-effect waves-block waves-light notification-button" >
+                                        <i class="mdi-social-notifications">
+                                            <small class="notification-badge">
+                                                <asp:Label ID="lblTodoNumber" runat="server"></asp:Label>
+                                            </small>
+                                        </i>
+                                    </a>
+                                </asp:Panel>
+                            </li>
+                            <li>
+                                <a href="#" data-activates="chat-out" class="waves-effect waves-block waves-light chat-collapse" style="margin: -10px 0px 0px 0px;">
+                                    <div class="userinfoimg-btn" style="height: 63px !important;">
+                                        <img runat="server" id="imgProfileImage" />
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul id="notifications" class="dropdown-content" runat="server">
+                            <li>
+                                <h5>NOTIFICATIONS <span class="new badge">5</span></h5>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#!"><i class="mdi-action-add-shopping-cart"></i>A new order has been placed!</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">2 hours ago</time>
+                            </li>
+                            <li>
+                                <a href="#!"><i class="mdi-action-stars"></i>Completed the task</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">3 days ago</time>
+                            </li>
+                            <li>
+                                <a href="#!"><i class="mdi-action-settings"></i>Settings updated</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">4 days ago</time>
+                            </li>
+                            <li>
+                                <a href="#!"><i class="mdi-editor-insert-invitation"></i>Director meeting started</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">6 days ago</time>
+                            </li>
+                            <li>
+                                <a href="#!"><i class="mdi-action-trending-up"></i>Generate monthly report</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">1 week ago</time>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <div id="main">
+            <div class="wrapper">
+
+
+
+
+                <div id="modal2" class="modal" style="display: none;">
+                    <div class="modal-content company-modal">
+                        <div class="section-ttle-popupheading">Select Office</div>
+                        <div class="modal-content-placeholder">
+
+                            <div class="sl-cmp">
+                                <span class="sl-cmp-spn1">
+                                    <input type="checkbox" name="check1" value="company1"></span><span class="sl-cmp-spn2">Office 1</span>
+                            </div>
+                            <div class="sl-cmp">
+                                <span class="sl-cmp-spn1">
+                                    <input type="checkbox" name="check1" value="company1"></span><span class="sl-cmp-spn2">Office 2</span>
+                            </div>
+                            <div class="sl-cmp">
+                                <span class="sl-cmp-spn1">
+                                    <input type="checkbox" name="check1" value="company1"></span><span class="sl-cmp-spn2">Office 3</span>
+                            </div>
+                            <div class="sl-cmp">
+                                <span class="sl-cmp-spn1">
+                                    <input type="checkbox" name="check1" value="company1"></span><span class="sl-cmp-spn2">Office 5</span>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default modal-btn-sbmt" data-dismiss="modal">SAVE</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer btnwrap-right">
+                        <button class="clk-btn">
+                            Save
+                        </button>
+
+                    </div>
+                </div>
+
+
+
+                <aside id="menu" runat="server">
+                    <ul id="slide-out" class="side-nav fixed leftside-navigation" style="width: 170px;">
+                        <li class="user-details cyan darken-2" style="display: none;">
+                            <div class="row">
+                                <div class="col col s4 m4 l4 profile-img">
+                                    <img src="Design/images/avatar.jpg" alt="" class="circle responsive-img valign profile-image">
+                                </div>
+                                <div class="col col s8 m8 l8">
+                                    <ul id="profile-dropdown" class="dropdown-content">
+                                        <li class="prof">
+                                            <a href="UserProfile.aspx"><i class="mdi-action-face-unlock proficon"></i>Profile</a>
+                                        </li>
+                                        <li class="prof">
+                                            <a href="#"><i class="mdi-action-settings proficon"></i>Settings</a>
+                                        </li>
+                                        <li class="prof">
+                                            <a href="#"><i class="mdi-communication-live-help proficon"></i>Help</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="prof">
+                                            <a href="#"><i class="mdi-action-lock-outline proficon"></i>Lock</a>
+                                        </li>
+                                        <li class="prof"></li>
+                                    </ul>
+                                    <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">
+                                        <i class="mdi-navigation-arrow-drop-down right font-color-white" style="color: #fff !important"></i></a>
+                                    <p class="user-roal">
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a class=" waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-assessment no-collapse"></i>
+                                        <asp:Label runat="server" ID="lblCompany"></asp:Label></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm" id="liSelectCompany" runat="server">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a class=" waves-effect waves-cyan collapsible-height-nl modal-trigger" href="javascript:OpenRadWindow();"><i class="mdi-communication-business no-collapse"></i>
+                                        <asp:Label ID="lblSelectCompany" runat="server"></asp:Label><asp:Label ID="lblSelectCompanyCount" runat="server"></asp:Label></a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink ID="linkDashboarDefault" CssClass="waves-effect waves-cyan collapsible-height-nl" NavigateUrl="~/Home.aspx" runat="server"><i class="mdi-action-dashboard no-collapse"></i>Dashboard</asp:HyperLink>
+                                    <asp:HyperLink runat="server" ID="linkDashboardMenu" Visible="false" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-dashboard no-collapse"></i>Dashboard </asp:HyperLink>
+                                    <asp:ListView ID="listDashboardMenu" runat="server" Visible="false">
+                                        <LayoutTemplate>
+                                            <div runat="server" id="Div1" class="collapsible-body">
+                                                <ul>
+                                                    <asp:PlaceHolder ID="itemPlaceholder" runat="server" />
+                                                </ul>
+                                            </div>
+                                        </LayoutTemplate>
+                                        <ItemTemplate>
+                                            <li id="Li2" runat="server" class="border-btm">
+                                                <asp:HyperLink ID="HyperLink2" NavigateUrl='<%# String.Format("~/Home.aspx?id={0}", Eval("ID"))%>' runat="server"><i class="mdi-image-navigate-next"></i><%#Eval("Name")%></asp:HyperLink>
+                                            </li>
+                                        </ItemTemplate>
+                                    </asp:ListView>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="no-padding border-btm" id="liChangePassword" runat="server">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a class=" waves-effect waves-cyan collapsible-height-nl modal-trigger" href="javascript:OpenRadChangePasswordWindow();"><i class="mdi-communication-vpn-key no-collapse"></i>
+                                        <asp:Label ID="Label1" runat="server"></asp:Label><asp:Label ID="Label2" runat="server" Text="Change Password"></asp:Label></a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li class="no-padding border-btm" id="liGPSSetting" runat="server">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a class=" waves-effect waves-cyan collapsible-height-nl modal-trigger" href="javascript:OpenRadGPSWindow();"><i class="mdi-maps-my-location no-collapse"></i>
+                                        <asp:Label ID="Label3" runat="server"></asp:Label><asp:Label ID="Label4" runat="server" Text="GPS Settings"></asp:Label></a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li class="no-padding border-btm" id="liSelectOffice" visible="false" runat="server">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a class="waves-effect waves-cyan collapsible-height-nl" href="#modal2"><i class="mdi-action-assessment no-collapse"></i>
+                                        <asp:Label runat="server" ID="lblSelectOffice">Select Office</asp:Label>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="cstmMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-social-people"></i>Customers </asp:HyperLink>
+                                    <div runat="server" id="cstmMgrSub" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li id="navCustomer" runat="server" class="border-btm">
+                                                <asp:HyperLink ID="lnkCustomersSmenu" NavigateUrl="~/Customers.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Customers</asp:HyperLink></li>
+                                            <li id="navLocation" runat="server" class="border-btm">
+                                                <asp:HyperLink ID="lnkLocationsSMenu" NavigateUrl="~/locations.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Locations</asp:HyperLink></li>
+                                            <li id="navEquipment" runat="server" class="border-btm">
+                                                <asp:HyperLink ID="lnkEquipmentsSMenu" NavigateUrl="~/Equipments.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Equipment</asp:HyperLink></li>
+                                            <li id="navReceivePayment" runat="server" class="border-btm">
+                                                <asp:HyperLink ID="lnkReceivePayment" NavigateUrl="~/receivepayment.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Receive Payment</asp:HyperLink></li>
+                                            <li id="navMakeDeposit" runat="server" class="border-btm">
+                                                <asp:HyperLink ID="lnkDeposit" NavigateUrl="~/managedeposit.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Make Deposit</asp:HyperLink>
+                                            </li>
+                                            <li id="navCollections" runat="server" class="border-btm">
+                                                <asp:HyperLink ID="lnkCollections" NavigateUrl="~/iCollections.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Collections</asp:HyperLink></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="cntractsMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-notification-sync"></i>Recurring </asp:HyperLink>
+                                    <div id="recurMgrSub" runat="server" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li id="navRecurringContracts" runat="server" class="border-btm">
+                                                <asp:HyperLink ID="lnkContractsMenu" NavigateUrl="~/RecContracts.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Recurring Contracts</asp:HyperLink></li>
+
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkInvoicesMenu" NavigateUrl="~/recurringinvoices.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Recurring Invoices</asp:HyperLink></li>
+
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkTicketsMenu" NavigateUrl="~/RecurringTickets.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Recurring Tickets</asp:HyperLink></li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnk" NavigateUrl="~/SafetyTest.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Safety Tests</asp:HyperLink>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="schMgr" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-insert-invitation"></i>Schedule </asp:HyperLink>
+                                    <div class="collapsible-body" runat="server" id="schdMgrSub">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkScheduleMenu" NavigateUrl="~/WebFormScheduler.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Schedule Board</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkListView" NavigateUrl="~/TicketListView.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Ticket List</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="HyperLink1" NavigateUrl="~/ManualTimeCard.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Timesheet Entry</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkTimesheet" NavigateUrl="~/etimesheet.aspx" runat="server"><i class="mdi-image-navigate-next"></i>e-Timesheet</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkMapMenu" NavigateUrl="~/Map.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Map</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkRouteBuilder" NavigateUrl="~/RouteBuilder.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Route Builder</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm" style="display: none;">
+                                                <asp:HyperLink ID="lnkRoutes" NavigateUrl="~/Routes.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Routes</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="acctMgr" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-payment"></i>Billing </asp:HyperLink>
+                                    <div runat="server" id="billMgrSub" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkInvoicesSMenu" NavigateUrl="~/invoices.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Invoices</asp:HyperLink>
+                                            </li>
+
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkBillcodeSMenu" NavigateUrl="~/billingcodes.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Billing Codes</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkPaymentHistory" NavigateUrl="~/paymenthistory.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Online Payment</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink Visible="false" ID="lnkPartsSMenu" NavigateUrl="~/parts.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Parts</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="acctPayable" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-account-balance"></i>AP</asp:HyperLink>
+                                    <div runat="server" id="acctPayableSub" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkVendors" NavigateUrl="~/vendors.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Vendors</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkAddBill" NavigateUrl="~/managebills.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Bills</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkWriteCheck2" NavigateUrl="~/managechecks.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Manage Checks</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="purchaseMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-work"></i>Purchasing </asp:HyperLink>
+                                    <div class="collapsible-body" runat="server" id="purchaseMgrSub">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkPO" NavigateUrl="~/managepo.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Purchase Orders</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm" runat="server" id="liReceivePO">
+                                                <asp:HyperLink ID="lnkReceivePO" NavigateUrl="~/managereceivepo.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Receive PO</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="SalesMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-wallet-travel"></i>Sales </asp:HyperLink>
+                                    <div runat="server" id="SalesMgrSub" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkProspect" NavigateUrl="~/prospects.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Leads</asp:HyperLink>
+                                            </li>
+
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkTasks" NavigateUrl="~/tasks.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Tasks</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkOpportunities" NavigateUrl="~/opportunity.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Opportunities</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkEstimate" NavigateUrl="~/estimate.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Estimate</asp:HyperLink>
+                                            </li>
+
+                                            <%--  <li class="border-btm">
+                                                <asp:HyperLink ID="lnkCRM" NavigateUrl="~/salesdashboard.aspx" runat="server"><i class="mdi-image-navigate-next"></i>CRM Dashboard</asp:HyperLink>
+                                            </li>--%>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkEstimateTempl" NavigateUrl="~/estimatetemplate.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Templates</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkSalesSetup" NavigateUrl="~/salessetup.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Sales Setup</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink ID="ProjectMgr" runat="server" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-assignment"></i>Projects </asp:HyperLink>
+                                    <div runat="server" id="ProjectMgrSub" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkProject" NavigateUrl="~/project.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Projects</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkDepartments" NavigateUrl="~/setup.aspx?tab=1" runat="server"><i class="mdi-image-navigate-next"></i>Departments</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkProjectTempl" NavigateUrl="~/projecttemplate.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Project Templates</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="InventoryMgr" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-format-align-justify"></i>Inventory </asp:HyperLink>
+                                    <div runat="server" id="ulInventoryMgr" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkItemMaster" NavigateUrl="~/Inventory.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Item Master</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkAdjustment" NavigateUrl="~/InventoryAdjustments.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Item Adjustment</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkPostToProject" NavigateUrl="~/PostToProject.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Post To Project</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <%--payroll menu--%>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="prID" Visible="false" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-format-align-justify"></i>Payroll </asp:HyperLink>
+                                    <div runat="server" id="payrollmenutab" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="HyperLink4" NavigateUrl="~/etimesheet.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Run Payroll(eTimesheet)</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="HyperLink5" NavigateUrl="~/etimesheet.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Employees</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="HyperLink6" NavigateUrl="~/etimesheet.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Payroll Checks</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="HyperLink7" NavigateUrl="~/etimesheet.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Payroll Forms</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="wagedeductionslink" NavigateUrl="~/UsersTest.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Wages/Deductions</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="financeMgr" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-attach-money"></i>Financials </asp:HyperLink>
+                                    <div runat="server" id="financeMgrSub" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkCOA" NavigateUrl="~/chartofaccount.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Chart of Accounts</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkJournalEntry" NavigateUrl="~/journalentry.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Journal Entry</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkWriteCheck" NavigateUrl="~/managechecks.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Manage Checks</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkBankRecon" NavigateUrl="~/bankrecon.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Bank Reconciliation</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="financialStatement" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-attach-money"></i>Statements</asp:HyperLink>
+                                    <div class="collapsible-body" runat="server" id="financeStateSub">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkTrialBalance" NavigateUrl="~/trialbalance.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Trial Balance </asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkIncomeStatement" NavigateUrl="~/incomestatement.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Profit and Loss</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkComparativeStatement" NavigateUrl="~/ComparativeStatement.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Comparative Report</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkBalanceSheet" NavigateUrl="~/balancesheet.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Balance Sheet</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkBudgets" NavigateUrl="~/Budgets.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Budgets</asp:HyperLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm" runat="server" id="ReportMgr" style="display: none;">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-insert-chart"></i>Reports </a>
+                                    <div class="collapsible-body">
+                                        <ul runat="server" id="ReportMgrSub" class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkCustMgrReport" NavigateUrl="~/Reports.aspx?type=Customer" runat="server"><i class="mdi-image-navigate-next"></i>Customer Manager</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkRecMgrReport" NavigateUrl="~/Reports.aspx?type=Recurring" runat="server"><i class="mdi-image-navigate-next"></i>Recurring Manager</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkSchdMgrReport" NavigateUrl="~/Reports.aspx?type=Scheduler" runat="server"><i class="mdi-image-navigate-next"></i>Schedule Manager</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkBlngMgrReport" NavigateUrl="~/Reports.aspx?type=Billing" runat="server"><i class="mdi-image-navigate-next"></i>Billing Manager</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkSalesMgrReport" NavigateUrl="~/Reports.aspx?type=Sales" runat="server"><i class="mdi-image-navigate-next"></i>Sales Manager</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkPrjMgrReport" NavigateUrl="~/Reports.aspx?type=Project" runat="server"><i class="mdi-image-navigate-next"></i>Project Manager</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkFnclMgrReport" NavigateUrl="~/Reports.aspx?type=Financial" runat="server"><i class="mdi-image-navigate-next"></i>Financial Manager</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkPrgmMgrReport" NavigateUrl="~/Reports.aspx?type=Program" runat="server"><i class="mdi-image-navigate-next"></i>Program Manager</asp:HyperLink>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <asp:HyperLink runat="server" ID="progMgr" CssClass="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-extension"></i>Programs </asp:HyperLink>
+                                    <div runat="server" id="progMgrSub" class="collapsible-body">
+                                        <ul class="left-sidebar-dropdowns">
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkUsersSMenu" NavigateUrl="~/Users.aspx?f=c" runat="server"><i class="mdi-image-navigate-next"></i>Users</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkSetup" NavigateUrl="~/setup.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Setup</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkCntrlPnl" NavigateUrl="~/controlpanel.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Control Panel</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkCustomFields" NavigateUrl="~/CustomFields.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Custom Labels</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkPeriodCloseOut" NavigateUrl="~/periodcloseout.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Period Close Out</asp:HyperLink>
+                                            </li>
+                                            <li class="border-btm">
+                                                <asp:HyperLink ID="lnkManageCompanies" NavigateUrl="~/ManageCompanies.aspx" runat="server"><i class="mdi-image-navigate-next"></i>Manage Companies</asp:HyperLink>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="st-stat" style="height: 200px !important;"></li>
+                    </ul>
+                    <a href="#" data-activates="slide-out" class="sidenav-button sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan"><i class="mdi-navigation-menu"></i></a>
+                </aside>
+                <section class="container-main bck_clr">
+                    <div class="image-media">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+
+                    </asp:ContentPlaceHolder>
+                    
+
+                    <%-- <div id="includedContent" class="image-media"></div>--%>
+                
+                 <div class="box">
+                    <div style="margin-top: 30%;">
+                        <div style="padding: 20px;">
+                            <span style="font-size: smaller; color: white; font-weight: bold;">Tasks</span>
+                            <ul class="list-group list-group-flush">
+                                
+                                <li class="list-group-item arrow-sidebar-text"><img src="DashboardNew/images/dot.png" style="height: 10px; width: 10px; margin-right: 5px;" />Task 1
+
+                                    <div class="custom-control custom-switch" style="float: right; margin-right: -15px;">
+                                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                        <label class="custom-control-label" for="customSwitch1"></label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item arrow-sidebar-text"><img src="DashboardNew/images/dot.png" style="height: 10px; width: 10px; margin-right: 5px;" />Task 2
+                                    <div class="custom-control custom-switch" style="float: right; margin-right: -15px;">
+                                        <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                                        <label class="custom-control-label" for="customSwitch2"></label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item arrow-sidebar-text"><img src="DashboardNew/images/dot.png" style="height: 10px; width: 10px; margin-right: 5px;" />Task 3
+                                <div class="custom-control custom-switch" style="float: right; margin-right: -15px;">
+                                        <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                                        <label class="custom-control-label" for="customSwitch3"></label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item arrow-sidebar-text"><img src="DashboardNew/images/dot.png" style="height: 10px; width: 10px; margin-right: 5px;" />Task 4
+                                <div class="custom-control custom-switch" style="float: right; margin-right: -15px;">
+                                        <input type="checkbox" class="custom-control-input" id="customSwitch4" checked>
+                                        <label class="custom-control-label" for="customSwitch4"></label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item arrow-sidebar-text"><img src="DashboardNew/images/dot.png" style="height: 10px; width: 10px; margin-right: 5px;" />Task 5
+                                    <div class="custom-control custom-switch" style="float: right; margin-right: -15px;">
+                                        <input type="checkbox" class="custom-control-input" id="customSwitch5" checked>
+                                        <label class="custom-control-label" for="customSwitch5"></label>
+                                    </div>
+                                </li>
+                          </ul>
+                        </div>
+                    </div>
+                    <!-- <i class="fa fa-arrow-left icon" aria-hidden="true" ></i> -->
+                     <i class="Small mdi-navigation-arrow-back icon"></i>
+                </div>
+                        </div>
+                </section>
+
+
+                <aside id="right-sidebar-nav">
+                    <ul id="chat-out" class="side-nav rightsidenav rightside-navigation side-nav-ht">
+                        <li class="li-hover">
+                            <a href="#" data-activates="chat-out" class="chat-close-collapse right"><i class="mdi-navigation-close"></i></a>
+                            <div id="right-search" class="row">
+                                <div class="userinfo">
+                                    <div class="userinfoimg">
+                                        <%--<img src="Design/images/avatar.jpg" />--%>
+                                        <img runat="server" id="imgProfileImageLg" />
+                                    </div>
+                                    <div class="usernamewrp">
+                                        <asp:Label ID="lblUser" runat="server"></asp:Label>
+                                    </div>
+                                    <div class="usernamewrpdept">
+                                        <asp:Label ID="lblSuper" class="small-text" runat="server" Visible="false">Mode : Supervisor</asp:Label>
+                                    </div>
+                                    <div class="userlstwrap">
+                                        <ul class="userlst">
+                                            <li><a href="UserProfile.aspx">Profile</a></li>
+                                            <li>
+                                                <asp:LinkButton ID="lnkLogout" OnClick="lnkLogout_Click" runat="server" CausesValidation="false">Logout</asp:LinkButton></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="li-hover" style="display: none;">
+                            <ul class="chat-collapsible" data-collapsible="expandable">
+                                <li>
+                                    <div class="collapsible-header white-text active mgn-btm1"><i class="mdi-social-whatshot"></i>Recent Activity</div>
+                                    <div class="collapsible-body recent-activity">
+                                        <div class="recent-activity-list chat-out-list row">
+                                            <div class="col s3 recent-activity-list-icon">
+                                                <i class="mdi-action-add-shopping-cart"></i>
+                                            </div>
+                                            <div class="col s9 recent-activity-list-text">
+                                                <a href="#">just now</a>
+                                                <p>Jim Doe Purchased new equipments for zonal office.</p>
+                                            </div>
+                                        </div>
+                                        <div class="recent-activity-list chat-out-list row">
+                                            <div class="col s3 recent-activity-list-icon">
+                                                <i class="mdi-device-airplanemode-on"></i>
+                                            </div>
+                                            <div class="col s9 recent-activity-list-text">
+                                                <a href="#">Yesterday</a>
+                                                <p>Your Next flight for USA will be on 15th August 2015.</p>
+                                            </div>
+                                        </div>
+                                        <div class="recent-activity-list chat-out-list row">
+                                            <div class="col s3 recent-activity-list-icon">
+                                                <i class="mdi-action-settings-voice"></i>
+                                            </div>
+                                            <div class="col s9 recent-activity-list-text">
+                                                <a href="#">5 Days Ago</a>
+                                                <p>Natalya Parker Send you a voice mail for next conference.</p>
+                                            </div>
+                                        </div>
+                                        <div class="recent-activity-list chat-out-list row">
+                                            <div class="col s3 recent-activity-list-icon">
+                                                <i class="mdi-action-store"></i>
+                                            </div>
+                                            <div class="col s9 recent-activity-list-text">
+                                                <a href="#">Last Week</a>
+                                                <p>Jessy Jay open a new store at S.G Road.</p>
+                                            </div>
+                                        </div>
+                                        <div class="recent-activity-list chat-out-list row">
+                                            <div class="col s3 recent-activity-list-icon">
+                                                <i class="mdi-action-settings-voice"></i>
+                                            </div>
+                                            <div class="col s9 recent-activity-list-text">
+                                                <a href="#">5 Days Ago</a>
+                                                <p>Natalya Parker Send you a voice mail for next conference.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="collapsible-header white-text active mgn-btm1"><i class="mdi-editor-attach-money"></i>Sales Report</div>
+                                    <div class="collapsible-body sales-repoart">
+                                        <div class="sales-repoart-list  chat-out-list row">
+                                            <div class="col s8">Target Salse</div>
+                                            <div class="col s4">
+                                                <span id="sales-line-1"></span>
+                                            </div>
+                                        </div>
+                                        <div class="sales-repoart-list chat-out-list row">
+                                            <div class="col s8">Payment Due</div>
+                                            <div class="col s4">
+                                                <span id="sales-bar-1"></span>
+                                            </div>
+                                        </div>
+                                        <div class="sales-repoart-list chat-out-list row">
+                                            <div class="col s8">Total Delivery</div>
+                                            <div class="col s4">
+                                                <span id="sales-line-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="sales-repoart-list chat-out-list row">
+                                            <div class="col s8">Total Progress</div>
+                                            <div class="col s4">
+                                                <span id="sales-bar-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </div>
+
+        <telerik:RadWindowManager ID="RadWindowManagerCompnay" runat="server">
+            <Windows>
+                <telerik:RadWindow ID="RadWindowCompany" Skin="Material" VisibleTitlebar="true" Title="Select Company" Behaviors="Default" CenterIfModal="true"
+                    Animation="FlyIn" AnimationDuration="200" RenderMode="Auto" VisibleStatusbar="false" MinWidth="450" ReloadOnShow="false"
+                    runat="server" Modal="true" Width="600" NavigateUrl="Companypopup.aspx" ShowContentDuringLoad="false" Height="520">
+                </telerik:RadWindow>
+                <telerik:RadWindow ID="RadWindowChangePassword" Skin="Material" VisibleTitlebar="true" Title="Change Password" Behaviors="Default" CenterIfModal="true"
+                    Animation="FlyIn" AnimationDuration="200" RenderMode="Auto" VisibleStatusbar="false" MinWidth="450" ReloadOnShow="false"
+                    runat="server" Modal="true" Width="400" NavigateUrl="ChangePasswordpopup.aspx" ShowContentDuringLoad="false" Height="320">
+                </telerik:RadWindow>
+                <telerik:RadWindow ID="RadGPSWindow" Skin="Material" VisibleTitlebar="true" Title="GPS Settings" Behaviors="Default" CenterIfModal="true"
+                    Animation="FlyIn" AnimationDuration="200" RenderMode="Auto" VisibleStatusbar="false" MinWidth="450"
+                    runat="server" Modal="true" Width="400" Height="200">
+                    <ContentTemplate>
+                        <%--<telerik:RadAjaxPanel ID="RadAjaxPanel1" runat="server" LoadingPanelID="RadAjaxLoadingPanel_AP">        --%>
+                        <div style="margin-top: 15px; font-size: 1.1em !important;">
+                            <table>
+                                <tr>
+                                    <td>GPS ping interval
+                                    </td>
+                                    <td>
+                                        <div class="srchinputwrap">
+                                            <asp:DropDownList ID="ddlGPSPing" runat="server" onchange="AlertPing(this)" class="browser-default selectst selectsml"
+                                                ToolTip="This feature is for GPS tracking app. The interval selected will be the interval at which the GPS tracking app pings the GPS satellites to get the location. Maximum the time is minimum will be the phone battery consumption. Setting the interval to zero will cause huge amout of phone battery use. Recommended interval is 1 minute.">
+                                                <asp:ListItem Text="0" Value="0"></asp:ListItem>
+                                                <asp:ListItem Text="30 Second" Value="30000"></asp:ListItem>
+                                                <asp:ListItem Text="1 Minute" Value="60000"></asp:ListItem>
+                                                <asp:ListItem Text="2 Minutes" Value="120000"></asp:ListItem>
+                                                <asp:ListItem Text="3 Minutes" Value="180000"></asp:ListItem>
+                                                <asp:ListItem Text="4 Minutes" Value="240000"></asp:ListItem>
+                                                <asp:ListItem Text="5 Minutes" Value="300000"></asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="background: #fff !important;">
+                                    <td></td>
+                                    <td>
+                                        <asp:Label ID="lblMSgGPS" CssClass="lblMsg" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div style="clear: both;"></div>
+
+                            <footer style="float: left; padding-left: 0 !important;">
+                                <div class="btnlinks">
+                                    <asp:LinkButton ID="lnkGPS" runat="server" OnClick="lnkGPS_Click">Save</asp:LinkButton>
+                                </div>
+                            </footer>
+                        </div>
+                        <%--</telerik:RadAjaxPanel>--%>
+                    </ContentTemplate>
+                </telerik:RadWindow>
+            </Windows>
+        </telerik:RadWindowManager>
+    </form>
+    
+    <script src="Design/js/jquery.mCustomScrollbar.js"></script>
+    <%--<script type="text/javascript" src="Design/js/plugins/jquery-1.11.2.min.js"></script>--%>
+    <script type="text/javascript" src="Design/js/materialize.js"></script>
+    <script type="text/javascript" src="Design/js/plugins/prism/prism.js"></script>
+    <script type="text/javascript" src="Design/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="Design/js/plugins.js"></script>
+    <script type="text/javascript" src="Design/js/custom-script.js"></script>
+    <%--Calendar Scripts--%>
+    <script src="Design/js/moment.js"></script>
+    <script src="Design/js/pikaday.js"></script>
+    <script src="Design/js/pikaday.jquery.js"></script>
+    <%--    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js'></script>
+    <script src='https://rawgit.com/tieppt/Pikaday/master/pikaday.js'></script>--%>
+
+    <%--Calendar Scripts--%>
+
+    <%--Masked Input Scripts--%>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+    
+    
+    
+    
+    <script src="DashboardNew/node_modules/chart.js/dist/Chart.bundle.min.js"></script>
+
+        <!-- Vector Maps Libraries -->
+    <script src="Design/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="Design/js/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="Design/js/jvectormap/vectormap-script.js"></script>
+    
+	<script type="text/javascript" src="DashboardNew/daterangepicker/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="DashboardNew/daterangepicker/daterangepicker.css" />
+    <link href="DashboardNew/owl/dist/assets/owl.carousel.min.css" rel="stylesheet" />
+    
+    <%--Masked Input Scripts--%>
+    <script>
+        $(document).ready(function () {
+
+            $('.dropdown-button').dropdown({
+                inDuration: 300,
+                outDuration: 225,
+                constrainWidth: false, // Does not change width of dropdown to that of the activator
+                hover: true, // Activate on hover
+                gutter: 0, // Spacing from edge
+                belowOrigin: true, // Displays dropdown below the button
+                alignment: 'left', // Displays dropdown with edge aligned to the left of button
+                stopPropagation: false // Stops event propagation
+            }
+            );
+
+            //$("input[type=checkbox]").addClass("css-checkbox");
+
+            $("input[type=checkbox]").each(function () {
+                var id = $(this).attr("id");
+                if (id != undefined) {
+                    $("#" + id).next().attr("for", id);
+                }
+            });
+
+
+
+        });
+    </script>
+
+
+    <%--Date Calendar Scripts--%>
+    <script>
+        $(document).ready(function () {
+            SetPikaday();
+        });
+
+        function SetPikaday() {
+            //var field = document.getElementsByClassName("datepicker_mom");
+            //$.each(field, function (index, value) {
+            //    debugger;
+            //    var picker = new Pikaday({
+            //        field: value,
+            //        firstDay: 0,
+            //        format: 'MM/DD/YYYY',
+            //        minDate: new Date(1900, 1, 1),
+            //        maxDate: new Date(2100, 12, 31),
+            //        yearRange: [1900, 2100],
+            //        todayButton: true,
+
+            //    });
+            //});
+
+
+            $('.datepicker_mom').pikaday({
+                firstDay: 0,
+                format: 'MM/DD/YYYY',
+                minDate: new Date(1900, 1, 1),
+                maxDate: new Date(2100, 12, 31),
+                yearRange: [1900, 2100]
+            });
+        }
+
+        //On UpdatePanel Refresh.
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+        if (prm != null) {
+            prm.add_endRequest(function (sender, e) {
+                if (sender._postBackSettings.panelsToUpdate != null) {
+                    SetPikaday();
+                }
+            });
+        };
+
+        function pageLoad(sender, args) {
+            SetPikaday();
+        }
+
+        function OpenRadWindow() {
+
+
+            var oWnd = $find("<%=RadWindowCompany.ClientID%>");
+            oWnd.show();
+
+        }
+        function OpenRadChangePasswordWindow() {
+            var oWnd = $find("<%=RadWindowChangePassword.ClientID%>");
+            oWnd.show();
+        }
+        function OpenRadGPSWindow() {
+            var oWnd = $find("<%=RadGPSWindow.ClientID%>");
+            oWnd.show();
+        }
+
+        function bell_alert() {
+            var strJSON = $('#<%=hdnItemJSON.ClientID%>').val();
+            var task = JSON.parse(strJSON);
+
+            var todoNotify = $(".todo_notify > button.close");
+
+            if (todoNotify != null && todoNotify.length > 0) {
+                todoNotify.trigger('click');
+            } else {
+                //setTimeout(function () {
+                for (i = 0; i < task.length; i++) {
+                    var strDateDue = task[i].DateDue;
+                    var strTimeDue = task[i].TimeDue;
+                    var dateDue = new Date(parseInt(strDateDue.substr(6)));
+                    var timeDue = new Date(parseInt(strTimeDue.substr(6)));
+                    dateDue = new Date(dateDue.setHours(timeDue.getHours(), timeDue.getMinutes()));
+                    var today = new Date().setSeconds(0, 0);
+                    var strDue = "";
+                    if (dateDue >= today) {
+                        var dueIn = Date.diff(dateDue, today);
+                        strDue = '<span style="color: green;font-weight: bold;">Due In = ' + dueIn.days + ' days, ' + dueIn.hours + ' hours, ' + dueIn.minutes + ' minutes</span>';
+                    } else {
+                        var pastDue = Date.diff(today, dateDue);
+                        strDue = '<span style="color: red;font-weight: bold;">Past Due = ' + pastDue.days + ' days, ' + pastDue.hours + ' hours, ' + pastDue.minutes + ' minutes</span>';
+                    }
+                    var result = dateDue.format("MM/dd/yyyy hh:mm tt");
+                    $.notify({
+                        // options
+                        icon: 'notifyIcon',
+                        title: task[i].Subject + ': ' + task[i].Remarks,
+                        message: 'Location Name: ' + task[i].Name + ' | Contact: ' + task[i].Contact + '<br>Due on ' + result + '<br>' + strDue,
+                        url: getAbsolutePath() + 'addtask.aspx?uid=' + task[i].ID,
+                        target: '_blank'
+                    },
+                        {
+                            // settings
+                            element: 'body',
+                            position: null,
+                            type: "info",
+                            allow_dismiss: true,
+                            newest_on_top: false,
+                            showProgressbar: false,
+                            placement: {
+                                from: "top",
+                                align: "right"
+                            },
+                            offset: {
+                                x: 20,
+                                y: 50
+                            },
+                            spacing: 10,
+                            z_index: 1031,
+                            delay: 0,
+                            timer: 0,
+                            url_target: '_blank',
+                            mouse_over: null,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                            onShow: null,
+                            onShown: null,
+                            onClose: null,
+                            onClosed: null,
+                            icon_type: 'class',
+                            template: '<div data-notify="container" class="todo_notify col-xs-11 col-sm-3" role="alert">' +
+                                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                                '<span data-notify="icon"  class="notifyIcon"></span> ' +
+                                '<span data-notify="title">{1}</span> <br>' +
+                                '<span data-notify="message">{2}</span>' +
+                                //'<div class="progress" data-notify="progressbar">' +
+                                //'<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                                //'</div>' +
+                                '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                                '</div>'
+                        });
+                }
+                //}, 1000);
+            }
+        }
+
+        function getAbsolutePath() {
+            var loc = window.location;
+            var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
+            var url = loc.href.replace(/#[^#]*$/, "");
+            return url.substring(0, url.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
+        }
+    </script>
+    <!-- New Added -->
+    <script> 
+        $(function () {
+            $("#includedContent").load("sales.html");
+        });
+    </script>
+
+    <!-- Draggable Code -->
+     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#sortable").sortable();
+            $("#sortable").disableSelection();
+        });
+    </script>
+
+    <!-- Search bar hover effect -->
+    <script>
+        $('.searchbar').hover(function () {
+            $(this).animate({
+                width: '250px'
+            }, 300);
+        }, function () {
+            $(this).animate({
+                width: '155px'
+            }, 300);
+        });
+    </script>
+    <script>
+
+</script>
+    <asp:ContentPlaceHolder ID="javascriptHolder" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>

@@ -1,0 +1,993 @@
+{
+  "ReportVersion": "2019.3.7.0",
+  "ReportGuid": "4eb05a39b80140029f1f2323ef6e3023",
+  "ReportName": "Report",
+  "ReportAlias": "Report",
+  "ReportCreated": "/Date(91800000+0700)/",
+  "ReportChanged": "/Date(1530615070864+0700)/",
+  "EngineVersion": "EngineV2",
+  "CalculationMode": "Interpretation",
+  "ReportUnit": "Inches",
+  "Script": "using System;\r\nusing System.Drawing;\r\nusing System.Windows.Forms;\r\nusing System.Data;\r\nusing Stimulsoft.Controls;\r\nusing Stimulsoft.Base.Drawing;\r\nusing Stimulsoft.Report;\r\nusing Stimulsoft.Report.Dialogs;\r\nusing Stimulsoft.Report.Components;\r\n\r\nnamespace Reports\r\n{\r\n    public class Report : Stimulsoft.Report.StiReport\r\n    {\r\n        public Report()        {\r\n            this.InitializeComponent();\r\n        }\r\n\r\n        #region StiReport Designer generated code - do not modify\r\n\t\t#endregion StiReport Designer generated code - do not modify\r\n    }\r\n}\r\n",
+  "Styles": {
+    "0": {
+      "Ident": "StiChartStyle",
+      "Name": "Style1",
+      "Border": ";;;;;;;solid:0,0,0",
+      "Brush": "solid:",
+      "ChartAreaBrush": "solid:255,255,255",
+      "SeriesLabelsBrush": "solid:255,255,255",
+      "SeriesLabelsBorderColor": "140,140,140",
+      "LegendBrush": "solid:255,255,255",
+      "InterlacingHorBrush": "solid:10,155,155,155",
+      "InterlacingVertBrush": "solid:10,155,155,155",
+      "StyleColors": {
+        "0": "237,125,49",
+        "1": "255,192,0",
+        "2": "91,155,213",
+        "3": "67,104,43",
+        "4": "38,68,120",
+        "5": "153,115,0"
+      }
+    }
+  },
+  "ReferencedAssemblies": {
+    "0": "System.Dll",
+    "1": "System.Drawing.Dll",
+    "2": "System.Windows.Forms.Dll",
+    "3": "System.Data.Dll",
+    "4": "System.Xml.Dll",
+    "5": "Stimulsoft.Controls.Dll",
+    "6": "Stimulsoft.Base.Dll",
+    "7": "Stimulsoft.Report.Dll"
+  },
+  "Dictionary": {
+    "Variables": {
+      "0": {
+        "Name": "Username",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "Username",
+        "Type": "System.String"
+      },
+      "1": {
+        "Name": "ReportName",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "ReportName",
+        "Type": "System.String"
+      }
+    },
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "CompanyDetails",
+        "Alias": "CompanyDetails",
+        "Key": "80521c8734db4603a7b09a2c409f3cc4",
+        "Columns": {
+          "0": {
+            "Name": "CompanyName",
+            "Index": -1,
+            "NameInSource": "CompanyName",
+            "Alias": "CompanyName",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "CompanyAddress",
+            "Index": -1,
+            "NameInSource": "CompanyAddress",
+            "Alias": "CompanyAddress",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "City",
+            "Index": -1,
+            "NameInSource": "City",
+            "Alias": "City",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "State",
+            "Index": -1,
+            "NameInSource": "State",
+            "Alias": "State",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Zip",
+            "Index": -1,
+            "NameInSource": "Zip",
+            "Alias": "Zip",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "ContactNo",
+            "Index": -1,
+            "NameInSource": "ContactNo",
+            "Alias": "ContactNo",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "Email",
+            "Index": -1,
+            "NameInSource": "Email",
+            "Alias": "Email",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "Fax",
+            "Index": -1,
+            "NameInSource": "Fax",
+            "Alias": "Fax",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "LogoURL",
+            "Index": -1,
+            "NameInSource": "LogoURL",
+            "Alias": "LogoURL",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "Phone",
+            "Index": -1,
+            "NameInSource": "Phone",
+            "Alias": "Phone",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "CompanyDetails"
+      },
+      "1": {
+        "Ident": "StiDataTableSource",
+        "Name": "Revenues",
+        "Alias": "Revenues",
+        "Key": "d91efc17c9104d0d9bff590c01ae9b0e",
+        "Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "AcctName",
+            "Index": -1,
+            "NameInSource": "AcctName",
+            "Alias": "AcctName",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "AcctNo",
+            "Index": -1,
+            "NameInSource": "AcctNo",
+            "Alias": "AcctNo",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "Sub",
+            "Index": -1,
+            "NameInSource": "Sub",
+            "Alias": "Sub",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Type",
+            "Index": -1,
+            "NameInSource": "Type",
+            "Alias": "Type",
+            "Type": "System.Int32"
+          },
+          "5": {
+            "Name": "TypeName",
+            "Index": -1,
+            "NameInSource": "TypeName",
+            "Alias": "TypeName",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CentralName",
+            "Index": -1,
+            "NameInSource": "CentralName",
+            "Alias": "CentralName",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "Revenues"
+      },
+      "2": {
+        "Ident": "StiDataTableSource",
+        "Name": "CostOfSales",
+        "Alias": "CostOfSales",
+        "Key": "e0790fb0966f42a5a47f96d8befb6145",
+        "Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "AcctName",
+            "Index": -1,
+            "NameInSource": "AcctName",
+            "Alias": "AcctName",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "AcctNo",
+            "Index": -1,
+            "NameInSource": "AcctNo",
+            "Alias": "AcctNo",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "Sub",
+            "Index": -1,
+            "NameInSource": "Sub",
+            "Alias": "Sub",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Type",
+            "Index": -1,
+            "NameInSource": "Type",
+            "Alias": "Type",
+            "Type": "System.Int32"
+          },
+          "5": {
+            "Name": "TypeName",
+            "Index": -1,
+            "NameInSource": "TypeName",
+            "Alias": "TypeName",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          },
+          "8": {
+            "Name": "CentralName",
+            "Index": -1,
+            "NameInSource": "CentralName",
+            "Alias": "CentralName",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "CostOfSales"
+      },
+      "3": {
+        "Ident": "StiDataTableSource",
+        "Name": "Expenses",
+        "Alias": "Expenses",
+        "Key": "69658a0cf77a494eabd53483a07d2130",
+        "Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "AcctName",
+            "Index": -1,
+            "NameInSource": "AcctName",
+            "Alias": "AcctName",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "AcctNo",
+            "Index": -1,
+            "NameInSource": "AcctNo",
+            "Alias": "AcctNo",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "Sub",
+            "Index": -1,
+            "NameInSource": "Sub",
+            "Alias": "Sub",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Type",
+            "Index": -1,
+            "NameInSource": "Type",
+            "Alias": "Type",
+            "Type": "System.Int32"
+          },
+          "5": {
+            "Name": "TypeName",
+            "Index": -1,
+            "NameInSource": "TypeName",
+            "Alias": "TypeName",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          },
+          "8": {
+            "Name": "CentralName",
+            "Index": -1,
+            "NameInSource": "CentralName",
+            "Alias": "CentralName",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "Expenses"
+      },
+      "4": {
+        "Ident": "StiDataTableSource",
+        "Name": "RevenuesTotal",
+        "Alias": "RevenuesTotal",
+        "Key": "9e6ebc0f05fb414fb38f03bd77eccbfd",
+        "Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "RevenuesTotal"
+      },
+      "5": {
+        "Ident": "StiDataTableSource",
+        "Name": "CostOfSalesTotal",
+        "Alias": "CostOfSalesTotal",
+        "Key": "766b216a864e408497253310a6b65060",
+        "Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "CostOfSalesTotal"
+      },
+      "6": {
+        "Ident": "StiDataTableSource",
+        "Name": "ExpensesTotal",
+        "Alias": "ExpensesTotal",
+        "Key": "4e8ecc417d7e43b381a59a1d255fe4c4",
+        "Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "ExpensesTotal"
+      },
+      "7": {
+        "Ident": "StiDataTableSource",
+        "Name": "GrossProfit",
+        "Alias": "GrossProfit",
+        "Key": "0ebaa4c79e5349d1b778bbb7bd72d175",
+        "Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "GrossProfit"
+      },
+      "8": {
+        "Ident": "StiDataTableSource",
+        "Name": "NetProfit",
+        "Alias": "NetProfit",
+        "Key": "cdb6d87425164e6b8e3bcf25aaf4628e",
+        "Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "NetProfit"
+      },
+      "9": {
+        "Ident": "StiDataTableSource",
+        "Name": "AllData",
+        "Alias": "AllData",
+        "Key": "c1b317bb70af487ba59e8cdbc1828a61",
+        "Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "AcctName",
+            "Index": -1,
+            "NameInSource": "AcctName",
+            "Alias": "AcctName",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "AcctNo",
+            "Index": -1,
+            "NameInSource": "AcctNo",
+            "Alias": "AcctNo",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "Sub",
+            "Index": -1,
+            "NameInSource": "Sub",
+            "Alias": "Sub",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Type",
+            "Index": -1,
+            "NameInSource": "Type",
+            "Alias": "Type",
+            "Type": "System.Int32"
+          },
+          "5": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          },
+          "7": {
+            "Name": "CentralName",
+            "Index": -1,
+            "NameInSource": "CentralName",
+            "Alias": "CentralName",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "AllData"
+      },
+      "10": {
+        "Ident": "StiDataTableSource",
+        "Name": "SummaryTotal",
+        "Alias": "SummaryTotal",
+        "Key": "aa89f4ea162144b7999b6c447ec6b89f",
+        "Columns": {
+          "0": {
+            "Name": "Type",
+            "Index": -1,
+            "NameInSource": "Type",
+            "Alias": "Type",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "SummaryTotal"
+      },
+      "11": {
+        "Ident": "StiDataTableSource",
+        "Name": "GrossProfitPercen",
+        "Alias": "GrossProfitPercen",
+        "Key": "02fbe7dffab64bb382bb0f323f7a44ac",
+        "Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "GrossProfitPercen"
+      },
+      "12": {
+        "Ident": "StiDataTableSource",
+        "Name": "NetProfitPercen",
+        "Alias": "NetProfitPercen",
+        "Key": "68cb278b1f244906b5bc97773c0f25be",
+        "Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "NetProfitPercen"
+      },
+      "13": {
+        "Ident": "StiDataTableSource",
+        "Name": "OtherIncome",
+        "Alias": "OtherIncome",
+        "Key": "65bc94f63c014d0cbbbee19dfc0e7145",
+		"Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "AcctName",
+            "Index": -1,
+            "NameInSource": "AcctName",
+            "Alias": "AcctName",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "AcctNo",
+            "Index": -1,
+            "NameInSource": "AcctNo",
+            "Alias": "AcctNo",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "Sub",
+            "Index": -1,
+            "NameInSource": "Sub",
+            "Alias": "Sub",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Type",
+            "Index": -1,
+            "NameInSource": "Type",
+            "Alias": "Type",
+            "Type": "System.Int32"
+          },
+          "5": {
+            "Name": "TypeName",
+            "Index": -1,
+            "NameInSource": "TypeName",
+            "Alias": "TypeName",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CentralName",
+            "Index": -1,
+            "NameInSource": "CentralName",
+            "Alias": "CentralName",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "OtherIncome"
+      },
+      "14": {
+        "Ident": "StiDataTableSource",
+        "Name": "OtherIncomeTotal",
+        "Alias": "OtherIncomeTotal",
+        "Key": "5aa3f57c83fa46bfa32e10ecfb8a406b",
+		"Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "OtherIncomeTotal"
+      },
+      "15": {
+        "Ident": "StiDataTableSource",
+        "Name": "IncomeTaxes",
+        "Alias": "IncomeTaxes",
+        "Key": "3441b48e501e40c982919a080b4bfa3b",
+		"Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "AcctName",
+            "Index": -1,
+            "NameInSource": "AcctName",
+            "Alias": "AcctName",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "AcctNo",
+            "Index": -1,
+            "NameInSource": "AcctNo",
+            "Alias": "AcctNo",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "Sub",
+            "Index": -1,
+            "NameInSource": "Sub",
+            "Alias": "Sub",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Type",
+            "Index": -1,
+            "NameInSource": "Type",
+            "Alias": "Type",
+            "Type": "System.Int32"
+          },
+          "5": {
+            "Name": "TypeName",
+            "Index": -1,
+            "NameInSource": "TypeName",
+            "Alias": "TypeName",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CentralName",
+            "Index": -1,
+            "NameInSource": "CentralName",
+            "Alias": "CentralName",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "IncomeTaxes"
+      },
+      "16": {
+        "Ident": "StiDataTableSource",
+        "Name": "IncomeTaxesTotal",
+        "Alias": "IncomeTaxesTotal",
+        "Key": "b54f6009a0b847d9bb723bac5f824ac1",
+		"Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "IncomeTaxesTotal"
+      },
+      "17": {
+        "Ident": "StiDataTableSource",
+        "Name": "BeforeProvisions",
+        "Alias": "BeforeProvisions",
+        "Key": "b25da2f103a042adb22ffd13ddbbd3b1",
+		"Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "BeforeProvisions"
+      },
+      "18": {
+        "Ident": "StiDataTableSource",
+        "Name": "NetIncome",
+        "Alias": "NetIncome",
+        "Key": "dfa40ba5bddd40ef8717c913029f5e9c",
+		"Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "NetIncome"
+      },
+      "19": {
+        "Ident": "StiDataTableSource",
+        "Name": "BeforeProvisionsPercen",
+        "Alias": "BeforeProvisionsPercen",
+        "Key": "d046112e205040f792262ad18ce91814",
+		"Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "BeforeProvisionsPercen"
+      },
+      "20": {
+        "Ident": "StiDataTableSource",
+        "Name": "NetIncomePercen",
+        "Alias": "NetIncomePercen",
+        "Key": "85a27f48152d4160813f620bd5eccf0b",
+		"Columns": {
+          "0": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "NetIncomePercen"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "b45e5a3fe5f844e7a1c4e6b6f9f19044",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;;;;solid:Black",
+      "Brush": "solid:White",
+      "Components": {
+        "0": {
+          "Ident": "StiPageHeaderBand",
+          "Name": "PageHeaderBand1",
+          "Guid": "61e7b1b0ab6d445a9771dfe2d594e0e4",
+          "PrintOn": "OnlyFirstPage",
+          "ClientRectangle": "0,0.2,10.6,0.72",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": "Bottom;;2;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "TextReportName",
+              "Guid": "bca8d047ef9745259b22b30a8ae59c95",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,5.01,0.26",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportName.ToUpper()}"
+              },
+              "Font": ";12;Bold;",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "TextComName",
+              "Guid": "bf374c3e2dbb4e34bbea282d84d50160",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.7,0,3.9,0.26",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.CompanyName}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";10;Bold;",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "DataColumn"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "TextComAddress",
+              "Guid": "358760f4f29148cfaf40758e1085a225",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.7,0.26,3.9,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.CompanyAddress}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "DataColumn"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "TextCSZ",
+              "Guid": "10a0cae8758d4107b90efece03ec3581",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.7,0.43,3.9,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.City}, {CompanyDetails.State} {CompanyDetails.Zip}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "TextPrintTime",
+              "Guid": "15059dcbed1c43e5ba6c8acad0e60cae",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.43,5.01,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Printed On {Format(\"{0:MM/dd/yyyy}\", Time)} By {Username}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            }
+          }
+        },
+        "1": {
+          "Ident": "StiPageFooterBand",
+          "Name": "PageFooterBand1",
+          "ClientRectangle": "0,7.95,10.6,0.15",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "TextPage",
+              "Guid": "d2fc508bfdf14b9888eb63aeb89e8762",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.4,0,1.2,0.15",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{PageNofM}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Bottom",
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "TextMOM",
+              "Guid": "c49d551e180d4bac91027bbcb66b4a84",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,1.5,0.15",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Mobile Office Manager"
+              },
+              "VertAlignment": "Bottom",
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        }
+      },
+      "PaperSize": "Letter",
+      "Orientation": "Landscape",
+      "PageWidth": 11.0,
+      "PageHeight": 8.5,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      },
+      "Margins": {
+        "Left": 0.2,
+        "Right": 0.2,
+        "Top": 0.2,
+        "Bottom": 0.2
+      },
+      "ReportUnit": {
+        "Ident": "StiInchesUnit"
+      }
+    }
+  }
+}

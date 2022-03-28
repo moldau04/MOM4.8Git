@@ -1,0 +1,898 @@
+﻿@{
+    ViewData["Title"] = "List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+<style>
+    .switch.round label .lever {
+        width: 54px;
+        height: 30px;
+        border-radius: 10em;
+    }
+
+        .switch.round label .lever:after {
+            width: 26px;
+            height: 22px;
+            border-radius: 50%;
+            left: 4px;
+            top: 4px;
+        }
+
+    .RadTreeView {
+        line-height: 0.3 !important;
+    }
+
+    .RadTreeView_Bootstrap .rtPlus, .RadTreeView_Bootstrap .rtMinus {
+        margin-top: -6px !important;
+    }
+
+    .RadComboBox .rcbInner {
+        padding: 0px !important;
+    }
+
+    .RadTreeView_Bootstrap .rtHover .rtIn {
+        background-color: #1c5fb1 !important;
+        border-color: #1c5fb1 !important;
+        color: #ffffff;
+    }
+
+    .CustomerColer {
+        color: #1c5fb1;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    .TotalColer {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .rtHover {
+        background-color: #1c5fb1 !important;
+    }
+
+    .RadGrid_Material {
+        font-size: 0.8rem !important;
+    }
+
+    .RadGrid .rgRow > td {
+        font-size: 0.8rem !important;
+    }
+
+    .RadGrid_Material .rgAltRow > td {
+        font-size: 0.8rem !important;
+    }
+
+        .RadGrid_Material .rgRow > td > a, .RadGrid_Material .rgAltRow > td > a {
+            font-size: 0.8rem !important;
+        }
+
+    .RadGrid_Material .rgFooter td {
+        font-size: 0.8rem !important;
+    }
+
+    .rcbActionButton {
+        margin-top: -10px !important;
+    }
+
+    .css_owner {
+        cursor: pointer;
+        color: #1c5fb1;
+        font-weight: 600 !important;
+    }
+
+    .css_owner_tr {
+        background-color: #edf4fc !important;
+    }
+
+    .css_owner:before {
+        content: "\f007";
+        font-family: FontAwesome;
+        margin-right: 10px !important;
+    }
+
+    .css_loc {
+        cursor: pointer;
+        color: #1c5fb1;
+    }
+
+        .css_loc:before {
+            content: "\f041";
+            font-family: FontAwesome;
+            margin-right: 10px !important;
+        }
+
+    .rgDataDiv .rgFooter {
+        display: none !important;
+    }
+
+    .RadGrid_Bootstrap .rgRow > td, .RadGrid_Bootstrap .rgAltRow > td {
+        padding-left: 0px !important;
+    }
+
+    .RadGrid .rgFooter > td {
+        padding-left: 0px !important;
+    }
+
+    .textrightalign {
+        text-align: center !important;
+    }
+
+    .headerCollection .rwTitleWrapper {
+        padding: 0 !important;
+        font-size: 1.42857em;
+        font-family: inherit;
+        line-height: 1em;
+        color: #fff;
+        text-transform: capitalize;
+    }
+
+    .headerCollection .rwTitleBar {
+        background-color: #1c5fb1 !important;
+        padding: 5px;
+    }
+
+    [id*=RadGrid_gvLogs_GridData] .rgRow > td,
+    [id*=RadGrid_gvLogs_GridData] .rgAltRow > td {
+        padding-left: 13px !important;
+        padding-right: 13px !important;
+    }
+</style>
+<!--start container-->
+
+<div class="divbutton-container">
+    <div id="divButtons" class="">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-communication-contacts"></i>&nbsp;Collections</div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks" style="display: none;">
+                                        <a ID="lnkAddnew" ToolTip="Issue Credit">Issue Credit</a>
+                                    </div>
+
+                                    <div class="btnlinks" style="display: none;">
+                                        <a ID="btnEdit" ToolTip="Issue Refund">Issue Refund</a>
+                                    </div>
+
+                                    <div class="btnlinks menuAction">
+                                        <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                            Actions
+                                        </a>
+                                    </div>
+
+                                    <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkWriteOff" ToolTip="Write Off" onclick="return OpenWriteOffWindow(this);">Write Off</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkExcel">Export to Excel</a>
+                                            </div>
+
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a class="dropdown-button" data-beloworigin="true" href="#!" data-activates="EmailAll">Email</a>
+                                            </div>
+                                            <ul id="EmailAll" class="dropdown-content">
+                                                <li>
+                                                    <a ID="lnkEmailCustomerStatements" ToolTip="Customer Statement All" onclick="return confirm('Are you sure you want to email customer statement all?');">Customer Statement All</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkEmailCustomerStatementSelected" ToolTip="Customer Statement Selected" onclick="return confirm('Are you sure you want to email customer statement selected?');">Customer Statement Selected</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkEmailInvoices" ToolTip="Invoice All" onclick="return confirm('Are you sure you want to email invoice all?');">Invoice All</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkEmailInvoiceSelected" ToolTip="Invoice Selected" onclick="return confirm('Are you sure you want to email invoice selected?');">Invoice Selected</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a class="dropdown-button" data-beloworigin="true" href="#!" data-activates="PDF">PDF</a>
+                                            </div>
+                                            <ul id="PDF" class="dropdown-content">
+                                                <li>
+                                                    <a ID="lnkPDFCustomerStatements" ToolTip="Customer Statement All" onclick="return confirm('Are you sure you want to PDF customer statement all?');">Customer Statement All</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkPDFCustomerStatementSelected" ToolTip="Customer Statement Selected" onclick="return confirm('Are you sure you want to PDF customer statement selected?');">Customer Statement Selected</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkPDFInvoices" ToolTip="Invoice All" onclick="return confirm('Are you sure you want to PDF invoice all?');">Invoice All</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkPDFInvoiceSelected" ToolTip="Invoice Selected" onclick="return confirm('Are you sure you want to PDF invoice selected?');">Invoice Selected</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul id="dropdown1" class="dropdown-content">
+                                                <li>
+                                                    <a ID="lnkPrint" Enabled="true"> <i class="fa fa-file-pdf-o" style="color:red; background-color:transparent" aria-hidden="true"></i>&nbsp;&nbsp; Invoices <i class="fa fa-download" aria-hidden="true" style="background-color:transparent;"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkMaintenance" CausesValidation="true"
+                                                       Enabled="true"> <i class="fa fa-file-pdf-o" style="color:red; background-color:transparent" aria-hidden="true"></i>&nbsp;&nbsp; Invoice Maintenance Report &nbsp;&nbsp;<i class="fa fa-download" aria-hidden="true" style="background-color:transparent;"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkException" CausesValidation="true"
+                                                       Enabled="true"> <i class="fa fa-file-pdf-o" style="color:red; background-color:transparent" aria-hidden="true"></i>&nbsp;&nbsp; Invoice Exception Report &nbsp;&nbsp;<i class="fa fa-download" aria-hidden="true" style="background-color:transparent;"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkPDFTI" CausesValidation="true"
+                                                       Enabled="true"> <i class="fa fa-file-pdf-o" style="color:red; background-color:transparent" aria-hidden="true"></i>&nbsp;&nbsp; Invoice With Ticket &nbsp;&nbsp;<i class="fa fa-download" aria-hidden="true" style="background-color:transparent;"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkAdamMaintenance" CausesValidation="true"
+                                                       Enabled="true"> <i class="fa fa-file-pdf-o" style="color:red; background-color:transparent" aria-hidden="true"></i>&nbsp;&nbsp; Maintenance Invoices &nbsp;&nbsp;<i class="fa fa-download" aria-hidden="true" style="background-color:transparent;"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkAdamBilling" CausesValidation="true"
+                                                       Enabled="true"> <i class="fa fa-file-pdf-o" style="color:red; background-color:transparent" aria-hidden="true"></i>&nbsp;&nbsp; Billing Invoice &nbsp;&nbsp;<i class="fa fa-download" aria-hidden="true" style="background-color:transparent;"></i></a>
+                                                </li>
+                                            </ul>
+                                            <div class="btnlinks">
+                                                <a class="dropdown-button" data-beloworigin="true" href="#!" data-activates="dropdown1">
+                                                    Invoices
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <ul id="dropdown2" class="dropdown-content">
+
+                                                <li>
+                                                    <a href="ARAgingReportCollection.aspx?page=iCollections">Customer AR Aging Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkColCustomerStatement">Customer Statement</a>
+                                                </li>
+                                                <li id="isNoneTS">
+                                                    <a href="ARAgingReportDep.aspx?page=iCollections">Customer AR Aging by Department</a>
+                                                </li>
+                                                <li>
+                                                    <a href="ARAgingReportByTerritoryCollection.aspx?page=iCollections">Customer AR Aging by Default Salesperson</a>
+                                                </li>
+                                                <li>
+                                                    <a href="ARAgingReportCust.aspx?page=iCollections">Customer AR Aging by Custom</a>
+                                                </li>
+                                                <li>
+                                                    <a href="ARAgingReportByLocationCollection.aspx?page=iCollections">Location AR Aging Report</a>
+                                                </li>
+                                                <li id="isTS">
+                                                    <a href="ARAgingReportByJobType.aspx?page=iCollections">AR Aging Report By Department</a>
+                                                </li>
+                                                <li>
+                                                    <a href="AgedReceivableReport.aspx?page=iCollections">Aged Receivable Report</a>
+                                                </li>
+                                                <li>
+                                                    <a href="ARAgingReportByLocType.aspx?page=iCollections">AR Aging Report By Location Type</a>
+                                                </li>
+                                                <li>
+                                                    <a href="ARAgingReport360ByLocation.aspx?page=iCollections">AR Aging 360 By Location</a>
+                                                </li>
+                                                <li>
+                                                    <a href="ARAgingReport360ByCustomer.aspx?page=iCollections">AR Aging 360 By Customer</a>
+                                                </li>
+                                            </ul>
+                                            <div class="btnlinks">
+                                                <a class="dropdown-button" data-beloworigin="true" href="#!" data-activates="dropdown2">
+                                                    Reports
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a href="~/dashboard/home/index" class="mdi-content-clear" id="lnkClose" title="Close"><i></i></a>
+                                </div>                                <div class="rght-content">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="container breadcrumbs-bg-custom" style="display: none;">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="tblnks-advanced">
+                        <ul class="anchor-links">
+                            <li><a class="add-btn-click">Advanced Search</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<%--ADVANCED SEARCH DROPDOWN--%>*@
+        <div id="stats" style="background-color: #fff !important; display: none;">
+            <div id="addinfo" class="form-section-row infoDiv" style="background-color: #fff; padding: 10px !important; padding-bottom: 0px!important; margin-bottom: 0px!important; border-radius: 4px !important; box-shadow: 0 0 6px #ccc !important;">
+                <div class="form-section-row" style="margin-bottom: 0px!important;">
+                    <div class="section-ttle">Search Criteria</div>
+                    <div class="collapse_wrap">
+                        <div class="row" style="margin-bottom: 0px!important;">
+                            <div class="col s12 m12 l12">
+                                <div class="row" style="margin-bottom: 0px!important;">
+                                    <div class="input-field col s2">
+                                        <div class="row">
+                                            <label class="drpdwn-label" style="margin-left: 37px!important;">30 Days</label>
+                                            <div class="switch round blue-white-switch">
+                                                <label>
+                                                    @*<%--  Off--%>*@
+                                                    <input type="checkbox" id="chk30Days" />
+                                                    <span class="lever"></span>
+                                                    @*<%--     On--%>*@
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-field col s2">
+                                        <div class="row">
+                                            <label class="drpdwn-label" style="margin-left: 37px!important;">60 Days</label>
+                                            <div class="switch round blue-white-switch">
+                                                <label>
+                                                    @*<%--  Off--%>*@
+                                                    <input type="checkbox" id="chk60Days" />
+                                                    <span class="lever"></span>
+                                                    @*<%--  On--%>*@
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-field col s2">
+                                        <div class="row">
+                                            <label class="drpdwn-label" style="margin-left: 37px!important;">90 Days</label>
+                                            <div class="switch round blue-white-switch">
+                                                <label>
+                                                    @*<%--   Off--%>*@
+                                                    <input type="checkbox" id="chk90Days" />
+                                                    <span class="lever"></span>
+                                                    @*<%--   On--%>*@
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-field col s2">
+                                        <div class="row">
+                                            <label class="drpdwn-label" style="margin-left: 33px!important;">120 Days+</label>
+                                            <div class="switch round blue-white-switch">
+                                                <label>
+                                                    @*<%--     Off--%>*@
+                                                    <input type="checkbox" id="chk120Days" />
+                                                    <span class="lever"></span>
+                                                    @*<%--   On--%>*@
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-field col s1">
+                                        <div class="row">
+                                            <input type="text" id="txtCustomDay" AutoCompleteType="None" />
+                                            <label id="Label8" AssociatedControlID="txtCustomDay">Custom Days</label>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="input-field col s2">
+                                        <div class="row">
+                                            <label class="drpdwn-label" style="margin-left: 27px!important;">Custom Days</label>
+                                            <div class="switch round blue-white-switch">
+                                                <label>
+                                                    @*<%--  Off--%>*@
+                                                    <input type="checkbox" id="chkCustomDays" />
+                                                    <span class="lever"></span>
+                                                    @*<%--   On--%>*@
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="srchpane-advanced" style="margin-bottom: 0px!important;">
+            <div class="srchpaneinner">
+                <div class="srchtitle srchtitlecustomwidth" style="padding-left: 15px;">
+                    As of Date
+                </div>
+                <div class="srchinputwrap">
+                    <input type="text" id="txtEndDate" TabIndex="3" class="srchcstm datepicker_mom" MaxLength="50" AutoPostBack="false" />
+                </div>
+
+                <div class="srchinputwrap">
+                    <div class="form-section3">
+                        <div class="input-field col s5">
+                            <div class="row">
+                                <label class="drpdwn-label">Print/Email</label>
+                                <select name="drpPrintEmail" id="drpPrintEmail" class="browser-default selectst selectsml">
+                                    <option Value="All">All</option>
+                                    <option Value="Print">Print</option>
+                                    <option Value="Email">Email</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="srchinputwrap">
+                    <div class="form-section3">
+                        <div class="input-field col s5">
+                            <div class="row">
+                                <select name="rcDepartment" id="rcDepartment" class="browser-default selectst selectsml">
+                                    <option>--Select Department--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="srchinputwrap" id="dvCompanyPermission" style="display: none;">
+                    <div class="form-section3">
+                        <div class="input-field col s5">
+                            <div class="row">
+                                <select name="rcCompany" id="rcCompany" class="browser-default selectst selectsml">
+                                    <option>--Select Company--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="srchinputwrap srchclr btnlinksicon" style="margin-right: 25px!important; margin-left: 10px!important;">
+                    <a ID="btnSearch" CausesValidation="false"><i class="mdi-notification-sync"></i></a>
+                </div>
+            </div>
+            <div class="srchpaneinner" style="margin-bottom: -10px!important;">
+                <div class="input-field col s2" style="margin-left: 12px;">
+                    <div class="checkrow" style="margin-bottom: 18px;">
+                        <span class="css-checkbox">
+                            <input id="chkHideLocation" type="checkbox" name="chkHideLocation" class="css-checkbox">
+                            <label for="chkHideLocation" class="css-label">Hide Location</label>
+                        </span>
+                    </div>
+                </div>
+                <div class="input-field col s2">
+                    <div class="checkrow">
+                        <span class="css-checkbox">
+                            <input id="chkHideDetails" type="checkbox" name="chkHideDetails" class="css-checkbox">
+                            <label for="chkHideDetails" class="css-label">Hide Details</label>
+                        </span>
+                    </div>
+                </div>
+                <div class="input-field col s2">
+                    <div class="checkrow">
+                        <span class="css-checkbox">
+                            <input id="chkHidePartial" type="checkbox" name="chkHidePartial" class="css-checkbox">
+                            <label for="chkHidePartial" class="css-label">Hide Partial Payment</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row" style="display: none;">
+        <div class="srchpane-advanced" style="margin-bottom: 10px!important;">
+            <div class="srchpaneinner" style="margin-bottom: 0px!important;">
+                <div class="form-section-row">
+                    <div class="input-field col s2" style="margin-right: 25px!important;">
+                        <div class="row">
+                            <input type="text" id="txtBalance" AutoCompleteType="None" />
+                            <label id="Label1" AssociatedControlID="txtBalance">Balance</label>
+                        </div>
+                    </div>
+
+                    <div class="input-field col s2" style="margin-right: 25px!important;">
+                        <div class="row">
+                            <input type="text" id="txt030Days" AutoCompleteType="None" />
+                            <label ID="Label2" AssociatedControlID="txt030Days">0-30 Days</label>
+                        </div>
+                    </div>
+
+                    <div class="input-field col s2" style="margin-right: 25px!important;">
+                        <div class="row">
+                            <input type="text" id="txt3160Days" AutoCompleteType="None" />
+                            <label ID="Label3" AssociatedControlID="txt3160Days">31-60 Days</label>
+                        </div>
+                    </div>
+
+                    <div class="input-field col s2" style="margin-right: 25px!important;">
+                        <div class="row">
+                            <input type="text" id="txt6190Days" AutoCompleteType="None" />
+                            <label ID="Label4" AssociatedControlID="txtBalance">61-90 Days</label>
+                        </div>
+                    </div>
+
+                    <div class="input-field col s2" style="margin-right: 25px!important;">
+                        <div class="row">
+                            <input type="text" id="txt91UP" AutoCompleteType="None" />
+                            <label ID="Label5" AssociatedControlID="txt91UP">91 & UP</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col s12 m12 l12">
+            <div class="row">
+                <div class="grid_container">
+                    <div class="form-section-row" style="margin-bottom: 0 !important;">
+                        <div class="srchpaneinner">
+                            <input type="button" id="btnSelectCustomer" CausesValidation="False" Style="display: none;" Text="Button" />
+                            <input type="text" id="txtCustomer" class="srchcstm" onkeydown="return (event.keyCode!=13);" placeholder="Search by Customer and Location..." />
+                        </div>
+                    </div>
+                    <div class="form-section-row" style="margin-bottom: 0 !important;">
+
+                        <div class="RadGrid RadGrid_Material">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<%--Email Sending Logs--%>*@
+    <div class=" accordian-wrap">
+        <div class="col s12 m12 l12">
+            <div class="row">
+                <ul class="collapsible popout collapsible-accordion form-accordion-head" data-collapsible="expandable">
+                    <li id="tbLogs" style="display: block">
+                        <div id="accrdlogs" class="collapsible-header accrd accordian-text-custom"><i class="mdi-content-content-paste"></i>
+                        <label style="float:left;font-size: 15px;">Email History Log</label></div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material">
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end container-->
+
+
+@Html.Hidden("hdnOwnerID", "0")
+@Html.Hidden("hdnLocID", "0")
+@Html.Hidden("hdnCon")
+<input id="hdnPatientId" type="hidden" />
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+<script src="~/MOMUI/Design/js/moment.js"></script>
+<script src="~/MOMUI/Design/js/pikaday.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#addinfo").hide();
+        $(".add-btn-click").click(function () {
+            $("#addinfo").slideToggle('2000', "swing", function () {
+                // Animation complete.
+            });
+
+            if ($(".divbutton-container").height() != 65)
+                $(".divbutton-container").animate({ height: 65 }, 500);
+            else
+                $(".divbutton-container").animate({ height: 180 }, 500);
+        });
+
+
+        $(".link-slide").on('click', function (e) {
+            e.preventDefault();
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $("html, body").stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+
+        $(".dropdown-content.select-dropdown li").on("click", function () {
+            var that = this;
+            setTimeout(function () {
+                if ($(that).parent().hasClass('active')) {
+                    $(that).parent().removeClass('active');
+                    $(that).parent().hide();
+                }
+            }, 100);
+        });
+        //var num = $(this).('td[colspan]').val();//or
+        //alert("H1..." + num);
+        //var span2 = $(this).attr('colspan')
+        //alert("H2.." + span2);
+    });
+</script>
+<script type="text/javascript">
+    function OpenCollectionPop(Owner, Loc) {
+        $("#hdnOwnerID").val(Owner);
+        $("#hdnLocID").val(Loc);
+
+        var oWnd = radopen("CollectionPopup.aspx?o=1 &uid=" + Owner + "&Loc=" + Loc, "#CollectionPopWindow"); //Pass parameter using URL
+        oWnd.show();
+        oWnd.setSize(1010, 620);
+        oWnd.minimize();
+        oWnd.maximize();
+        oWnd.restore();
+        oWnd.center();
+    }
+
+    function OpenCollectionPopNew(Owner, Loc) {
+        var RefIDs = "";
+        $("#RadGrid_Collections").find('tr:not(:first,:last)').each(function () {
+            var $tr = $(this);
+            if ($tr.find('input[type="checkbox"]').prop("checked") == true) {
+                var val = $tr.find('input[id*=hdRef]').val();
+                RefIDs = RefIDs + val + ",";
+            }
+        });
+        var strUrl = "CollectionPopup.aspx?o=1 &uid=" + encodeURIComponent(Owner) + "&Loc=" + encodeURIComponent(Loc) + "&Ref=" + RefIDs;
+        var oWnd = radopen(strUrl, "#CollectionPopWindow"); //Pass parameter using URL
+        oWnd.show();
+        oWnd.setSize(1010, 620);
+        oWnd.minimize();
+        oWnd.maximize();
+        oWnd.restore();
+        oWnd.center();
+    }
+</script>
+<script type="text/javascript">
+    function pageLoad(sender, args) {
+
+
+        ///////////// Ajax call for customer auto search ////////////////////
+        var query = "";
+        function dtaa() {
+            this.prefixText = null;
+            this.con = $("#hdnCon").val();
+            this.custID = null;
+        }
+
+        $("#txtCustomer").autocomplete({
+
+            open: function (e, ui) {
+                /* create the scrollbar each time autocomplete menu opens/updates */
+                $(".ui-autocomplete").mCustomScrollbar({
+                    setHeight: 182,
+                    theme: "dark-3",
+                    autoExpandScrollbar: true
+                });
+            },
+            response: function (e, ui) {
+                /* destroy the scrollbar after each search completes, before the menu is shown */
+                $(".ui-autocomplete").mCustomScrollbar("destroy");
+            },
+
+            source: function (request, response) {
+
+
+                var dtaaa = new dtaa();
+                dtaaa.prefixText = request.term;
+                query = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/GetCustomer",
+                    //data: '{"prefixText":' + JSON.stringify(request.term) + ',"con":' + JSON.stringify(document.getElementById('ctl00_ContentPlaceHolder1_hdnCon').value) + '}',
+                    data: JSON.stringify(dtaaa),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    //                        error: function(result) {
+                    //                            alert("Due to unexpected errors we were unable to load customers");
+                    //                        }
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        var err = eval("(" + XMLHttpRequest.responseText + ")");
+                        alert(err.Message);
+                    }
+                });
+
+            },
+            select: function (event, ui) {
+                $("#txtCustomer").val(ui.item.label);
+                {
+                    $("#hdnOwnerID").val(ui.item.value);
+                    $("#btnSelectCustomer").click();
+                }
+                return false;
+            },
+            focus: function (event, ui) {
+                $("#txtCustomer").val(ui.item.label);
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+
+                var result_item = item.label;
+                var result_desc = item.desc;
+                var result_Prospect = item.prospect;
+                var x = new RegExp('\\b' + query, 'ig'); // notice the escape \ here...
+
+
+                if (query != "") {
+
+                    result_item = result_item.replace(x, function (FullMatch, n) {
+                        return '<span>' + FullMatch + '</span>'
+                    });
+
+                    if (result_desc != null) {
+                        result_desc = result_desc.replace(x, function (FullMatch, n) {
+                            return '<span>' + FullMatch + '</span>'
+                        });
+                    }
+                }
+                var color = '#222';
+                if (result_Prospect != 0) {
+                    display = "inline-block";
+                }
+                else {
+                    display = "none";
+                }
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<span class='auto_item'><i style='display:" + display + ";margin-right:8px;width:auto;color:#1565C0 !important;' class='fas fa-thumbs-up' title='Prospect'></i>" + result_item + "</span> <span class='auto_desc'>" + result_desc + "</span>")
+                    .appendTo(ul);
+            };
+        $("#txtWriteOffDate").pikaday({
+            firstDay: 0,
+            format: 'MM/DD/YYYY',
+            minDate: new Date(1900, 1, 1),
+            maxDate: new Date(2100, 12, 31),
+            yearRange: [1900, 2100]
+        });
+        Materialize.updateTextFields();
+    }
+</script>
+<script>
+
+
+    function cleanUpCurrency(s) {
+
+        var expression = "-";
+
+        //Check if it is in the proper format
+        if (s.match(expression)) {
+            //It matched - strip out - and append parentheses
+            return s.replace("$-", "\($") + ")";
+
+        }
+        else {
+            return s;
+        }
+    }
+</script>
+<script>
+
+    function OpenWriteOffWindow() {
+        var ID = "";
+        var Amount = "";
+        var today = new Date();
+        var isCredit = "";
+        var countcheck = 0;
+        var custID = "";
+        $("#txtWriteOffDate").val(today.toLocaleDateString("en-US"));
+
+        $("#txtDescription").val("");
+        $("#txtInvoiceWriteOff").val("");
+        $("#txtWriteOffAmount").val("");
+        $("#txtWriteOffCust").val("");
+        $("#txtWriteOffLoc").val("");
+
+        $("#txtWriteOffCustID").val("");
+        $("#RadGrid_Collections").find('tr:not(:first,:last)').each(function () {
+            var $tr = $(this);
+            $tr.find('input[type="checkbox"]:first:checked').each(function (index, value) {
+                // debugger
+                if (countcheck == 0) {
+                    ID = $tr.find('input[id*=hdRef]').val();
+                    Amount = $tr.find('input[id*=hdnPrevDue]').val();
+                    isCredit = $tr.find('input[id*=hdType]').val();
+                    custID = $tr.find('input[id*=hdLocID]').val();
+                    countcheck = 1;
+                }
+            });
+        });
+
+        if (ID != "") {
+            if (isCredit != 1) {
+                noty({
+                    text: 'Please select a invoice',
+                    type: 'warning',
+                    layout: 'topCenter',
+                    closeOnSelfClick: false,
+                    timeout: false,
+                    theme: 'noty_theme_default',
+                    closable: true
+                });
+                return false;
+            } else {
+                var str = "Are you sure you want to write off this item in the amount off $" + cleanUpCurrency('$' + parseFloat(Amount).toLocaleString("en-US", { minimumFractionDigits: 2 })) + " ?";
+                if (confirm(str)) {
+                    $("#txtInvoiceWriteOff").val(ID);
+                    $("#txtWriteOffCustID").val(custID);
+                    $("#txtWriteOffAmount").val(parseFloat(Amount).toLocaleString("en-US", { minimumFractionDigits: 2 }));
+                    var wnd = $find("#RadWindowWriteOff").val();
+                    wnd.Show();
+                    Materialize.updateTextFields();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+
+
+    }
+
+
+    function CloseWriteOffWindow() {
+        var wnd = $find("#RadWindowWriteOff").val();
+        wnd.Close();
+    }
+
+
+
+</script>

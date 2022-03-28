@@ -1,0 +1,943 @@
+{
+  "ReportVersion": "2018.2.3.0",
+  "ReportGuid": "b89a45376c62427cbcb54c3ad3f0cc41",
+  "ReportName": "Report",
+  "ReportAlias": "Report",
+  "ReportCreated": "/Date(91800000+0700)/",
+  "ReportChanged": "/Date(1556785898337+0700)/",
+  "EngineVersion": "EngineV2",
+  "CalculationMode": "Interpretation",
+  "ReportUnit": "Inches",
+  "Script": "using System;\r\nusing System.Drawing;\r\nusing System.Windows.Forms;\r\nusing System.Data;\r\nusing Stimulsoft.Controls;\r\nusing Stimulsoft.Base.Drawing;\r\nusing Stimulsoft.Report;\r\nusing Stimulsoft.Report.Dialogs;\r\nusing Stimulsoft.Report.Components;\r\n\r\nnamespace Reports\r\n{\r\n    public class Report : Stimulsoft.Report.StiReport\r\n    {\r\n        public Report()        {\r\n            this.InitializeComponent();\r\n        }\r\n\r\n        #region StiReport Designer generated code - do not modify\r\n\t\t#endregion StiReport Designer generated code - do not modify\r\n    }\r\n}\r\n",
+  "Styles": {
+    "0": {
+      "Ident": "StiChartStyle",
+      "Name": "Style1",
+      "Border": ";;;;;;;solid:0,0,0",
+      "Brush": "solid:",
+      "BrushType": "Solid",
+      "StyleColors": {
+        "0": "237,125,49",
+        "1": "255,192,0",
+        "2": "91,155,213",
+        "3": "67,104,43",
+        "4": "38,68,120",
+        "5": "153,115,0"
+      },
+      "ChartAreaBrush": "solid:255,255,255",
+      "SeriesLabelsBrush": "solid:255,255,255",
+      "SeriesLabelsBorderColor": "140,140,140",
+      "LegendBrush": "solid:255,255,255",
+      "LegendBorderColor": "DimGray",
+      "LegendTitleColor": "DimGray",
+      "InterlacingHorBrush": "solid:10,155,155,155",
+      "InterlacingVertBrush": "solid:10,155,155,155",
+      "GridLinesHorColor": "100,105,105,105",
+      "GridLinesVertColor": "100,105,105,105"
+    }
+  },
+  "ReferencedAssemblies": {
+    "0": "System.Dll",
+    "1": "System.Drawing.Dll",
+    "2": "System.Windows.Forms.Dll",
+    "3": "System.Data.Dll",
+    "4": "System.Xml.Dll",
+    "5": "Stimulsoft.Controls.Dll",
+    "6": "Stimulsoft.Base.Dll",
+    "7": "Stimulsoft.Report.Dll"
+  },
+  "Dictionary": {
+    "Variables": {
+      "0": {
+        "Name": "Username",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "Username",
+        "Type": "System.String"
+      },
+      "1": {
+        "Name": "StartDate",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "StartDate",
+        "Type": "System.Nullable`1[System.DateTime]"
+      },
+      "2": {
+        "Name": "EndDate",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "EndDate",
+        "Type": "System.Nullable`1[System.DateTime]"
+      }
+    },
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "CompanyDetails",
+        "Alias": "CompanyDetails",
+        "Columns": {
+          "0": {
+            "Name": "CompanyName",
+            "Index": -1,
+            "NameInSource": "CompanyName",
+            "Alias": "CompanyName",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "CompanyAddress",
+            "Index": -1,
+            "NameInSource": "CompanyAddress",
+            "Alias": "CompanyAddress",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "City",
+            "Index": -1,
+            "NameInSource": "City",
+            "Alias": "City",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "State",
+            "Index": -1,
+            "NameInSource": "State",
+            "Alias": "State",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Zip",
+            "Index": -1,
+            "NameInSource": "Zip",
+            "Alias": "Zip",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "ContactNo",
+            "Index": -1,
+            "NameInSource": "ContactNo",
+            "Alias": "ContactNo",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "Email",
+            "Index": -1,
+            "NameInSource": "Email",
+            "Alias": "Email",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "Fax",
+            "Index": -1,
+            "NameInSource": "Fax",
+            "Alias": "Fax",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "LogoURL",
+            "Index": -1,
+            "NameInSource": "LogoURL",
+            "Alias": "LogoURL",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "Phone",
+            "Index": -1,
+            "NameInSource": "Phone",
+            "Alias": "Phone",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "CompanyDetails"
+      },
+      "1": {
+        "Ident": "StiDataTableSource",
+        "Name": "ReportData",
+        "Alias": "ReportData",
+        "Columns": {
+          "0": {
+            "Name": "ActualHours",
+            "Index": -1,
+            "NameInSource": "ActualHours",
+            "Alias": "ActualHours",
+            "Type": "System.Double"
+          },
+          "1": {
+            "Name": "Address",
+            "Index": -1,
+            "NameInSource": "Address",
+            "Alias": "Address",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "City",
+            "Index": -1,
+            "NameInSource": "City",
+            "Alias": "City",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "EquipCount",
+            "Index": -1,
+            "NameInSource": "EquipCount",
+            "Alias": "EquipCount",
+            "Type": "System.Int32"
+          },
+          "4": {
+            "Name": "Job",
+            "Index": -1,
+            "NameInSource": "Job",
+            "Alias": "Job",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "Loc",
+            "Index": -1,
+            "NameInSource": "Loc",
+            "Alias": "Loc",
+            "Type": "System.Int32"
+          },
+          "6": {
+            "Name": "LocID",
+            "Index": -1,
+            "NameInSource": "LocID",
+            "Alias": "LocID",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "MonthlyHours",
+            "Index": -1,
+            "NameInSource": "MonthlyHours",
+            "Alias": "MonthlyHours",
+            "Type": "System.Double"
+          },
+          "8": {
+            "Name": "RouteName",
+            "Index": -1,
+            "NameInSource": "RouteName",
+            "Alias": "RouteName",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "State",
+            "Index": -1,
+            "NameInSource": "State",
+            "Alias": "State",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "Tag",
+            "Index": -1,
+            "NameInSource": "DefaultWorker",
+            "Alias": "Tag",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "Zip",
+            "Index": -1,
+            "NameInSource": "Zip",
+            "Alias": "Zip",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "MechName",
+            "Index": -1,
+            "NameInSource": "MechName",
+            "Alias": "MechName",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "ReportData"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "b45e5a3fe5f844e7a1c4e6b6f9f19044",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;;;;solid:Black",
+      "Brush": "solid:White",
+      "Components": {
+        "0": {
+          "Ident": "StiPageHeaderBand",
+          "Name": "PageHeaderBand1",
+          "Guid": "61e7b1b0ab6d445a9771dfe2d594e0e4",
+          "PrintOn": "OnlyFirstPage",
+          "ClientRectangle": "0,0.2,8.1,0.75",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": "Bottom;;2;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text15",
+              "Guid": "bca8d047ef9745259b22b30a8ae59c95",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,3.81,0.26",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "MONTHLY RECURRING HOURS BY ROUTE / AREA"
+              },
+              "VertAlignment": "Center",
+              "Font": ";11;Bold;",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text21",
+              "Guid": "bf374c3e2dbb4e34bbea282d84d50160",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.8,0,4.3,0.26",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.CompanyName}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";11;Bold;",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "DataColumn"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text23",
+              "Guid": "358760f4f29148cfaf40758e1085a225",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.1,0.26,4,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.CompanyAddress}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "DataColumn"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text25",
+              "Guid": "10a0cae8758d4107b90efece03ec3581",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.1,0.43,4,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.City}, {CompanyDetails.State} {CompanyDetails.Zip}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text10",
+              "Guid": "15059dcbed1c43e5ba6c8acad0e60cae",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.53,3.61,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Printed On {Format(\"{0:MM/dd/yyyy}\", Time)} By {Username}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text17",
+              "Guid": "d1f3f0f6c6394f5584e48f3fc78e6852",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.36,3.61,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "For the period starting {Format(\"{0:MM/dd/yyyy}\", StartDate)} and ending {Format(\"{0:MM/dd/yyyy}\", EndDate)}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            }
+          }
+        },
+        "1": {
+          "Ident": "StiPageFooterBand",
+          "Name": "PageFooterBand1",
+          "ClientRectangle": "0,10.45,8.1,0.15",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text2",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.9,0,1.2,0.15",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{PageNofM}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Bottom",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text27",
+              "Guid": "c49d551e180d4bac91027bbcb66b4a84",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,1.5,0.15",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Mobile Office Manager"
+              },
+              "VertAlignment": "Bottom",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        },
+        "2": {
+          "Ident": "StiGroupHeaderBand",
+          "Name": "GroupHeaderBand1",
+          "ClientRectangle": "0,1.35,8.1,0.7",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text8",
+              "Guid": "8b8b4f3b94fc4a28b085a71c0ef248f3",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.4,2.5,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Location Address"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text9",
+              "Guid": "9d676140ae8243c59ba23429ea03884a",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "2.5,0.4,1.4,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Account #"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text11",
+              "Guid": "803420a8decf40c0b99438a454820ef9",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.9,0.4,0.8,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Contract #"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text18",
+              "Guid": "123b74bd2d1044a1a51854c55b095013",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.7,0.4,0.8,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Equipment "
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text19",
+              "Guid": "80b97e28c2f642b2a53ff85108c4170e",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.5,0.4,1,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Required Monthly Hours"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text20",
+              "Guid": "8bbc7cf03fa64611ac97bf2768fbb6d0",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.5,0.4,0.8,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Actual Hours"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text22",
+              "Guid": "0bf7c0261d654c66a8da6637b453c283",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.3,0.4,0.8,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Difference"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text24",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.05,2.8,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.RouteName}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";12;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "DataColumn"
+            }
+          },
+          "NewColumnBefore": true,
+          "Condition": {
+            "Value": "{ReportData.RouteName}"
+          }
+        },
+        "3": {
+          "Ident": "StiDataBand",
+          "Name": "DataReportData",
+          "ClientRectangle": "0,2.45,8.1,0.25",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "DataReportData_Section",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.7,0,0.8,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.EquipCount}"
+              },
+              "CanBreak": true,
+              "HorAlignment": "Right",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 0.0,
+                "Right": 0.0,
+                "Top": 4.0,
+                "Bottom": 2.0
+              },
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "DecimalDigits": 0,
+                "GroupSeparator": ",",
+                "UseLocalSetting": false
+              },
+              "Type": "DataColumn"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "DataReportData_Name",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.5,0,1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.MonthlyHours}"
+              },
+              "CanBreak": true,
+              "HorAlignment": "Right",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 0.0,
+                "Right": 0.0,
+                "Top": 4.0,
+                "Bottom": 2.0
+              },
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 0,
+                "DecimalSeparator": "",
+                "GroupSeparator": "",
+                "GroupSize": 0
+              },
+              "Type": "DataColumn"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "DataReportData_fDesc",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.5,0,0.8,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.ActualHours}"
+              },
+              "CanBreak": true,
+              "HorAlignment": "Right",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 0.0,
+                "Right": 0.0,
+                "Top": 4.0,
+                "Bottom": 2.0
+              },
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 0,
+                "DecimalSeparator": "",
+                "GroupSeparator": "",
+                "GroupSize": 0
+              },
+              "Type": "DataColumn"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "DataReportData_Lastdate",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.3,0,0.8,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.ActualHours - ReportData.MonthlyHours}"
+              },
+              "CanBreak": true,
+              "HorAlignment": "Right",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 0.0,
+                "Right": 0.0,
+                "Top": 4.0,
+                "Bottom": 2.0
+              },
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 0,
+                "DecimalSeparator": "",
+                "GroupSeparator": "",
+                "GroupSize": 0
+              },
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text14",
+              "Guid": "a666d979bd8941d28862f2c0c134fff2",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,2.5,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.Address}, {ReportData.City}, {ReportData.State} {ReportData.Zip}"
+              },
+              "CanBreak": true,
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 0.0,
+                "Right": 0.0,
+                "Top": 4.0,
+                "Bottom": 2.0
+              },
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text16",
+              "Guid": "7ec4b07dc56946a993ea34e33dffcc00",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "2.5,0,1.4,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.LocID}"
+              },
+              "CanBreak": true,
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 0.0,
+                "Right": 0.0,
+                "Top": 4.0,
+                "Bottom": 2.0
+              },
+              "Type": "DataColumn"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text7",
+              "Guid": "750a9ce5076c4f3f8ac56364a49cf075",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.9,0,0.8,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.Job}"
+              },
+              "CanBreak": true,
+              "HorAlignment": "Right",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 0.0,
+                "Right": 0.0,
+                "Top": 4.0,
+                "Bottom": 2.0
+              },
+              "Type": "DataColumn"
+            }
+          },
+          "DataSourceName": "ReportData",
+          "Sort": {
+            "0": "ASC",
+            "1": "Address",
+            "2": "ASC",
+            "3": "City",
+            "4": "ASC",
+            "5": "State"
+          }
+        }
+      },
+      "PaperSize": "Letter",
+      "PageWidth": 8.5,
+      "PageHeight": 11.0,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      },
+      "Margins": {
+        "Left": 0.2,
+        "Right": 0.2,
+        "Top": 0.2,
+        "Bottom": 0.2
+      },
+      "ReportUnit": {
+        "Ident": "StiInchesUnit"
+      }
+    }
+  }
+}

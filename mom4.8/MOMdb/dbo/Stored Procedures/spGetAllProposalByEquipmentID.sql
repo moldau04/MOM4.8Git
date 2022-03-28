@@ -1,0 +1,25 @@
+﻿CREATE PROCEDURE [dbo].[spGetAllProposalByEquipmentID]
+@EquipmentID int
+AS
+select 
+[ID]
+      ,[LocID]
+      ,[Classification]
+      ,[FileName]
+      ,[FilePath]
+      ,[PdfFilePath]
+      ,[FromDate]
+      ,[ToDate]
+      ,[AddedBy]
+      ,[AddedOn]
+      ,[UpdatedBy]
+      ,[UpdatedOn]
+      ,[Type]
+      ,[Status]
+      ,[SendFrom]
+	,[SendTo] 
+	,[SendOn]
+      ,[ListEquipment]
+	  ,[YearProposal]
+	  from [ProposalForm]
+where @EquipmentID in (select item from SplitString(ListEquipment,','))

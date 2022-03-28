@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ED63917E-9A18-4AE4-B88F-08C157C1F1C9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BusinessLayer</RootNamespace>
+    <AssemblyName>BusinessLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AuthorizeNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AuthorizeNet.2.0.2\lib\AuthorizeNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DocX">
+      <HintPath>..\packages\DocX.1.0.0.22\lib\net40\DocX.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Spire.Doc, Version=5.7.0.54020, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MSWeb\Libraries\Spire.Doc.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.License, Version=1.3.5.20, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MSWeb\Libraries\Spire.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=3.7.291.54020, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MSWeb\Libraries\Spire.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Billing\BL_InvoiceBillCodes.cs" />
+    <Compile Include="BL_AccountType.cs" />
+    <Compile Include="BL_Budgets.cs" />
+    <Compile Include="BL_Collection.cs" />
+    <Compile Include="BL_OnlinePayment.cs" />
+    <Compile Include="BL_UserCustom.cs" />
+    <Compile Include="Payroll\BL_Wage.cs" />
+    <Compile Include="Programs\BL_Company.cs" />
+    <Compile Include="BL_Contact.cs" />
+    <Compile Include="BL_EmailLog.cs" />
+    <Compile Include="BL_EstimateForm.cs" />
+    <Compile Include="BL_EstimateTemplate.cs" />
+    <Compile Include="BL_Lead.cs" />
+    <Compile Include="BL_Location.cs" />
+    <Compile Include="Common\BL_MapData.cs" />
+    <Compile Include="BL_Planner.cs" />
+    <Compile Include="BL_STax.cs" />
+    <Compile Include="BL_Test.cs" />
+    <Compile Include="BL_Alerts.cs" />
+    <Compile Include="Financials\BL_BankAccount.cs" />
+    <Compile Include="AP\BL_Bills.cs" />
+    <Compile Include="Financials\BL_Chart.cs" />
+    <Compile Include="BL_Contracts.cs" />
+    <Compile Include="Customer\BL_Customer.cs" />
+    <Compile Include="BL_Deposit.cs" />
+    <Compile Include="Common\BL_General.cs" />
+    <Compile Include="BL_GLARecur.cs" />
+    <Compile Include="BL_EstimateCalculation.cs" />
+    <Compile Include="Inventory\BL_Inventory.cs" />
+    <Compile Include="Billing\BL_Invoice.cs" />
+    <Compile Include="BL_Job.cs" />
+    <Compile Include="Financials\BL_JournalEntry.cs" />
+    <Compile Include="Reports\BL_Report.cs" />
+    <Compile Include="Reports\BL_ReportsData.cs" />
+    <Compile Include="BL_TimeCard.cs" />
+    <Compile Include="Programs\BL_User.cs" />
+    <Compile Include="AP\BL_Vendor.cs" />
+    <Compile Include="Programs\BL_ServiceType.cs" />
+    <Compile Include="Project\BL_Project.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Purchasing\BL_PO.cs" />
+    <Compile Include="Schedule\BL_Tickets.cs" />
+    <Compile Include="Utility\BL_Utility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessEntity\BusinessEntity.csproj">
+      <Project>{200EB34E-61C4-4522-A273-B2E8A481145E}</Project>
+      <Name>BusinessEntity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataLayer\DataLayer.csproj">
+      <Project>{E7E5F494-2EF3-43A4-8978-0AF50FE34D0A}</Project>
+      <Name>DataLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Localization\ar.xml" />
+    <Content Include="Localization\be.xml" />
+    <Content Include="Localization\bg.xml" />
+    <Content Include="Localization\ca-ES.xml" />
+    <Content Include="Localization\cs.xml" />
+    <Content Include="Localization\de.ext.xml" />
+    <Content Include="Localization\de.xml" />
+    <Content Include="Localization\el-GR.xml" />
+    <Content Include="Localization\en-GB.xml" />
+    <Content Include="Localization\en.ext.xml" />
+    <Content Include="Localization\en.xml" />
+    <Content Include="Localization\es.xml" />
+    <Content Include="Localization\eu-ES.xml" />
+    <Content Include="Localization\fa.xml" />
+    <Content Include="Localization\fr.ext.xml" />
+    <Content Include="Localization\fr.xml" />
+    <Content Include="Localization\gl-ES.xml" />
+    <Content Include="Localization\hr.xml" />
+    <Content Include="Localization\hu.xml" />
+    <Content Include="Localization\id.xml" />
+    <Content Include="Localization\it.xml" />
+    <Content Include="Localization\ka.xml" />
+    <Content Include="Localization\Lt-sr-SP.xml" />
+    <Content Include="Localization\lt.xml" />
+    <Content Include="Localization\nb-NO.xml" />
+    <Content Include="Localization\nl.xml" />
+    <Content Include="Localization\pl.xml" />
+    <Content Include="Localization\pt-BR.xml" />
+    <Content Include="Localization\pt.xml" />
+    <Content Include="Localization\ro.xml" />
+    <Content Include="Localization\ru.ext.xml" />
+    <Content Include="Localization\ru.xml" />
+    <Content Include="Localization\sk.xml" />
+    <Content Include="Localization\sv.ext.xml" />
+    <Content Include="Localization\sv.xml" />
+    <Content Include="Localization\tr.xml" />
+    <Content Include="Localization\uk.xml" />
+    <Content Include="Localization\zh-CHS.xml" />
+    <Content Include="Localization\zh-CHT.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Recurring\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

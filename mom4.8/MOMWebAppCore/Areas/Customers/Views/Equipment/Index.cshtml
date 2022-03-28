@@ -1,0 +1,617 @@
+﻿@{
+    ViewData["Title"] = "List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+<script type="text/javascript">
+    function AddEquipmentClick(hyperlink) {
+        var id = $("#hdnAddeEquipment").val();
+        if (id == "Y") {
+            return true;
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }   
+    }
+    function EditEquipmentClick(hyperlink) {
+
+        var id =$("#hdnEditeEquipment").val();
+        if (id == "Y") { return true; } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function DeleteEquipmentClick(hyperlink) {
+        var id =$("#hdnDeleteEquipment").val();
+        if (id == "Y") {
+            return SelectedRowDelete('ctl00_ContentPlaceHolder1_gvEquip', 'Equipment');
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function CopyEquipmentClick(hyperlink) {
+        var id =$("#hdnAddeEquipment").val();
+        if (id == "Y") {
+            return true;
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        debugger;
+        //$("#dynamicUI li").remove();
+        //$(reports).each(function (index, report) {
+
+
+        //    $("#ctl00_ContentPlaceHolder1_dynamicUI").append('<li><a href="EquipmentReport.aspx?reportId=' + report.ReportId + '&reportName=' + report.ReportName + '&type=Equipment"> ' + report.ReportName + '</a></li>')
+
+
+
+        //});
+    });
+</script>
+
+
+<!--start container-->
+
+<div class="divbutton-container">
+    <div id="divButtons" class="">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-communication-contacts"></i>&nbsp;Euipment</div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a ID="lnkAddnew" ToolTip="Add New" onclick='return AddEquipmentClick(this)' href="@Url.Action("Index","AddEquipment")">Add</a>
+
+                                    </div>
+
+                                    <div class="btnlinks">
+                                        <a ID="btnEdit" ToolTip="Edit" onclick='return EditEquipmentClick(this)' >Edit</a>
+                                    </div>
+
+                                    <div class="btnlinks menuAction">
+                                        <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                            Actions
+                                        </a>
+                                    </div>
+                                    <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="btnCopy" ToolTip="Copy" onclick='return CopyEquipmentClick(this)'>Copy</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="btnDelete" ToolTip="Delete" onclick='return DeleteEquipmentClick(this)'>Delete</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkExcel">Export to Excel</a>
+
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <div class="btnlinks">
+                                                <a class="dropdown-button" data-beloworigin="true" href="#!" data-activates="dynamicUI" id="printbtn">
+                                                    Reports
+                                                </a>
+                                            </div>
+                                            <ul id="dynamicUI" class="dropdown-content">
+                                                <li>
+                                                    <a href="EquipmentReport.aspx?type=Equipment">Add New Report</a>
+                                                </li>
+                                                <li>
+                                                    <a href="EquipmentShutdownReport.aspx?type=0">Equipment Shut Down Report</a>
+                                                </li>
+                                                <li>
+                                                    <a href="EquipmentShutdownReport.aspx?type=1&filtered=1">Equipment Shut Down Activity Report</a>
+                                                  
+                                                </li>
+                                                <li>
+                                                    <a href="MaintenanceEquipmentCount.aspx">Maintenance Equipment Count Report</a>
+                                                </li>
+                                                <li>
+                                                    <a href="PastDueMCPReport.aspx?redirect=Equipments.aspx">Past Due MCP Report</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+
+
+
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a href="~/dashboard/home/index" class="mdi-content-clear" id="lnkClose" title="Close"><i></i></a>
+                                </div>                                <div class="rght-content">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="tblnks-advanced">
+                        <ul class="anchor-links">
+                            <li><a class="add-btn-click">Advanced Search</a></li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        @*--ADVANCED SEARCH DROPDOWN--*@
+        <div id="stats" style="background-color: #fff !important;">
+            <div id="addinfo" class="form-section-row infoDiv" style="background-color: #fff; padding: 10px !important; border-radius: 4px !important; box-shadow: 0 0 6px #ccc !important;">
+                <div class="form-section-row">
+                    <div ID="updPanelAdvSrch">
+                        <div>
+                            <div class="form-sectioncustom1">
+                                <div class="section-ttle">Search Criteria</div>
+                                <div class="collapse_wrap">
+                                    <div class="form-collapsewrap1">
+                                        <div class="form_collapserow">
+                                            <div class="form_collapsehalf1">
+                                                <div class="input-field col s12">
+                                                    <label class="drpdwn-label">Status</label>
+                                                    
+                                                    <select name="ddlFilterStatus" id="ddlFilterStatus" class="browser-default">
+                                                        <option Value="-1">All</option>
+                                                        <option Value="0">Active</option>
+                                                        <option Value="1">Inactive</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form_collapsehalf2">
+                                                <div class="input-field col s12">
+                                                    <label class="drpdwn-label">
+                                                        <label id="lblType"></label>
+                                                    </label>
+                                                   
+                                                    <select name="ddlFilterType" id="ddlFilterType" class="browser-default">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form_collapserow">
+                                            <div class="input-field col s12">
+                                                <label class="drpdwn-label">
+                                                    <label id="lblCategory"></label>
+                                                </label>
+                                               
+                                                <select name="ddlFilterCategory" id="ddlFilterCategory" class="browser-default">
+                                                    <option>Select</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <label class="drpdwn-label">
+                                                    <label id="lblClassification"></label>
+                                                </label>
+                                                
+                                                <select name="ddlFilterClassification" id="ddlFilterClassification" class="browser-default">
+                                                    <option>Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form_collapserow">
+                                            <div class="input-field col s12">
+                                                <label class="drpdwn-label">
+                                                    <label id="lblBuilding"></label>
+                                                </label>
+                                                
+                                                <select name="ddlBuilding" id="ddlBuilding" class="browser-default">
+                                                    <option>Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-collapsewrap2">
+                                        <div class="form_collapserow">
+                                            <div class="input-field col s12">
+                                                <label>Manufacturer</label>
+                                                <input type="text" id="txtManufact" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form_collapserow">
+                                            <div class="form_collapsehalf1">
+                                                <div class="form_collapsehalf1a">
+                                                    <div class="form_collapsehalf1alabel">
+                                                        <div class="input-field col s12">
+                                                            Last Service Date
+                                                        </div>
+                                                    </div>
+                                                    <div class="form_collapsehalf11a">
+                                                        <div class="form_collapsehalf11half">
+                                                            <div class="input-field col s12">
+                                                                <select name="ddlcompare" id="ddlcompare" class="browser-default">
+                                                                    <option Value="0">=</option>
+                                                                    <option Value="1">>=</option>
+                                                                    <option Value="2"><=</option>
+                                                                    <option Value="3">></option>
+                                                                    <option Value="4"><</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form_collapsehalf22half">
+                                                            <div class="input-field col s12">
+
+                                                                <input type="text" id="txtLastServiceDt" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="form_collapsehalf2">
+                                                <div class="form_collapsehalf1b">
+                                                    <div class="form_collapsehalf1alabel">
+                                                        <div class="input-field col s12">
+                                                            Install Date
+                                                        </div>
+                                                    </div>
+                                                    <div class="form_collapsehalf11a">
+                                                        <div class="form_collapsehalf11half">
+                                                            <div class="input-field col s12">
+                                                              
+                                                                <select name="ddlComareI" id="ddlComareI" class="browser-default">
+                                                                    <option Value="0">=</option>
+                                                                    <option Value="1">>=</option>
+                                                                    <option Value="2"><=</option>
+                                                                    <option Value="3">></option>
+                                                                    <option Value="4"><</option>
+                                                                </select>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form_collapsehalf22half">
+                                                            <div class="input-field col s12">
+                                                                <input type="text" id="txtInstallDt" />
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form_collapserow">
+                                            <div class="form_collapsehalf1b">
+                                                <div class="form_collapsehalf1alabel">Price</div>
+                                                <div class="form_collapsehalf11a">
+                                                    <div class="form_collapsehalf11half">
+                                                        <div class="input-field col s12">
+                                                            <select name="ddlCompareP" id="ddlCompareP" class="browser-default">
+                                                                <option Value="0">=</option>
+                                                                <option Value="1">&gt;=</option>
+                                                                <option Value="2">&lt;=</option>
+                                                                <option Value="3">&gt;</option>
+                                                                <option Value="4">&lt;</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form_collapsehalf22half">
+                                                        <div class="input-field col s12">
+                                                            <input type="text" id="txtPrice" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="form-sectioncustom2">
+                                <div class="section-ttle">Stats</div>
+                                <div class="collapse_wrap">
+                                    <div class="nearest-wrap">
+                                        <div class="nearest-head">
+                                            <span class="worker-name"><b>Contract Type:</b></span>
+                                            <span class="nearest-time">Personal</span>
+                                        </div>
+                                    </div>
+                                    <div class="nearest-wrap">
+                                        <div class="nearest-head">
+                                            <span class="worker-name"><b># of Calls on Avg:</b></span>
+                                            <span class="nearest-time">45</span>
+                                        </div>
+                                    </div>
+                                    <div class="nearest-wrap">
+                                        <div class="nearest-head">
+                                            <span class="worker-name"><b>Random Info #1</b></span>
+                                            <span class="nearest-time">Random</span>
+                                        </div>
+                                    </div>
+                                    <div class="nearest-wrap">
+                                        <div class="nearest-head">
+                                            <span class="worker-name"><b>Random Info #2</b></span>
+                                            <span class="nearest-time">Random</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="srchpane-advanced">
+
+            <div class="srchtitle srchtitlecustomwidth" style="padding-left: 15px;">
+                Search
+            </div>
+            <div class="srchinputwrap">
+                <select name="ddlSearch" id="ddlSearch" class="browser-default selectst" onchange="showFilterSearch();">
+                    <option Value="">Select</option>
+                    <option Value="e.Unit">Name</option>
+                    <option Value="e.type">Type</option>
+                    <option Value="e.fdesc">Description</option>
+                    <option Value="e.Cat">Service Type</option>
+                    <option Value="e.Status">Status</option>
+                    <option Value="r.name">Customer</option>
+                    <option Value="l.id">Location ID</option>
+                    <option Value="l.tag">Location</option>
+                    <option Value="address">Address</option>
+                    <option Value="B.Name">Company</option>
+                    <option Value="l.state">State</option>
+                    <option Value="e.Serial">Serial #</option>
+                    <option Value="e.state">Unique #</option>
+                </select>
+            </div>
+
+
+            <div class="srchinputwrap">
+                <select name="rbStatus" id="rbStatus" class="browser-default selectst"
+                                  Style="display: none">
+                    <option Value="0">Active</option>
+                    <option Value="1">Inactive</option>
+                </select>
+                <select name="ddlType" id="ddlType" class="browser-default selectst" Style="display: none">
+                </select>
+
+                <select name="ddlServiceType" id="ddlServiceType" class="browser-default selectst"
+                                  Style="display: none">
+                </select>
+                <select name="ddlCompany" id="ddlCompany" class="browser-default selectst"
+                                  Style="display: none">
+                </select>
+                <input type="text" id="txtSearch" class="srchcstm" placeholder="Search..." />
+
+
+            </div>
+            <div class="srchinputwrap srchclr btnlinksicon" style="margin-left: -10px; margin-top: -2px;">
+                <a ID="lnkSearch" CausesValidation="false" ToolTip="Search"> <i class="mdi-action-search"></i></a>
+            </div>
+
+            <div class="col lblsz2 lblszfloat">
+                <div class="row">
+                    <div class="trobtns">
+                        <span class="tro btnlinks">
+                            <a ID="lnkQRCode">QR Codes</a>
+                        </span>
+                        <span class="tro btnlinks">
+                            <a ID="lnkMassMCP">Mass MCP</a>
+                        </span>
+                    </div>
+
+                    <span class="tro trost">
+                        <input type="checkbox" id="lnkChk" />
+                        <label for="lnkChk" class="css-checkbox">Incl. Inactive</label><br>
+                    </span>
+                    <span class="tro trost">
+                        <a ID="lnkShowAll" onclick="clearShowAll();">Show All </a>
+
+                    </span>
+                    <span class="tro trost">
+                        <a ID="lblRecordCount" style="font-size:14px!important;font-weight:900;">Record(s) found</a>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="row">
+    </div>
+    <div class="grid_container">
+    </div>
+</div>
+<!-- Hidden Field -->
+@Html.Hidden("hdnAddeEquipment", "Y")
+@Html.Hidden("hdnEditeEquipment", "Y")
+@Html.Hidden("hdnDeleteEquipment", "Y")
+@Html.Hidden("hdnViewEquipment", "Y")
+
+<!--end container-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+<script src="~/MOMUI/Design/js/moment.js"></script>
+<script src="~/MOMUI/Design/js/pikaday.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        debugger;
+        $("#addinfo").hide();
+        $(".add-btn-click").click(function () {
+
+            $("#addinfo").slideToggle('2000', "swing", function () {
+                // Animation complete.
+
+            });
+
+            if ($(".divbutton-container").height() != 65)
+                $(".divbutton-container").animate({ height: 65 }, 500);
+            else
+                $(".divbutton-container").animate({ height: 350 }, 500);
+
+
+        });
+
+
+        $(".link-slide").on('click', function (e) {
+            e.preventDefault();
+
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $("html, body").stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $('#divButtons').addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $('#divButtons').removeClass('fixed-header');
+            }
+        });
+
+        $(".dropdown-content.select-dropdown li").on("click", function () {
+            var that = this;
+            setTimeout(function () {
+                if ($(that).parent().hasClass('active')) {
+                    $(that).parent().removeClass('active');
+                    $(that).parent().hide();
+                }
+            }, 100);
+        });
+
+    });
+
+    var picker = new Pikaday(
+        {
+            field:$("#ctl00_ContentPlaceHolder1_txtLastServiceDt").val(),
+            firstDay: 0,
+            format: 'MM/DD/YYYY',
+            minDate: new Date(2000, 1, 1),
+            maxDate: new Date(2020, 12, 31),
+            yearRange: [2000, 2020]
+        });
+</script>
+
+<script>
+    var picker = new Pikaday(
+        {
+            field: $("#ctl00_ContentPlaceHolder1_txtInstallDt").val(),
+            firstDay: 0,
+            format: 'MM/DD/YYYY',
+            minDate: new Date(2000, 1, 1),
+            maxDate: new Date(2020, 12, 31),
+            yearRange: [2000, 2020]
+        });
+
+    function showFilterSearch() {
+        var ddlSearch = $("#ddlSearch").val();
+        var ddlServiceType = $("#ddlServiceType").val();
+        var ddlType = $("#ddlType").val();
+        var ddlStatus = $("#rbStatus").val();
+        var txtSearch = $("#txtSearch").val();
+        var ddlCompany = $("#ddlCompany").val();
+
+
+        $("#ddlServiceType").css("display", "none");
+        $("#ddlType").css("display", "none");
+        $("#rbStatus").css("display", "none");
+        $("#ddlCompany").css("display", "none");
+        $("#txtSearch").css("display", "none");
+        $("#txtSearch").val("");
+
+        if (ddlSearch === "e.type") {
+            $("#ddlType").css("display", "block");
+        }
+        else if (ddlSearch === "e.Cat") {
+            $("#ddlServiceType").css("display", "block");
+        }
+        else if (ddlSearch === "e.Status") {
+            $("#rbStatus").css("display", "block");
+        } else if (ddlSearch === "B.Name") {
+            $("#ddlCompany").css("display", "block");
+        }
+        else {
+            $("#txtSearch").css("display", "block");
+
+        }
+        try {
+            ddlType.get(0).selectedIndex = 0;
+            ddlServiceType.get(0).selectedIndex = 0;
+            ddlStatus.get(0).selectedIndex = 0;
+            ddlCompany.get(0).selectedIndex = 0;
+        } catch (ex) {
+
+        }
+    }
+    function clearShowAll() {
+        debugger;
+        var ddlSearch = $("#ddlSearch").val();
+        var ddlServiceType = $("#ddlServiceType").val();
+        var ddlType = $("#ddlType").val();
+        var ddlStatus = $("#rbStatus").val();
+        var txtSearch = $("#txtSearch").val();
+        var ddlCompany = $("#ddlCompany").val();
+
+
+        $("#ddlServiceType").css("display", "none");
+        $("#ddlType").css("display", "none");
+        $("#rbStatus").css("display", "none");
+        $("#ddlCompany").css("display", "none");
+         $("#txtSearch").css("display", "block");
+
+         $("#txtSearch").val("");
+
+        try {
+            ddlType.get(0).selectedIndex = 0;
+            ddlServiceType.get(0).selectedIndex = 0;
+            ddlStatus.get(0).selectedIndex = 0;
+            ddlCompany.get(0).selectedIndex = 0;
+        } catch (ex) {
+
+        }
+    }
+</script>

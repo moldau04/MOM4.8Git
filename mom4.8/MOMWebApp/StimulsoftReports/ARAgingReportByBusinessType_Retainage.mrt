@@ -1,0 +1,2141 @@
+{
+  "ReportVersion": "2019.3.7.0",
+  "ReportGuid": "26997f5652d8478b873fc03066531637",
+  "ReportName": "Report",
+  "ReportAlias": "Report",
+  "ReportCreated": "/Date(91800000+0700)/",
+  "ReportChanged": "/Date(1556297641272+0700)/",
+  "EngineVersion": "EngineV2",
+  "CalculationMode": "Interpretation",
+  "ReportUnit": "Inches",
+  "Script": "using System;\r\nusing System.Drawing;\r\nusing System.Windows.Forms;\r\nusing System.Data;\r\nusing Stimulsoft.Controls;\r\nusing Stimulsoft.Base.Drawing;\r\nusing Stimulsoft.Report;\r\nusing Stimulsoft.Report.Dialogs;\r\nusing Stimulsoft.Report.Components;\r\n\r\nnamespace Reports\r\n{\r\n    public class Report : Stimulsoft.Report.StiReport\r\n    {\r\n        public Report()        {\r\n            this.InitializeComponent();\r\n        }\r\n\r\n        #region StiReport Designer generated code - do not modify\r\n\t\t#endregion StiReport Designer generated code - do not modify\r\n    }\r\n}\r\n",
+  "Styles": {
+    "0": {
+      "Ident": "StiChartStyle",
+      "Name": "Style1",
+      "Border": ";;;;;;;solid:0,0,0",
+      "Brush": "solid:",
+      "ChartAreaBrush": "solid:255,255,255",
+      "SeriesLabelsBrush": "solid:255,255,255",
+      "SeriesLabelsBorderColor": "140,140,140",
+      "LegendBrush": "solid:255,255,255",
+      "InterlacingHorBrush": "solid:10,155,155,155",
+      "InterlacingVertBrush": "solid:10,155,155,155",
+      "StyleColors": {
+        "0": "237,125,49",
+        "1": "255,192,0",
+        "2": "91,155,213",
+        "3": "67,104,43",
+        "4": "38,68,120",
+        "5": "153,115,0"
+      }
+    }
+  },
+  "ReferencedAssemblies": {
+    "0": "System.Dll",
+    "1": "System.Drawing.Dll",
+    "2": "System.Windows.Forms.Dll",
+    "3": "System.Data.Dll",
+    "4": "System.Xml.Dll",
+    "5": "Stimulsoft.Controls.Dll",
+    "6": "Stimulsoft.Base.Dll",
+    "7": "Stimulsoft.Report.Dll"
+  },
+  "Dictionary": {
+    "Variables": {
+      "0": {
+        "Name": "Username",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "Username",
+        "Type": "System.String"
+      },
+      "1": {
+        "Name": "StartDate",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "StartDate",
+        "Type": "System.Nullable`1[System.DateTime]"
+      },
+      "2": {
+        "Name": "EndDate",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "EndDate",
+        "Type": "System.Nullable`1[System.DateTime]"
+      },
+      "3": {
+        "Value": "false",
+        "Name": "IncludeNotes",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "IncludeNotes",
+        "Type": "System.Boolean"
+      },
+      "4": {
+        "Name": "BusinessTypeLabel",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "BusinessTypeLabel",
+        "Type": "System.String",
+        "Description": "BusinessTypeLabel"
+      }
+    },
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "CompanyDetails",
+        "Alias": "CompanyDetails",
+        "Key": "2a6aa6f4f65e4d72bcaebd8ffdb638f3",
+        "Columns": {
+          "0": {
+            "Name": "Name",
+            "Index": -1,
+            "NameInSource": "Name",
+            "Alias": "Name",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "Address",
+            "Index": -1,
+            "NameInSource": "Address",
+            "Alias": "Address",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "City",
+            "Index": -1,
+            "NameInSource": "City",
+            "Alias": "City",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "State",
+            "Index": -1,
+            "NameInSource": "State",
+            "Alias": "State",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Zip",
+            "Index": -1,
+            "NameInSource": "Zip",
+            "Alias": "Zip",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "Contact",
+            "Index": -1,
+            "NameInSource": "Contact",
+            "Alias": "Contact",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "Email",
+            "Index": -1,
+            "NameInSource": "Email",
+            "Alias": "Email",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "Fax",
+            "Index": -1,
+            "NameInSource": "Fax",
+            "Alias": "Fax",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "Logo",
+            "Index": -1,
+            "NameInSource": "Logo",
+            "Alias": "Logo",
+            "Type": "System.Drawing.Image"
+          },
+          "9": {
+            "Name": "Phone",
+            "Index": -1,
+            "NameInSource": "Phone",
+            "Alias": "Phone",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "CompanyDetails"
+      },
+      "1": {
+        "Ident": "StiDataTableSource",
+        "Name": "ReportData",
+        "Alias": "ReportData",
+        "Key": "9b5667c868f149d78e01ac5b949c6202",
+        "Columns": {
+          "0": {
+            "Name": "CID",
+            "Index": -1,
+            "NameInSource": "CID",
+            "Alias": "CID",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "CurrSevenDay",
+            "Index": -1,
+            "NameInSource": "CurrSevenDay",
+            "Alias": "CurrSevenDay",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "CurrentDay",
+            "Index": -1,
+            "NameInSource": "CurrentDay",
+            "Alias": "CurrentDay",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "CustomerName",
+            "Index": -1,
+            "NameInSource": "CustomerName",
+            "Alias": "CustomerName",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Due",
+            "Index": -1,
+            "NameInSource": "Due",
+            "Alias": "Due",
+            "Type": "System.DateTime"
+          },
+          "5": {
+            "Name": "DueIn",
+            "Index": -1,
+            "NameInSource": "DueIn",
+            "Alias": "DueIn",
+            "Type": "System.Int32"
+          },
+          "6": {
+            "Name": "Loc",
+            "Index": -1,
+            "NameInSource": "Loc",
+            "Alias": "Loc",
+            "Type": "System.Int32"
+          },
+          "7": {
+            "Name": "LocID",
+            "Index": -1,
+            "NameInSource": "LocID",
+            "Alias": "LocID",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "LocName",
+            "Index": -1,
+            "NameInSource": "LocName",
+            "Alias": "LocName",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "NintyDay",
+            "Index": -1,
+            "NameInSource": "NintyDay",
+            "Alias": "NintyDay",
+            "Type": "System.Double"
+          },
+          "10": {
+            "Name": "NintyOneDay",
+            "Index": -1,
+            "NameInSource": "NintyOneDay",
+            "Alias": "NintyOneDay",
+            "Type": "System.Double"
+          },
+          "11": {
+            "Name": "OneTwentyDay",
+            "Index": -1,
+            "NameInSource": "OneTwentyDay",
+            "Alias": "OneTwentyDay",
+            "Type": "System.Double"
+          },
+          "12": {
+            "Name": "Owner",
+            "Index": -1,
+            "NameInSource": "Owner",
+            "Alias": "Owner",
+            "Type": "System.Int32"
+          },
+          "13": {
+            "Name": "Ref",
+            "Index": -1,
+            "NameInSource": "Ref",
+            "Alias": "Ref",
+            "Type": "System.String"
+          },
+          "14": {
+            "Name": "SevenDay",
+            "Index": -1,
+            "NameInSource": "SevenDay",
+            "Alias": "SevenDay",
+            "Type": "System.Double"
+          },
+          "15": {
+            "Name": "SixtyDay",
+            "Index": -1,
+            "NameInSource": "SixtyDay",
+            "Alias": "SixtyDay",
+            "Type": "System.Double"
+          },
+          "16": {
+            "Name": "SixtyOneDay",
+            "Index": -1,
+            "NameInSource": "SixtyOneDay",
+            "Alias": "SixtyOneDay",
+            "Type": "System.Double"
+          },
+          "17": {
+            "Name": "ThirtyDay",
+            "Index": -1,
+            "NameInSource": "ThirtyDay",
+            "Alias": "ThirtyDay",
+            "Type": "System.Double"
+          },
+          "18": {
+            "Name": "Total",
+            "Index": -1,
+            "NameInSource": "Total",
+            "Alias": "Total",
+            "Type": "System.Double"
+          },
+          "19": {
+            "Name": "TransID",
+            "Index": -1,
+            "NameInSource": "TransID",
+            "Alias": "TransID",
+            "Type": "System.Int32"
+          },
+          "20": {
+            "Name": "Type",
+            "Index": -1,
+            "NameInSource": "Type",
+            "Alias": "Type",
+            "Type": "System.String"
+          },
+          "21": {
+            "Name": "ZeroThirtyDay",
+            "Index": -1,
+            "NameInSource": "ZeroThirtyDay",
+            "Alias": "ZeroThirtyDay",
+            "Type": "System.Double"
+          },
+          "22": {
+            "Name": "fDate",
+            "Index": -1,
+            "NameInSource": "fDate",
+            "Alias": "fDate",
+            "Type": "System.DateTime"
+          },
+          "23": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "24": {
+            "Name": "RetainageAmount",
+            "Index": -1,
+            "NameInSource": "RetainageAmount",
+            "Alias": "RetainageAmount",
+            "Type": "System.Double"
+          },
+          "25": {
+            "Name": "BusinessType",
+            "Index": -1,
+            "NameInSource": "BusinessType",
+            "Alias": "BusinessType",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "ReportData"
+      },
+      "2": {
+        "Ident": "StiDataTableSource",
+        "Name": "LocationNotes",
+        "Alias": "LocationNotes",
+        "Key": "38fb43102d484651ae071466c960ec9d",
+        "Columns": {
+          "0": {
+            "Name": "Notes",
+            "Index": -1,
+            "NameInSource": "Notes",
+            "Alias": "Notes",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "CreatedDate",
+            "Index": -1,
+            "NameInSource": "CreatedDate",
+            "Alias": "CreatedDate",
+            "Type": "System.DateTime"
+          },
+          "2": {
+            "Name": "CreatedBy",
+            "Index": -1,
+            "NameInSource": "CreatedBy",
+            "Alias": "CreatedBy",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "OwnerID",
+            "Index": -1,
+            "NameInSource": "OwnerID",
+            "Alias": "OwnerID",
+            "Type": "System.Int32"
+          },
+          "4": {
+            "Name": "LocID",
+            "Index": -1,
+            "NameInSource": "LocID",
+            "Alias": "LocID",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "LocationNotes"
+      },
+      "3": {
+        "Ident": "StiDataTableSource",
+        "Name": "CustomerNotes",
+        "Alias": "CustomerNotes",
+        "Key": "5cd8691e6c5d49dc8294dc975ca720fb",
+        "Columns": {
+          "0": {
+            "Name": "Notes",
+            "Index": -1,
+            "NameInSource": "Notes",
+            "Alias": "Notes",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "CreatedDate",
+            "Index": -1,
+            "NameInSource": "CreatedDate",
+            "Alias": "CreatedDate",
+            "Type": "System.DateTime"
+          },
+          "2": {
+            "Name": "CreatedBy",
+            "Index": -1,
+            "NameInSource": "CreatedBy",
+            "Alias": "CreatedBy",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "OwnerID",
+            "Index": -1,
+            "NameInSource": "OwnerID",
+            "Alias": "OwnerID",
+            "Type": "System.Int32"
+          },
+          "4": {
+            "Name": "LocID",
+            "Index": -1,
+            "NameInSource": "LocID",
+            "Alias": "LocID",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "CustomerNotes"
+      }
+    },
+    "Relations": {
+      "0": {
+        "Name": "loc_notes",
+        "ChildColumns": {
+          "0": "Loc"
+        },
+        "ParentColumns": {
+          "0": "LocID"
+        },
+        "NameInSource": "loc_notes",
+        "Alias": "loc_notes",
+        "ParentSource": "LocationNotes",
+        "ChildSource": "ReportData"
+      },
+      "1": {
+        "Name": "cus_notes",
+        "ChildColumns": {
+          "0": "Owner"
+        },
+        "ParentColumns": {
+          "0": "OwnerID"
+        },
+        "NameInSource": "cus_notes",
+        "Alias": "cus_notes",
+        "ParentSource": "CustomerNotes",
+        "ChildSource": "ReportData"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "b45e5a3fe5f844e7a1c4e6b6f9f19044",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;;;;solid:Black",
+      "Brush": "solid:White",
+      "Components": {
+        "0": {
+          "Ident": "StiPageHeaderBand",
+          "Name": "PageHeaderBand1",
+          "Guid": "61e7b1b0ab6d445a9771dfe2d594e0e4",
+          "PrintOn": "OnlyFirstPage",
+          "ClientRectangle": "0,0.2,10.4,0.72",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": "Bottom;;2;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text15",
+              "Guid": "bca8d047ef9745259b22b30a8ae59c95",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,3.41,0.26",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "AR AGING BY {BusinessTypeLabel} REPORT"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text21",
+              "Guid": "bf374c3e2dbb4e34bbea282d84d50160",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.4,0,4,0.26",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.Name}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "DataColumn"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text23",
+              "Guid": "358760f4f29148cfaf40758e1085a225",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.4,0.26,4,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.Address}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "DataColumn"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text25",
+              "Guid": "10a0cae8758d4107b90efece03ec3581",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.4,0.43,4,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.City}, {CompanyDetails.State} {CompanyDetails.Zip}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text24",
+              "Guid": "621c8f197dbe4a1f894e904e22615ad0",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.26,3.41,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Aging as of {Format(\"{0:MM/dd/yyyy}\", EndDate)}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text10",
+              "Guid": "15059dcbed1c43e5ba6c8acad0e60cae",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.53,3.41,0.17",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Printed On {Format(\"{0:MM/dd/yyyy}\", Time)} By {Username}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,0;3;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            }
+          }
+        },
+        "1": {
+          "Ident": "StiPageFooterBand",
+          "Name": "PageFooterBand1",
+          "ClientRectangle": "0,9.57,10.4,0.15",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text2",
+              "Guid": "67ccd862e18347a298953d5bcb20fe93",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.3,0,1.1,0.15",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{PageNofM}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Bottom",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text27",
+              "Guid": "c49d551e180d4bac91027bbcb66b4a84",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,1.5,0.15",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Mobile Office Manager"
+              },
+              "VertAlignment": "Bottom",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        },
+        "2": {
+          "Ident": "StiGroupHeaderBand",
+          "Name": "GroupHeaderBand3",
+          "ClientRectangle": "0,1.32,10.4,0.3",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text61",
+              "Guid": "f95651095af5453e970b4f7ec06e5fdb",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,4.4,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Trim(ReportData.BusinessType)}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";11;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          },
+          "Condition": {
+            "Value": "{ReportData.BusinessType}"
+          }
+        },
+        "3": {
+          "Ident": "StiGroupHeaderBand",
+          "Name": "GroupHeaderBand1",
+          "CanShrink": true,
+          "ClientRectangle": "0,2.02,10.4,0.45",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text1",
+              "Guid": "ad0dceb9e01d4763b5ef13d7379eb2a1",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.2,4.4,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.CID}"
+              },
+              "VertAlignment": "Bottom",
+              "Font": ";11;Bold, Underline;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "DataColumn"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text55",
+              "Guid": "e905f71dbd3546caa010ff419e4b17f4",
+              "CanShrink": true,
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.3,0.4,10.1,0.05",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.cus_notes.CreatedDate != null ? \"Collection Notes:\" : \"\"} {Format(\"{0:MM/dd/yyyy hh:mm tt}\", ReportData.cus_notes.CreatedDate)} {ReportData.cus_notes.CreatedDate != null ? \"by\" : \"\"} {ReportData.cus_notes.CreatedBy} {ReportData.cus_notes.Notes != \"\" ? \": \" + ReportData.cus_notes.Notes : \"\"}"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "TextQuality": "Wysiwyg",
+              "Type": "Expression"
+            }
+          },
+          "Condition": {
+            "Value": "{ReportData.CID}"
+          }
+        },
+        "4": {
+          "Ident": "StiGroupHeaderBand",
+          "Name": "GroupHeaderBand2",
+          "CanShrink": true,
+          "ClientRectangle": "0,2.87,10.4,0.6",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text46",
+              "Guid": "7f9053f8666845c39565dbb84b83926e",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.1,0,4.3,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.LocID}"
+              },
+              "VertAlignment": "Bottom",
+              "Font": ";9;Bold, Underline;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "DataColumn"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text3",
+              "Guid": "4cc222cafeba4f1caaa82159c92b392b",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.35,0.55,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Date"
+              },
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Left, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text4",
+              "Guid": "72746849d49240699673da31bfc3f5f7",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.55,0.35,0.55,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Due Date"
+              },
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text5",
+              "Guid": "1e2595fadb7e4b9da508f411f8ae2a31",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.1,0.35,0.7,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Ref #"
+              },
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text6",
+              "Guid": "a9e7db0a99624b2cb8903adb06d07515",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.8,0.35,1.5,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Description"
+              },
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text8",
+              "Guid": "7febf502790b4335822b7b3db4d2a5f2",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.7,0.35,1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Total"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text7",
+              "Guid": "b360ed05e0944e76889fbf8e9400baf7",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.3,0.35,0.4,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Due"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text11",
+              "Guid": "42ab3d695b53433aa9372ac6dc02bf31",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.7,0.35,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "0-30 Days"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "8": {
+              "Ident": "StiText",
+              "Name": "Text12",
+              "Guid": "23ec9dd775b54d59a5bc61c8153bbd1b",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.6,0.35,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "31-60 Days"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "9": {
+              "Ident": "StiText",
+              "Name": "Text13",
+              "Guid": "926c2460baad481d9df48294b398ad7d",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.5,0.35,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "61-90 Days"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "10": {
+              "Ident": "StiText",
+              "Name": "Text14",
+              "Guid": "f839708e771943df80ffaaed5109de06",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.4,0.35,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "91-120 Days"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "11": {
+              "Ident": "StiText",
+              "Name": "Text9",
+              "Guid": "161e7ea5231846dbb26520bfae1bd036",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.3,0.35,1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "121 Days+"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "12": {
+              "Ident": "StiText",
+              "Name": "Text54",
+              "Guid": "4d4321ec4918466bad14909b82413938",
+              "CanShrink": true,
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.3,0.25,10.1,0.05",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.loc_notes.CreatedDate != null ? \"Collection Notes:\" : \"\"} {Format(\"{0:MM/dd/yyyy hh:mm tt}\", ReportData.loc_notes.CreatedDate)} {ReportData.loc_notes.CreatedDate != null ? \"by\" : \"\"} {ReportData.loc_notes.CreatedBy} {ReportData.loc_notes.Notes != \"\" ? \": \" + ReportData.loc_notes.Notes : \"\"}"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "TextQuality": "Wysiwyg",
+              "Type": "Expression"
+            },
+            "13": {
+              "Ident": "StiText",
+              "Name": "Text56",
+              "Guid": "163704799ff14e69b0f015f862bb1716",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.3,0.35,1.1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Retainage Amount"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Right, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:156,195,229",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          },
+          "Condition": {
+            "Value": "{ReportData.LocID}"
+          }
+        },
+        "5": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand1",
+          "ClientRectangle": "0,3.87,10.4,0.2",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": "Left, Right;165,165,165;;;;;;solid:0,0,0",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text16",
+              "Guid": "7f302f9d696a4d7a91955b8908f43c60",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,0.55,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.fDate}"
+              },
+              "Font": ";7;;",
+              "Border": ";165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiDateFormatService"
+              },
+              "Type": "DataColumn"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text17",
+              "Guid": "707f4af8c3904264999d68e9f2d0b4cc",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.55,0,0.55,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.Due}"
+              },
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiDateFormatService"
+              },
+              "Type": "DataColumn"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text18",
+              "Guid": "bb091f1ccd3147cbaa9e6f216eb97829",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.1,0,0.7,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.Ref}"
+              },
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text19",
+              "Guid": "9d82ea9c91eb4f2c8dff228b9fcfeb8e",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.8,0,1.5,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.fDesc}"
+              },
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text20",
+              "Guid": "0b37f8c589764b0989131e6c9d556c8a",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.3,0,0.4,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.DueIn}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "Type": "DataColumn"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text22",
+              "Guid": "3c9eb35ad9ec41c9b3a1d1b398cc3674",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.7,0,1,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.Total}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "DataColumn"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text26",
+              "Guid": "1dd578bf929b498c97b06d69894674e7",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.3,0,1,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.OneTwentyDay}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "DataColumn"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text29",
+              "Guid": "f9769bb0ee3d4f1aae5a9081c9b071ea",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.6,0,0.9,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.SixtyDay}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "DataColumn"
+            },
+            "8": {
+              "Ident": "StiText",
+              "Name": "Text30",
+              "Guid": "0cb070682a4043dabaa96859d8944cb5",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.5,0,0.9,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.NintyDay}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "DataColumn"
+            },
+            "9": {
+              "Ident": "StiText",
+              "Name": "Text31",
+              "Guid": "df87165efb114968b953158bcbb51d5d",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.4,0,0.9,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.NintyOneDay}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";7;;",
+              "Border": ";165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "DataColumn"
+            },
+            "10": {
+              "Ident": "StiText",
+              "Name": "Text28",
+              "Guid": "40f87b2954c8412daff28f91f608731a",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.7,0,0.9,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.ThirtyDay}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "DataColumn"
+            },
+            "11": {
+              "Ident": "StiText",
+              "Name": "Text57",
+              "Guid": "7c80aecc86c647a1b255ea82b339b584",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.3,0,1.1,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.RetainageAmount}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";7;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "DataColumn"
+            }
+          },
+          "DataSourceName": "ReportData",
+          "Sort": {
+            "0": "ASC",
+            "1": "fDate"
+          }
+        },
+        "6": {
+          "Ident": "StiGroupFooterBand",
+          "Name": "GroupFooterBand2",
+          "ClientRectangle": "0,4.47,10.4,0.25",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": "All;165,165,165;;;;;;solid:0,0,0",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text47",
+              "Guid": "5780a8ad490d459c818a466875d82be0",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.1,0,3.6,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.LocID}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Margins": {
+                "Left": 0.0,
+                "Right": 10.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text48",
+              "Guid": "06e27b6d61a94b58b64d8127aac96140",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.7,0,1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.Total)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text49",
+              "Guid": "858697f8f1484e3f89868ee21491c04a",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.7,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.ThirtyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text50",
+              "Guid": "c28e4b19d88a4e96ad133a41e087961d",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.6,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.SixtyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text51",
+              "Guid": "52511f05f159479bb588eb6499b13ee6",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.5,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.NintyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text52",
+              "Guid": "da06ed47764343c0847135a1d6f0d75b",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.4,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.NintyOneDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text53",
+              "Guid": "5f43d965af7d461ab05c97ea3c692b84",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.3,0,1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.OneTwentyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text58",
+              "Guid": "1c0ff1dcf2174db88a13e491cc03b619",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.3,0,1.1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.RetainageAmount)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            }
+          }
+        },
+        "7": {
+          "Ident": "StiGroupFooterBand",
+          "Name": "GroupFooterBand1",
+          "ClientRectangle": "0,5.12,10.4,0.45",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";165,165,165;;;;;;solid:0,0,0",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text32",
+              "Guid": "ab83f2c9f92c4935b8afa86d0790a64f",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,3.7,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportData.CID}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": "Top, Left, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Margins": {
+                "Left": 0.0,
+                "Right": 10.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text33",
+              "Guid": "44e046ed85aa4584b60c24d667633991",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.7,0,1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.Total)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text34",
+              "Guid": "1717e0c3c80a4920911940830a9fdd85",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.3,0,1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.OneTwentyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text36",
+              "Guid": "a93db761f0544fa789038fdb66ee7c97",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.6,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.SixtyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text37",
+              "Guid": "45196c7e26744403a15d9bb7f0101fb6",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.5,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.NintyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text38",
+              "Guid": "cc5dca69e00b46eba6049dfbdda8a4e2",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.4,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.NintyOneDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text35",
+              "Guid": "d0df421efe804eb3a489efe130896db0",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.7,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.ThirtyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": "Top, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text59",
+              "Guid": "2cffa989a89241ba8ea05bce829a4c19",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.3,0,1.1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.RetainageAmount)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": "Top, Right, Bottom;165,165,165;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            }
+          }
+        },
+        "8": {
+          "Ident": "StiFooterBand",
+          "Name": "FooterBand1",
+          "ClientRectangle": "0,5.97,10.4,0.3",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text39",
+              "Guid": "381a2fd391aa4c97b3d5a085fcffc986",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,3.7,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Grand Total "
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text40",
+              "Guid": "78da7abc7b1c4d77b934df597dce9e24",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.7,0,1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.Total)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text41",
+              "Guid": "27a9a6b73f8c413f82deb6af1805c204",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.3,0,1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.OneTwentyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text43",
+              "Guid": "3ce3197e711e44c3bf8bf111ad810a24",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.6,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.SixtyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text44",
+              "Guid": "16c989c6a10a41a694537a90787d3fb5",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.5,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.NintyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text45",
+              "Guid": "a3caa78699984002a210c72173172428",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.4,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.NintyOneDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text42",
+              "Guid": "bc5feb2534f941b28f676b3afd884bb3",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.7,0,0.9,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.ThirtyDay)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text60",
+              "Guid": "822b5f4be073440589503021e28f3f69",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.3,0,1.1,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DataBand1,ReportData.RetainageAmount)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7;Bold;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "solid:0,255,255,255",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiCurrencyFormatService",
+                "NegativePattern": 0,
+                "GroupSeparator": ",",
+                "PositivePattern": 0
+              },
+              "Type": "Totals"
+            }
+          }
+        }
+      },
+      "PaperSize": "Letter",
+      "Orientation": "Landscape",
+      "PageWidth": 11.0,
+      "PageHeight": 8.5,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      },
+      "Margins": {
+        "Left": 0.3,
+        "Right": 0.3,
+        "Top": 0.2,
+        "Bottom": 0.2
+      },
+      "ReportUnit": {
+        "Ident": "StiInchesUnit"
+      }
+    }
+  }
+}

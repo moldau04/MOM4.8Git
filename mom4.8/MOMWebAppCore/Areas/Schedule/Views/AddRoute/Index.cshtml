@@ -1,0 +1,212 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<style>
+    a[disabled=disabled] {
+        color: gray;
+    }
+
+    .form-section3 {
+        margin-right: 10px;
+    }
+
+    select {
+        margin-top: 8px;
+    }
+
+    .rcpPalette {
+        position: fixed !important;
+    }
+
+    .card {
+        overflow: unset;
+    }
+</style>
+<script src="~/MOMUI/Design/js/jscolor.js"></script>
+@Html.Hidden("hdnDefaultVal")
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-communication-contacts"></i>&nbsp;<label ID="lblHeader" style="font-size:15px">Route</label></div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a ID="lnkSave" ToolTip="Save">Save</a>
+                                    </div>
+                                </div>
+                                <div class="rght-content">
+                                    <div class="editlabel">
+                                        <span id="">
+                                            <label ID="lblRouteWorkerName"></label>
+                                        </span>
+                                    </div>
+                                    <div class="btnclosewrap">
+                                        <a ID="lnkClose" ToolTip="Close" CausesValidation="false">
+                                        <i class="mdi-content-clear"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <div class="tblnksright">
+                            <div id="divNavigate" class="nextprev" style="display: block;">
+                                <span class="angleicons">
+                                    <a ID="lnkFirst" ToolTip="First" CausesValidation="False">
+                                        <i class="fa fa-angle-double-left"></i>
+                                    </a>
+                                </span>
+                                <span class="angleicons">
+                                    <a ID="lnkPrevious" ToolTip="Previous" CausesValidation="False">
+                                        <i class="fa fa-angle-left"></i>
+                                    </a>
+                                </span>
+                                <span class="angleicons">
+                                    <a ID="lnkNext" ToolTip="Next" CausesValidation="False">
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </span>
+                                <span class="angleicons">
+                                    <a ID="lnkLast" ToolTip="Last" CausesValidation="False" >
+                                        <i class="fa fa-angle-double-right"></i>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="card cardradius ">
+            <div class="card-content" style="min-height:300px;">
+                <div class="form-content-wrap">
+                    <div class="form-content-pd">
+                        <div class="section-ttle" id="dvRoutesInfo">Route Info</div>
+                        <div class="form-section3">
+                            <div class="input-field col s12">
+                                <div class="row">
+                                    <label for="name">Name <span class="reqd">*</span></label>
+                                    <input type="text" ID="txtName" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="input-field col s12">
+                                <div class="row">
+                                    <label class="drpdwn-label">Worker <span class="reqd">*</span></label>
+                                    
+                                    <select ID="ddlRoute" class="browser-default" tabindex="5">
+                                        <option>:: Select ::</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-field col s12">
+                                <div class="row">
+                                    <label class="drpdwn-label">Status <span class="reqd">*</span></label>
+                                  
+                                    <select ID="ddlStatus" class="browser-default" TabIndex="5">
+                                        <option Value="">:: Select ::</option>
+                                        <option Value="1">Active</option>
+                                        <option Value="0">Inactive</option>
+                                    </select>
+                                    @Html.Hidden("hdnStatus","")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section3">
+                            <div class="input-field col s12">
+                                <div class="row">
+                                    <label for="remarks">Remarks</label>
+                                    <textarea ID="txtremarks" rows="2" cols="20" class="materialize-textarea"
+                                                 Height="50px" MaxLength="200" TextMode="MultiLine"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section3" style="margin-left: 5px; margin-top: -12px">
+                            <div class="col s12">
+                                <div class="row">
+                                    <label class="drpdwn-label">Color</label>
+                                    @*<telerik:RadColorPicker RenderMode="Classic" EnableCustomColor="false" ID="txtColor" Preset="Office" ShowIcon="true" PaletteModes="HSB"
+                                                            KeepInScreenBounds="true">
+                                    </telerik:RadColorPicker>*@
+                                </div>
+                            </div>
+                            <div id="dvLocCount">
+                                <div class="input-field col s12" style="margin-top: 6px">
+                                    <div class="row">
+                                        <label>Location</label>
+                                        <input type="text" ID="lblLocCount" readonly class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="input-field col s12">
+                                    <div class="row">
+                                        <label>Contract</label>
+                                        <input type="text" ID="lblContCount" readonly class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tbLogs" class="collapsible-header accrd accordian-text-custom" style="padding: 0px;">
+            <i class="mdi-content-content-paste"></i>Logs
+            <div class="grid_container">
+                <div class="form-section-row" style="margin-bottom: 0 !important;">
+                    <div class="RadGrid RadGrid_Material">
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#hdnStatus").val($("#ddlStatus").val());
+
+        $("#ddlStatus").change(function () {
+            $("#hdnStatus").val($(this).val());
+        });
+
+        if ($("#lblLocCount").val() == "") {
+            //$('#dvLocCount').html("");
+        }
+
+        //$(window).scroll(function () {
+        //    if ($(window).scrollTop() >= 0) {
+        //        $('#divButtons').addClass('fixed-header');
+        //    }
+        //    if ($(window).scrollTop() <= 0) {
+        //        $('#divButtons').removeClass('fixed-header');
+        //    }
+        //});
+        $("#content").attr('style', 'margin-left:-170px;');
+        $("#divButtons").attr('style', 'left:0px');
+    });
+</script>

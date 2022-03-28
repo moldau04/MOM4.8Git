@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>ADMINdb</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{9666bfbb-644b-49ef-9f99-1c8fb18dba76}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>ADMINdb</RootNamespace>
+    <AssemblyName>ADMINdb</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <IsChangeTrackingOn>True</IsChangeTrackingOn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <!-- Default to the v10.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\tblControl.sql" />
+    <Build Include="dbo\Tables\MapData.sql" />
+    <Build Include="dbo\Tables\tblAuth.sql" />
+    <Build Include="dbo\Tables\tblUser.sql" />
+    <Build Include="dbo\Tables\tblJoinAuth.sql" />
+    <Build Include="dbo\Tables\tblUserAuth.sql" />
+    <Build Include="dbo\Tables\tblPingDevice.sql" />
+    <Build Include="dbo\Tables\PushNotifications.sql" />
+    <Build Include="dbo\Tables\tblServiceErrorLog.sql" />
+    <Build Include="dbo\Stored Procedures\spGetUsers.sql" />
+    <Build Include="dbo\Stored Procedures\spGetUserByID.sql" />
+    <Build Include="dbo\Stored Procedures\spGetLocations.sql" />
+    <Build Include="dbo\Stored Procedures\spGetLocationByID.sql" />
+    <Build Include="dbo\Stored Procedures\spGetLocationByCustID.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCustomers.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCustomerByID.sql" />
+    <Build Include="dbo\Stored Procedures\spGetContactByRolID.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateDB.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateControl.sql" />
+    <Build Include="dbo\Stored Procedures\spAddControl.sql" />
+    <Build Include="dbo\Stored Procedures\spAddMapData.sql" />
+    <Build Include="dbo\Stored Procedures\spCheck.sql" />
+    <Build Include="dbo\Stored Procedures\spDeviceRegistration.sql" />
+    <Build Include="dbo\Stored Procedures\Sppingdevice.sql" />
+    <Build Include="dbo\Stored Procedures\SppingdeviceNew.sql" />
+    <Build Include="dbo\Stored Procedures\spIndexMapdata.sql" />
+    <Build Include="dbo\Stored Procedures\spGetLocContactByRolID.sql" />
+    <Build Include="dbo\User Defined Types\tblTypeMapData.sql" />
+    <Build Include="dbo\User Defined Types\tblTypeMapDataNew.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertMapDataNew.sql" />
+    <Build Include="dbo\Stored Procedures\spGetLogData.sql" />
+    <Build Include="dbo\Stored Procedures\SppingdeviceNew.sql" />
+    <Build Include="dbo\Stored Procedures\spDeviceRegistrationNew.sql" />
+  </ItemGroup>
+</Project>

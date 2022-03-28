@@ -1,0 +1,5 @@
+﻿CREATE PROCEDURE spGetFiscalYear	
+AS
+BEGIN
+	SELECT ISNULL(YE,'') FROM Control
+END

@@ -1,0 +1,2113 @@
+{
+  "ReportVersion": "2018.2.3.0",
+  "ReportGuid": "25fc1a74b4c14047bfb74c363e79123b",
+  "ReportName": "Report",
+  "ReportAlias": "Report",
+  "ReportCreated": "/Date(1530614632000+0700)/",
+  "ReportChanged": "/Date(1541446427175+0700)/",
+  "EngineVersion": "EngineV2",
+  "CalculationMode": "Interpretation",
+  "Script": "using System;\r\nusing System.Drawing;\r\nusing System.Windows.Forms;\r\nusing System.Data;\r\nusing Stimulsoft.Controls;\r\nusing Stimulsoft.Base.Drawing;\r\nusing Stimulsoft.Report;\r\nusing Stimulsoft.Report.Dialogs;\r\nusing Stimulsoft.Report.Components;\r\n\r\nnamespace Reports\r\n{\r\n    public class Report : Stimulsoft.Report.StiReport\r\n    {\r\n        public Report()        {\r\n            this.InitializeComponent();\r\n        }\r\n\r\n        #region StiReport Designer generated code - do not modify\r\n\t\t#endregion StiReport Designer generated code - do not modify\r\n    }\r\n}\r\n",
+  "ReferencedAssemblies": {
+    "0": "System.Dll",
+    "1": "System.Drawing.Dll",
+    "2": "System.Windows.Forms.Dll",
+    "3": "System.Data.Dll",
+    "4": "System.Xml.Dll",
+    "5": "Stimulsoft.Controls.Dll",
+    "6": "Stimulsoft.Base.Dll",
+    "7": "Stimulsoft.Report.Dll"
+  },
+  "Dictionary": {
+    "Variables": {
+      "0": {
+        "Name": "paramUsername",
+        "Alias": "paramUsername",
+        "Type": "System.String",
+        "Description": "paramUsername"
+      },
+      "1": {
+        "Name": "paramSDate",
+        "Alias": "paramSDate",
+        "Type": "System.String",
+        "Description": "paramSDate"
+      },
+      "2": {
+        "Name": "paramEDate",
+        "Alias": "paramEDate",
+        "Type": "System.String",
+        "Description": "paramEDate"
+      }
+    },
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "dsCompany",
+        "Alias": "dsCompany",
+        "Columns": {
+          "0": {
+            "Name": "Name",
+            "Index": -1,
+            "NameInSource": "Name",
+            "Alias": "Name",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "Address",
+            "Index": -1,
+            "NameInSource": "Address",
+            "Alias": "Address",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "City",
+            "Index": -1,
+            "NameInSource": "City",
+            "Alias": "City",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "zip",
+            "Index": -1,
+            "NameInSource": "zip",
+            "Alias": "zip",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "phone",
+            "Index": -1,
+            "NameInSource": "phone",
+            "Alias": "phone",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "email",
+            "Index": -1,
+            "NameInSource": "email",
+            "Alias": "email",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "fax",
+            "Index": -1,
+            "NameInSource": "fax",
+            "Alias": "fax",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "Logo",
+            "Index": -1,
+            "NameInSource": "Logo",
+            "Alias": "Logo",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "webaddress",
+            "Index": -1,
+            "NameInSource": "webaddress",
+            "Alias": "webaddress",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "dsCompany"
+      },
+      "1": {
+        "Ident": "StiDataTableSource",
+        "Name": "dsTimeRecap",
+        "Alias": "dsTimeRecap",
+        "Columns": {
+          "0": {
+            "Name": "CDT",
+            "Index": -1,
+            "NameInSource": "CDT",
+            "Alias": "CDT",
+            "Type": "System.Decimal"
+          },
+          "1": {
+            "Name": "COT",
+            "Index": -1,
+            "NameInSource": "COT",
+            "Alias": "COT",
+            "Type": "System.Decimal"
+          },
+          "2": {
+            "Name": "CRT",
+            "Index": -1,
+            "NameInSource": "CRT",
+            "Alias": "CRT",
+            "Type": "System.Decimal"
+          },
+          "3": {
+            "Name": "CTotal",
+            "Index": -1,
+            "NameInSource": "CTotal",
+            "Alias": "CTotal",
+            "Type": "System.Decimal"
+          },
+          "4": {
+            "Name": "DT",
+            "Index": -1,
+            "NameInSource": "DT",
+            "Alias": "DT",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "EmpID",
+            "Index": -1,
+            "NameInSource": "EmpID",
+            "Alias": "EmpID",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "EmpName",
+            "Index": -1,
+            "NameInSource": "EmpName",
+            "Alias": "EmpName",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "NT",
+            "Index": -1,
+            "NameInSource": "NT",
+            "Alias": "NT",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "OT",
+            "Index": -1,
+            "NameInSource": "OT",
+            "Alias": "OT",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "PDT",
+            "Index": -1,
+            "NameInSource": "PDT",
+            "Alias": "PDT",
+            "Type": "System.Decimal"
+          },
+          "10": {
+            "Name": "PNT",
+            "Index": -1,
+            "NameInSource": "PNT",
+            "Alias": "PNT",
+            "Type": "System.Double"
+          },
+          "11": {
+            "Name": "POT",
+            "Index": -1,
+            "NameInSource": "POT",
+            "Alias": "POT",
+            "Type": "System.Double"
+          },
+          "12": {
+            "Name": "PRT",
+            "Index": -1,
+            "NameInSource": "PRT",
+            "Alias": "PRT",
+            "Type": "System.Nullable`1[System.Single]"
+          },
+          "13": {
+            "Name": "PTT",
+            "Index": -1,
+            "NameInSource": "PTT",
+            "Alias": "PTT",
+            "Type": "System.Double"
+          },
+          "14": {
+            "Name": "PTotal",
+            "Index": -1,
+            "NameInSource": "PTotal",
+            "Alias": "PTotal",
+            "Type": "System.Decimal"
+          },
+          "15": {
+            "Name": "RT",
+            "Index": -1,
+            "NameInSource": "RT",
+            "Alias": "RT",
+            "Type": "System.String"
+          },
+          "16": {
+            "Name": "TT",
+            "Index": -1,
+            "NameInSource": "TT",
+            "Alias": "TT",
+            "Type": "System.String"
+          },
+          "17": {
+            "Name": "Total",
+            "Index": -1,
+            "NameInSource": "Total",
+            "Alias": "Total",
+            "Type": "System.String"
+          },
+          "18": {
+            "Name": "Type",
+            "Index": -1,
+            "NameInSource": "Type",
+            "Alias": "Type",
+            "Type": "System.String"
+          },
+          "19": {
+            "Name": "CNT",
+            "Index": -1,
+            "NameInSource": "CNT",
+            "Alias": "CNT",
+            "Type": "System.Double"
+          },
+          "20": {
+            "Name": "CTT",
+            "Index": -1,
+            "NameInSource": "CTT",
+            "Alias": "CTT",
+            "Type": "System.Double"
+          }
+        },
+        "NameInSource": "dsTimeRecap"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "fb8b0f9f8987c5df0f62ed142eee0bd7",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;;;;solid:Black",
+      "Brush": "solid:",
+      "Components": {
+        "0": {
+          "Ident": "StiPageHeaderBand",
+          "Name": "PageHeaderBand1",
+          "Guid": "26a08a2faafc466fa10ea5f61ec5f00d",
+          "ClientRectangle": "0,0.4,33.6,3.42",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": "Bottom;;2;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text15",
+              "Guid": "fab94344238f4a86b8c8b26732ae5397",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.05,0.05,12.9,0.72",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "TIME RECAP REPORT WITH LABOR COST"
+              },
+              "Font": ";18;Bold;",
+              "Border": "Bottom;;3;;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:91,155,213",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text20",
+              "Guid": "42c2c7be7228479a82c1cf8e95be8c2f",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.05,0.99,3.58,0.64",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Start: {paramSDate}"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text29",
+              "Guid": "94a17c8f296e49b0acc220a856cd793f",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.73,0.99,4.54,0.64",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "End: {paramEDate}"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text21",
+              "Guid": "9a01fdb3d1c04936860ba808005a5ff1",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.05,1.94,25.82,0.63",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsCompany.Name}"
+              },
+              "Font": ";16;Bold;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:91,155,213",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text26",
+              "Guid": "d29f8a7feaea4b4da9913fedd0493cb3",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.05,2.76,13.39,0.63",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Printed On {Format(\"{0:MM.dd.yyyy}\", Today)} By {paramUsername}"
+              },
+              "Font": ";10;;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            }
+          }
+        },
+        "1": {
+          "Ident": "StiPageFooterBand",
+          "Name": "PageFooterBand1",
+          "Guid": "5bb209a597fd43969d5b9c8e6cc95b49",
+          "ClientRectangle": "0,18.98,33.6,0.62",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text1",
+              "Guid": "1ac7d4e0d72a41f59f6897f44ee982e5",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,6.7,0.5",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Mobile Office Manager "
+              },
+              "VertAlignment": "Center",
+              "Font": ";9;;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text2",
+              "Guid": "f3624ed730724692a84b2c70186a9338",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "28.49,0,5.1,0.5",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{PageNofM}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9;;",
+              "Border": ";0,0,0;;;;;;solid:0,0,0",
+              "Brush": "empty",
+              "TextBrush": "solid:Black",
+              "Type": "SystemVariables"
+            }
+          }
+        },
+        "2": {
+          "Ident": "StiHeaderBand",
+          "Name": "HeaderdsTimeRecap",
+          "ClientRectangle": "0,4.62,33.6,2",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_EmpID",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1,1.8,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Emp ID"
+              },
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_EmpName",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.8,1,3.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Employee"
+              },
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_Type",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.2,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Type"
+              },
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_RT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.6,1,1.6,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Reg"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_OT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.2,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "OT"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_TT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.6,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "1.7"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_DT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "13.8,1,1.8,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Total"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_PRT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15.6,1,1.6,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Reg"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "8": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_POT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "17.2,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "OT"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "9": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_PDT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "18.6,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "1.7"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "10": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_PTT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "22.8,1,1.8,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Total"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "11": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_CRT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "24.6,1,1.6,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Reg"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "12": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_COT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "26.2,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "OT"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "13": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_CDT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "27.6,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "1.7"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "14": {
+              "Ident": "StiText",
+              "Name": "Text3",
+              "Guid": "06f9d61f605c4139a3718ac94ff1f8a4",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.38,15.6,0.6",
+              "ComponentStyle": "Blue Steel_Data1_Even Style",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:216,216,216",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "15": {
+              "Ident": "StiText",
+              "Name": "Text10",
+              "Guid": "56093290b119490c9c06de1909ac5cdf",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15.6,0.38,9,0.6",
+              "ComponentStyle": "Blue Steel_Data1_Even Style",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Pay Rate"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:191,191,191",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "16": {
+              "Ident": "StiText",
+              "Name": "Text14",
+              "Guid": "9a1e522b02054645b0858dd840d5ea35",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "24.6,0.38,9,0.6",
+              "ComponentStyle": "Blue Steel_Data1_Even Style",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Burden Rate"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:165,165,165",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "17": {
+              "Ident": "StiText",
+              "Name": "Text4",
+              "Guid": "1d93b8de5a554c78a214b5030609408f",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "DT"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "18": {
+              "Ident": "StiText",
+              "Name": "Text7",
+              "Guid": "c7ef032144864bcb91fef5918e5e694d",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "12.4,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "TT"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "19": {
+              "Ident": "StiText",
+              "Name": "Text11",
+              "Guid": "9be3d13e41dc4b7a8db21949a3ec2f86",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "20,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "DT"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "20": {
+              "Ident": "StiText",
+              "Name": "Text16",
+              "Guid": "add10d75e82b409692372af4a2b9a052",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "21.4,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "TT"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "21": {
+              "Ident": "StiText",
+              "Name": "Text22",
+              "Guid": "037460003d1840509d42b85b88f22305",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "30.4,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "TT"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "22": {
+              "Ident": "StiText",
+              "Name": "Text19",
+              "Guid": "d6f319bee11f4bdab6f5cd4c9e5e7042",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "29,1,1.4,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "DT"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "23": {
+              "Ident": "StiText",
+              "Name": "HeaderdsTimeRecap_CTT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "31.8,1,1.8,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Total"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            }
+          },
+          "PrintIfEmpty": true
+        },
+        "3": {
+          "Ident": "StiDataBand",
+          "Name": "DatadsTimeRecap",
+          "ClientRectangle": "0,7.42,33.6,0.8",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_EmpID",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,1.8,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.EmpID}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_EmpName",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.8,0,3.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.EmpName}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_Type",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.2,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.Type}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_RT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.6,0,1.6,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.RT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              }
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_OT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.2,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.OT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              }
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_TT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.6,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.NT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_DT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "13.8,0,1.8,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.Total}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_PRT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15.6,0,1.6,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.PRT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              }
+            },
+            "8": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_POT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "17.2,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.POT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              }
+            },
+            "9": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_PDT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "18.6,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.PNT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            },
+            "10": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_PTT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "22.8,0,1.8,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.PTotal}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            },
+            "11": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_CRT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "24.6,0,1.6,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.CRT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              }
+            },
+            "12": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_COT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "26.2,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.COT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              }
+            },
+            "13": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_CDT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "29,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.CDT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              }
+            },
+            "14": {
+              "Ident": "StiText",
+              "Name": "DatadsTimeRecap_CTT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "31.8,0,1.8,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.CTotal}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            },
+            "15": {
+              "Ident": "StiText",
+              "Name": "Text5",
+              "Guid": "10a8b3a9b69d48f7908afa4ed6db3f1f",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.DT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            },
+            "16": {
+              "Ident": "StiText",
+              "Name": "Text8",
+              "Guid": "73f40d24aef342a8a2216776a44e3a8a",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "12.4,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.TT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            },
+            "17": {
+              "Ident": "StiText",
+              "Name": "Text12",
+              "Guid": "835246a169c24c7d9e04eb42ccb5b906",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "20,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.PDT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              }
+            },
+            "18": {
+              "Ident": "StiText",
+              "Name": "Text17",
+              "Guid": "9e7178d08b1e4a12975241c134980492",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "21.4,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.PTT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            },
+            "19": {
+              "Ident": "StiText",
+              "Name": "Text24",
+              "Guid": "11fb3030c4a94d1dbde34c6f6243bff5",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "27.6,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.CNT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            },
+            "20": {
+              "Ident": "StiText",
+              "Name": "Text25",
+              "Guid": "bf030a3c06ba4562972340629ec9341e",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "30.4,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsTimeRecap.CTT}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;;",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "DataColumn"
+            }
+          },
+          "DataSourceName": "dsTimeRecap",
+          "EvenStyle": "Blue Steel_Data1_Even Style",
+          "OddStyle": "Blue Steel_Data1_Odd Style",
+          "Sort": {
+            "0": "ASC",
+            "1": "EmpID"
+          }
+        },
+        "4": {
+          "Ident": "StiFooterBand",
+          "Name": "FooterdsTimeRecap",
+          "ClientRectangle": "0,9.02,33.6,0.8",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_EmpID",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,1.8,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Total :"
+              },
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_EmpName",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.8,0,3.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Count(DatadsTimeRecap)}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Totals"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_Type",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.2,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "VertAlignment": "Center",
+              "Font": ";8.25;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_RT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.6,0,1.6,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.RT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_OT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.2,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(dsTimeRecap.OT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_TT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.6,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.NT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_DT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "13.8,0,1.8,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.Total)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_PRT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15.6,0,1.6,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.PRT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "8": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_POT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "17.2,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.POT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "9": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_PDT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "18.6,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.PNT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "10": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_PTT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "22.8,0,1.8,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.PTotal)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "11": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_CRT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "24.6,0,1.6,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.CRT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "12": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_COT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "26.2,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.COT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "13": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_CDT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "29,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.CDT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "14": {
+              "Ident": "StiText",
+              "Name": "FooterdsTimeRecap_CTT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "31.8,0,1.8,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.CTotal)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "15": {
+              "Ident": "StiText",
+              "Name": "Text6",
+              "Guid": "eb37a144236c4781b0aacf564b7de6a4",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.DT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "16": {
+              "Ident": "StiText",
+              "Name": "Text9",
+              "Guid": "0983a070f5fe4858ae0053e3598b2864",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "12.39,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.TT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "17": {
+              "Ident": "StiText",
+              "Name": "Text13",
+              "Guid": "33afb18ade034730952590b8685ab386",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "20,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.PDT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "18": {
+              "Ident": "StiText",
+              "Name": "Text18",
+              "Guid": "43e59906b96e4c59b67900352a5c9f75",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "21.41,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.PTT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "19": {
+              "Ident": "StiText",
+              "Name": "Text23",
+              "Guid": "6a9b3fccaa74493fabdb45d353178e74",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "27.6,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.CNT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            },
+            "20": {
+              "Ident": "StiText",
+              "Name": "Text27",
+              "Guid": "1335a77cc5744832a1f22cd92a17ecab",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "30.4,0,1.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(DatadsTimeRecap,dsTimeRecap.CTT)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";7.5;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "GroupSeparator": ","
+              },
+              "Type": "Totals"
+            }
+          },
+          "PrintIfEmpty": true
+        }
+      },
+      "PaperSize": "Legal",
+      "Orientation": "Landscape",
+      "PageWidth": 35.6,
+      "PageHeight": 21.6,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      },
+      "Margins": {
+        "Left": 1.0,
+        "Right": 1.0,
+        "Top": 1.0,
+        "Bottom": 1.0
+      },
+      "ReportUnit": {
+        "Ident": "StiCentimetersUnit"
+      }
+    }
+  }
+}

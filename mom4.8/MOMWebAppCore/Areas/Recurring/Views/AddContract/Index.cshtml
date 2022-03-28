@@ -1,0 +1,1406 @@
+﻿@{
+    ViewData["Title"] = "Add Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<script src="~/MOMUI/Design/js/jquery.formatCurrency.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        var billing = $("#ddlBilling").val();
+        if (billing == 1) {
+            $("#divCentral").show();
+        }
+
+        ///////////// Ajax call for customer auto search ////////////////////
+        var query = "";
+        function dtaa() {
+            this.prefixText = null;
+            this.con = $("#hdnCon").val();
+            this.custID = null;
+        }
+        $("#txtCustomer").autocomplete({
+            source: function (request, response) {
+                var dtaaa = new dtaa();
+                dtaaa.prefixText = request.term;
+                query = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/GetCustomer",
+                    //data: '{"prefixText":' + JSON.stringify(request.term) + ',"con":' + JSON.stringify($('ctl00_ContentPlaceHolder1_hdnCon').value) + '}',
+                    data: JSON.stringify(dtaaa),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+                        try {
+
+                        } catch (e) {
+                            $("#txtCustomer").val("");
+                            $("#hdnPatientId").val("");
+                            $("#txtLocation").val("");
+                            $("#hdnLocId").val("");
+                        }
+                        //  alert("Due to unexpected errors we were unable to load customers");
+                    }
+
+                });
+            },
+            select: function (event, ui) {
+                try {
+                    $("#txtCustomer").val(ui.item.label);
+                    $("#hdnPatientId").val(ui.item.value);
+                    $("#txtLocation").focus();
+                    $("#txtLocation").val("");
+                    $("#hdnLocId").val("");
+                    $("#btnSelectCustomer").click();
+                } catch (e) { }
+                return false;
+            },
+            focus: function (event, ui) {
+                try {
+                    $("#txtCustomer").val(ui.item.label);
+                } catch (e) { }
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                var result_item = item.label;
+                var result_desc = item.desc;
+                try {
+                    var x = new RegExp('\\b' + query, 'ig'); // notice the escape \ here...
+                    result_item = result_item.replace(x, function (FullMatch, n) {
+                        return '<span class="highlight">' + FullMatch + '</span>'
+                    });
+                    if (result_desc != null) {
+                        result_desc = result_desc.replace(x, function (FullMatch, n) {
+                            return '<span class="highlight">' + FullMatch + '</span>'
+                        });
+                    }
+                } catch (e) { }
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<a>" + result_item + ", <span style='color:Gray;'>" + result_desc + "</span></a>")
+                    .appendTo(ul);
+            };
+
+
+        ///////////// Ajax call for location auto search ////////////////////
+        var queryloc = "";
+        $("#txtLocation").autocomplete(
+            {
+                source: function (request, response) {
+                    var dtaaa = new dtaa();
+                    dtaaa.prefixText = request.term;
+                    dtaaa.custID = 0;
+                    try {
+                        if ($("#hdnPatientId").val() != "") {
+                            dtaaa.custID = $("#hdnPatientId").val();
+                        }
+                    } catch (e) { }
+                    queryloc = request.term;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "CustomerAuto.asmx/GetLocation",
+                        data: JSON.stringify(dtaaa),
+                        dataType: "json",
+                        async: true,
+                        success: function (data) {
+                            response($.parseJSON(data.d));
+                        },
+                        error: function (result) {
+                            try {
+
+                            } catch (e) {
+                                $("#txtLocation").val("");
+                                $("#hdnLocId").val("");
+                            }
+                            //   alert("Due to unexpected errors we were unable to load location");
+                        }
+
+                    });
+
+                },
+                select: function (event, ui) {
+                    try {
+                        $("#txtLocation").val(ui.item.label);
+                        $("#hdnLocId").val(ui.item.value);
+                        $("#btnSelectLoc").click();
+                    } catch (e) { }
+                    return false;
+                },
+                focus: function (event, ui) {
+                    $("#txtLocation").val(ui.item.label);
+                    return false;
+                },
+                minLength: 0,
+                delay: 250
+            })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                var result_item = item.label;
+                var result_desc = item.desc;
+                var x = new RegExp('\\b' + queryloc, 'ig'); // notice the escape \ here...
+
+                try {
+                    result_item = result_item.replace(x, function (FullMatch, n) {
+                        return '<span class="highlight">' + FullMatch + '</span>'
+                    });
+                    if (result_desc != null) {
+                        result_desc = result_desc.replace(x, function (FullMatch, n) {
+                            return '<span class="highlight">' + FullMatch + '</span>'
+                        });
+                    }
+                } catch (e) { }
+
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<a>" + result_item + ", <span style='color:Gray;'>" + result_desc + "</span></a>")
+                    .appendTo(ul);
+            };
+
+        ///////////// Validations for auto search ////////////////////
+
+        $("#txtCustomer").keyup(function (event) {
+            try {
+                var hdnPatientId = $("#hdnPatientId");
+                if ($("#txtCustomer").val() == "") {
+                    hdnPatientId.val("");
+                }
+            } catch (e) { }
+        });
+
+        $("#txtLocation").keyup(function (event) {
+            try {
+
+                var hdnLocId = $("#hdnLocId");
+                if ($("#txtLocation").val() == "") {
+                    hdnLocId.val() = "";
+                }
+            } catch (e) { }
+        });
+
+            ///////////// Unit dropdown control handling ////////////////////
+
+            /////////////// Format textboxes ///////////////////////////////
+
+            $("#txtBillAmt").blur(function () {
+                $("#txtBillAmt").formatCurrency();
+            });
+
+            if ($("#gvEquip").length > 0) {
+
+            SelectRowsEq("#gvEquip", "#txtUnit", "#hdnUnit");
+        }
+    });
+
+    function CheckUncheckAllCheckBoxAsNeeded() {
+
+        var totalCheckboxes = $("#gvEquip input[id*='chkSelect']:checkbox").size();
+
+        var checkedCheckboxes = $("#gvEquip input[id*='chkSelect']:checkbox:checked").size();
+
+        if (totalCheckboxes == checkedCheckboxes) {
+
+            $("#gvEquip").find("input[id*='chkAll']:checkbox").each(function () { this.checked = true; });
+        }
+        else {
+            $("#gvEquip input[id*='chkAll']:checkbox").attr('checked', false);
+        }
+    }
+
+    function CalculateAmount() {
+        //debugger;
+        //If Bill Detail Level is Detailed with price T‌hen we calculate Billing amount according to Unit Price. Detailed with price amount is the total of all units price.
+        //In case of summary and Detailed, we can't calculate. In that case, User put manually Billing amount
+
+        var selected = $("#ddlBillDetailLevel").val();
+
+        if (selected == "2") {
+
+            var grid = $("#gvEquip");
+            var txtAmount = $("#txtBillAmt");
+            var cell;
+            var total = 0;
+
+            if (grid.rows.length > 0) {
+                for (i = 1; i < grid.rows.length; i++) {
+                    cell = grid.rows[i].cells[10];
+                    cell1 = grid.rows[i].cells[0];
+
+                    if (cell1.childNodes[3].checked == true) {
+                        $(cell.childNodes[1]).formatCurrency();
+                        if (cell.childNodes[1].value != "") {
+                            var text = parseFloat(cell.childNodes[1].value.replace("$", "").replace(/,/g, ""));
+                            //                        alert(text);
+                            total = total + text;
+                        }
+                    }
+                }
+
+
+                if (total == 0) {
+                    noty({
+                        text: 'Please select at least one equipment with a price.',
+                        type: 'warning',
+                        layout: 'topCenter',
+                        closeOnSelfClick: false,
+                        timeout: 1000,
+                        theme: 'noty_theme_default',
+                        closable: true
+                    });
+
+                }
+                txtAmount.value = total.toFixed(2);
+                $("#txtBillAmt").formatCurrency();
+
+            }
+
+            Materialize.updateTextFields();
+        }
+    }
+
+    function CalculateHours() {
+        //debugger;
+        var grid = $("#gvEquip");
+        var txtHours = $("#txtBillHours");
+        if (txtHours != null) {
+            var cell;
+            var total = 0;
+
+            if (grid.rows.length > 0) {
+                for (i = 1; i < grid.rows.length; i++) {
+                    cell = grid.rows[i].cells[11];
+                    cell1 = grid.rows[i].cells[0];
+
+                    if (cell1.childNodes[3].checked == true) {
+                        if (cell.childNodes[1].value != "") {
+                            var text = parseFloat(cell.childNodes[1].value);
+                            total = total + text;
+                        }
+                    }
+                }
+                if (total != 0) {
+                    txtHours.value = total.toFixed(2);
+                }
+            }
+        }
+
+        Materialize.updateTextFields();
+
+    }
+
+    function ChkGL(sender, args) {
+        //debugger;
+        var hdnGLAcct = $("hdnGLAcct");
+        if (hdnGLAcct.val() == "") {
+            args.IsValid = false;
+        }
+        if (hdnGLAcct.val() == "0") {
+            args.IsValid = false;
+        }
+    }
+
+    ///////////// Custom validator function for customer auto search  ////////////////////
+    function ChkCustomer(sender, args) {
+        var hdnPatientId = $("#hdnPatientId");
+        if (hdnPatientId.val() == "") {
+            args.IsValid = false;
+        }
+    }
+
+    ///////////// Custom validator function for location auto search  ////////////////////
+    function ChkLocation(sender, args) {
+        var hdnLocId = $("#hdnPatientId");
+        if (hdnLocId.val() == "") {
+            args.IsValid = false;
+        }
+    }
+    ////////////// Display warning message while there is none contract exist /////////////////
+    function dispWarningContract() {
+
+        noty({
+            text: 'You cannot select the \'Combined on One Invoice\', As there are No Contracts added yet.',
+            type: 'warning',
+            layout: 'topCenter',
+            closeOnSelfClick: false,
+            timeout: 5000,
+            theme: 'noty_theme_default',
+            closable: true
+        });
+    }
+
+    function onDdlBillingChange(val) {
+        if (val == 1) {
+
+            $("#divCentral").show();
+            var countLocations = $("#ddlSpecifiedLocation").length
+            if ((countLocations - 1) <= 0) {
+
+                noty({
+                    text: 'You cannot select the \'Combined Billing\', As there are No Locations added yet.',
+                    type: 'warning',
+                    layout: 'topCenter',
+                    closeOnSelfClick: false,
+                    timeout: 5000,
+                    theme: 'noty_theme_default',
+                    closable: true
+                });
+            }
+
+        }
+        else {
+            $("#divCentral").hide();
+        }
+    }
+
+
+    function onDdlBillDetailLevelChange() {
+
+        var selected = $("#ddlBillDetailLevel").val();
+
+        if (selected == "2") {
+
+            CalculateAmount();
+
+        }
+        else {
+
+            var hdnValue = $("#hdnBillAmt").val();
+
+            $("#txtBillAmt").val() = hdnValue;
+
+        }
+
+    }
+
+    function validateRecContr(val) {
+        if (val == 1) {
+            noty({
+                text: 'You cannot select the \'Combined on One Invoice\', As there are No Contracts added yet.',
+                type: 'warning',
+                layout: 'topCenter',
+                closeOnSelfClick: false,
+                timeout: 5000,
+                theme: 'noty_theme_default',
+                closable: true
+            });
+        }
+        else if (val == 2) {
+            noty({
+                text: 'You cannot select the \'Combined Billing\', As there are No Locations added yet.',
+                type: 'warning',
+                layout: 'topCenter',
+                closeOnSelfClick: false,
+                timeout: 5000,
+                theme: 'noty_theme_default',
+                closable: true
+            });
+        }
+        else if (val == 3) {
+            noty({
+                text: 'Please select specify location!',
+                type: 'warning',
+                layout: 'topCenter',
+                closeOnSelfClick: false,
+                timeout: 5000,
+                theme: 'noty_theme_default',
+                closable: true
+            });
+        }
+
+    }
+</script>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        if ($("#chkspnotes").attr("checked") == "checked")
+            $(".inst").show();
+        else {
+            $(".inst").hide();
+        }
+
+        $("#chkspnotes").click(function (event) {
+
+            if ($("#chkspnotes").attr("checked") == "checked")
+                $(".inst").show();
+            else {
+                $(".inst").hide();
+
+                $("#txtSpecialInstructions").val("");
+            }
+        });
+        //// Renewal Notes show hide
+
+        RenewalNotesShowHide();
+        $("#chkRenewalNotes").click(function (event) {
+            RenewalNotesShowHide();
+        });
+
+        ///////////// Ajax call for GL acct auto search ////////////////////
+        var query = "";
+        function dtaa() {
+            this.prefixText = null;
+            this.con = null;
+            this.Acct = null;
+        }
+
+        $("#txtGLAcct").autocomplete({
+
+            source: function (request, response) {
+
+                var dtaaa = new dtaa();
+                dtaaa.prefixText = request.term;
+                query = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "AccountAutoFill.asmx/GetAccountName",
+                    data: JSON.stringify(dtaaa),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+                        alert("Due to unexpected errors we were unable to load vendor name");
+                    }
+                });
+            },
+            select: function (event, ui) {
+
+                $("#txtGLAcct").val(ui.item.label);
+                $("#hdnGLAcct").val(ui.item.value);
+                return false;
+            },
+            focus: function (event, ui) {
+                $("#txtGLAcct").val(ui.item.label);
+
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                //debugger;
+                var ula = ul;
+                var itema = item;
+                var result_value = item.value;
+                var result_item = item.label;
+                var result_desc = item.acct;
+                var x = new RegExp('\\b' + query, 'ig'); // notice the escape \ here...
+                result_item = result_item.replace(x, function (FullMatch, n) {
+                    return '<span class="highlight">' + FullMatch + '</span>'
+                });
+                if (result_desc != null) {
+                    result_desc = result_desc.replace(x, function (FullMatch, n) {
+                        return '<span class="highlight">' + FullMatch + '</span>'
+                    });
+                }
+
+                if (result_value == 0) {
+                    return $("<li></li>")
+                        .data("item.autocomplete", item)
+                        .append("<a>" + result_item + "</a>")
+                        .appendTo(ul);
+                }
+                else {
+                    return $("<li></li>")
+                        .data("item.autocomplete", item)
+                        .append("<a>" + result_item + ", <span>" + result_desc + "</span></a>")
+                        .appendTo(ul);
+                }
+            };
+    });
+    ////Function For Renewal Notes show hide
+
+    function RenewalNotesShowHide() {
+        if ($("#chkRenewalNotes").attr("checked") == "checked")
+            $(".inst1").show();
+        else {
+            $(".inst1").hide();
+
+            $("#txtRenewalNotes").val("");
+        }
+    }
+
+    function isDecimalKey(el, evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+
+        if (charCode == 45) {
+            return true;
+        }
+
+        var number = el.value.split('.');
+        if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+
+        if (number.length > 1 && charCode == 46) {
+            return false;
+        }
+        var caratPos = getSelectionStart(el);
+        var dotPos = el.value.indexOf(".");
+        if (caratPos > dotPos && dotPos > -1 && (number[1].length > 1)) {
+            return false;
+        }
+        return true;
+    }
+    function getSelectionStart(o) {
+        if (o.createTextRange) {
+            var r = document.selection.createRange().duplicate()
+            r.moveEnd('character', o.value.length)
+            if (r.text == "") return o.value.length
+            return o.value.lastIndexOf(r.text)
+        } else return o.selectionStart
+    }
+    function ConvertDigit(obj) {
+
+        if (!isNaN(parseFloat($(obj.id).value))) {
+            //$(obj.id).value = parseFloat($(obj.id).value).toFixed(2);
+            $(obj.id).value = parseFloat($(obj.id).value).toFixed(2);
+        }
+    }
+</script>
+
+<!--start container-->
+
+<div class="divbutton-container">
+    <div id="divButtons" class="">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title">
+                                    <i class="mdi-action-trending-up"></i>&nbsp;
+                                    <label class="title_text" ID="lblHeader" style="font-size:15px">Add Contract</label>
+                                    <label class="title_text_Name" ID="lblContrName" style="display: none;"></label>
+                                </div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a ID="btnSubmit" ValidationGroup="rec">Save</a>
+                                    </div>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a ToolTip="Close" ID="lnkClose" CausesValidation="false"><i class="mdi-content-clear"></i></a>
+                                </div>
+                                <div class="rght-content">
+                                    <div class="editlabel">
+                                        <label ID="lblHeaderLabel"></label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <div class="tblnks">
+                            <ul class="anchor-links">
+                                <li><a href="#accrdgeneral" class="link-slide">General</a></li>
+                                <li><a href="#accrdcustom" class="link-slide">Custom</a></li>
+                                <li id="liLogs"><a href="#accrdlogs">Logs</a></li>
+                            </ul>
+                        </div>
+                        <div class="tblnksright">
+                            <div class="nextprev">
+                                <div ID="pnlNext" style="display: none;">
+                                    <span class="angleicons">
+                                        <a ID="lnkFirst" ToolTip="First" CausesValidation="False"
+                                                        >  <i class="fa fa-angle-double-left"></i></a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkPrevious" ToolTip="Previous" CausesValidation="False"
+                                                       > <i class="fa fa-angle-left"></i></a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkNext" ToolTip="Next" CausesValidation="False"
+                                                        > <i class="fa fa-angle-right"></i></a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkLast" ToolTip="Last" CausesValidation="False"
+                                                        > <i class="fa fa-angle-double-right"></i></a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container accordian-wrap">
+    <input id="hdnCon"  type="hidden" />
+    <input id="hdnPatientId" type="hidden" />
+    <input id="hdnLocId"  type="hidden" />
+    <input id="hdnUnit" type="hidden" />
+    <input type="button" CausesValidation="false" ID="btnSelectCustomer" Text="Button"
+                Style="display: none;"/>
+    <input type="button" CausesValidation="false" ID="btnSelectLoc" Text="Button"
+                Style="display: none;"/>
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <div class="row">
+                <ul class="collapsible popout collapsible-accordion form-accordion-head" data-collapsible="expandable">
+                    <li class="active">
+                        <div id="accrdgeneral" class="collapsible-header accrd active accordian-text-custom "><i class="mdi-social-poll"></i>General</div>
+                        <div class="collapsible-body" style="display: block;">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="form-section-row">
+                                        <div class="section-ttle">Basic Info.</div>
+                                        <div class="form-section3">
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtCustomer" onkeydown="return (event.keyCode!=13);"  class="searchinputloc" autocomplete="nope" placeholder="Search by customer name, phone#, address etc."
+                                                                 AutoPostBack="false" />
+                                                    <label for="txtCustomer" ID="lblCustomer">Customer Name <span class="reqd">*</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtLocation" onkeydown="return (event.keyCode!=13);" class="searchinputloc" autocomplete="off" placeholder="Search by location name, phone#, address etc." />
+                                                    <label for="txtLocation" ID="lblLocation">Location Name <span class="reqd">*</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="srchclr multirowbtn multirowbtnone" style="float: right;">
+                                                <img id="imgCreditHold" title="Credit Hold" src="~/MOMUI/images/MSCreditHold.png" style="width: 20px; display: none;">
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtAddress" MaxLength="255" />
+                                                    <label for="txtAddress" ID="lbltxtAddress">Location Address</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtPO" MaxLength="25"/>
+                                                    <label for="txtPO" ID="lblPO"> PO#</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-section3">
+                                            <div class="input-field col s12">
+                                                <div>
+                                                    <label class="drpdwn-label" style="width: 100%">
+                                                        Equipment
+                                                    </label>
+                                                </div>
+                                                <div class="row">
+
+                                                    <div class="tag-div" id="eqtag">
+                                                    </div>
+
+                                                    <div id="DivEqup" class="popup_div" style="z-index: 15!important; display: none; width:800px!important; overflow: auto; max-height: 500px;">
+                                                        <div class="grid_container">
+                                                            <div class="RadGrid RadGrid_Material RadGrid">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <input type="text" ID="txtUnit" Style="display: none;" MaxLength="400" autocomplete="off" onfocus="this.blur();"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Location Type</label>
+                                                    <select ID="ddlType" class="browser-default" Enabled="false">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label" id="lblDefaultWorker"></label>
+                                                    <select ID="ddlRoute" class="browser-default" Enabled="false">
+                                                        <option>Select</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12" id="dvCompanyPermission">
+                                                <div class="row">
+                                                    <input type="text" ID="txtCompany" Enabled="false"/>
+                                                    <label for="txtCompany" ID="lbl">Company</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-section3">
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Status</label>
+                                                    <select ID="ddlStatus" class="browser-default">
+                                                        <option Value="0">Active</option>
+                                                        <option Value="1">Closed</option>
+                                                        <option Value="2">Hold</option>
+                                                        <option Value="3">Completed</option>
+                                                    </select>
+                                                    @Html.Hidden("hdnddlJobStatus","0")
+                                                    @Html.Hidden("hdnClosePermission","Y")
+                                                    @Html.Hidden("hdnCompletedJObPermission","Y")
+                                                    @Html.Hidden("hdnJobReopenPermission","Y")
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Service Type</label>
+                                                    <select ID="ddlServiceType" class="browser-default" AutoPostBack="true">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    @Html.Hidden("hdnGLAcct")
+                                                    <input type="text" ID="txtGLAcct" placeholder="Search by acct#, name"/>
+                                                    <label for="txtGLAcct" ID="lblGL">GL Account</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12" id="DivTaskCategory" style="display: block;">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Task Category</label>
+                                                    <select ID="ddlCodeCat" Enabled="false" class="browser-default" AutoPostBack="false">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Salesperson</label>
+                                                    <select ID="ddlTerr" class="browser-default" Enabled="false">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <div class="row">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Salesperson 2</label>
+                                                    <select ID="ddlTerr2" class="browser-default" Enabled="false">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-section-row">
+
+                                        <div class="section-ttle">Billing Recurring</div>
+                                        <div class="form-section3">
+                                            <div class="input-field2 col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtBillStartDt" class="datepicker_mom" MaxLength="28"/>
+                                                    <label for="txtBillStartDt" ID="Label4">Billing Start Date</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Billing Frequency</label>
+                                                    <select ID="ddlBillFreq" class="browser-default">
+                                                        <option Value="0">Monthly</option>
+                                                        <option Value="1">Bi-Monthly</option>
+                                                        <option Value="2">Quarterly</option>
+                                                        <option Value="3">3 Times/Year</option>
+                                                        <option Value="4">Semi-Annually </option>
+                                                        <option Value="5">Annually </option>
+                                                        <option Value="6">Never </option>
+                                                        <option Value="7">3 Years</option>
+                                                        <option Value="8">5 Years</option>
+                                                        <option Value="9">2 Years</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Bill Detail Level</label>
+                                                    <select ID="ddlBillDetailLevel" class="browser-default" onchange="javascript:onDdlBillDetailLevelChange();">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <div class="row">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    @Html.Hidden("hdnBillAmt")
+                                                    <input type="text" ID="txtBillAmt" MaxLength="20"/>
+                                                    <label for="txtBillAmt" ID="Label5">Billing Amount</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-section3">
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Billing</label>
+                                                    <select ID="ddlBilling" class="browser-default" onChange="onDdlBillingChange(this.options[this.selectedIndex].value);">
+                                                        <option Value="0">Individual</option>
+                                                        <option Value="1">Combined</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Specify Location</label>
+                                                    <select ID="ddlSpecifiedLocation" class="browser-default">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Contract Billing</label>
+                                                    <select ID="ddlContractBill" class="browser-default" AutoPostBack="true">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-section3">
+                                            <div style="margin-bottom: 50px;">
+                                                <div class="input-field col s12">
+                                                    <div class="checkrow">
+                                                        <span class="filled-in">
+                                                            <input type="checkbox" ID="chkCredit" TabIndex="20" />
+                                                        </span>
+                                                        <label ID="lblchkCredit" for="chkCredit">Credit Card</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <div class="checkrow">
+                                                    <span class="filled-in">
+                                                        <input type="checkbox" ID="chkspnotes"/>
+                                                    </span>
+                                                    <label ID="Label15" for="chkspnotes">Special Notes</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s6">
+                                                <div class="row">
+                                                    <label ID="Label16" for="txtSpecialInstructions">Notes</label>
+                                                    <input type="text" ID="txtSpecialInstructions" class="materialize-textarea" TextMode="MultiLine"/>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section-row">
+
+                                        <div class="section-ttle">Recurring Ticket Schedule</div>
+                                        <div class="form-section3">
+                                            <div ID="UpdatePanel4">
+                                                <div>
+                                                    <div class="input-field2 col s12" id="Div_ScheStartDate">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtScheduleStartDt" class="datepicker_mom" MaxLength="28"/>
+                                                            <label ID="lblSchedule" for="txtScheduleStartDt">Schedule Start Date</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Schedule Frequency</label>
+                                                    <div ID="UpdatePanel5">
+                                                        <div>
+                                                            <select ID="ddlSchFreq" AutoPostBack="true" class="browser-default">
+                                                                <option Value="-1">Never</option>
+                                                                <option Value="0">Monthly</option>
+                                                                <option Value="1">Bi-Monthly</option>
+                                                                <option Value="2">Quarterly</option>
+                                                                <option Value="15">3 Times/Year</option>
+                                                                <option Value="3">Semi-Annually </option>
+                                                                <option Value="4">Annually</option>
+                                                                <option Value="5">Weekly</option>
+                                                                <option Value="6">Bi-Weekly</option>
+                                                                <option Value="7">Every 13 Weeks</option>
+                                                                <option Value="10">Every 2 Years</option>
+                                                                <option Value="8">Every 3 Years</option>
+                                                                <option Value="9">Every 5 Years</option>
+                                                                <option Value="11">Every 7 Years</option>
+                                                                <option Value="12">On-Demand</option>
+                                                                <option Value="13">Daily</option>
+                                                                <option Value="14">Twice a Month</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-section3">
+                                            <div style="margin-bottom: 50px;">
+                                                <div class="input-field col s5">
+                                                    <div class="checkrow">
+                                                        <input type="checkbox" ID="chkWeekends" checked="checked" />
+                                                        <label ID="Label12" for="chkWeekends">Weekends</label>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s2">
+                                                    <div class="row">
+                                                        &nbsp;
+                                                    </div>
+                                                </div>
+                                                <div ID="UpdatePanel2">
+                                                    <div>
+                                                        <div class="input-field col s5" id="Div_ScheduledTime">
+                                                            <div class="row">
+                                                                <input type="text" ID="txtsTime" MaxLength="10"/>
+                                                                <label ID="Label13" for="txtsTime">Scheduled Time</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="input-field col s12" style="display: none">
+
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Day</label>
+                                                    <input type="text" ID="txtDay" MaxLength="3" TabIndex="15"/>
+                                                    
+                                                    <select ID="ddlDay" class="browser-default">
+                                                        <option Value="0">Day</option>
+                                                        <option Value="1">Monday</option>
+                                                        <option Value="2">Tuesday</option>
+                                                        <option Value="3">Wednesday</option>
+                                                        <option Value="4">Thursday</option>
+                                                        <option Value="5">Friday</option>
+                                                        <option Value="6">Saturday</option>
+                                                        <option Value="7">Sunday</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div ID="UpdatePanel3">
+                                                <div>
+                                                    <div class="input-field col s12" id="Div_ScheTotalHours">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtBillHours" MaxLength="20"/>
+                                                            <label ID="Label14" for="txtBillHours">Total Hours</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-section3">
+
+
+                                            <div style="margin-bottom: 50px;">
+                                                <div class="input-field col s6">
+                                                    <div class="checkrow">
+                                                        <span class="filled-in">
+                                                            <input type="checkbox" ID="chkRenewalNotes"/>
+                                                        </span>
+                                                            <label ID="lblchkRenewalNotes" for="chkRenewalNotes">Renewal Notes</label>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <div class="row">
+                                                        <label ID="Label17" for="txtRenewalNotes">Notes</label>
+                                                        <input type="text" ID="txtRenewalNotes" class="materialize-textarea" TextMode="MultiLine" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section-row">
+                                        <div class="form-section3">
+                                            <div class="section-ttle">Billing Rate</div>
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <input type="text" ID="txtBillRate" AutoCompleteType="None"
+                                                                 MaxLength="15" onkeypress="return isDecimalKey(this,event)" onchange="ConvertDigit(this)" />
+                                                    <label for="txtBillRate" ID="Label6">Billing rate</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <div class="row">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <input type="text" ID="txtOt" AutoCompleteType="None"
+                                                                 MaxLength="15" onkeypress="return isDecimalKey(this,event)" onchange="ConvertDigit(this)" />
+                                                    <label for="txtOt" ID="Label7">OT Rate</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <input type="text" ID="txtNt" AutoCompleteType="None"
+                                                                 MaxLength="15" onkeypress="return isDecimalKey(this,event)" onchange="ConvertDigit(this)" />
+                                                    <label for="txtNt" ID="Label8">1.7 Rate</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <div class="row">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <input type="text" ID="txtDt" AutoCompleteType="None"
+                                                                 MaxLength="15" onkeypress="return isDecimalKey(this,event)" onchange="ConvertDigit(this)" />
+                                                    <label for="txtDt" ID="Label9">DT Rate</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <input type="text" ID="txtTravel" AutoCompleteType="None"
+                                                                 MaxLength="15" onkeypress="return isDecimalKey(this,event)" onchange="ConvertDigit(this)" />
+                                                    <label for="txtTravel" ID="Label10">Travel Rate</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <div class="row">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <input type="text" ID="txtMileage" AutoCompleteType="None"
+                                                                 MaxLength="15" onkeypress="return isDecimalKey(this,event)" onchange="ConvertDigit(this)" />
+                                                    <label for="txtMileage" ID="Label11">Mileage</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-section9">
+                                            <div class="section-ttle">Escalation</div>
+                                            <div class="col s12 m12 l12 pd-nl">
+                                                <div class="form-section3 wd49">
+
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label class="drpdwn-label">Escalation Type</label>
+                                                            <select ID="ddlEscType" class="browser-default">
+                                                                <option Value="3">Manual</option>
+                                                                <option Value="0">Commodity Index</option>
+                                                                <option Value="1">Escalation</option>
+                                                                <option Value="2">Return</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtEscCycle" />
+                                                            <label ID="lblEscCycle" for="txtEscCycle">Escalation Cycle</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtEscFactor" />
+                                                            <label ID="Label1" for="txtEscCycle">Escalation Factor</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-section3 wd48">
+                                                    <div class="input-field2 col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtEscdue" class="datepicker_mom" MaxLength="28" />
+                                                            <label ID="Label2" for="txtEscdue">Escalated Last</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <div ID="UpdatePanel1">
+                                                                <div>
+                                                                    <div>
+                                                                        <label class="drpdwn-label">Expiration</label>
+                                                                        <select ID="ddlExpiration" AutoPostBack="true" class="browser-default" >
+                                                                            <option Value="">Indefinitely</option>
+                                                                            <option Value="1">Contract expiration date</option>
+                                                                            <option Value="2" style="display: none">Number of frequencies</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <input type="text" ID="txtUnitExpiration" class="datepicker_mom" MaxLength="28" style="display: block;" />
+                                                                    <input type="text" ID="txtNumFreq" MaxLength="28" style="display: block;" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtDescription" />
+                                                            <label ID="Label3" for="txtDescription">Contract Description</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section-row">
+
+                                        <div class="section-ttle">Additional Fields</div>
+                                        <div class="input-field col s12">
+                                            <div class="row">
+                                                <label ID="lblRemarks" for="txtRemarks">Remarks</label>
+                                                <textarea ID="txtRemarks" rows="2" cols="20" class="materialize-textarea" TextMode="MultiLine" MaxLength="8000" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div id="accrdcustom" class="collapsible-header accrd accordian-text-custom"><i class="mdi-action-perm-data-setting"></i>Custom</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+
+                                    <div class="col s12 m12 l12">
+                                        <div class="grid_container">
+                                            <div class="RadGrid RadGrid_Material">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <div class="row">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+                    <li id="tbLogs">
+                        <div id="accrdlogs" class="collapsible-header accrd accordian-text-custom"><i class="mdi-content-content-paste"></i>Logs</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material">
+                                                
+                                                
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end container-->
+
+
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+
+
+        $("#eqtag").click(function () {
+
+            $("#DivEqup").toggle();
+        });
+
+
+        $('a[href^="#accrd"]').on('click', function (e) {
+            e.preventDefault();
+
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+
+
+        $("#gvEquip input[id*='chkSelect']:checkbox").click(CheckUncheckAllCheckBoxAsNeeded);
+
+        $("#gvEquip input[id*='chkAll']:checkbox").click(function () {
+
+            if ($(this).is(':checked')) {
+                $("#gvEquip input[id*='chkSelect']:checkbox").attr('checked', true);
+            }
+            else {
+                $("#gvEquip input[id*='chkSelect']:checkbox").attr('checked', false);
+            }
+
+            SelectRows("#gvEquip", "#txtUnit", "#hdnUnit");
+
+            CalculateAmount();
+
+            CalculateHours();
+
+        });
+
+        if ($("#gvEquip").length > 0) {
+
+            SelectRows("#gvEquip", "#txtUnit", "#hdnUnit");
+        }
+
+        Materialize.updateTextFields();
+
+
+    });
+
+
+    function pageLoad(sender, args) {
+
+        $("#gvEquip input[id*='chkSelect']:checkbox").click(CheckUncheckAllCheckBoxAsNeeded);
+
+        $("#gvEquip input[id*='chkAll']:checkbox").click(function () {
+
+            if ($(this).is(':checked')) {
+                $("#gvEquip").find("input:checkbox").each(function () { this.checked = true; });
+            }
+            else {
+                $("#gvEquip").find("input:checkbox").each(function () { this.checked = false; });
+            }
+
+            SelectRowsEq("#gvEquip", "#txtUnit", "#hdnUnit");
+
+            CalculateAmount();
+
+            CalculateHours();
+        });
+    }
+</script>
+
+<script type="text/javascript">
+
+    $("#ddlStatus").change(function () {
+
+        var ddlval = $('option:selected', $(this)).text();
+
+        var JobClosePermission = $("#hdnClosePermission").val();
+
+        var CompletedJObPermission = $("#hdnCompletedJObPermission").val();
+
+        var JobReopenPermission = $("#hdnJobReopenPermission").val();
+
+        var _hdnddlJobStatus = $("#hdnddlJobStatus").val();
+
+
+        if (JobClosePermission == 'N') {
+
+            if (ddlval == 'Closed' && _hdnddlJobStatus != '1') {
+                noty({
+                    text: 'You do not have permission to close project!', type: 'warning', layout: 'topCenter',
+                    closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true
+                });
+                $("#ddlStatus").val(_hdnddlJobStatus);
+            }
+
+        }
+
+        if (JobReopenPermission == 'N') {
+            if (ddlval == 'Active' && _hdnddlJobStatus != '0') {
+                noty({
+                    text: 'You do not have permission to Reopen project!', type: 'warning', layout: 'topCenter',
+                    closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true
+                });
+                $("#ddlStatus").val(_hdnddlJobStatus);
+            }
+        }
+        if (CompletedJObPermission == 'N') {
+            if (ddlval == 'Completed' && _hdnddlJobStatus != '3') {
+                noty({
+                    text: 'You do not have permission to complete project!', type: 'warning', layout: 'topCenter',
+                    closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true
+                });
+                $("#ddlStatus").val(_hdnddlJobStatus);
+            }
+        }
+
+    });
+
+</script>

@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[KPI](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](500) NOT NULL,
+	[Module] [nvarchar](50) NULL,
+	[Screen] [nvarchar](50) NULL,
+	[Type] [int] NULL,
+	[UserControl] [nvarchar](500) NOT NULL,
+ CONSTRAINT [PK_KPI] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO

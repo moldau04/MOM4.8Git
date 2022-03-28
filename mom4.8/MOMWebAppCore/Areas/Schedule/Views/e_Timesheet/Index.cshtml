@@ -1,0 +1,744 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<!--File Upload Control-->
+<link href="~/MOMUI/Design/js/plugins/dropify/css/dropify.css" type="text/css" rel="stylesheet" media="screen,projection">
+
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+<style>
+    .money-symbol {
+        width: 10px;
+        /* height: 100%; */
+        float: left;
+        padding-top: 12px;
+        align-content: center;
+        vertical-align: middle !important;
+    }
+
+    .borderLabel {
+        border: solid 1px #ccc;
+        padding: 4px 15px;
+        font-size: 8pt;
+    }
+
+    .texttransparent {
+        font-size: 8pt;
+    }
+
+    [id$='PageSizeComboBox'] {
+        width: 5.1em !important;
+    }
+
+    #ctl00_ContentPlaceHolder1_gvTimesheet_ctl00_ctl03_ctl01_PageSizeComboBox {
+        width: 5.1em !important;
+    }
+</style>
+<script type="text/javascript">
+    function ShowMessage(message, messageType) {
+        noty({
+            text: message,
+            type: messageType,
+            layout: 'topCenter',
+            closeOnSelfClick: false,
+            timeout: true,
+            theme: 'noty_theme_default',
+            closable: true,
+            timeout: 3000
+        });
+    }
+</script>
+
+
+<div class="topNav">
+    <div id="divButtons" class="">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-image-timelapse"></i>&nbsp;e-Timesheet</div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a ID="lnkExport" class="dropdown-button" data-beloworigin="true" data-activates="dropdown0">Export To</a>
+                                    </div>
+                                    <ul id="dropdown0" class="dropdown-content">
+                                        <li>
+                                            <a ID="lnkExportToCSV" class="-text">CSV</a>
+                                        </li>
+                                        <li>
+                                            <a ID="lnkExportToText" class="-text">Text</a>
+                                        </li>
+                                        <li>
+                                            <a ID="lnkExportToExcel" class="-text">Excel</a>
+                                        </li>
+                                    </ul>
+                                    <div class="btnlinks">
+                                        <a class="icon-save" ID="lnkProcess" CausesValidation="False" onclick="removeDummyRows();">Save</a>
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a ID="lnkSave" CausesValidation="False">Save</a>
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a class="dropdown-button" data-beloworigin="true" href="#!" data-activates="dropdown1">
+                                            Reports
+                                        </a>
+                                    </div>
+                                    <ul id="dropdown1" class="dropdown-content">
+                                        <li>
+                                            <a href="CustomersReport.aspx?type=Customer" class="-text">Add New Report</a>
+                                        </li>
+                                        <li>
+                                            <a href="TicketByType.aspx" class="-text">Ticket Listing Report</a>
+                                        </li>
+                                        <li>
+                                            <a ID="lnkTimeRecap">
+                                                Time Recap
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ID="lnkTimeRecapAll">
+                                                Time Recap - all hours
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ID="lnkTimeRecapwithlaborcost">
+                                                Time Recap with labor cost
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a ID="lnkTimeRecapWithCostAll">
+                                                Time Recap with labor cost - all hours
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="btnlinks">
+                                        <a ID="lnkExcel">Export to Excel</a>
+                                    </div>
+                                    <div class="btnlinks" id="divExportPayRoll">
+                                        <a ID="lnkExportPayRoll" onclick="return checkCoCode();">Export Payroll</a>
+                                    </div>
+                                    <div class="rght-content">
+                                    </div>
+                                </div>
+
+                                <div class="btnclosewrap">
+                                    <a ID="lnkClose" CausesValidation="false">  <i class="mdi-content-clear"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+
+
+
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="srchpane-advanced">
+            @Html.Hidden("hdnTickets")
+            @Html.Hidden("hdnWeeks")
+            <div class="srchpaneinner">
+                <div ID="timeSelectionPanel" UpdateMode="Conditional">
+                    <div>
+                        <div class="srchtitle srchtitlecustomwidth">
+                            Payroll Period
+                        </div>
+                        <div class="srchinputwrap">
+                            <input type="text" ID="txtFromDate" class="srchcstm datepicker_mom" />
+                        </div>
+                        <div class="srchinputwrap">
+                            <input type="text" ID="txtToDate" class="srchcstm datepicker_mom" />
+                        </div>
+                        <div class="srchinputwrap srchclr btnlinksicon">
+                            <a ID="lnkSearch" CausesValidation="false">
+                                <i class="mdi-action-search"></i>
+                            </a>
+                        </div>
+                        <div class="srchinputwrap">
+                            <ul class="tabselect accrd-tabselect" id="testradiobutton">
+                                <li>
+                                    <a AutoPostBack="False" ID="LinkButton3"><i class='mdi-hardware-keyboard-arrow-left'></i></a>
+                                </li>
+                                <li>
+                                    <label id="lblDay">
+                                        <input type="radio" ID="rdDay" GroupName="rdCal" AutoPostBack="True" />
+                                        Day
+                                    </label>
+                                </li>
+                                <li>
+                                    <label id="lblWeek">
+                                        <input type="radio" ID="rdWeek" GroupName="rdCal" AutoPostBack="True" />
+                                        Week
+                                    </label>
+                                </li>
+                                <li>
+                                    <label id="lblMonth">
+                                        <input type="radio" ID="rdMonth" GroupName="rdCal" AutoPostBack="True" />
+                                        Month
+                                    </label>
+                                </li>
+                                <li>
+                                    <label id="lblQuarter">
+                                        <input type="radio" ID="rdQuarter" GroupName="rdCal" />
+                                        Quarter
+                                    </label>
+                                </li>
+                                <li>
+                                    <label id="lblYear">
+                                        <input type="radio" ID="rdYear" GroupName="rdCal" AutoPostBack="True" />
+                                        Year
+                                    </label>
+                                </li>
+                                <li>
+                                    <a ID="LinkButton4"><i class='mdi-hardware-keyboard-arrow-right'></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="srchpaneinner">
+
+                <div class="srchtitle srchtitlecustomwidth">
+                    Department
+                </div>
+                <div class="srchinputwrap">
+                    <select ID="ddlDepartment" AutoPostBack="true" class="browser-default selectsml selectst">
+                        <option Value="">Select</option>
+                    </select>
+
+                </div>
+                <div class="srchtitle srchtitlecustomwidth">
+                    Supervisor
+                </div>
+                <div class="srchinputwrap">
+                    <select ID="ddlSuper" AutoPostBack="true" class="browser-default selectsml selectst">
+                        <option Value="">Select</option>
+                    </select>
+                </div>
+                <div class="srchtitle srchtitlecustomwidth">
+                    Worker
+                </div>
+                <div class="srchinputwrap">
+                    <select ID="ddlworker" AutoPostBack="true" class="browser-default selectsml selectst">
+                        <option Value="">Select</option>
+                    </select>
+                </div>
+                <div class="srchtitle srchtitlecustomwidth">
+                    Timesheet
+                </div>
+                <div class="srchinputwrap">
+                    <select ID="ddlTimesheet" AutoPostBack="true" class="browser-default selectsml selectst">
+                        <option Text="All" Value="-1"></option>
+                        <option Text="Yes" Value="1"></option>
+                        <option Text="No" Value="0"></option>
+                    </select>
+                </div>
+                <div class="col lblsz2 lblszfloat">
+                    <div class="row">
+
+                        <span class="tro trost">
+                            <a ID="lnkClear">Clear</a>
+                        </span>
+                        <span class="tro trost">
+                            <label ID="lblRecordCount" style="font-size:0.9rem">Record(s) found</label>
+                        </span>
+
+
+                        <span class="tro trost">
+                            <label ID="lblProcessed" class="shadow" Style="color: Red; font-weight: bold; font-size: medium;">PROCESSED</label>
+                        </span>
+                        <span class="tro trost">
+                            <label ID="lblSaved" class="shadow " Style="color: Blue; font-weight: bold; font-size: medium;">SAVED</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="grid_container">
+            <div class="form-section-row" style="margin-bottom: 0 !important;">
+                <div class="RadGrid RadGrid_Material">
+
+
+                </div>
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <a ID="lnkSaved"
+                           Style="float: right">Timesheet Updates for this Period</a>
+                        <a ID="lnkBack" Style="float: right">Back</a>
+                        <a ID="lnkMerge" ToolTip="Update Timesheet with the newly added Tickets and Employees."
+                           Style="float: right; margin-right: 20px">Merge Updates</a>
+                    </td>
+                </tr>
+            </table>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div style="display: block">
+    @Html.Hidden("hdnCoCode")
+    <input type="button" ID="btnHiddenExport" style="display:none"/>
+</div>
+
+<script src="~/MOMUI/Design/js/moment.js"></script>
+<script src="~/MOMUI/Design/js/pikaday.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        function CloseCoCodeModalWindow() {
+            debugger;
+            var wnd = $find("#CoCodeTypeWindow");
+            wnd.Close();
+        }
+        $('a[href^="#accrd"]').on('click', function (e) {
+            e.preventDefault();
+
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+        $("#addinfo").hide();
+        $('.add-btn-click').click(function () {
+
+            $('#addinfo').slideToggle('2000', "swing", function () {
+                // Animation complete.
+
+            });
+
+            if ($('.divbutton-container').height() != 65)
+                $('.divbutton-container').animate({ height: 65 }, 500);
+            else
+                $('.divbutton-container').animate({ height: 350 }, 500);
+
+
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+        OnTimesheetGvRendered();
+    });
+    function confirmUpdate(sender, message) {
+        var update = confirm(message);
+        if (update) {
+            return true;
+        } else {
+            sender.value = sender.defaultValue;
+            return false;
+        }
+    }
+
+    function removeDummyRows() {
+        var all = $(".dummy").map(function () {
+            this.remove();
+        }).get();
+    }
+
+
+    function calculate(Gridview) {
+        CalculateRate("#" + Gridview, 0);
+    }
+
+    function calculateExpand(Gridview) {
+        CalculateRate(Gridview, 1);
+        var gvprev = $(Gridview).closest('tr').prev().find("table");
+
+        $(Gridview).find('tr').each(function (index, value) {
+            $(gvprev).find('tr').each(function (secindex, secvalue) {
+
+                if (index == secindex) {
+                    $(secvalue).find('input[id*=txtTCustom]').val($(value).find('input[id*=txtTCustom]').val());
+                    $(secvalue).find('input[id*=txtTRate]').val($(value).find('input[id*=txtTRate]').val());
+                    $(secvalue).find('input[id*=txtTReg]').val($(value).find('input[id*=txtTReg]').val());
+                    $(secvalue).find('input[id*=txtTOT]').val($(value).find('input[id*=txtTOT]').val());
+                    $(secvalue).find('input[id*=txtTNT]').val($(value).find('input[id*=txtTNT]').val());
+                    $(secvalue).find('input[id*=txtTDT]').val($(value).find('input[id*=txtTDT]').val());
+                    $(secvalue).find('input[id*=txtTAmount]').val($(value).find('input[id*=txtTAmount]').val());
+                    $(secvalue).find('input[id*=txtTravel]').val($(value).find('input[id*=txtTravel]').val());
+                    $(secvalue).find('input[id*=txtTZone]').val($(value).find('input[id*=txtTZone]').val());
+                    $(secvalue).find('input[id*=txtTMileage]').val($(value).find('input[id*=txtTMileage]').val());
+                    $(secvalue).find('input[id*=txtTExtra]').val($(value).find('input[id*=txtTExtra]').val());
+                    $(secvalue).find('input[id*=txtTTotal]').val($(value).find('input[id*=txtTTotal]').val());
+                    $(secvalue).find('input[id*=txtTMisc]').val($(value).find('input[id*=txtTMisc]').val());
+                    $(secvalue).find('input[id*=txtPToll]').val($(value).find('input[id*=txtPToll]').val());
+                    $(secvalue).find('input[id*=txtTJobRate]').val($(value).find('input[id*=txtTJobRate]').val());
+                    $(secvalue).find('input[id*=txtTCustomTick2]').val($(value).find('input[id*=txtTCustomTick2]').val());
+                    $(secvalue).find('input[id*=chkTJobRate]').prop('checked', $(value).find('input[id*=chkTJobRate]').is(':checked'));
+
+                }
+            });
+        });
+    }
+
+    function CalculateRate(Gridview, expand) {
+        var regtotal = 0;
+        var ottotal = 0;
+        var nttotal = 0;
+        var dttotal = 0;
+        var tttotal = 0;
+        var tAmtotal = 0;
+        var zonetotal = 0;
+        var mileagetotal = 0;
+        var extratotal = 0;
+        var grandtotal = 0;
+        var misctotal = 0;
+        var tolltotal = 0;
+        var Timetotals = 0;
+        var CustomTotal = 0;
+        var CustomT2Total = 0;
+
+        var trprev = $(Gridview).closest('tr');
+        if (expand == 1)
+            trprev = $(Gridview).closest('tr').prev();
+
+        var lblMethodID = trprev.find('span[id*=lblMID]');
+        var lblHours = trprev.find('span[id*=lblHours]');
+        var lblSalary = trprev.find('span[id*=lblSalary]');
+        var lblHourlyRate = trprev.find('span[id*=lblHourlyRate]');
+        var lblMileageRate = trprev.find('span[id*=lblMlRate]');
+        $(Gridview).find('tbody tr').each(function () {
+            var $tr = $(this);
+            var txtCustom = $tr.find('input[id*=txtTCustom]');
+            var txtRate = $tr.find('input[id*=txtTRate]');
+            var txtReg = $tr.find('input[id*=txtTReg]');
+            var txtOT = $tr.find('input[id*=txtTOT]');
+            var txtNT = $tr.find('input[id*=txtTNT]');
+            var txtDT = $tr.find('input[id*=txtTDT]');
+            var txtTT = $tr.find('input[id*=txtTravel]');
+            var txtAmount = $tr.find('input[id*=txtTAmount]');
+            var txtZone = $tr.find('input[id*=txtTZone]');
+            var txtMileage = $tr.find('input[id*=txtTMileage]');
+            var txtExtra = $tr.find('input[id*=txtTExtra]');
+            var txtTotal = $tr.find('input[id*=txtTTotal]');
+            var txtMisc = $tr.find('input[id*=txtTMisc]');
+            var txtToll = $tr.find('input[id*=txtPToll]');
+            var txtTimeTotal = $tr.find('input[id*=txtPTimeTotal]');
+            var txtJobRate = $tr.find('input[id*=txtTJobRate]');
+            var chkTJobRate = $tr.find('input[id*=chkTJobRate]');
+            var txtTCustomTick2 = $tr.find('input[id*=txtTCustomTick2]');
+
+            var total = 0;
+            var TimeAmount = 0;
+            var TotalTime = Isnull(txtReg.val()) + Isnull(txtOT.val()) + Isnull(txtNT.val()) + Isnull(txtDT.val()) + Isnull(txtTT.val());
+            var OvertimeAmount = 0;
+            txtTimeTotal.val(TotalTime.toFixed(2));
+            if (!isNaN(parseFloat(txtRate.val()))) {
+
+                if ($(lblMethodID).text() == '0') {
+                    TimeAmount = 0;
+                }
+                else if ($(lblMethodID).text() == '1') {
+                    OvertimeAmount = Isnull(txtReg.val()) + (Isnull(txtNT.text()) * 1.7) + (Isnull(txtDT.val()) * 2) + Isnull(txtTT.val()) + (Isnull(txtOT.val()) * 1.5);
+                    if (chkTJobRate.is(':checked') == true)
+                        TimeAmount = OvertimeAmount * Isnull(txtJobRate.val());
+                    else
+                        TimeAmount = OvertimeAmount * Isnull(txtRate.val());
+                }
+                else if ($(lblMethodID).text() == '2') {
+                    TimeAmount = 0;
+                }
+            }
+            $(txtAmount).val(TimeAmount.toFixed(2));
+            total = TimeAmount + Isnull(txtZone.val()) + (Isnull(txtMileage.val()) * Isnull(lblMileageRate.text())) + Isnull(txtExtra.val()) + Isnull(txtMisc.val()) + Isnull(txtToll.text()) + Isnull(txtCustom.val()) + Isnull(txtTCustomTick2.val());
+            $tr.find('input[id*=txtTTotal]').val(total.toFixed(2));
+
+            Timetotals += TotalTime;
+            regtotal += Isnull(txtReg.val());
+            ottotal += Isnull(txtOT.val());
+            nttotal += Isnull(txtNT.val());
+            dttotal += Isnull(txtDT.val());
+            tttotal += Isnull(txtTT.val());
+
+            if ($(lblMethodID).text() == '1') {
+                tAmtotal += Isnull(TimeAmount);
+            }
+
+            zonetotal += Isnull(txtZone.val());
+            mileagetotal += Isnull(txtMileage.val());
+            extratotal += Isnull(txtExtra.val());
+            misctotal += Isnull(txtMisc.val());
+            tolltotal += Isnull(txtToll.val());
+            grandtotal += total;
+            CustomTotal += Isnull(txtCustom.val());
+            CustomT2Total += Isnull(txtTCustomTick2.val());
+
+        });
+
+        if ($(lblMethodID).text() == '0') {
+            tAmtotal = Isnull(lblSalary.text());
+        }
+        else if ($(lblMethodID).text() == '2') {
+            tAmtotal = Isnull(lblHours.text()) * Isnull(lblHourlyRate.text());
+        }
+
+
+        $(Gridview).find('tfoot tr.rgFooter').each(function () {
+            var $tr = $(this);
+            var txtCustom = $tr.find('input[id*=lblTCustom]');
+            var txtRate = $tr.find('input[id*=lblTRate]');
+            var txtReg = $tr.find('input[id*=lblTReg]');
+            var txtOT = $tr.find('input[id*=lblTOT]');
+            var txtNT = $tr.find('input[id*=lblTNT]');
+            var txtDT = $tr.find('input[id*=lblTDT]');
+            var txtTT = $tr.find('input[id*=lblTravel]');
+            var txtTAmount = $tr.find('input[id*=lblTAmount]');
+            var txtZone = $tr.find('input[id*=lblTZone]');
+            var txtMileage = $tr.find('input[id*=lblTMileage]');
+            var txtExtra = $tr.find('input[id*=lblTExtra]');
+            var txtTotal = $tr.find('input[id*=lblTGtotal]');
+            var txtMisc = $tr.find('input[id*=lblTMisc]');
+            var txtToll = $tr.find('input[id*=lblPToll]');
+            var txtCustomTick2 = $tr.find('input[id*=lblTCustomTick2]');
+            var txtTimetotal = $tr.find('input[id*=lblPTimeTotal]');
+
+            $(txtCustom).val(CustomTotal.toFixed(2));
+            $(txtReg).val(regtotal.toFixed(2));
+            $(txtOT).val(ottotal.toFixed(2));
+            $(txtNT).val(nttotal.toFixed(2));
+            $(txtDT).val(dttotal.toFixed(2));
+            $(txtTT).val(tttotal.toFixed(2));
+            $(txtTAmount).val(tAmtotal.toFixed(2));
+            $(txtZone).val(zonetotal.toFixed(2));
+            $(txtMileage).val(mileagetotal.toFixed(2));
+            $(txtExtra).val(extratotal.toFixed(2));
+            $(txtTotal).val(grandtotal.toFixed(2));
+            $(txtMisc).val(misctotal.toFixed(2));
+            $(txtToll).val(tolltotal.toFixed(2));
+            $(txtCustomTick2).val(CustomT2Total.toFixed(2));
+            $(txtTimetotal).val(Timetotals.toFixed(2));
+
+            var txtPCustom = trprev.find('span[id*=txtCustom]');
+            var txtPRate = trprev.find('input[id*=txtRate]');
+            var txtPReg = trprev.find('span[id*=txtReg]');
+            var txtPOT = trprev.find('span[id*=txtOT]');
+            var txtPNT = trprev.find('span[id*=txtoneseven]');
+            var txtPDT = trprev.find('span[id*=txtDT]');
+            var txtPTT = trprev.find('span[id*=txtPTravel]');
+            var txtPAmt = trprev.find('span[id*=txtAmount]');
+            var txtPZone = trprev.find('span[id*=txtZone]');
+            var txtPMileage = trprev.find('span[id*=txtMileage]');
+            var txtPExtra = trprev.find('span[id*=txtExtra]');
+            var txtPMisc = trprev.find('span[id*=txtMisc]');
+            var txtPToll = trprev.find('span[id*=txtToll]');
+            var txtPCustomT2 = trprev.find('span[id*=txtCustomT2]');
+
+            $(txtPCustom).text(CustomTotal.toFixed(2));
+            if ($(lblMethodID).text() == '2')
+                $(txtPReg).text(lblHours.text());
+            else
+                $(txtPReg).text(regtotal.toFixed(2));
+            $(txtPOT).text(ottotal.toFixed(2));
+            $(txtPNT).text(nttotal.toFixed(2));
+            $(txtPDT).text(dttotal.toFixed(2));
+            $(txtPTT).text(tttotal.toFixed(2));
+            $(txtPAmt).text(tAmtotal.toFixed(2));
+            $(txtPZone).text(zonetotal.toFixed(2));
+            $(txtPMileage).text(mileagetotal.toFixed(2));
+            $(txtPExtra).text(extratotal.toFixed(2));
+            $(txtPMisc).text(misctotal.toFixed(2));
+            $(txtPToll).text(tolltotal.toFixed(2));
+            $(txtPCustomT2).text(CustomT2Total.toFixed(2));
+
+            CalculateTimesheet();
+        });
+
+    }
+
+    function CalculateTimesheet() {
+        var Gridview = $("#" + "gvTimesheet");
+        var regtotal = 0;
+        var ottotal = 0;
+        var nttotal = 0;
+        var dttotal = 0;
+        var tttotal = 0;
+        var Amttotal = 0;
+        var zonetotal = 0;
+        var mileagetotal = 0;
+        var extratotal = 0;
+        var Holidaytotal = 0;
+        var Vacationtotal = 0;
+        var Sicktotal = 0;
+        var Reimbtotal = 0;
+        var Bonustotal = 0;
+        var grandtotal = 0;
+        var misctotal = 0;
+        var tolltotal = 0;
+        var customtotal = 0;
+        var customT2total = 0;
+
+        $(Gridview).find('table.rgMasterTable tbody tr').each(function () {
+            var $tr = $(this);
+
+            var txtCustom = $tr.find('input[id*=txtCustom]');
+            var txtReg = $tr.find('span[id*=txtReg]');
+            var txtOT = $tr.find('span[id*=txtOT]');
+            var txtNT = $tr.find('span[id*=txtoneseven]');
+            var txtDT = $tr.find('span[id*=txtDT]');
+            var txtTT = $tr.find('span[id*=txtPTravel]');
+            var txtAmount = $tr.find('span[id*=txtAmount]');
+            var txtTimeTotal = $tr.find('span[id*=txtTimeTotal]');
+
+            var txtZone = $tr.find('span[id*=txtZone]');
+            var txtMileage = $tr.find('span[id*=txtMileage]');
+            var txtExtra = $tr.find('span[id*=txtExtra]');
+            var txtHoliday = $tr.find('span[id*=txtHoliday]');
+            var txtVacation = $tr.find('span[id*=txtVacation]');
+            var txtSick = $tr.find('span[id*=txtSick]');
+            var txtReimb = $tr.find('span[id*=txtReimb]');
+            var txtBonus = $tr.find('span[id*=txtBonus]');
+            var txtTotal = $tr.find('span[id*=txtTotal]');
+            var txtMisc = $tr.find('span[id*=txtMisc]');
+            var txtToll = $tr.find('span[id*=txtToll]');
+            var txtSalary = $tr.find('span[id*=txtSalary]');
+            var txtCustomT2 = $tr.find('span[id*=txtCustomT2]');
+
+            var lblMethodID = $tr.find('span[id*=lblMID]');
+            var lblHours = $tr.find('span[id*=lblHours]');
+            var lblSalary = $tr.find('span[id*=lblSalary]');
+            var lblHourlyRate = $tr.find('span[id*=lblHourlyRate]');
+            var lblMlRate = $tr.find('span[id*=lblMlRate]');
+
+            $(txtTimeTotal).text((Isnull(txtReg.text()) + Isnull(txtOT.text()) + Isnull(txtNT.text()) + Isnull(txtDT.text()) + Isnull(txtTT.text())).toFixed(2));
+
+            if ($(lblMethodID).text() != '1') {
+                $(txtAmount).text(($(txtTimeTotal).text() * Isnull(lblHourlyRate.text())).toFixed(2));
+            }
+
+            var TimeAmount = $(txtAmount).text();
+
+            var total = Isnull(TimeAmount) + Isnull(txtZone.text()) + (Isnull(txtMileage.text()) * Isnull(lblMlRate.text())) + Isnull(txtExtra.text()) + (Isnull(txtHoliday.text()) * Isnull(lblHourlyRate.text())) + (Isnull(txtVacation.text()) * Isnull(lblHourlyRate.text())) + (Isnull(txtSick.text()) * Isnull(lblHourlyRate.text())) + Isnull(txtReimb.text()) + Isnull(txtBonus.text()) + Isnull(txtToll.text()) + Isnull(txtMisc.text()) + Isnull(txtSalary.text()) + Isnull(txtCustom.text()) + Isnull(txtCustomT2.text());  // +(Isnull(txtFixedH.val()) * Isnull(lblHourlyRate.text()));
+            if ($(lblMethodID).text() == '0')
+                total = Isnull(TimeAmount) + Isnull(txtZone.text()) + (Isnull(txtMileage.text()) * Isnull(lblMlRate.text())) + Isnull(txtExtra.text()) + (Isnull(txtHoliday.text())) + (Isnull(txtVacation.text())) + (Isnull(txtSick.text())) + Isnull(txtReimb.text()) + Isnull(txtBonus.text()) + Isnull(txtToll.text()) + Isnull(txtMisc.text()) + Isnull(txtSalary.text()) + Isnull(txtCustom.text()) + Isnull(txtCustomT2.text()); //+(Isnull(txtFixedH.val()) * Isnull(lblHourlyRate.text()));
+
+            $tr.find('span[id*=txtTotal]').text(total.toFixed(2));
+
+            regtotal += Isnull(txtReg.text());
+            ottotal += Isnull(txtOT.text());
+            nttotal += Isnull(txtNT.text());
+            dttotal += Isnull(txtDT.text());
+            tttotal += Isnull(txtTT.text());
+            Amttotal += Isnull(TimeAmount);
+            zonetotal += Isnull(txtZone.text());
+            mileagetotal += Isnull(txtMileage.text());
+            extratotal += Isnull(txtExtra.text());
+            Holidaytotal += Isnull(txtHoliday.text());
+            Vacationtotal += Isnull(txtVacation.text());
+            Sicktotal += Isnull(txtSick.text());
+            Reimbtotal += Isnull(txtReimb.text());
+            Bonustotal += Isnull(txtBonus.text());
+            grandtotal += total;
+            misctotal += Isnull(txtMisc.text());
+            tolltotal += Isnull(txtToll.text());
+            customtotal += Isnull(txtCustom.text());
+            customT2total += Isnull(txtCustomT2.text());
+        });
+
+
+        $(Gridview).find('table tr.rgFooter').each(function () {
+            var $tr = $(this);
+            var txtCustom_lb = $tr.find('input[id*=lblCustom]');
+            var txtReg_lb = $tr.find('input[id*=lblReg]');
+            var txtOT_lb = $tr.find('input[id*=lblOT]');
+            var txtNT_lb = $tr.find('input[id*=lblNT]');
+            var txtDT_lb = $tr.find('input[id*=lblDT]');
+            var txtTT_lb = $tr.find('input[id*=lblPTravel]');
+            var txtAmt_lb = $tr.find('input[id*=lblAmount]');
+            var txtZone_lb = $tr.find('input[id*=lblZone]');
+            var txtMileage_lb = $tr.find('input[id*=lblMileage]');
+            var txtExtra_lb = $tr.find('input[id*=lblExtra]');
+            var txtHoliday_lb = $tr.find('input[id*=lblHoliday]');
+            var txtVacation_lb = $tr.find('input[id*=lblVacation]');
+            var txtSick_lb = $tr.find('input[id*=lblSick]');
+            var txtReimb_lb = $tr.find('input[id*=lblReimb]');
+            var txtBonus_lb = $tr.find('input[id*=lblBonus]');
+            var txtTotal_lb = $tr.find('input[id*=lblGtotal]');
+            var txtMisc_lb = $tr.find('input[id*=lblMisc]');
+            var txtToll_lb = $tr.find('input[id*=lblToll]');
+            var txtCustomT2_lb = $tr.find('input[id*=lblCustomT2]');
+
+            $(txtCustom_lb).val(customtotal.toFixed(2));
+            $(txtReg_lb).val(regtotal.toFixed(2));
+            $(txtOT_lb).val(ottotal.toFixed(2));
+            $(txtNT_lb).val(nttotal.toFixed(2));
+            $(txtDT_lb).val(dttotal.toFixed(2));
+            $(txtTT_lb).val(tttotal.toFixed(2));
+            $(txtAmt_lb).val(Amttotal.toFixed(2));
+            $(txtZone_lb).val(zonetotal.toFixed(2));
+            $(txtMileage_lb).val(mileagetotal.toFixed(2));
+            $(txtExtra_lb).val(extratotal.toFixed(2));
+            $(txtReimb_lb).val(Reimbtotal.toFixed(2));
+            $(txtBonus_lb).val(Bonustotal.toFixed(2));
+            $(txtTotal_lb).val(grandtotal.toFixed(2));
+            $(txtMisc_lb).val(misctotal.toFixed(2));
+            $(txtCustomT2_lb).val(customT2total.toFixed(2));
+            $(txtToll_lb).val(tolltotal.toFixed(2));
+        });
+    }
+
+    function Isnull(value) {
+        value = parseFloat(value);
+        if (isNaN(value)) {
+            value = 0;
+        }
+        return value;
+    }
+
+    function calculateDetailTable(tableId) {
+        var detailTable = $("#" + tableId);
+        debugger
+        calculateExpand(detailTable);
+    }
+
+    function OnTimesheetGvRendered() {
+        CalculateTimesheet();
+    }
+
+</script>
+<script>
+    function checkCoCode() {
+        var wnd = $find("#CoCodeTypeWindow");
+        var code = $("#hdnCoCode").val();
+        if (code == "") {
+            wnd.set_title("Add ADP Code");
+            wnd.Show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+    function CloseCoCodeModalWindow() {
+        var wnd = $find("#CoCodeTypeWindow");
+        wnd.Close();
+        $("#btnHiddenExport").click();
+    }
+</script>
+

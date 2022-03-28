@@ -1,0 +1,2005 @@
+﻿@{
+    ViewData["Title"] = "Add Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+<script src="~/MOMUI/Design/js/jquery.formatCurrency.js"></script>
+<style>
+    a[disabled=disabled] {
+        color: gray;
+    }
+    /** Columns */
+    .rcbHeader ul,
+    .rcbFooter ul,
+    .rcbItem ul,
+    .rcbHovered ul,
+    .rcbDisabled ul {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        display: inline-block;
+        list-style-type: none;
+    }
+
+    .RadComboBoxDropDown .rcbList {
+        margin-top: -6px !important;
+    }
+
+        .RadComboBoxDropDown .rcbList li {
+            padding-top: 5px !important;
+        }
+
+    .RadComboBoxDropDown .rcbCheckBox {
+        top: 4px !important;
+    }
+
+    .rcbScroll {
+        overflow: scroll !important;
+        overflow-x: hidden !important;
+    }
+
+    .colCombo {
+        margin-right: 5px;
+        padding: 0 5px 0 0;
+        width: 16%;
+        line-height: 14px;
+        float: left;
+        word-break: break-all;
+    }
+
+    .cbHeader {
+        background-color: #e7e5e5 !important;
+        color: #2e6b89 !important;
+        border-bottom: 1px solid #ccc !important;
+        background-image: url(../Design/images/accrd.gif) !important;
+        background-repeat: repeat-x !important;
+        padding: 0 !important;
+        font-size: 0.9rem;
+    }
+
+    .comboboxHeader {
+        margin: -20px 0 11px 30px !important;
+        float: left;
+        color: black;
+    }
+
+    .comboboxHeaderTitle {
+        line-height: 40px;
+        background-color: whitesmoke;
+        margin: -4px 0px -5px 1px !important;
+    }
+
+    .comboboxFooter {
+        line-height: 40px;
+        background-color: whitesmoke;
+        margin: 0px -12px -4px -12px;
+        padding-left: 10px !important;
+    }
+
+    .rcbList > li:first-child {
+        background-color: #edf4fc;
+    }
+
+    .rcbList > li:nth-child(odd) {
+        background-color: #edf4fc;
+    }
+
+    .RadComboBoxDropDown .rcbHeader {
+        padding: 0 !important;
+    }
+
+    #dvCustomSetup .itemHeader {
+        color: #2e6b89 !important;
+        font-weight: bold !important;
+    }
+
+    #dvContactSetup .itemHeader, #tabProposals .itemHeader {
+        color: #2e6b89 !important;
+        font-weight: bold !important;
+    }
+
+    /** Multiple rows and columns */
+    .multipleRowsColumns .rcbItem,
+    .multipleRowsColumns .rcbHovered {
+        float: left;
+        margin: 0 1px;
+        min-height: 13px;
+        overflow: hidden;
+        padding: 2px 19px 2px 6px;
+        width: 193px;
+    }
+
+
+    .results {
+        display: block;
+        margin-top: 20px;
+    }
+
+    .font_09rem {
+        font-size: 0.9rem !important;
+    }
+
+    .fontHeader {
+        font-size: 1rem !important;
+    }
+
+    .breakContent {
+        word-break: break-all;
+    }
+
+    .RadGrid_Popup > div > div.rgDataDiv {
+        height: 450px !important;
+    }
+
+    input[class*='txtMembers_'] {
+        cursor: pointer;
+    }
+
+    input[class*='txtRoles_'] {
+        cursor: pointer;
+    }
+
+    .chipUsers {
+        width: auto !important;
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+        margin-left: 2px !important;
+        margin-right: 2px !important;
+        margin-top: 3px !important;
+    }
+
+    .chipUserRoles {
+        background-color: #2bab54 !important;
+        width: auto !important;
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+        margin-left: 2px !important;
+        margin-right: 2px !important;
+        margin-top: 3px !important;
+    }
+
+    .chip > label {
+        font-size: 13px;
+        font-weight: normal;
+        color: #fff;
+        line-height: 24px;
+    }
+    /* The container */
+    .cusCheckContainer {
+        display: block;
+        position: relative;
+        padding-left: 22px;
+        /* margin-bottom: 12px; */
+        cursor: pointer;
+        font-size: 15px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+        .cusCheckContainer input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 4px;
+        left: 0;
+        height: 15px;
+        width: 15px;
+        border-radius: 3px;
+        background-color: black;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .cusCheckContainer:hover input ~ .checkmark {
+        background-color: black;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .cusCheckContainer input:checked ~ .checkmark {
+        background-color: black;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .cusCheckContainer input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .cusCheckContainer .checkmark:after {
+        left: 5px;
+        top: 1px;
+        width: 6px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+</style>
+<script>
+    function BindClickEventForGridCheckBox() {
+        $("#RadGrid_Emails input[id*='chkSelect']:checkbox").unbind('click').bind('click', function () {
+            CheckUncheckAllCheckBoxAsNeeded();
+        });
+
+        $("#RadGrid_Emails input[id*='chkTask']:checkbox").unbind('click').bind('click', function () {
+            OnCheck_TaskCheckBox("#RadGrid_Emails");
+        });
+
+        $("#RadGrid_Emails input[id*='chkAll']:checkbox").unbind('click').bind('click', function () {
+            if ($(this).is(':checked')) {
+                $("#RadGrid_Emails input[id*='chkSelect']:checkbox").prop('checked', true);
+            }
+            else {
+                $("#RadGrid_Emails input[id*='chkSelect']:checkbox").prop('checked', false);
+            }
+            CheckEmailsCheckBox("#RadGrid_Emails");
+        });
+
+        UpdatedivDisplayTeamMember();
+
+
+        var line = $("#hdnLineOpenned").val();
+        if (line != null && line != "") {
+            var hdnMembersID = $(".txtMembers_" + line).attr("id").replace("txtMembers", "hdnMembers");
+            var teamMembers = $("#" + hdnMembersID).val();
+
+            // Update selected for grid
+            if (teamMembers != null && teamMembers != "") {
+                var teamArr = teamMembers.toString().split(';');
+                // trim value of teamArr
+                $.each(teamArr, function (index, value) {
+                    teamArr[index] = value.trim();
+                });
+
+                $("#RadGrid_Emails input[id*='chkSelect']:checkbox").each(function (index) {
+                    var userId = $(this).closest('tr').find('td:eq(0)').find('span').html();
+                    var taskCheckID = this.id.replace("chkSelect", "chkTask");
+                    var intUserType = userId.split('_')[0];
+
+                    if (teamArr.indexOf(userId) >= 0) {
+                        $(this).prop('checked', true);
+                        if (intUserType == 0 || intUserType == 1 || intUserType == 6 || intUserType == 7) {
+                            $("#" + taskCheckID).prop('disabled', false);
+                        }
+                        else {
+                            $("#" + taskCheckID).prop('disabled', true);
+                        }
+                    } else {
+                        $(this).prop('checked', false);
+                        $("#" + taskCheckID).prop('disabled', true);
+                    }
+                });
+            } else {
+                $("#RadGrid_Emails input[id*='chkSelect']:checkbox").prop('checked', false);
+            }
+        }
+    }
+    function UpdatedivDisplayTeamMember() {
+        var txtMembers = $("#gvTestCustom input[id*='txtMembers']");
+        $.each(txtMembers, function (index, item) {
+            var txtId = $(item).attr("id");
+            var div = $(txtId.replace("txtMembers", "cusLabelTag"));
+            var hdnMembersID = txtId.replace("txtMembers", "hdnMembers");
+            var hdnMembersValue = $("#" + hdnMembersID).val();
+            div.innerHTML = "";
+            var disTeamMembers = $(item).val();
+            // Update selected for grid
+            if (disTeamMembers != null && disTeamMembers != "") {
+                var teamArr = disTeamMembers.toString().split(';');
+                var teamKeyArr = hdnMembersValue.toString().split(';');
+                // trim value of teamArr
+                $.each(teamArr, function (index, value) {
+                    teamArr[index] = value.trim();
+                });
+
+                if (teamArr != null && teamArr.length > 0) {
+                    for (var i = 0; i < teamArr.length; i++) {
+                        var tempTeamKeyArr = teamKeyArr[i].toString().split('_');
+                        var tag = "";
+                        if (teamKeyArr[i].indexOf('6') == 0) {
+                            if (tempTeamKeyArr.length == 3 && tempTeamKeyArr[2] == "1")
+                                //tag = "<div class='chip chipUserRoles'><input type='checkbox' checked='checked' disabled style='margin-right: 5px;'/><label>" + teamArr[i] + "</label></div>";
+                                tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' checked='checked' disabled><span class='checkmark'></span></label></div>";
+                            else
+                                tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' disabled><span class='checkmark'></span></label></div>";
+                            //tag = "<div class='chip chipUserRoles'><input type='checkbox' disabled  style='margin-right: 5px;' /><label>" + teamArr[i] + "</label></div>";
+                            div.innerHTML += tag;
+                        } else if (teamKeyArr[i].indexOf('7') == 0) {
+                            if (tempTeamKeyArr.length >= 3) {
+                                // && tempTeamKeyArr[2] == "1"
+                                var tempTitle = tempTeamKeyArr[tempTeamKeyArr.length - 2];
+                                if (tempTeamKeyArr[tempTeamKeyArr.length - 1] == "1" && tempTitle.charAt(tempTitle.length - 1) == "|") {
+                                    tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' checked='checked' disabled><span class='checkmark'></span></label></div>";
+                                    //tag = "<div class='chip chipUserRoles'><input type='checkbox' checked='checked' disabled style='margin-right: 5px;'/><label>" + teamArr[i] + "</label></div>";
+                                } else {
+                                    tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' disabled><span class='checkmark'></span></label></div>";
+                                    //tag = "<div class='chip chipUserRoles'><input type='checkbox' disabled  style='margin-right: 5px;' /><label>" + teamArr[i] + "</label></div>";
+                                }
+                            }
+                            else
+                                tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' disabled><span class='checkmark'></span></label></div>";
+                            //tag = "<div class='chip chipUserRoles'><input type='checkbox' disabled  style='margin-right: 5px;' /><label>" + teamArr[i] + "</label></div>";
+                            div.innerHTML += tag;
+                        } else {
+                            if (tempTeamKeyArr.length == 3 && (tempTeamKeyArr[0] == "0" || tempTeamKeyArr[0] == "1") && tempTeamKeyArr[2] == "1")
+                                tag = "<div class='chip chipUsers'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' checked='checked' disabled><span class='checkmark'></span></label></div>";
+                            //tag = "<div class='chip chipUsers' ><input type='checkbox' checked='checked' disabled  style='margin-right: 5px;'/><label>" + teamArr[i] + "</label></div>";
+                            else
+                                tag = "<div class='chip chipUsers'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' disabled><span class='checkmark'></span></label></div>";
+                            //tag = "<div class='chip chipUsers' ><input type='checkbox' disabled  style='margin-right: 5px;'/><label>" + teamArr[i] + "</label></div>";
+                            div.innerHTML += tag;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function CloseTeamMemberWindow() {
+        var line = $("#hdnLineOpenned").val();
+        if (line != null && line != "") {
+            var hdnMembersValue = $("#hdnOrgMemberKey").val();
+            var txtMembersValue = $("#hdnOrgMemberDisp").val();
+
+            var txtMembersID = $(".txtMembers_" + line).attr("id");
+            $("#" + txtMembersID).val(txtMembersValue);
+            var hdnMembersID = txtMembersID.replace("txtMembers", "hdnMembers");
+            $("#" + hdnMembersID).val(hdnMembersValue);
+
+            var div = $(txtMembersID.replace("txtMembers", "cusLabelTag"));
+            div.innerHTML = "";
+            var disTeamMembers = txtMembersValue;
+            // Update selected for grid
+            if (disTeamMembers != null && disTeamMembers != "") {
+                var teamArr = disTeamMembers.toString().split(';');
+                var teamKeyArr = hdnMembersValue.toString().split(';');
+                // trim value of teamArr
+                $.each(teamArr, function (index, value) {
+                    teamArr[index] = value.trim();
+                });
+
+                if (teamArr != null && teamArr.length > 0)
+                    for (var i = 0; i < teamArr.length; i++) {
+                        var tempTeamKeyArr = teamKeyArr[i].toString().split('_');
+                        var tag = "";
+                        if (teamKeyArr[i].indexOf('6') == 0) {
+                            if (tempTeamKeyArr.length == 3 && tempTeamKeyArr[2] == "1")
+                                tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' checked='checked' disabled><span class='checkmark'></span></label></div>";
+                            //tag = "<div class='chip chipUserRoles'><input type='checkbox' checked='checked' disabled style='margin-right: 5px;'/><label>" + teamArr[i] + "</label></div>";
+                            else
+                                tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' disabled><span class='checkmark'></span></label></div>";
+                            //tag = "<div class='chip chipUserRoles'><input type='checkbox' disabled  style='margin-right: 5px;' /><label>" + teamArr[i] + "</label></div>";
+                            div.innerHTML += tag;
+                        } else if (teamKeyArr[i].indexOf('7') == 0) {
+                            if (tempTeamKeyArr.length >= 3) {
+                                // && tempTeamKeyArr[2] == "1"
+                                var tempTitle = tempTeamKeyArr[tempTeamKeyArr.length - 2];
+                                if (tempTeamKeyArr[tempTeamKeyArr.length - 1] == "1" && tempTitle.charAt(tempTitle.length - 1) == "|") {
+                                    tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' checked='checked' disabled><span class='checkmark'></span></label></div>";
+                                    //tag = "<div class='chip chipUserRoles'><input type='checkbox' checked='checked' disabled style='margin-right: 5px;'/><label>" + teamArr[i] + "</label></div>";
+                                } else {
+                                    tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' disabled><span class='checkmark'></span></label></div>";
+                                    //tag = "<div class='chip chipUserRoles'><input type='checkbox' disabled  style='margin-right: 5px;' /><label>" + teamArr[i] + "</label></div>";
+                                }
+                            }
+                            else
+                                tag = "<div class='chip chipUserRoles'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' disabled><span class='checkmark'></span></label></div>";
+                            //tag = "<div class='chip chipUserRoles'><input type='checkbox' disabled  style='margin-right: 5px;' /><label>" + teamArr[i] + "</label></div>";
+                            div.innerHTML += tag;
+                        } else {
+                            if (tempTeamKeyArr.length == 3 && (tempTeamKeyArr[0] == "0" || tempTeamKeyArr[0] == "1") && tempTeamKeyArr[2] == "1")
+                                tag = "<div class='chip chipUsers'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' checked='checked' disabled><span class='checkmark'></span></label></div>";
+                            //tag = "<div class='chip chipUsers' ><input type='checkbox' checked='checked' disabled  style='margin-right: 5px;'/><label>" + teamArr[i] + "</label></div>";
+                            else
+                                tag = "<div class='chip chipUsers'><label  class='cusCheckContainer'>" + teamArr[i] + "<input type='checkbox' disabled><span class='checkmark'></span></label></div>";
+                            //tag = "<div class='chip chipUsers' ><input type='checkbox' disabled  style='margin-right: 5px;'/><label>" + teamArr[i] + "</label></div>";
+                            div.innerHTML += tag;
+                        }
+                    }
+            }
+        }
+        var wnd = $find("#TeamMembersWindow");
+        wnd.Close();
+    }
+
+    function ShowTeamMemberWindow(txtTeamMember) {
+        var line = $(txtTeamMember).closest('tr').find('td:eq(0) > span.customline').text();
+        var txtTeamMembersId = $(txtTeamMember).attr("id");
+        var hdnTeamMembersId = txtTeamMembersId.replace("cusLabelTag", "hdnMembers");
+        var teamMembers = $("#" + hdnTeamMembersId).val();
+        var txtCustomLabelId = txtTeamMembersId.replace("cusLabelTag", "lblCustom");
+        var txtCustomLabelVal = $("#" + txtCustomLabelId).text();
+        var txtTeamMemberDispId = txtTeamMembersId.replace("cusLabelTag", "txtMembers");
+        var txtTeamMemberDispVal = $("#" + txtTeamMemberDispId).val();
+
+        $("#hdnLineOpenned").val(line);
+        $("#hdnOrgMemberKey").val(teamMembers);
+        $("#hdnOrgMemberDisp").val(txtTeamMemberDispVal);
+
+        $("#RadGrid_Emails input[id*='chkSelect']:checkbox").unbind('click').bind('click', function () {
+            CheckUncheckAllCheckBoxAsNeeded();
+        });
+
+        $("#RadGrid_Emails input[id*='chkTask']:checkbox").unbind('click').bind('click', function () {
+            OnCheck_TaskCheckBox("#RadGrid_Emails");
+        });
+
+        $("#RadGrid_Emails input[id*='chkAll']:checkbox").unbind('click').bind('click', function () {
+            if ($(this).is(':checked')) {
+                $("#RadGrid_Emails input[id*='chkSelect']:checkbox").prop('checked', true);
+            }
+            else {
+                $("#RadGrid_Emails input[id*='chkSelect']:checkbox").prop('checked', false);
+            }
+            CheckEmailsCheckBox("#RadGrid_Emails");
+        });
+
+        // Update selected for grid
+        if (teamMembers != null && teamMembers != "") {
+            var teamArr = teamMembers.toString().split(';');
+            var teamArrWithTask = teamMembers.toString().split(';');
+            // trim value of teamArr
+            $.each(teamArr, function (index, value) {
+                var temp = value.trim().split('_');
+
+                if (temp.length == 3) {
+                    temp.splice(2, 1);
+                    teamArr[index] = temp.join("_");
+                } else {
+                    teamArr[index] = value.trim();
+                }
+            });
+
+            $("#RadGrid_Emails input[id*='chkSelect']:checkbox").each(function (index) {
+                var userId = $(this).closest('tr').find('td:eq(0)').find('span').html();
+                var taskCheckID = this.id.replace("chkSelect", "chkTask");
+                var intUserType = userId.split('_')[0];
+
+                var idx = teamArr.indexOf(userId);
+                if (idx >= 0) {
+                    $(this).prop('checked', true);
+                    var memberkeywithTask = teamArrWithTask[idx].split('_');
+                    if (memberkeywithTask.length == 3 && memberkeywithTask[2] == 1) {
+                        $("#" + taskCheckID).prop('checked', true);
+                    } else {
+                        $("#" + taskCheckID).prop('checked', false);
+                    }
+
+                    if (intUserType == 0 || intUserType == 1 || intUserType == 6 || intUserType == 7) {
+                        $("#" + taskCheckID).prop('disabled', false);
+                    }
+                    else {
+                        $("#" + taskCheckID).prop('disabled', true);
+                    }
+                } else {
+                    $(this).prop('checked', false);
+                    $("#" + taskCheckID).prop('disabled', true);
+                    $("#" + taskCheckID).prop('checked', false);
+                }
+            });
+        } else {
+            $("#RadGrid_Emails input[id*='chkSelect']:checkbox").prop('checked', false);
+        }
+
+        var wnd = $find("#TeamMembersWindow");
+        wnd.set_title("Team Member: " + txtCustomLabelVal);
+        wnd.Show();
+    }
+
+    function CheckEmailsCheckBox(gridview) {
+        var line = $("#hdnLineOpenned").val();
+        var hdnMembersID = $(".txtMembers_" + line).attr("id").replace("txtMembers", "hdnMembers");
+        var hdnMembersValue = $("#hdnOrgMemberKey").val();
+        var txtMembersValue = $("#hdnOrgMemberDisp").val();
+
+        var tempArrayKey = [];
+        tempArrayKey.length = 0;
+        var tempArrayDisplay = [];
+        tempArrayDisplay.length = 0;
+
+        $("#" + gridview + " input[id*='chkSelect']:checkbox").each(function (index) {
+            var tempMemberKey = $(this).closest('tr').find('td:eq(0)').find('span').html().trim();
+            var teamMemberDisp = $(this).closest('tr').find('td:eq(1)').find('span').html().trim();
+            if (teamMemberDisp == "")
+                teamMemberDisp = $(this).closest('tr').find('td:eq(2)').find('span').html().trim();
+
+            var intUserType = tempMemberKey.split('_')[0];
+
+            var temp = tempMemberKey.trim().split('_');
+            if (temp.length == 3) {
+                temp.splice(2, 1);
+            }
+
+            var taskCheckID = this.id.replace("chkSelect", "chkTask");
+            if ($(this).is(":checked")) {
+                if (intUserType == 0 || intUserType == 1 || intUserType == 6 || intUserType == 7) {
+                    $("#" + taskCheckID).prop('disabled', false);
+                }
+                else {
+                    $("#" + taskCheckID).prop('disabled', true);
+                }
+                if (jQuery.inArray(tempMemberKey, tempArrayKey) < 0) {
+                    if ($("#" + taskCheckID).is(":checked")) {
+                        temp.push(1);
+                    } else {
+                        temp.push(0);
+                    }
+                    tempMemberKey = temp.join("_")
+                    tempArrayKey.push(tempMemberKey);
+                    tempArrayDisplay.push(teamMemberDisp);
+                }
+            } else {
+                if (jQuery.inArray(tempMemberKey, tempArrayKey) >= 0) {
+                    tempArrayKey = jQuery.grep(tempArrayKey, function (value) {
+                        return value != tempMemberKey;
+                    });
+                    tempArrayDisplay = jQuery.grep(tempArrayDisplay, function (value) {
+                        return value != teamMemberDisp;
+                    });
+                }
+                $("#" + taskCheckID).prop('checked', false);
+                $("#" + taskCheckID).prop('disabled', true);
+            }
+        });
+
+        $("#hdnOrgMemberKey").val(tempArrayKey.join(";"));
+        $("#hdnOrgMemberDisp").val(tempArrayDisplay.join(";"));
+    }
+
+    function CheckUncheckAllCheckBoxAsNeeded() {
+        var totalCheckboxes = $("#RadGrid_Emails input[id*='chkSelect']:checkbox").size();
+
+        var checkedCheckboxes = $("#RadGrid_Emails input[id*='chkSelect']:checkbox:checked").size();
+
+        if (totalCheckboxes == checkedCheckboxes) {
+
+            $("#RadGrid_Emails input[id*='chkAll']:checkbox").prop('checked', true);//.each(function () { this.checked = true; });
+        }
+        else {
+            $("#RadGrid_Emails input[id*='chkAll']:checkbox").prop('checked', false);//.attr('checked', false);
+        }
+
+        if ($("#RadGrid_Emails").length > 0) {
+            CheckEmailsCheckBox("#RadGrid_Emails");
+        }
+    }
+
+    function OnCheck_TaskCheckBox(gridview) {
+        var line = $("#hdnLineOpenned").val();
+        var hdnMembersID = $(".txtMembers_" + line).attr("id").replace("txtMembers", "hdnMembers");
+        var hdnMembersValue = $("#hdnOrgMemberKey").val();
+
+        var tempArrayKey = [];
+        tempArrayKey.length = 0;
+        $("#" + gridview + " input[id*='chkSelect']:checkbox").each(function (index) {
+            var tempMemberKey = $(this).closest('tr').find('td:eq(0)').find('span').html().trim();
+
+            var temp = tempMemberKey.trim().split('_');
+            if (temp.length == 3) {
+                temp.splice(2, 1);
+            }
+
+            var taskCheckID = this.id.replace("chkSelect", "chkTask");
+
+            if ($(this).is(":checked")) {
+                if (jQuery.inArray(tempMemberKey, tempArrayKey) < 0) {
+                    if ($("#" + taskCheckID).is(":checked")) {
+                        temp.push(1);
+                    } else {
+                        temp.push(0);
+                    }
+                    tempMemberKey = temp.join("_")
+                    tempArrayKey.push(tempMemberKey);
+                }
+            } else {
+                if (jQuery.inArray(tempMemberKey, tempArrayKey) >= 0) {
+                    tempArrayKey = jQuery.grep(tempArrayKey, function (value) {
+                        return value != tempMemberKey;
+                    });
+                }
+            }
+        });
+
+        $("#hdnOrgMemberKey").val(tempArrayKey.join(";"));
+    }
+</script>
+<script type="text/javascript">
+
+    var changes = 0;
+    $(document).on("change", ":input", function () {
+        changes = 1;
+    });
+
+    $(document).ready(function () {
+        var queryloc = "";
+        var query = "";
+        function dtaa() {
+            this.prefixText = null;
+            this.con = 0;
+            this.custID = null;
+        }
+        function locc() {
+            this.SearchValue = null;
+        }
+
+        $("#txtWorker").autocomplete(
+            {
+                source: function (request, response) {
+                    var dtaaa = new locc();
+                    dtaaa.SearchValue = request.term;
+                    queryloc = request.term;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "CustomerAuto.asmx/GetWorkers",
+                        data: JSON.stringify(dtaaa),
+                        dataType: "json",
+                        async: true,
+                        success: function (data) {
+                            response($.parseJSON(data.d));
+                        },
+                        error: function (result) {
+                            alert("Due to unexpected errors we were unable to load workers");
+                        }
+
+                    });
+
+                },
+                select: function (event, ui) {
+                    $("#txtWorker").val(ui.item.fDesc);
+                    $("#hdnWorker").val(ui.item.id);
+                    return false;
+                },
+                focus: function (event, ui) {
+                    $("#txtWorker").val(ui.item.fDesc);
+                    $("#hdnWorker").val(ui.item.id);
+                    return false;
+                },
+                minLength: 0,
+                delay: 250
+            })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                // var result_item = item.ID;
+                var result_desc = item.fDesc;
+                //var x = new RegExp('\\b' + queryloc, 'ig'); // notice the escape \ here...
+                //result_item = result_item.replace(x, function (FullMatch, n) {
+                //    return '<span class="highlight">' + FullMatch + '</span>'
+                //});
+                //if (result_desc != null) {
+                //    result_desc = result_desc.replace(x, function (FullMatch, n) {
+                //        return '<span class="highlight">' + FullMatch + '</span>'
+                //    });
+                //}
+                return $("<li></li>")
+                    .data("ui-autocomplete-item", item)
+                    .append("<a><span style='color:Gray;'>" + result_desc + "</span></a>")
+                    .appendTo(ul);
+            };
+
+        $("#txtWorker").keyup(function (event) {
+
+            if ($("#txtWorker").val() == "") {
+
+                $("#txtWorker").val("");
+                $("#hdnWorker").val("");
+            }
+        });
+
+
+        $("#txtAccount").autocomplete(
+            {
+                source: function (request, response) {
+                    var dtaaa = new dtaa();
+                    dtaaa.prefixText = request.term;
+                    dtaaa.custID = 0;
+
+
+                    queryloc = request.term;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "CustomerAuto.asmx/GetLocation",
+                        data: JSON.stringify(dtaaa),
+                        dataType: "json",
+                        async: true,
+                        success: function (data) {
+                            response($.parseJSON(data.d));
+                        },
+                        error: function (result) {
+                            alert("Due to unexpected errors we were unable to load customers");
+                        }
+
+                    });
+
+                },
+                select: function (event, ui) {
+                    $("#txtAccount").val(ui.item.label);
+                    $("#hdnaccount").val(ui.item.value);
+
+                    if ($("#divContact").css('display') != 'none') {
+                        var btn = $("#btnReloadContact");
+                        btn.click();
+                    }
+
+                    return false;
+                },
+                focus: function (event, ui) {
+                    $("#txtAccount").val(ui.item.label);
+                    return false;
+                },
+                minLength: 0,
+                delay: 250
+            })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                var result_item = item.label;
+                var result_desc = item.desc;
+                var x = new RegExp('\\b' + queryloc, 'ig'); // notice the escape \ here...
+                result_item = result_item.replace(x, function (FullMatch, n) {
+                    return '<span class="highlight">' + FullMatch + '</span>'
+                });
+                if (result_desc != null) {
+                    result_desc = result_desc.replace(x, function (FullMatch, n) {
+                        return '<span class="highlight">' + FullMatch + '</span>'
+                    });
+                }
+                return $("<li></li>")
+                    .data("ui-autocomplete-item", item)
+                    .append("<a>" + result_item + ", <span style='color:Gray;'>" + result_desc + "</span></a>")
+                    .appendTo(ul);
+            };
+
+
+        $("#txtAccount").keyup(function (event) {
+            var hdnLocId = $("#hdnaccount");
+            if ($("#txtAccount").val() == "") {
+                hdnLocId.value = "";
+                $("#txtJob").val("");
+                $("#hdnjob").val("");
+            }
+        });
+
+
+
+        $("#txtUnit").autocomplete({
+            source: function (request, response) {
+                var objdataEquip = new dtaa();
+                objdataEquip.prefixText = request.term;
+                objdataEquip.custID = $("#hdnaccount").val();
+                query = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/GetEquipment",
+                    data: JSON.stringify(objdataEquip),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) { }
+                });
+                //}
+                //else {
+                //    var objdataEmpty = new dataEmpty();
+                //    response(objdataEmpty);
+                //}
+            },
+            select: function (event, ui) {
+
+                $("#txtUnit").val(ui.item.unit);
+                $("#hdnEquipment").val(ui.item.id);
+                $("#txtstate").val(ui.item.state);
+                $("#txtEquipmentType").val(ui.item.type);
+                //Pricing
+                $("#txtClassification").val(ui.item.Classification);
+                $("#txtEquipmentDesc").val(ui.item.fdesc);
+                reloadTestPrice();
+                Materialize.updateTextFields();
+                return false;
+            },
+            focus: function (event, ui) {
+                //$("#<%= txtUnit.ClientID %>").val(ui.item.label);
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                // debugger;
+                var result_item = item.unit;
+                if (item.id != "") {
+                    result_item = item.id + ", Unit#: " + item.unit + " ,Type: " + item.type;
+                }
+                var result_desc = "Customer: " + item.name;
+                var result_descLoc = "Location: " + item.locid + "-" + item.tag;
+
+                var x = new RegExp('\\b' + query, 'ig');
+                result_item = result_item.replace(x, function (FullMatch, n) {
+                    return '<span class="highlight">' + FullMatch + '</span>'
+                });
+                if (result_desc != null) {
+                    result_desc = result_desc.replace(x, function (FullMatch, n) {
+                        return '<span class="highlight">' + FullMatch + '</span>'
+                    });
+                }
+                if (result_descLoc != null) {
+                    result_descLoc = result_descLoc.replace(x, function (FullMatch, n) {
+                        return '<span class="highlight">' + FullMatch + '</span>'
+                    });
+                }
+                return $("<li></li>")
+                    .data("ui-autocomplete-item", item)
+                    .append("<a>" + result_item + "<BR/> <span style='color:Gray;'>" + result_desc + "</span><BR/> <span style='color:Gray;'>" + result_descLoc + "</span></a>")
+                    .appendTo(ul);
+            };
+
+        //Test
+        $("#txtUnit").keyup(function (event) {
+            $('.ui-helper-hidden-accessible').hide();
+        });
+
+        $("#txtJob").autocomplete({
+            source: function (request, response) {
+
+                var asdas = new locc();
+                asdas.SearchValue = $("#hdnaccount").val();
+
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/GetJobsByLocation",
+                    data: JSON.stringify(asdas),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) { debugger }
+                });
+                //}
+                //else {
+                //    var objdataEmpty = new dataEmpty();
+                //    response(objdataEmpty);
+                //}
+            },
+            select: function (event, ui) {
+                $("#txtJob").val(ui.item.ID + ", Project: " + ui.item.fDesc);
+                $("#hdnjob").val(ui.item.ID);
+
+                return false;
+            },
+            focus: function (event, ui) {
+                //$("#<%= txtJob.ClientID %>").val(ui.item.label);
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                //debugger;
+                var result_item = item.fDesc;
+                if (item.ID != "") {
+                    result_item = item.ID + ", Project: " + item.fDesc;
+                }
+
+                //var x = new RegExp('\\b' + query, 'ig');
+                //result_item = result_item.replace(x, function (FullMatch, n) {
+                //    return '<span class="highlight">' + FullMatch + '</span>'
+                //});
+                //if (result_item != null) {
+                //    result_item = result_item.replace(x, function (FullMatch, n) {
+                //        return '<span class="highlight">' + FullMatch + '</span>'
+                //    });
+                //}
+
+                return $("<li></li>")
+                    .data("ui-autocomplete-item", item)
+                    .append("<a> <span style='color:Gray;'>" + result_item + "</span><BR/></a>")
+                    .appendTo(ul);
+            };
+
+        $("#txtJob").keyup(function (event) {
+            $('.ui-helper-hidden-accessible').hide();
+        });
+        //Ammount
+        $("#txtAmount").blur(function () {
+            $(this).formatCurrency();
+        });
+        //Override Ammount
+        $("#txtOverrideAmount").blur(function () {
+            $(this).formatCurrency();
+        });
+
+        //Additional Amount
+        $("#txtOverrideAmount").blur(function () {
+            $(this).formatCurrency();
+        });
+        $("#txtOverrideAmount").formatCurrency();
+        $("#txtAmount").formatCurrency();
+
+        $("#txtOverrideAmount").formatCurrency();
+    });
+
+    function SelectRowmailPage(mail, lnkMail) {
+
+
+        var maillink = $(lnkMail);
+        var mailid = $(mail);
+
+
+        maillink.href = 'mailto:' + mailid.innerHTML;
+
+    }
+
+    function OnClientItemChecked(sender, args) {
+
+        var id = sender.get_attributes().getAttribute("hdSelectTeam")
+        var obj = $(id);
+        var lsUser = "";
+
+        var string = "";
+        var lsItem = "";
+        for (var i = 0; i < sender.get_checkedItems().length; i++) {
+            string = string + sender.get_checkedItems()[i].get_text() + ", ";
+            lsItem = lsItem + sender.get_checkedItems()[i].get_value() + ",";
+        }
+        obj.value = lsItem.slice(0, -1);
+        sender.set_text(string.slice(0, -2));
+        console.log(string);
+
+    }
+
+    function OnClientLoadValue(sender, args) {
+
+        var string = "";
+        for (var i = 0; i < sender.get_checkedItems().length; i++) {
+            string = string + sender.get_checkedItems()[i].get_text() + ", ";
+
+        }
+        sender.set_text(string.slice(0, -2));
+    }
+
+    function UpdateItemCountField(sender, args) {
+        //Set the footer text.
+        sender.get_dropDownElement().lastChild.innerHTML = "A total of " + sender.get_items().get_count() + " items";
+    }
+</script>
+
+<style>
+    .ui-autocomplete {
+        max-height: 300px;
+        overflow-y: auto; /* prevent horizontal scrollbar */
+        overflow-x: hidden; /* add padding to account for vertical scrollbar */
+        z-index: 1000 !important;
+    }
+
+    .ModalPopupBG {
+        background-color: black;
+        filter: alpha(opacity=50);
+        opacity: 0.7;
+    }
+
+    #chkcatlist label {
+        padding-right: 5px !important;
+        padding-bottom: 2px;
+    }
+
+    #chkcatlist input {
+        height: 0px !important;
+    }
+
+    .togglehide {
+        display: none;
+    }
+
+    .toggleshow {
+        display: block;
+    }
+
+    .chklist label {
+        margin-left: 10px !important;
+    }
+
+    .chklist input {
+        height: 12px !important;
+    }
+</style>
+
+<!--start container-->
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-communication-contacts"></i>&nbsp;<label ID="lblHeader" style="font-size:0.9rem">Add New Test</label></div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a ID="btnSubmit" TabIndex="38" ValidationGroup="test">Save</a>
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a ID="lnkAssignTicket" CausesValidation="false">Assign</a>
+                                    </div>
+
+
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a class="icon-closed" ID="lnkClose" CausesValidation="false" ToolTip="Close"
+                                       TabIndex="39"><i class="mdi-content-clear"></i></a>
+                                </div>
+
+                                <div class="rght-content">
+                                    <div class="editlabel">
+                                        <label ID="lblUnitTestName"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <div class="tblnks">
+                            <ul class="anchor-links">
+                                <li id="liCustom"><a href="#accrdcustom" id="defaultCustom">Custom</a></li>
+                                <li id="liContacts"><a href="#accrdcontacts" id="defaultContact">Contacts</a></li>
+                                <li><a href="#accrdViewHistory">View History</a></li>
+                                <li id="liDocument"><a href="#accrdProposal">Documents</a></li>
+                                <li id="liLogs"><a href="#accrdLogs">Logs</a></li>
+                            </ul>
+                        </div>
+                        <div class="tblnksright">
+                            <div class="nextprev">
+                                <div ID="pnlSave">
+                                    <div ID="pnlNext">
+                                        <span class="angleicons">
+                                            <a ID="lnkFirst" ToolTip="First" CausesValidation="False">
+                                                <i class="fa fa-angle-double-left"></i>
+                                            </a>
+                                        </span>
+                                        <span class="angleicons">
+                                            <a ID="lnkPrevious" ToolTip="Previous" CausesValidation="False">
+                                                <i class="fa fa-angle-left"></i>
+                                            </a>
+                                        </span>
+                                        <span class="angleicons">
+                                            <a ID="lnkNext" ToolTip="Next" CausesValidation="False">
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </span>
+                                        <span class="angleicons">
+                                            <a ID="lnkLast" ToolTip="Last" class="icon-last" CausesValidation="False">
+                                                <i class="fa fa-angle-double-right"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <div class="row">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="form-content-wrap formpdtop2">
+                            <div class="form-content-pd">
+                                <div class="form-section-row">
+                                    <div class="col s12 m12 l12" style="padding-right: 0px;">
+                                        <div class="row">
+                                            <div class="form-section-row">
+                                                @*<%--Equipment Infor--%>*@
+                                                <div class="form-section3" style="width: 23%">
+                                                    <div class="section-ttle">
+                                                        <label style="font-size:0.9rem; float:left; color:black">Equipment Info</label>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <label class="drpdwn-label">Test Type</label>
+                                                            <select ID="ddlTestTypes" class="browser-default" TabIndex="1">
+                                                                <option>Select</option>
+                                                            </select>
+                                                            @Html.Hidden("hdnTestType")
+                                                            @Html.Hidden("hdnTestTypeFrequency")
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <label class="drpdwn-label">Test Status</label>
+                                                            <select ID="ddlStatus" class="browser-default"
+                                                                    TabIndex="8">
+                                                                <option>Select</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label for="loc">Location</label>
+                                                            <input type="text" ID="txtAccount" class="pd-negate searchinputloc ui-autocomplete-input"
+                                                                   TabIndex="2" autocomplete="off" placeholder="Search by location name, phone#, address etc." />
+                                                            @Html.Hidden("hdnaccount")
+                                                            @Html.Hidden("hdnRolId")
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <label for="unit" onclick="RedirectToEquipment()" style="cursor:pointer;text-decoration:underline">Unit Number</label>
+                                                            <input type="text" ID="txtUnit" class="pd-negate" />
+                                                            @Html.Hidden("hdnEquipment")
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <label for="unique">Unique No.</label>
+                                                            <input type="text" ID="txtstate" class="pd-negate" onkeypress="return false;" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label for="loc">Classification</label>
+                                                            <input type="text" ID="txtClassification" />
+                                                            @Html.Hidden("txtEquipmentDesc")
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label for="loc">Equipment Type</label>
+                                                            <input type="text" ID="txtEquipmentType" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-section3-blank">
+                                                    &nbsp;
+                                                </div>
+                                                @*<%-- Test info--%>*@
+                                                <div class="form-section3" style="width: 25%">
+                                                    <div class="section-ttle">
+                                                        <label style="font-size:0.9rem; float:left; color:black">Test info</label>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label for="project">Project</label>
+                                                            <input type="text" ID="txtJob" />
+                                                            @Html.Hidden("hdnjob")
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5" style="height: 50px">
+                                                        <div class="row">
+                                                            <label for="chkChargeableEdit" class="drpdwn-label">Chargeable</label><br />
+                                                            <span class="css-checkbox">
+                                                                <input type="checkbox" ID="chkChargeableEdit" value="&nbsp;" style="float:left" />
+                                                            </span>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5" style="height: 50px">
+                                                        <div class="row">
+                                                            <label for="chkThirdParty" class="drpdwn-label">Third Party Witness</label><br />
+                                                            <span class="css-checkbox">
+                                                                <input type="checkbox" ID="chkThirdParty" value="&nbsp;" style="float:left" />
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <label ID="lblAmount" for="txtAmount">Default Amount</label>
+                                                            <input type="text" ID="txtAmount" />
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row ">
+                                                            <label for="txtThirdPartyName">Third Party Name</label>
+                                                            <input type="text" ID="txtThirdPartyName" MaxLength="50" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+
+                                                            <label ID="lblOverrideAmount" for="txtOverrideAmount">Override Amount</label>
+                                                            <input type="text" ID="txtOverrideAmount" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <label for="txtThirdPartyPhone">Third Party Phone</label>
+                                                            <input type="text" ID="txtThirdPartyPhone" MaxLength="15" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="form-section3-blank">
+                                                    &nbsp;
+                                                </div>
+                                                @*<%--Test dates--%>*@
+                                                <div class="form-section3" style="width: 17%">
+                                                    <div class="section-ttle">
+                                                        <label style="font-size:0.9rem; float:left; color:black">
+                                                            Test dates
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="input-field col s12">
+                                                        <div class="row ">
+                                                            <label class="drpdwn-label" for="drpdwnTestDueBy">Test Due By</label>
+                                                            <select ID="drpdwnTestDueBy" class="browser-default">
+                                                                <option Value="0">Last Actual</option>
+                                                                <option Value="1">Last Due</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+
+                                                        <div class="row">
+                                                            <label for="lto">Last Tested On</label>
+                                                            <input type="text" ID="txtLasttestdon" class="pd-negate datepicker_mom" TabIndex="2" MaxLength="15" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label for="tdd">Next Due Date</label>
+                                                            <input type="text" ID="txtTestNextDueDate" class="pd-negate datepicker_mom" TabIndex="2" MaxLength="15" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label for="ldd">Last Due Date</label>
+                                                            <input type="text" ID="txtLastDueDate" class="pd-negate datepicker_mom" TabIndex="2" />
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-section3-blank">
+                                                    &nbsp;
+                                                </div>
+                                                @*<%--Ticket info--%>*@
+                                                <div class="form-section3" style="width: 25%">
+                                                    <div class="section-ttle">
+                                                        <label style="font-size:0.9rem; float:left; color:black">
+                                                            Ticket info
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="input-field col s5">
+                                                        <div class="row" style="width: 11%">
+                                                            <label for="txtticket">Ticket#<a ID="txtticket" style="float:right!important;font-size:13px!important;" class="hlink"></a></label>
+
+                                                            <input type="text" ID="TextBox1" class="pd-negate" onkeypress="return false;" TabIndex="2" MaxLength="50" />
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s1">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <label for="lblwho">Entered By</label>
+                                                            <input type="text" ID="lblwho" class="pd-negate" onkeypress="return false;" TabIndex="2" MaxLength="50" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <label for="txtTicketStatus">Status</label>
+                                                            <input type="text" ID="txtTicketStatus" class="pd-negate" TabIndex="2" onkeypress="return false;" MaxLength="50" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s1">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <label for="txtCat">Category</label>
+                                                            <input type="text" ID="txtCat" class="pd-negate" onkeypress="return false;" TabIndex="2" MaxLength="50" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label for="wrkr">Worker</label>
+                                                            <input type="text" ID="txtWorker" class="pd-negate" onkeypress="return false;" TabIndex="2"
+                                                                   MaxLength="50" />
+                                                            @Html.Hidden("hdnWorker")
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label for="scdl">Schedule</label>
+                                                            <input type="text" ID="txtSchedule" class="pd-negate" onkeypress="return false;" TabIndex="2"
+                                                                   MaxLength="50" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-section-row">
+                                                <div class="form-section12">
+                                                    <div class="section-ttle" id="divCustomTitle"><label style="font-size:0.9rem; float:left; color:black">Custom</label></div>
+                                                    <div class="form-section3" style="width: 25%" id="groupCusField1">
+                                                        <div class="input-field col s11">
+                                                            <div class="row">
+                                                                <label ID="lblCusField1" for="txtCusField1"></label>
+                                                                <input type="text" ID="txtCusField1" />
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="input-field col s2">
+                                                            <div class="row">
+                                                                &nbsp;
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="groupCusField2" class="form-section3" style="width: 27%">
+                                                        <div class="input-field col s11">
+                                                            <div class="row">
+                                                                <label ID="lblCusField2" for="txtCusField2"></label>
+                                                                <input type="text" ID="txtCusField2" />
+                                                            </div>
+                                                        </div>
+                                                        <div id="groupCusField2Blank" visible="false" class="input-field col s2">
+                                                            <div class="row">
+                                                                &nbsp;
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="groupCusField3" class="form-section3" style="width: 26%">
+                                                        <div class="input-field col s11">
+                                                            <div class="row">
+                                                                <label ID="lblCusField3" for="txtCusField3"></label>
+                                                                <input type="text" ID="txtCusField3" />
+                                                            </div>
+                                                        </div>
+                                                        <div id="groupCusField3Blank" visible="true" class="input-field col s2">
+                                                            <div class="row">
+                                                                &nbsp;
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="groupCusField4" class="form-section3" style="width: 21%">
+                                                        <div class="input-field col s12">
+                                                            <div class="row">
+                                                                <label ID="lblCusField4" for="txtCusField4"></label>
+
+                                                                <input type="text" ID="txtCusField4" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="input-field col s2">
+                                                            <div class="row">
+                                                                &nbsp;
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="container accordian-wrap">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <ul class="collapsible popout collapsible-accordion form-accordion-head" data-collapsible="expandable">
+                                    <li id="divCustom">
+                                        <div id="accrdcustom" class="collapsible-header accrd accordian-text-custom ">
+                                            <i class="mdi-action-account-circle"></i>
+                                            <label ID="Label1" style="float:left; font-size:0.9rem;">Test Workflow</label>
+                                        </div>
+                                        <div class="collapsible-body" id="dvCustomSetup">
+
+                                            @Html.Hidden("hdnLineOpenned")
+                                            @Html.Hidden("hdnOrgMemberKey")
+                                            @Html.Hidden("hdnOrgMemberDisp")
+                                            <div ID="Panel1">
+                                                <div class="form-content-wrap">
+                                                    <div class="form-content-pd">
+                                                        <div class="grid_container">
+                                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="cf"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                    </li>
+
+                                    @*<%--Begin Contact--%>*@
+                                    <li id="divContact">
+                                        <div id="accrdcontacts" class="collapsible-header accrd accordian-text-custom ">
+                                            <i class="mdi-action-account-circle"></i>
+                                            <label ID="Label2" style="float:left; font-size:0.9rem;">Contacts</label>
+                                        </div>
+                                        <div class="collapsible-body" id="dvContactSetup">
+                                            <div ID="pnlgvConPermission">
+                                                <div class="form-content-wrap">
+                                                    <div class="form-content-pd">
+                                                        <div class="btncontainer">
+                                                            <div class="btnlinks">
+                                                                <a ID="lnkAddnew" CausesValidation="False" onclick="OpenContactWindow();return false">Add</a>
+                                                                <div style="display: none;">
+                                                                    <a ID="btnReloadContact" CausesValidation="False"> Add</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="btnlinks">
+                                                                <a ToolTip="Edit"
+                                                                   ID="btnEdit"
+                                                                   onclick="OpenContactWindowEdit();return false;" CausesValidation="False">Edit</a>
+                                                            </div>
+                                                            <div class="btnlinks">
+                                                                <a onclick="return confirm('Are you sure you want to delete the items?')" ID="btnDelete" CausesValidation="False">Delete</a>
+                                                            </div>
+                                                            <div class="btnlinks">
+                                                                <a ID="lnkMail" Style="cursor: pointer;">Email</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid_container">
+                                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="cf"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                    </li>
+                                    @*<%--End Contact--%>*@
+                                    <li>
+                                        <div id="accrdViewHistory" class="collapsible-header accrd accordian-text-custom ">
+                                            <i class="mdi-action-account-circle"></i>
+                                            <label ID="Label3" style="float:left;font-size:0.9rem;">View History</label>
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <div id="tabViewHistory" class="tab-container-border lighten-4" style="display: block;">
+                                                <div class="grid_container">
+                                                    <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                                        <div class="RadGrid RadGrid_Material">
+
+                                                            @Html.Hidden("hdntestid")
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="clear: both;"></div>
+                                    </li>
+                                    <li id="divDocument">
+                                        <div id="accrdProposal" class="collapsible-header accrd accordian-text-custom ">
+                                            <i class="mdi-action-account-circle"></i>
+                                            <label ID="Label4" style="float:left;font-size:0.9rem;">Documents</label>
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <div id="tabProposals" class="col s12 tab-container-border lighten-4">
+                                                <div class="form-section-row">
+                                                    <div class="form-content-pd">
+                                                        <div class="btncontainer">
+                                                            <div class="btnlinks">
+                                                                <a ID="lnkGeneralProposal" onclick="OpenSelectFormWindow();return false;">Generate Proposal</a>
+                                                            </div>
+                                                            <div class="btnlinks">
+                                                                <a ID="btnSendEmail" CausesValidation="false" Visible="true">Send Email</a>
+                                                            </div>
+                                                            <div class="btnlinks">
+                                                                <a ID="lnkDeleteForms" CausesValidation="False" onclick="return confirm('Do you really want to delete this document ?');">Delete</a>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="grid_container">
+                                                            <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                                                <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cf"></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+
+                                    </li>
+                                    <li id="divLogs">
+                                        <div id="accrdLogs" class="collapsible-header accrd accordian-text-custom ">
+                                            <i class="mdi-action-account-circle"></i>
+                                            <label ID="Label5" style="float:left;font-size:0.9rem;">Logs</label>
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <div class="form-content-wrap">
+                                                <div class="form-content-pd">
+                                                    <div class="grid_container">
+                                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                                            <div class="RadGrid RadGrid_Material">
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="cf"></div>
+                                                </div>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end container-->
+<!-- Hidden Field -->
+@Html.Hidden("hdnAddeContact", "Y")
+@Html.Hidden("hdnEditeContact", "Y")
+@Html.Hidden("hdnDeleteContact", "Y")
+@Html.Hidden("hdnViewContact", "Y")
+@Html.Hidden("hdnAddEditContact", "0")
+
+<div style="display: none">
+    <input type="button" ID="btnProcessDownload" />
+    @Html.Hidden("hdnDownloadID", "0")
+    @Html.Hidden("hdnDownloadType", "1")
+</div>
+
+<script src="~/MOMUI/Design/js/jquery.formatCurrency.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $('#divButtons').addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $('#divButtons').removeClass('fixed-header');
+            }
+        });
+
+        ddlTestTypeInit();
+        $("#txtLastDueDate").change(function () {
+
+            var testDueBy = $("#drpdwnTestDueBy").val();
+            if (testDueBy === "0") {
+                updateDatetime($("#txtLasttestdon"), $("#txtTestNextDueDate"), 1);
+
+            } else {
+                updateDatetime($("#txtLastDueDate]"), $("#txtTestNextDueDate"), 1);
+            }
+
+        });
+
+        $("#txtTestNextDueDate").change(function () {
+            updateDatetime($("#txtTestNextDueDate"), $("#txtLastDueDate"), -1);
+        });
+
+    });
+
+    function ddlTestTypeInit() {
+
+        $("#ddlTestTypes").change(function () {
+            var frequency = $("#ddlTestTypes :selected").data("frequency");
+            $("#hdnTestTypeFrequency").val(frequency);
+            updateDatetime($("#txtLastDueDate"), $("#txtTestNextDueDate"), 1);
+            //Pricing
+
+            reloadTestPrice();
+            reloadTestType();
+            Materialize.updateTextFields();
+        });
+    }
+
+    function updateDatetime(source, target, weight) {
+        if ($("#hdnTestTypeFrequency").val() == "") {
+            return;
+        }
+
+        var sourceDate = moment(source.val(), 'MM/DD/YYYY');
+
+        if (!sourceDate.isValid()) {
+            return;
+        }
+
+        let month = parseInt($("#hdnTestTypeFrequency").val()) * weight;
+        var newDate = sourceDate.add(month, "M");
+        target.val(newDate.format('MM/DD/YYYY'));
+        Materialize.updateTextFields();
+    }
+
+    $("#txtLasttestdon").change(function () {
+        debugger
+        var testDueBy = $("#drpdwnTestDueBy").val();
+        if (testDueBy === "0") {
+            updateDatetime($("#txtLasttestdon"), $("#txtTestNextDueDate"), 1);
+
+        } else {
+            updateDatetime($("#txtLastDueDate"), $("#txtTestNextDueDate"), 1);
+        }
+    });
+    $("#drpdwnTestDueBy").change(function () {
+        var testDueBy = $("#drpdwnTestDueBy").val();
+        if (testDueBy === "0") {
+            updateDatetime($("#txtLasttestdon"), $("#txtTestNextDueDate"), 1);
+
+        } else {
+            updateDatetime($("#txtLastDueDate"), $("#txtTestNextDueDate"), 1);
+        }
+    });
+    //$("#txtThirdPartyPhone").mask("(999) 999-9999? Ext 99999");
+    $("#txtThirdPartyPhone").bind('paste', function () { $(this).val(""); });
+
+
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    prm.add_pageLoaded(function () {
+        $("[id*=txtContPhone]").mask("(999) 999-9999? Ext 99999");
+        $("[id*=txtContPhone]").bind('paste', function () { $(this).val(""); });
+        $("[id*=txtContCell]").mask("(999) 999-9999");
+        $("[id*=txtContFax]").mask("(999) 999-9999");
+    });
+
+
+
+
+
+</script>
+@*<%--Pricing script--%>*@
+<script type="text/javascript">
+    //Pricing
+
+
+    $(document).ready(function () {
+
+        $("#txtAmount").blur(function () {
+            $(this).formatCurrency();
+        });
+        $("#txtOverrideAmount").blur(function () {
+            $(this).formatCurrency();
+        });
+
+    });
+    function dataPrice() {
+        this.equipClassification = "";
+        this.testtypeId = 0;
+    }
+
+    function reloadTestPrice() {
+        var objdataEquip = new dataPrice();
+        objdataEquip.equipClassification = $("#txtClassification").val();
+        objdataEquip.testtypeId = parseInt($("#ddlTestTypes").val());
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "CustomerAuto.asmx/ReceivePricing",
+            data: JSON.stringify(objdataEquip),
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                var obj = JSON.parse(data.d);
+                if (obj.length > 0) {
+                    var Amount = obj[0].Amount;
+                    var Override = obj[0].Override;
+                    $("#txtAmount").val(Amount);
+                    $("#txtOverrideAmount").val(Override);
+
+                    $("#txtAmount").formatCurrency();
+                    $("#txtOverrideAmount").formatCurrency();
+
+                    Materialize.updateTextFields();
+
+                } else {
+                    $("#txtAmount").val(0);
+                    $("#txtOverrideAmount").val(0);
+                    $("#txtAmount").formatCurrency();
+                    $("#txtOverrideAmount").formatCurrency();
+
+                    Materialize.updateTextFields();
+                }
+
+            },
+            error: function (result) { }
+        });
+
+        return false;
+    }
+    function dataTestType() {
+        this.testtypeId = 0;
+    }
+    function reloadTestType() {
+
+        var objdataEquip = new dataTestType();
+        objdataEquip.testtypeId = parseInt($("#ddlTestTypes").val());
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "CustomerAuto.asmx/ReceiveTestType",
+            data: JSON.stringify(objdataEquip),
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                var obj = JSON.parse(data.d);
+                if (obj.length > 0) {
+                    var chargeable = obj[0].Charge;
+                    var ThirdParty = obj[0].ThirdParty;
+                    $("#chkChargeableEdit").prop("checked", chargeable);
+                    $("#chkThirdParty").prop("checked", ThirdParty);
+
+                } else {
+                    $("#chkChargeableEdit").prop("checked", false);
+                    $("#chkThirdParty").prop("checked", false);
+                    Materialize.updateTextFields();
+                }
+
+            },
+            error: function (result) { }
+        });
+
+        return false;
+    }
+</script>
+@*<%--Contact script--%>*@
+<script type="text/javascript">
+    function OpenContactWindow() {
+        $("#txtContcName").val("");
+        $("#txtTitle").val("");
+        $("#txtContPhone").val("");
+        $("#txtContFax").val("");
+        $("#txtContCell").val("");
+        $("#txtContEmail").val("");
+
+        $("#chkEmailTicket").prop("checked", false);
+        $("#chkEmailInvoice").prop("checked", false);
+        $("#chkShutdownAlert").prop("checked", false);
+        $("#chkTestProposals").prop("checked", false);
+        $("#hdnAddEditContact").val("0");
+        var wnd = $find("#RadWindowContact");
+        wnd.set_title("Add Contact");
+        wnd.Show();
+    }
+    function OpenContactWindowEdit() {
+        var ID = "";
+        var Name = "";
+        var Title = "";
+        var Phone = "";
+        var Fax = "";
+        var Cell = "";
+        var Email = "";
+        var EmailTicket = "";
+        var EmailInvoice = "";
+        var ShutdownAlert = "";
+        var TestProposals = "";
+        var gridIndex = "";
+
+        $("#RadGrid_Contacts").find('tr:not(:first,:last)').each(function () {
+            var $tr = $(this);
+            $tr.find('input[type="checkbox"]:first:checked').each(function (index, value) {
+                ID = $tr.find('input[id*=grid_Id]').val();
+                Name = $tr.find('span[id*=lblName]').text();
+                Phone = $tr.find('span[id*=lblPhone]').text();
+                Fax = $tr.find('span[id*=lblFax]').text();
+                Cell = $tr.find('span[id*=lblCell]').text();
+                Email = $tr.find('span[id*=lblEmail]').text();
+                Title = $tr.find('span[id*=lblTitle]').text();
+
+                EmailTicket = $tr.find('input:checkbox[id*=chkTicket]').prop('checked');
+                EmailInvoice = $tr.find('input:checkbox[id*=chkInvoice]').prop('checked');
+                ShutdownAlert = $tr.find('input:checkbox[id*=chkShutdown]').prop('checked');
+                TestProposals = $tr.find('input:checkbox[id*=chkTests]').prop('checked');
+
+                gridIndex = $tr.find('input:hidden[id*=grid_hdnIndex]').val();
+
+            });
+        });
+
+        if (ID != "") {
+
+            $("#hdnIndex").val(gridIndex);
+            $("#hdnAddEditContact").val("1");
+            $("#txtContcName").val(Name);
+            $("#txtTitle").val(Title);
+            $("#txtContPhone").val(Phone);
+            $("#txtContFax").val(Fax);
+            $("#txtContCell").val(Cell);
+            $("#txtContEmail").val(Email);
+
+            $("#chkEmailTicket").prop("checked", EmailTicket);
+            $("#chkEmailInvoice").prop("checked", EmailInvoice);
+            $("#chkShutdownAlert").prop("checked", ShutdownAlert);
+            $("#chkTestProposals").prop("checked", TestProposals);
+
+            var wnd = $find("#RadWindowContact");
+            wnd.set_title("Edit Contact");
+
+            wnd.set_height(500);
+            wnd.Show();
+
+            Materialize.updateTextFields();
+        }
+        else {
+            ChkWarning();
+        }
+    }
+    function ChkWarning() {
+        noty({
+            text: 'Please select any one to edit.',
+            type: 'warning',
+            layout: 'topCenter',
+            closeOnSelfClick: false,
+            timeout: 5000,
+            theme: 'noty_theme_default',
+            closable: true
+        });
+        return false;
+    }
+    function CloseContactWindow() {
+        var wnd = $find("#RadWindowContact");
+        wnd.Close();
+    }
+    $(document).ready(function () {
+
+        $('a[href^="#accrd"]').on('click', function (e) {
+            e.preventDefault();
+            $("a.anchorActive").removeClass("anchorActive");
+            $(this).addClass("anchorActive");
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+
+    });
+
+    function downloadFile(obj, type) {
+
+        $("#hdnDownloadID").val(obj);
+        $("#hdnDownloadType").val(type);
+        var btn = $("#btnProcessDownload");
+        btn.click();
+    }
+
+
+
+    function OpenSelectFormWindow() {
+        var wnd = $find("#RadWindowTemplate");
+        wnd.set_title("Form");
+        wnd.Show();
+    }
+    function CloseSelectFormWindow() {
+        var wnd = $find("#RadWindowTemplate");
+        wnd.Close();
+    }
+    function RedirectToEquipment() {
+        debugger
+        var elv = $("#hdnEquipment").val();
+
+        var url = "addequipment.aspx?uid=";
+        var backUrl = "&page=AddTests.aspx";
+        if (getQueryStringValue('elv') != "") {
+            backUrl = backUrl + "&elv=" + getQueryStringValue('elv');
+            elv = getQueryStringValue('elv');
+        }
+        if (getQueryStringValue("LID") != "") {
+            backUrl = backUrl + "&lid=" + getQueryStringValue("LID");
+        }
+        if (elv != "") {
+
+            window.location.replace(url + elv + backUrl);
+        }
+
+    }
+    function getQueryStringValue(key) {
+        return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+    }
+</script>

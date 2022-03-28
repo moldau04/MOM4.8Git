@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<div class="page-content">
+    <div class="page-cont-top">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <span>Billing Manager</span>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <span>Parts</span>
+            </li>
+        </ul>
+        <div class="page-bar-right">
+            <a class="Close_button" ID="lnkClose" ForeColor="Red" CausesValidation="false"><i class="fa fa-times"></i></a>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="pc-title">
+                <label class="title_text" ID="lblHeader" style="font-size:15px">Parts</label>
+            </div>
+        </div>
+
+        <!-- edit-tab start -->
+        <div class="col-lg-12 col-md-12">
+            <div class="com-cont">
+                <div>
+                    <div class="table-scrollable">
+                        <div ID="pnlGridButtons" Style="border-style: solid solid none solid; background-position: #B8E5FC; background: #B8E5FC; width: 100%; height: 25px; color: #23AEE8; font-weight: bold; font-size: 12px; padding-top: 5px; border-width: 1px; border-color: #a9c6c9;">
+                            <a Style="float: left; color: #2382B2; margin-right: 20px; margin-left: 10px;"
+                               ID="LinkButton8" CausesValidation="False">Edit</a>
+                            <a Style="float: left; color: #2382B2; margin-right: 20px;" ID="LinkButton9"
+                               onclick="return confirm('Do you really want to delete this Billing Code ?');" CausesValidation="False">Delete</a>
+                            <a Style="float: left; color: #2382B2; margin-right: 20px;" ID="LinkButton10" CausesValidation="False">Add New</a>
+                        </div>
+                        <div>
+
+                        </div>
+                    </div>
+                </div>
+                <input type="button" ID="hiddenTargetControlForModalPopup" Style="display: none"
+                       CausesValidation="False" />
+
+                <div ID="programmaticPopup" Style="display: block; left:300px !important; background: #fff; border: 1px solid #316b9d;">
+                    <div ID="programmaticPopupDragHandle">
+                    </div>
+                    <div>
+                        <div ID="pnlBillCode">
+                            <div class="model-popup-body">
+                                <label class="title_text" ID="Label8">Bill Code</label>
+                                <a ID="LinkButton11" CausesValidation="False" Style="float: right; color: #fff; margin-left: 10px; height: 16px;">Close</a>
+                                <a ID="LinkButton12" runat="server" Height="16px" Style="float: right; color: #fff; margin-left: 10px;" ValidationGroup="serv">Save</a>
+                            </div>
+                            @Html.Hidden("hdnBillID")
+                            <div style="padding:10px">
+                                <table style="width: 400px; height:300px">
+                                    <tr>
+                                        <td class="register_lbl">
+                                            Part
+                                        </td>
+                                        <td>
+                                            <input type="text" ID="txtBillCode" class="form-control" MaxLength="30" />
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="register_lbl">
+                                            Part Description
+                                        </td>
+                                        <td>
+                                            <input type="text" ID="txtBillDesc" class="form-control" MaxLength="255" />
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="register_lbl">
+                                            Status
+                                        </td>
+                                        <td>
+                                            <select ID="ddlStatus" class="form-control">
+                                                <option>Select</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="register_lbl">
+                                            Rate
+                                        </td>
+                                        <td>
+                                            <input type="text" ID="txtBillBal" class="form-control" MaxLength="25" />
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="register_lbl">
+                                            Measure
+                                        </td>
+                                        <td>
+                                            <input type="text" ID="txtBillMeasure" MaxLength="10" class="form-control" />
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="register_lbl">Warehouse</td>
+                                        <td>
+                                            <select ID="ddlWarehouse" class="form-control">
+                                                <option>Select</option>
+                                            </select>
+                                        </td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="register_lbl">
+                                            Remarks
+                                        </td>
+                                        <td>
+                                            <textarea ID="txtBillRemarks" TextMode="MultiLine" class="form-control" MaxLength="200"></textarea>
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- edit-tab end -->
+        <div class="clearfix"></div>
+    </div>
+    <!-- END DASHBOARD STATS -->
+    <div class="clearfix"></div>
+</div>
+

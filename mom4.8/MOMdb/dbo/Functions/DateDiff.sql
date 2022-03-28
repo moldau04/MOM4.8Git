@@ -1,0 +1,11 @@
+﻿CREATE FUNCTION [dbo].[DateDiff] (@fDate DATETIME)
+	RETURNS INT
+AS
+BEGIN
+	
+	RETURN CASE WHEN 
+				@fDate IS NULL THEN 0 
+				ELSE DATEDIFF(DAY, @fDate, GETDATE()) 
+			END
+
+END

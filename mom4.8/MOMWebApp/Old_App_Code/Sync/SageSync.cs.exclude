@@ -1,0 +1,979 @@
+﻿using System;
+//using System.Collections;
+//using System.Linq;
+//using System.Web;
+using System.Web.Services;
+//using System.Web.Services.Protocols;
+//using System.Xml.Linq;
+using BusinessLayer;
+using System.Data;
+using System.Data.Odbc;
+using BusinessEntity;
+//using System.Collections.Generic;
+
+/// <summary>
+/// Summary description for SageSync
+/// </summary>
+[WebService(Namespace = "http://tempuri.org/")]
+[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+// To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
+// [System.Web.Script.Services.ScriptService]
+public class SageSync : WebService
+{
+    BL_User objBL_User = new BL_User();
+    User objProp_User = new User();
+    GeneralFunctions objGenFunctions = new GeneralFunctions();
+    BL_General objBL_General = new BL_General();
+    General objGeneral = new General();
+    public string queryTest;
+    public SageSync()
+    {
+        //Uncomment the following line if using designed components 
+        //InitializeComponent(); 
+    }
+
+    [WebMethod]
+    public string SyncData()
+    {
+        string result;
+        //get mom database from web.config file which need to be synced with sage.
+        string Connection = System.Web.Configuration.WebConfigurationManager.AppSettings["SageDatabase"].Trim();
+        //get Sage ODBC datasource from web.config file which need to be synced with MOM.
+        string DSN = System.Web.Configuration.WebConfigurationManager.AppSettings["SageDSN"].Trim();
+        //create ODBC connection with Sage datasource
+        OdbcConnection odbccon = new OdbcConnection(DSN);
+        //Set application variable for sync so that only one instance of sync executes at a time. 
+        if (Application["sagesync"] == null)
+            Application["sagesync"] = "0";
+
+        try
+        {
+            //Check application variable if sync already running.
+            if (Application["sagesync"].ToString() == "0")
+            {
+                //set application variable if sync not running.
+                Application["sagesync"] = "1";
+
+                //Get last sync date.
+                objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                DataSet ds = objBL_User.getControl(objProp_User);
+                DateTime LastSycnDate = new DateTime();
+                String FormatDate = string.Empty;
+                String FormatTime = string.Empty;
+                if (ds.Tables[0].Rows[0]["SageLastSync"] != DBNull.Value)
+                {
+                    LastSycnDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["SageLastSync"]);
+                    FormatDate = LastSycnDate.ToString("yyyy-MM-dd");
+                    FormatTime = LastSycnDate.ToString("HH:mm:ss");
+                }
+
+                #region Customer Sync
+
+                #region add/update data to MOM
+
+                #region Get data from sage
+
+                //select command for Sage datasource where date is greater than last sync date and only active customers.
+                string query = "Select * from master_arm_customer ";
+                if (!string.IsNullOrEmpty(FormatDate))
+                {
+                    //query += " where date_stamp >= '{d " + FormatDate + "}' and time_stamp >= '{t " + FormatTime + "}' and key_2 <> 'inactive'";
+                    // query += " where date_stamp >= '{d " + FormatDate + "}' and key_2 <> 'inactive'";
+                    query += " where date_stamp >= '" + FormatDate + "' and key_2 <> 'inactive'";
+                }
+
+                //OdbcConnection odbccon = new OdbcConnection(DSN);       
+                if (odbccon.State != ConnectionState.Open)
+                {
+                    odbccon.Open();
+                }
+
+                OdbcDataAdapter da = new OdbcDataAdapter(query, odbccon);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                odbccon.Close();
+
+                DataTable dtFilter = dt.Clone();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    //compare last sync time as time comparison does not worked for select query on odbc sage datasource.
+                    string strDate = string.Format("{0:MM/dd/yyyy}", dr["date_stamp"]) + " " + dr["time_stamp"].ToString();
+                    DateTime dtCompare = DateTime.MinValue;
+                    DateTime.TryParse(strDate, out dtCompare);
+                    if (dtCompare >= LastSycnDate)
+                        dtFilter.ImportRow(dr);
+                }
+
+                #endregion
+
+                foreach (DataRow dr in dtFilter.Rows)
+                {
+                    #region Insert/update data to MOM
+                    objProp_User.FirstName = dr["Name"].ToString();
+                    objProp_User.Remarks = dr["Customer_Notes"].ToString();
+                    objProp_User.MainContact = dr["Contact_1"].ToString();
+                    objProp_User.Phone = dr["Telephone"].ToString();
+                    objProp_User.Email = dr["Email_Address"].ToString();
+                    //objProp_User.Cell = dr["phone"].ToString();
+                    if (dr["Key_2"].ToString().Trim() != string.Empty)
+                        objProp_User.QBCustomerID = dr["Key_2"].ToString();
+                    else
+                        objProp_User.QBCustomerID = "0";
+                    objProp_User.Address = dr["Address_1"].ToString() + Environment.NewLine + dr["Address_2"].ToString() + Environment.NewLine + dr["Address_3"].ToString() + Environment.NewLine + dr["Address_4"].ToString();
+                    objProp_User.City = dr["City"].ToString();
+                    objProp_User.State = dr["State"].ToString();
+                    objProp_User.Zip = dr["ZIP_Code"].ToString();
+                    DateTime date = Convert.ToDateTime(dr["Date_Stamp"]);
+                    //objProp_User.LastUpdateDate = date;
+                    TimeSpan time = (TimeSpan)dr["Time_Stamp"];
+                    DateTime datestamp = date + time;
+                    objProp_User.LastUpdateDate = datestamp;
+                    if (dr["Status"].ToString().Equals("active", StringComparison.InvariantCultureIgnoreCase))
+                        objProp_User.Status = 0;
+                    else
+                        objProp_User.Status = 1;
+                    objProp_User.Custom1 = dr["Customer"].ToString();
+                    //objProp_User.Balance = Convert.ToDouble(dr["balance"].ToString());
+
+                    objProp_User.Username = "";
+                    objProp_User.Password = "";
+                    objProp_User.Website = "";
+                    objProp_User.Type = dr["Customer_Type"].ToString();
+                    objProp_User.Schedule = 0;
+                    objProp_User.Mapping = 0;
+                    objProp_User.Internet = 0;
+                    objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                    int Custid = objBL_User.AddCustomerSage(objProp_User);
+                    #endregion
+
+                    #region Update reference in sage
+                    //if (Custid != null)
+                    //{
+                    if (Custid != 0)
+                    {
+                        //update created customer id (Owner.ID) in sage custom field (Key_2) to map the records on both databases.
+                        query = "update master_arm_customer set Key_2='" + Custid + "' where Customer = ?";
+                        if (odbccon.State != ConnectionState.Open)
+                            odbccon.Open();
+                        queryTest = query + dr["customer"].ToString();
+                        OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Customer", dr["customer"].ToString());
+                        DataTable dtdample = new DataTable();
+                        daupdate.Fill(dtdample);
+                        odbccon.Close();
+                    }
+                    //}
+                    #endregion
+                }
+
+                #endregion
+
+                #region Add/Update Customers to Sage
+
+                #region Update inactive to Sage
+
+                objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                DataSet dsAddC = objBL_User.geCustomersSageNA(objProp_User);
+
+                foreach (DataRow dr in dsAddC.Tables[0].Rows)
+                {
+                    //update inactive MOM customers to sage.
+                    query = "update master_arm_customer set ";
+                    query += " Key_2='inactive'";
+                    query += " where Key_2=? ";
+                    queryTest = query + dr["id"].ToString();
+                    OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Key_2", dr["id"].ToString());
+                    DataTable dtdample = new DataTable();
+                    daupdate.Fill(dtdample);
+
+                    //update inactive MOM customers to sage locations.
+                    query = "update master_jcm_job_1 set ";
+                    query += " ar_customer=?";
+                    query += " where mom_cust_id=? ";
+                    if (odbccon.State != ConnectionState.Open)
+                        odbccon.Open();
+                    queryTest = query;
+                    daupdate = new OdbcDataAdapter(query, odbccon);
+                    daupdate.SelectCommand.Parameters.AddWithValue("@ar_customer", dr["OwnerID"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@mom_cust_id", dr["id"].ToString());
+                    DataTable dtdample1 = new DataTable();
+                    daupdate.Fill(dtdample1);
+                    odbccon.Close();
+                }
+
+                #endregion
+
+                #region Add Customers to Sage
+                objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                DataSet dsAdd = objBL_User.getCustomersSageAdd(objProp_User);
+                //int k = 0;
+                foreach (DataRow dr in dsAdd.Tables[0].Rows)
+                {
+                    //Insert new customers from MOM to Sage. New MOM customer have Owner.SageID = 'NA'
+                    query = "insert into master_arm_customer ";
+                    query += "(Customer, Name, Customer_Type, Key_2, Address_1,Address_2,Address_3,Address_4,";
+                    query += "City, State, ZIP_Code, Telephone, Email_Address, Status, trade, Credit_Rating, ";//Customer_Notes
+                    query += "Billing_Freq, Total_Billed_Exempt_Status,Labor_Exempt_Status,Material_Exempt_Status,";
+                    query += "Subcontract_Exempt_Status,Equipment_Exempt_Status,Overhead_Exempt_Status,Other_Exempt_Status) ";
+                    query += "values";
+                    query += "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,'None','None','None','Taxable','Taxable','Taxable','Taxable','Taxable','Taxable','Taxable')";
+
+                    //query += "('" + dr["customer"].ToString() + "', '" + dr["Name"].ToString() + "', '" + dr["Type"].ToString() + "', '" + dr["ID"].ToString() + "', '" + dr["Address1"].ToString() + "', '" + dr["Address2"].ToString() + "', '" + dr["Address3"].ToString() + "', '" + dr["Address4"].ToString() + "', '" + dr["City"].ToString() + "', '" + dr["State"].ToString() + "', '" + dr["ZIP"].ToString() + "', '" + dr["Phone"].ToString() + "', '" + dr["Email"].ToString() + "', '" + dr["Status"].ToString() + "', '" + dr["remarks"].ToString() + "','None','None','None','Taxable','Taxable','Taxable','Taxable','Taxable','Taxable','Taxable')";
+
+                    if (odbccon.State != ConnectionState.Open)
+                        odbccon.Open();
+                    queryTest = query;
+                    OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Customer", dr["customer"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Name", dr["Name"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Customer_Type", dr["Type"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Key_2", dr["ID"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_1", dr["Address1"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_2", dr["Address2"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_3", dr["Address3"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_4", dr["Address4"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@City", dr["City"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@State", dr["State"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@ZIP_Code", dr["ZIP"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Telephone", dr["Phone"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Email_Address", dr["Email"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Status", dr["Status"].ToString());
+                    //daupdate.SelectCommand.Parameters.AddWithValue("@Customer_Notes", dr["remarks"].ToString());
+
+                    DataTable dtdample = new DataTable();
+                    daupdate.Fill(dtdample);
+                    odbccon.Close();
+
+                    objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                    objProp_User.Custom1 = dr["customer"].ToString();
+                    objProp_User.CustomerID = Convert.ToInt32(dr["id"].ToString());
+                    //Update SageID created in MOM in Owner.SageID
+                    objBL_User.UpdateSageID(objProp_User);
+
+                }
+
+                #endregion
+
+                #region Update Customers to Sage
+                objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                DataSet dsUpdate = objBL_User.getCustomersSageUpdate(objProp_User);
+
+                foreach (DataRow dr in dsUpdate.Tables[0].Rows)
+                {
+                    // Update customer from MOM to Sage
+                    query = "update master_arm_customer set ";
+                    query += "Name = ?, Customer_Type = ?, Address_1=?, Address_2= ?, Address_3=?, Address_4=?,";
+                    query += "City=?, State=?, ZIP_Code=?, Telephone=?, Email_Address=?, Status=? ";//, Customer_Notes=?
+                    query += " where Key_2=? ";
+
+                    //MOM customer last update date which is compared to Sage customer last update date. Which ever is smaller is overriden.
+                    DateTime lastUpdated = Convert.ToDateTime(dr["lastupdatedate"].ToString());
+
+                    //if (!DateTime.TryParse(dr["lastupdatedate"].ToString(), out lastUpdated))
+                    //{
+                    //    lastUpdated = System.DateTime.MinValue;
+                    //}
+                    string LastUpdateDate = lastUpdated.ToString("yyyy-MM-dd");
+                    string LastUpdateTime = lastUpdated.ToString("HH:mm:ss");
+                    //query += " and date_stamp <= '{d " + LastUpdateDate + "}'";// and time_stamp < '{t " + LastUpdateTime + "}'";
+                    query += " and date_stamp <= '" + LastUpdateDate + "'";// and time_stamp < '{t " + LastUpdateTime + "}'";
+                    if (odbccon.State != ConnectionState.Open)
+                        odbccon.Open();
+                    queryTest = query;
+                    OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Name", dr["Name"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Customer_Type", dr["Type"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_1", dr["Address1"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_2", dr["Address2"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_3", dr["Address3"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_4", dr["Address4"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@City", dr["City"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@State", dr["State"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@ZIP_Code", dr["ZIP"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Telephone", dr["Phone"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Email_Address", dr["Email"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Status", dr["Status"].ToString());
+                    //daupdate.SelectCommand.Parameters.AddWithValue("@Customer_Notes", dr["remarks"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Key_2", dr["ID"].ToString());
+
+                    DataTable dtdample = new DataTable();
+                    daupdate.Fill(dtdample);
+                    odbccon.Close();
+                }
+
+                #endregion
+                #endregion
+
+                #region Delete customers in MOM
+
+                //////query = " Select customer from master_arm_customer ";
+                //////OdbcDataAdapter dadelete = new OdbcDataAdapter(query, odbccon);
+                //////DataTable dtDel = new DataTable();
+                //////dadelete.Fill(dtDel);
+
+                //////objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                //////DataSet dsDeleteMOM = objBL_User.getCustomersForSageDelete(objProp_User);
+                //////List<Dictionary<string, string>> arrSageID = new List<Dictionary<string, string>>();
+                //////foreach (DataRow dr in dsDeleteMOM.Tables[0].Rows)
+                //////{
+                //////    bool exists = false;
+                //////    foreach (DataRow drODBC in dtDel.Rows)
+                //////    {
+                //////        if (dr["SageID"].ToString().Equals(drODBC["Customer"].ToString(), StringComparison.InvariantCultureIgnoreCase))
+                //////        {
+                //////            exists = true;
+                //////        }
+                //////    }
+                //////    if (!exists)
+                //////    {
+                //////        Dictionary<string, string> dic = new Dictionary<string, string>();
+                //////        dic.Add("SageID", dr["SageID"].ToString());
+                //////        dic.Add("ID", dr["ID"].ToString());
+                //////        arrSageID.Add(dic);
+                //////    }
+                //////}
+
+                //////foreach (Dictionary<string, string> dict in arrSageID)
+                //////{
+                //////    string custid = Convert.ToString(dict["ID"]);
+                //////    string sageid = Convert.ToString(dict["SageID"]);
+                //////    query = " Select customer from master_arm_customer where Key_2 = '" + custid + "'";
+                //////    OdbcDataAdapter dadelete1 = new OdbcDataAdapter(query, odbccon);
+                //////    DataTable dtDel1 = new DataTable();
+                //////    dadelete1.Fill(dtDel1);
+
+                //////    if (dtDel1.Rows.Count == 0)
+                //////    {
+                //////        objProp_User.QBCustomerID = sageid;
+                //////        objBL_User.DeleteCustomerBySageID(objProp_User);
+                //////    }
+                //////}
+
+                #endregion
+
+                #endregion
+
+
+                #region Location Sync
+
+                #region Add/Update locations to MOM
+
+                #region Get data from sage
+
+                query = " SELECT   jc1.JOB,   jc1.Description,   jc1.Address_1,  jc1.Address_2,  jc1.Status,  jc1.City,  jc1.state,  jc1.zip_code,  jc1.job_notes,  jc1.Misc_Title_3,  jc1.Misc_Title_4,  jc1.fax_phone,  jc1.misc_phone,   jc1.Superintendent_Email,  jc1.Bill_to_Address_1,  jc1.Bill_to_Address_2,  jc1.Bill_to_city,  jc1.Bill_to_state,  jc1.Bill_to_ZIP_Code,  jc1.TYPE,  jc1.MOM_CUST_ID,  jc1.mom_jc_id,  jc1.ar_customer  ,  jc2.date_stamp,  jc2.time_stamp,   jc3.job as customjob,   jc3.CN1_BL_DESCRIPTION,   jc3.CN1_BL_FREQ,   jc3.CN1_ROUTE_FREQ,   jc3.Route,   jc3.CN1_BL_AMOUNT,   jc3.CN1_START_DATE,  jc3.CN1_BL_DESCRIPTION,  jc3.MOMREC1, jc3.cn1_service_type    FROM master_jcm_job_1 jc1    inner join master_jcm_job_2 jc2 ON jc1.job = jc2.job    left outer join master_jcm_job_custom_fields jc3 on jc3.job=jc1.job";
+                //query = " SELECT jc1.*,jc2.date_stamp,jc2.time_stamp,  jc3.job as customjob, jc3.*  FROM master_jcm_job_1 jc1 inner join master_jcm_job_2 jc2 ON jc1.job = jc2.job left outer join master_jcm_job_custom_fields jc3 on jc3.job=jc1.job ";
+                if (!string.IsNullOrEmpty(FormatDate))
+                {
+                    //////query += " where date_stamp >= '{d " + FormatDate + "}' and time_stamp >= '{t " + FormatTime + "}' and mom_jc_id <> 'inactive'";
+                    // query += " where date_stamp >= '{d " + FormatDate + "}' and mom_jc_id <> 'inactive'";
+                    query += " where date_stamp >= '" + FormatDate + "' and mom_jc_id <> 'inactive'";
+                }
+
+                if (odbccon.State != ConnectionState.Open)
+                    odbccon.Open();
+                queryTest = query;
+                da = new OdbcDataAdapter(query, odbccon);
+                dt = new DataTable();
+                da.Fill(dt);
+                odbccon.Close();
+
+                dtFilter = dt.Clone();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string strDate = string.Format("{0:MM/dd/yyyy}", dr["date_stamp"]) + " " + dr["time_stamp"].ToString();
+                    DateTime dtCompare = DateTime.MinValue;
+                    DateTime.TryParse(strDate, out dtCompare);
+                    if (dtCompare >= LastSycnDate)
+                        dtFilter.ImportRow(dr);
+                }
+
+                #endregion
+
+                foreach (DataRow dr in dtFilter.Rows)
+                {
+                    #region Insert/update data to MOM
+
+                    objProp_User.AccountNo = dr["JOB"].ToString();
+                    objProp_User.Locationname = dr["Description"].ToString();
+                    objProp_User.Address = dr["Address_1"].ToString() + Environment.NewLine + dr["Address_2"].ToString();
+                    if (dr["Status"].ToString().Equals("active", StringComparison.InvariantCultureIgnoreCase))
+                        objProp_User.Status = 0;
+                    else
+                        objProp_User.Status = 1;
+                    objProp_User.City = dr["City"].ToString();
+                    objProp_User.State = dr["state"].ToString();
+                    objProp_User.Zip = dr["zip_code"].ToString();
+                    objProp_User.Remarks = dr["job_notes"].ToString();
+                    //objProp_User.MainContact = dr["customer_contact_1"].ToString();
+                    objProp_User.MainContact = dr["Misc_Title_3"].ToString();
+                    //objProp_User.Phone = dr["site_phone"].ToString();
+                    objProp_User.Phone = dr["Misc_Title_4"].ToString();
+                    objProp_User.Fax = dr["fax_phone"].ToString();
+                    objProp_User.Cell = dr["misc_phone"].ToString();
+                    objProp_User.Email = dr["Superintendent_Email"].ToString();
+                    objProp_User.Website = "";
+                    objProp_User.RolAddress = dr["Bill_to_Address_1"].ToString() + Environment.NewLine + dr["Bill_to_Address_2"].ToString();
+                    objProp_User.RolCity = dr["Bill_to_city"].ToString();
+                    objProp_User.RolState = dr["Bill_to_state"].ToString();
+                    objProp_User.RolZip = dr["Bill_to_ZIP_Code"].ToString();
+                    objProp_User.Type = dr["type"].ToString();
+                    if (dr["MOM_CUST_ID"].ToString().Trim() != string.Empty)
+                        objProp_User.SageCustID = dr["MOM_CUST_ID"].ToString();
+                    else
+                        objProp_User.SageCustID = "0";
+                    if (dr["mom_jc_id"].ToString().Trim() != string.Empty)
+                        objProp_User.SageLocID = dr["mom_jc_id"].ToString();
+                    else
+                        objProp_User.SageLocID = "0";
+                    objProp_User.Custom2 = dr["ar_customer"].ToString();
+
+                    DateTime date = Convert.ToDateTime(dr["Date_Stamp"]);
+                    TimeSpan time = (TimeSpan)dr["Time_Stamp"];
+                    DateTime datestamp = date + time;
+                    objProp_User.LastUpdateDate = datestamp;
+                    //objProp_User.Stax = ddlSTax.SelectedValue;
+
+                    //int locid = objBL_User.AddSageLocation(objProp_User);
+                    DataSet dsLocReturn = objBL_User.AddSageLocation(objProp_User);
+                    int locid = Convert.ToInt32(dsLocReturn.Tables[0].Rows[0]["locid"]);
+                    int ownerid = Convert.ToInt32(dsLocReturn.Tables[0].Rows[0]["ownerid"]);
+
+                    #endregion
+
+                    #region Update reference in sage
+                    //if (locid != null)
+                    //{
+                    if (locid != 0)
+                    {
+                        if (odbccon.State != ConnectionState.Open)
+                            odbccon.Open();
+                        query = "update MASTER_JCM_JOB_1 set mom_jc_id='" + locid + "', mom_cust_id='" + ownerid + "' where Job = ?";
+                        OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                        queryTest = query;
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Job", dr["job"].ToString());
+                        DataTable dtdample = new DataTable();
+                        daupdate.Fill(dtdample);
+                        odbccon.Close();
+                    }
+                    //}
+                    #endregion
+                }
+
+                #endregion
+
+
+                #region Contracts Sync
+
+                #region Add/Update Contracts to MOM
+
+                foreach (DataRow dr in dtFilter.Rows)
+                {
+                    if (dr["customjob"].ToString() != string.Empty)
+                    {
+                        if (dr["customjob"].ToString().Substring(dr["customjob"].ToString().Length - 3, 3) == "-10")
+                        {
+                            #region Insert/update data to MOM
+
+                            objProp_User.Remarks = dr["CN1_BL_DESCRIPTION"].ToString();
+                            objProp_User.BCycle = dr["CN1_BL_FREQ"].ToString();
+                            objProp_User.SCycle = dr["CN1_ROUTE_FREQ"].ToString();
+                            objProp_User.Stime = Convert.ToDateTime("01/01/1900 05:00:00 AM");
+                            objProp_User.SageRoute = dr["Route"].ToString();
+                            objProp_User.HourlyRate = 1;
+                            if (dr["CN1_BL_AMOUNT"].ToString().Trim() != "")
+                                objProp_User.AnnualAmount = Convert.ToDouble(dr["CN1_BL_AMOUNT"].ToString());
+                            if (dr["CN1_START_DATE"].ToString().Trim() != "")
+                            {
+                                objProp_User.BStartdt = Convert.ToDateTime(dr["CN1_START_DATE"].ToString());
+                                objProp_User.SStartdt = Convert.ToDateTime(dr["CN1_START_DATE"].ToString());
+                            }
+                            objProp_User.Description = dr["CN1_BL_DESCRIPTION"].ToString();
+                            objProp_User.SageID = dr["JOB"].ToString();
+                            if (dr["MOMREC1"].ToString().Trim() != string.Empty)
+                                objProp_User.SagejobKey = dr["MOMREC1"].ToString();
+                            else
+                                objProp_User.SagejobKey = "0";
+
+                            if (dr["mom_jc_id"].ToString().Trim() != string.Empty)
+                                objProp_User.SageLocKey = dr["mom_jc_id"].ToString();
+                            else
+                                objProp_User.SageLocKey = "0";
+
+                            DateTime date = Convert.ToDateTime(dr["Date_Stamp"]);
+                            TimeSpan time = (TimeSpan)dr["Time_Stamp"];
+                            DateTime datestamp = date + time;
+                            objProp_User.LastUpdateDate = datestamp;
+                            objProp_User.ServiceType = dr["cn1_service_type"].ToString();
+                            int jobid = objBL_User.AddSageContracts(objProp_User);
+
+                            #endregion
+
+                            #region Update reference in sage
+
+                            if (jobid != 0)
+                            {
+                                query = "update master_jcm_job_custom_fields set MOMREC1='" + jobid + "'  where Job = ?";
+                                if (odbccon.State != ConnectionState.Open)
+                                    odbccon.Open();
+                                queryTest = query;
+                                OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                                daupdate.SelectCommand.Parameters.AddWithValue("@Job", dr["job"].ToString());
+                                DataTable dtdample = new DataTable();
+                                daupdate.Fill(dtdample);
+                                odbccon.Close();
+                            }
+
+                            #endregion
+                        }
+                    }
+                }
+
+                #endregion
+
+                #endregion
+
+
+                #region Add/Update locations to Sage
+
+                #region Update inactive to Sage
+                objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                dsAdd = objBL_User.getLocationsSageNA(objProp_User);
+
+                foreach (DataRow dr in dsAdd.Tables[0].Rows)
+                {
+                    query = "update master_jcm_job_1 set ";
+                    query += " mom_jc_id='inactive', mom_cust_id='inactive'";
+                    query += " where mom_jc_id=? ";
+
+                    if (odbccon.State != ConnectionState.Open)
+                        odbccon.Open();
+                    queryTest = query;
+                    OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                    daupdate.SelectCommand.Parameters.AddWithValue("@mom_jc_id", dr["id"].ToString());
+                    DataTable dtdample = new DataTable();
+                    daupdate.Fill(dtdample);
+                    odbccon.Close();
+                }
+
+                #endregion
+
+                #region Add locations to Sage
+                objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                dsAdd = objBL_User.getLocationsSageAdd(objProp_User);
+
+                foreach (DataRow dr in dsAdd.Tables[0].Rows)
+                {
+                    query = "insert into master_jcm_job_1 ";
+                    query += "(job, description,type,  mom_jc_id, Address_1,Address_2,";//type,
+                    query += "City, State, ZIP_Code, Misc_Title_3,Misc_Title_4,fax_phone,misc_phone,Superintendent_Email,"; //Status,job_notes
+                    query += "Bill_to_Address_1,Bill_to_Address_2,Bill_to_city,Bill_to_state,Bill_to_ZIP_Code,MOM_CUST_ID,ar_customer,Cost_Account_Prefix) ";//
+                    query += "values";
+                    query += "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";//?,?
+
+                    if (odbccon.State != ConnectionState.Open)
+                        odbccon.Open();
+                    queryTest = query;
+                    OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                    daupdate.SelectCommand.Parameters.AddWithValue("@job", dr["job"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@description", dr["tag"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@type", dr["Type"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@mom_jc_id", dr["ID"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_1", dr["Address1"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Address_2", dr["Address2"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@City", dr["City"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@State", dr["State"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@ZIP_Code", dr["ZIP"].ToString());
+                    //daupdate.SelectCommand.Parameters.AddWithValue("@Status", dr["Status"].ToString());
+                    //daupdate.SelectCommand.Parameters.AddWithValue("@job_notes", dr["remarks"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Misc_Title_3", dr["contact"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Misc_Title_4", dr["phone"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@fax_phone", dr["fax"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@misc_phone", dr["cellular"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Superintendent_Email", dr["custom14"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_Address_1", dr["billaddress1"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_Address_2", dr["billaddress2"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_city", dr["billcity"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_state", dr["billstate"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_ZIP_Code", dr["billzip"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@MOM_CUST_ID", dr["owner"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@ar_customer", dr["sagecustomerid"].ToString());
+                    daupdate.SelectCommand.Parameters.AddWithValue("@Cost_Account_Prefix", dr["costaccountprefix"].ToString());
+
+                    DataTable dtdample = new DataTable();
+                    daupdate.Fill(dtdample);
+                    odbccon.Close();
+
+                    objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                    objProp_User.Custom1 = dr["job"].ToString();
+                    objProp_User.CustomerID = Convert.ToInt32(dr["id"].ToString());
+                    objBL_User.UpdateLocSageID(objProp_User);
+
+                }
+
+                //////foreach (DataRow dr in dsAdd.Tables[0].Rows)
+                //////{
+                //////    //// jc3.job as customjob,   jc3.CN1_BL_DESCRIPTION,   jc3.CN1_BL_FREQ,   jc3.CN1_ROUTE_FREQ,   jc3.Route,   jc3.CN1_BL_AMOUNT,   jc3.CN1_START_DATE,  jc3.CN1_BL_DESCRIPTION,  jc3.MOMREC1    FROM master_jcm_job_1 jc1    inner join master_jcm_job_2 jc2 ON jc1.job = jc2.job    left outer join master_jcm_job_custom_fields jc3 on jc3.job=jc1.job
+                //////    query = "insert into master_jcm_job_custom_fields ";
+                //////    query += "(";
+                //////    query += "job ,   CN1_BL_DESCRIPTION,   CN1_BL_FREQ,   CN1_ROUTE_FREQ,   Route,   CN1_BL_AMOUNT,   CN1_START_DATE,  CN1_BL_DESCRIPTION,  MOMREC1 ";
+                //////    query += ")";
+                //////    query += "values";
+                //////    query += "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                //////    if (odbccon.State != ConnectionState.Open)
+                //////        odbccon.Open();
+                //////    daupdate = new OdbcDataAdapter(query, odbccon);
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@job", dr["job"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@description", dr["tag"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@mom_jc_id", dr["ID"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Address_1", dr["Address1"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Address_2", dr["Address2"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@City", dr["City"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@State", dr["State"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@ZIP_Code", dr["ZIP"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@job_notes", dr["remarks"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Misc_Title_3", dr["contact"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Misc_Title_4", dr["phone"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@fax_phone", dr["fax"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@misc_phone", dr["cellular"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Superintendent_Email", dr["custom14"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_Address_1", dr["billaddress1"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_Address_2", dr["billaddress2"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_city", dr["billcity"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_state", dr["billstate"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_ZIP_Code", dr["billzip"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@MOM_CUST_ID", dr["owner"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@ar_customer", dr["sagecustomerid"].ToString());
+                //////    daupdate.SelectCommand.Parameters.AddWithValue("@Cost_Account_Prefix", dr["costaccountprefix"].ToString());
+
+                //////    //DataTable dtdample = new DataTable();
+                //////    //daupdate.Fill(dtdample);
+                ////////odbccon.Close();
+
+                //////    //objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                //////    //objProp_User.Custom1 = dr["job"].ToString();
+                //////    //objProp_User.CustomerID = Convert.ToInt32(dr["id"].ToString());
+                //////    //objBL_User.UpdateLocSageID(objProp_User);
+
+                //////}
+
+                #endregion
+
+                #region Update locations to Sage
+                objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                dsUpdate = objBL_User.getLocationsSageUpdate(objProp_User);
+
+                foreach (DataRow dr in dsUpdate.Tables[0].Rows)
+                {
+                    DateTime lastUpdated = Convert.ToDateTime(dr["lastupdatedate"].ToString());
+                    string LastUpdateDate = lastUpdated.ToString("yyyy-MM-dd");
+                    string LastUpdateTime = lastUpdated.ToString("HH:mm:ss");
+                    query = "select 1 from master_jcm_job_2 j2 inner join master_jcm_job_1 j1 on j1.job = j2.job where j1.mom_jc_id=? ";
+                    //query += " and date_stamp <= '{d " + LastUpdateDate + "}'";// and time_stamp < '{t " + LastUpdateTime + "}'";
+                    query += " and date_stamp <= '" + LastUpdateDate + "'";// and time_stamp < '{t " + LastUpdateTime + "}'";
+                    if (odbccon.State != ConnectionState.Open)
+                        odbccon.Open();
+                    queryTest = query;
+                    OdbcDataAdapter daupdate1 = new OdbcDataAdapter(query, odbccon);
+                    daupdate1.SelectCommand.Parameters.AddWithValue("@mom_jc_id", dr["id"].ToString());
+                    DataTable dtdample1 = new DataTable();
+                    daupdate1.Fill(dtdample1);
+                    odbccon.Close();
+
+                    if (dtdample1.Rows.Count > 0)
+                    {
+                        query = "update master_jcm_job_1 set ";
+                        query += "description = ?,type = ?,  Address_1=?, Address_2= ?,";//type = ?,
+                        query += "City=?, State=?, ZIP_Code=?, Misc_Title_3=?, Misc_Title_4=?, fax_phone=?,misc_phone=?,Superintendent_Email=?, Bill_to_Address_1=? , Bill_to_Address_2=?, Bill_to_city=?, Bill_to_state=?, Bill_to_ZIP_Code=?, MOM_CUST_ID=? ,ar_customer=?, Cost_Account_Prefix=?";//Status=?, job_notes=?,
+                        query += " where mom_jc_id=? ";
+
+                        if (odbccon.State != ConnectionState.Open)
+                            odbccon.Open();
+                        queryTest = query;
+                        OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                        daupdate.SelectCommand.Parameters.AddWithValue("@description", dr["tag"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@type", dr["Type"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Address_1", dr["Address1"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Address_2", dr["Address2"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@City", dr["City"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@State", dr["State"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@ZIP_Code", dr["ZIP"].ToString());
+                        //daupdate.SelectCommand.Parameters.AddWithValue("@Status", dr["Status"].ToString());
+                        //daupdate.SelectCommand.Parameters.AddWithValue("@job_notes", dr["remarks"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Misc_Title_3", dr["contact"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Misc_Title_4", dr["phone"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@fax_phone", dr["fax"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@misc_phone", dr["cellular"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Superintendent_Email", dr["custom14"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_Address_1", dr["billaddress1"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_Address_2", dr["billaddress2"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_city", dr["billcity"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_state", dr["billstate"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Bill_to_ZIP_Code", dr["billzip"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@MOM_CUST_ID", dr["owner"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@ar_customer", dr["sagecustomerid"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@Cost_Account_Prefix", dr["costaccountprefix"].ToString());
+                        daupdate.SelectCommand.Parameters.AddWithValue("@mom_jc_id", dr["id"].ToString());
+
+                        DataTable dtdample = new DataTable();
+                        daupdate.Fill(dtdample);
+                        odbccon.Close();
+                    }
+                }
+
+                #endregion
+
+                #endregion
+
+                #region Delete Locations in MOM
+
+                //////query = " Select Job from master_jcm_job_1 ";
+                //////dadelete = new OdbcDataAdapter(query, odbccon);
+                //////dtDel = new DataTable();
+                //////dadelete.Fill(dtDel);
+
+                //////objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                //////dsDeleteMOM = objBL_User.getLocationsForSageDelete(objProp_User);
+                //////arrSageID = new List<Dictionary<string, string>>();
+                //////foreach (DataRow dr in dsDeleteMOM.Tables[0].Rows)
+                //////{
+                //////    bool exists = false;
+                //////    foreach (DataRow drODBC in dtDel.Rows)
+                //////    {
+                //////        if (dr["SageID"].ToString().Equals(drODBC["Job"].ToString(), StringComparison.InvariantCultureIgnoreCase))
+                //////        {
+                //////            exists = true;
+                //////        }
+                //////    }
+                //////    if (!exists)
+                //////    {
+                //////        Dictionary<string, string> dic = new Dictionary<string, string>();
+                //////        dic.Add("SageID", dr["SageID"].ToString());
+                //////        dic.Add("loc", dr["loc"].ToString());
+                //////        arrSageID.Add(dic);
+                //////    }
+                //////}
+
+                //////foreach (Dictionary<string, string> dict in arrSageID)
+                //////{
+                //////    string custid = Convert.ToString(dict["loc"]);
+                //////    string sageid = Convert.ToString(dict["SageID"]);
+                //////    query = " Select job from master_jcm_job_1 where mom_jc_id = '" + custid + "'";
+                //////    OdbcDataAdapter dadelete1 = new OdbcDataAdapter(query, odbccon);
+                //////    DataTable dtDel1 = new DataTable();
+                //////    dadelete1.Fill(dtDel1);
+
+                //////    if (dtDel1.Rows.Count == 0)
+                //////    {
+                //////        objProp_User.QBCustomerID = sageid;
+                //////        objBL_User.DeleteLocationBySageID(objProp_User);
+                //////    }
+                //////}
+
+                #endregion
+
+                #region Update Contracts: MOM --> Sage
+
+                //objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                //dsUpdate = objBL_User.getUpdateContractsForSage(objProp_User);
+                //foreach (DataRow dr in dsUpdate.Tables[0].Rows)
+                //{
+
+                //    //DateTime lastUpdated = Convert.ToDateTime(dr["lastupdatedate"].ToString());
+                //    //string LastUpdateDate = lastUpdated.ToString("yyyy-MM-dd");
+                //    //string LastUpdateTime = lastUpdated.ToString("HH:mm:ss");
+                //    //query = "select 1 from master_jcm_job_2  where job=? ";
+                //    //query += " and date_stamp <= '{d " + LastUpdateDate + "}'";
+                //    //if (odbccon.State != ConnectionState.Open)
+                //    //    odbccon.Open();
+                //    //OdbcDataAdapter daupdate1 = new OdbcDataAdapter(query, odbccon);
+                //    //daupdate1.SelectCommand.Parameters.AddWithValue("@job", dr["job"].ToString());
+                //    //DataTable dtdample1 = new DataTable();
+                //    //daupdate1.Fill(dtdample1);
+                //    //odbccon.Close();
+
+                //    //if (dtdample1.Rows.Count > 0)
+                //    //{
+                //        query = "update master_jcm_job_custom_fields set ";
+                //        query += " CN1_BL_DESCRIPTION = ?,  CN1_BL_FREQ=?, CN1_ROUTE_FREQ= ?, Route= ?, CN1_BL_AMOUNT= ?, CN1_START_DATE= ?,  MOMREC1=?, cn1_service_type=?";
+                //        query += " where job=? ";
+
+                //        if (odbccon.State != ConnectionState.Open)
+                //            odbccon.Open();
+                //        OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+                //        daupdate.SelectCommand.Parameters.AddWithValue("@CN1_BL_DESCRIPTION", dr["CN1_BL_DESCRIPTION"].ToString());
+                //        daupdate.SelectCommand.Parameters.AddWithValue("@CN1_BL_FREQ", dr["CN1_BL_FREQ"].ToString());
+                //        daupdate.SelectCommand.Parameters.AddWithValue("@CN1_ROUTE_FREQ", dr["CN1_ROUTE_FREQ"].ToString());
+                //        daupdate.SelectCommand.Parameters.AddWithValue("@Route", dr["Route"]);
+                //        daupdate.SelectCommand.Parameters.AddWithValue("@CN1_BL_AMOUNT",Convert.ToDouble( dr["CN1_BL_AMOUNT"]));
+                //        daupdate.SelectCommand.Parameters.AddWithValue("@CN1_START_DATE",Convert.ToDateTime( dr["CN1_START_DATE"].ToString()));
+                //        daupdate.SelectCommand.Parameters.AddWithValue("@MOMREC1", dr["MOMREC1"].ToString());
+                //        daupdate.SelectCommand.Parameters.AddWithValue("@cn1_service_type", dr["cn1_service_type"].ToString());
+                //        daupdate.SelectCommand.Parameters.AddWithValue("@job", dr["job"].ToString());
+
+                //        DataTable dtdample = new DataTable();
+                //        daupdate.Fill(dtdample);
+                //        odbccon.Close();
+                //    //}
+                //}
+
+                #endregion
+
+                #endregion
+
+
+                #region Update LastSync
+                objGeneral.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+                objBL_General.UpdateSageLastSync(objGeneral);
+                #endregion
+
+                result = "Sync Successfully completed at " + System.DateTime.Now.ToShortDateString() + " " + System.DateTime.Now.ToShortTimeString();
+            }
+            else
+                result = "Sync instance already running";
+
+        }
+        catch (Exception ex)
+        {
+            result = ex.Message + Environment.NewLine + ex.StackTrace; //queryTest +
+        }
+        finally
+        {
+            odbccon.Close();
+            Application["sagesync"] = "0";
+        }
+        return result;
+    }
+
+    //[WebMethod]
+    //public string SyncContracts()
+    //{
+    //    string result;
+    //    try
+    //    {
+    //        string Connection = System.Web.Configuration.WebConfigurationManager.AppSettings["SageDatabase"].Trim();
+    //        string DSN = System.Web.Configuration.WebConfigurationManager.AppSettings["SageDSN"].Trim();
+    //        objProp_User.ConnConfig = objGenFunctions.ConnectionStr(Connection);
+    //        //DataSet ds = objBL_User.getControl(objProp_User);
+    //        //DateTime LastSycnDate = new DateTime();
+    //        //String FormatDate = string.Empty;
+    //        //String FormatTime = string.Empty;
+    //        //if (ds.Tables[0].Rows[0]["SageLastSync"] != DBNull.Value)
+    //        //{
+    //        //    LastSycnDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["SageLastSync"]);
+    //        //    FormatDate = LastSycnDate.ToString("yyyy-MM-dd");
+    //        //    FormatTime = LastSycnDate.ToString("HH:mm:ss");
+    //        //}
+
+    //        OdbcConnection odbccon = new OdbcConnection(DSN);
+    //        if (odbccon.State != ConnectionState.Open)
+    //        {
+    //            odbccon.Open();
+    //        }
+
+    //        string query = " SELECT jc1.Job,jc1.mom_jc_id,jc2.date_stamp,jc2.time_stamp, jc3.job as customjob, jc3.*  FROM master_jcm_job_1 jc1 inner join master_jcm_job_2 jc2 ON jc1.job = jc2.job left outer join master_jcm_job_custom_fields jc3 on jc3.job=jc1.job ";
+    //        //if (!string.IsNullOrEmpty(FormatDate))
+    //        //{
+    //        //    //query += " where date_stamp >= '{d " + FormatDate + "}' and time_stamp >= '{t " + FormatTime + "}' and mom_jc_id <> 'inactive'";
+    //        //    query += " where date_stamp >= '{d " + FormatDate + "}' and mom_jc_id <> 'inactive'";
+    //        query += " where mom_jc_id <> 'inactive' ";//and MOMREC1 = ''
+    //        //}
+    //        OdbcDataAdapter da = new OdbcDataAdapter(query, odbccon);
+    //        DataTable dt = new DataTable();
+    //        da.Fill(dt);
+    //        odbccon.Close();
+
+    //        //DataTable dtFilter = dt.Clone();
+    //        //foreach (DataRow dr in dt.Rows)
+    //        //{
+    //        //    string strDate = string.Format("{0:MM/dd/yyyy}", dr["date_stamp"]) + " " + dr["time_stamp"].ToString();
+    //        //    DateTime dtCompare = DateTime.MinValue;
+    //        //    DateTime.TryParse(strDate, out dtCompare);
+    //        //    if (dtCompare >= LastSycnDate)
+    //        //        dtFilter.ImportRow(dr);
+    //        //}
+
+    //        #region Contracts Sync
+
+    //        #region Add/Update Contracts to MOM
+
+    //        foreach (DataRow dr in dt.Rows)
+    //        {
+    //            if (dr["customjob"].ToString() != string.Empty )
+    //            {
+    //                if (dr["customjob"].ToString().Substring(dr["customjob"].ToString().Length - 3, 3) == "-10")
+    //                {
+    //                    #region Insert/update data to MOM
+    //                    objProp_User.Remarks = dr["CN1_BL_DESCRIPTION"].ToString();
+    //                    objProp_User.BCycle = dr["CN1_BL_FREQ"].ToString();
+    //                    objProp_User.SCycle = dr["CN1_ROUTE_FREQ"].ToString();
+    //                    objProp_User.Stime = Convert.ToDateTime("01/01/1900 05:00:00 AM");
+    //                    objProp_User.SageRoute = dr["Route"].ToString();
+    //                    objProp_User.HourlyRate = 1;
+    //                    if (dr["CN1_BL_AMOUNT"].ToString().Trim() != "")
+    //                        objProp_User.AnnualAmount = Convert.ToDouble(dr["CN1_BL_AMOUNT"].ToString());
+    //                    if (dr["CN1_START_DATE"].ToString().Trim() != "")
+    //                    {
+    //                        objProp_User.BStartdt = Convert.ToDateTime(dr["CN1_START_DATE"].ToString());
+    //                        objProp_User.SStartdt = Convert.ToDateTime(dr["CN1_START_DATE"].ToString());
+    //                    }
+    //                    objProp_User.Description = dr["CN1_BL_DESCRIPTION"].ToString();
+    //                    objProp_User.SageID = dr["JOB"].ToString();
+    //                    if (dr["MOMREC1"].ToString().Trim() != string.Empty)
+    //                        objProp_User.SagejobKey = dr["MOMREC1"].ToString();
+    //                    else
+    //                        objProp_User.SagejobKey = "0";
+
+    //                    if (dr["mom_jc_id"].ToString().Trim() != string.Empty)
+    //                        objProp_User.SageLocKey = dr["mom_jc_id"].ToString();
+    //                    else
+    //                        objProp_User.SageLocKey = "0";
+
+    //                    DateTime date = Convert.ToDateTime(dr["Date_Stamp"]);
+    //                    TimeSpan time = (TimeSpan)dr["Time_Stamp"];
+    //                    DateTime datestamp = date + time;
+    //                    objProp_User.LastUpdateDate = datestamp;
+    //                    objProp_User.ServiceType = dr["cn1_service_type"].ToString();
+
+    //                    int jobid = objBL_User.AddSageContracts(objProp_User);
+
+    //                    #endregion
+
+    //                    #region Update reference in sage
+
+    //                    if (jobid != 0)
+    //                    {
+    //                        if (odbccon.State != ConnectionState.Open)
+    //                        {
+    //                            odbccon.Open();
+    //                        }
+    //                        query = "update master_jcm_job_custom_fields set MOMREC1='" + jobid + "'  where Job = ?";
+    //                        OdbcDataAdapter daupdate = new OdbcDataAdapter(query, odbccon);
+    //                        daupdate.SelectCommand.Parameters.AddWithValue("@Job", dr["job"].ToString());
+    //                        DataTable dtdample = new DataTable();
+    //                        daupdate.Fill(dtdample);
+    //                        odbccon.Close();
+    //                    }
+
+    //                    #endregion
+    //                }
+    //            }
+    //        }
+
+    //        #endregion
+
+    //        #endregion
+
+    //        result = "Contracts Sync Successfully completed at " + System.DateTime.Now.ToShortDateString() + " " + System.DateTime.Now.ToShortTimeString();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        result = ex.Message + Environment.NewLine + ex.StackTrace;
+    //    }
+    //    return result;
+    //}
+
+}
+
+

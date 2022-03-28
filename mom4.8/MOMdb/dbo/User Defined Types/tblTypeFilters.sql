@@ -1,0 +1,36 @@
+CREATE TYPE [dbo].[tblTypeFilters] AS TABLE(
+	[Customer] [varchar](500) NULL,
+	[Tag] [varchar](500) NULL,
+	[ID] [varchar](500) NULL,
+	[fdesc] [varchar](500) NULL,
+	[Status] [varchar](500) NULL,
+	[Stage] [varchar](500) NULL,
+	[Company] [varchar](500) NULL,
+	[CType] [varchar](500) NULL,
+	[TemplateDesc] [varchar](500) NULL,
+	[Type] [varchar](500) NULL,
+	[SalesPerson] [varchar](500) NULL,
+	[Route] [varchar](500) NULL,
+	[NHour] [decimal](18, 3) NULL,
+	[ContractPrice] [decimal](18, 3) NULL,
+	[NotBilledYet] [decimal](18, 3) NULL,
+	[NComm] [decimal](18, 3) NULL,
+	[NRev] [decimal](18, 3) NULL,
+	[NLabor] [decimal](18, 3) NULL,
+	[NMat] [decimal](18, 3) NULL,
+	[NOMat] [decimal](18, 3) NULL,
+	[NCost] [decimal](18, 3) NULL,
+	[NProfit] [decimal](18, 3) NULL,
+	[NRatio] [decimal](18, 3) NULL,
+	[RouteFilters] [varchar](5000) NULL,
+	[StageFilters] [varchar](5000) NULL,
+	[DepartmentFilters] [varchar](5000) NULL,
+	[ProjectManagerUserName] [varchar](5000) NULL,
+	[LocationTypeFilters] [varchar](5000) NULL,
+	[BuildingTypeFilters] [varchar](5000) NULL,
+	[TotalBudgetedExpense] [decimal](18, 3) NULL,
+	[SupervisorUserName] [varchar](5000) NULL
+)
+GO
+
+

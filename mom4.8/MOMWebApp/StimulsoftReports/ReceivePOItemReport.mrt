@@ -1,0 +1,1129 @@
+{
+  "ReportVersion": "2018.2.3.0",
+  "ReportGuid": "aeba66a0514c472991181f87c3e149df",
+  "ReportName": "Report",
+  "ReportAlias": "Report",
+  "ReportCreated": "/Date(91800000+0700)/",
+  "ReportChanged": "/Date(1533070855803+0700)/",
+  "EngineVersion": "EngineV2",
+  "CalculationMode": "Interpretation",
+  "ReportUnit": "Inches",
+  "Script": "using System;\r\nusing System.Drawing;\r\nusing System.Windows.Forms;\r\nusing System.Data;\r\nusing Stimulsoft.Controls;\r\nusing Stimulsoft.Base.Drawing;\r\nusing Stimulsoft.Report;\r\nusing Stimulsoft.Report.Dialogs;\r\nusing Stimulsoft.Report.Components;\r\n\r\nnamespace Reports\r\n{\r\n    public class Report : Stimulsoft.Report.StiReport\r\n    {\r\n        public Report()        {\r\n            this.InitializeComponent();\r\n        }\r\n\r\n        #region StiReport Designer generated code - do not modify\r\n\t\t#endregion StiReport Designer generated code - do not modify\r\n    }\r\n}\r\n",
+  "Styles": {
+    "0": {
+      "Ident": "StiChartStyle",
+      "Name": "Style1",
+      "Border": ";;;;;;;solid:0,0,0",
+      "Brush": "solid:",
+      "BrushType": "Solid",
+      "StyleColors": {
+        "0": "237,125,49",
+        "1": "255,192,0",
+        "2": "91,155,213",
+        "3": "67,104,43",
+        "4": "38,68,120",
+        "5": "153,115,0"
+      },
+      "ChartAreaBrush": "solid:255,255,255",
+      "SeriesLabelsBrush": "solid:255,255,255",
+      "SeriesLabelsBorderColor": "140,140,140",
+      "LegendBrush": "solid:255,255,255",
+      "LegendBorderColor": "DimGray",
+      "LegendTitleColor": "DimGray",
+      "InterlacingHorBrush": "solid:10,155,155,155",
+      "InterlacingVertBrush": "solid:10,155,155,155",
+      "GridLinesHorColor": "100,105,105,105",
+      "GridLinesVertColor": "100,105,105,105"
+    }
+  },
+  "ReferencedAssemblies": {
+    "0": "System.Dll",
+    "1": "System.Drawing.Dll",
+    "2": "System.Windows.Forms.Dll",
+    "3": "System.Data.Dll",
+    "4": "System.Xml.Dll",
+    "5": "Stimulsoft.Controls.Dll",
+    "6": "Stimulsoft.Base.Dll",
+    "7": "Stimulsoft.Report.Dll"
+  },
+  "Dictionary": {
+    "Variables": {
+      "0": {
+        "Name": "paramSDate",
+        "Alias": "paramSDate",
+        "Type": "System.String",
+        "Description": "paramSDate"
+      },
+      "1": {
+        "Name": "paramEDate",
+        "Alias": "paramEDate",
+        "Type": "System.String",
+        "Description": "paramEDate"
+      },
+      "2": {
+        "Name": "paramNetAmount",
+        "Alias": "paramNetAmount",
+        "Type": "System.Double",
+        "Description": "paramNetAmount"
+      },
+      "3": {
+        "Name": "paramNetText",
+        "Alias": "paramNetText",
+        "Type": "System.String",
+        "Description": "paramNetText"
+      },
+      "4": {
+        "Name": "paramExpCIIAll",
+        "Alias": "paramExpCIIAll",
+        "Type": "System.String",
+        "Description": "paramExpCIIAll"
+      },
+      "5": {
+        "Name": "paramPercent",
+        "Alias": "paramPercent",
+        "Type": "System.String",
+        "Description": "paramPercent"
+      },
+      "6": {
+        "Name": "paramRev",
+        "Alias": "paramRev",
+        "Type": "System.Double",
+        "Description": "paramRev"
+      },
+      "7": {
+        "Name": "paramCPercent",
+        "Alias": "paramCPercent",
+        "Type": "System.String",
+        "Description": "paramCPercent"
+      },
+      "8": {
+        "Name": "paramEPercent",
+        "Alias": "paramEPercent",
+        "Type": "System.String",
+        "Description": "paramEPercent"
+      },
+      "9": {
+        "Name": "paramUsername",
+        "Alias": "paramUsername",
+        "Type": "System.String"
+      }
+    },
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "CompanyDetails",
+        "Alias": "CompanyDetails",
+        "Columns": {
+          "0": {
+            "Name": "City",
+            "Index": -1,
+            "NameInSource": "City",
+            "Alias": "City",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "Address",
+            "Index": -1,
+            "NameInSource": "Address",
+            "Alias": "Address",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Name",
+            "Index": -1,
+            "NameInSource": "Name",
+            "Alias": "Name",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "Contact",
+            "Index": -1,
+            "NameInSource": "Contact",
+            "Alias": "Contact",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Email",
+            "Index": -1,
+            "NameInSource": "Email",
+            "Alias": "Email",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "Fax",
+            "Index": -1,
+            "NameInSource": "Fax",
+            "Alias": "Fax",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "Logo",
+            "Index": -1,
+            "NameInSource": "Logo",
+            "Alias": "Logo",
+            "Type": "System.Drawing.Image"
+          },
+          "7": {
+            "Name": "State",
+            "Index": -1,
+            "NameInSource": "State",
+            "Alias": "State",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "Zip",
+            "Index": -1,
+            "NameInSource": "Zip",
+            "Alias": "Zip",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "CompanyDetails"
+      },
+      "1": {
+        "Ident": "StiDataTableSource",
+        "Name": "Opportunities",
+        "Alias": "Opportunities",
+        "Columns": {
+          "0": {
+            "Name": "Date",
+            "Index": -1,
+            "NameInSource": "ReceiveDate",
+            "Alias": "Date",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "PO",
+            "Index": -1,
+            "NameInSource": "PO",
+            "Alias": "PO",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Amount",
+            "Index": -1,
+            "NameInSource": "ReceivedAmount",
+            "Alias": "Amount",
+            "Type": "System.Double"
+          },
+          "3": {
+            "Name": "Ref",
+            "Index": -1,
+            "NameInSource": "Ref",
+            "Alias": "Ref",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "Vendor",
+            "Index": -1,
+            "NameInSource": "VendorName",
+            "Alias": "Vendor",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "Status",
+            "Index": -1,
+            "NameInSource": "StatusName",
+            "Alias": "Status",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "Description",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "Description",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "ReceptionNO",
+            "Index": -1,
+            "NameInSource": "ID",
+            "Alias": "ReceptionNO",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "Created By",
+            "Index": -1,
+            "NameInSource": "fBy",
+            "Alias": "Created By",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "Project",
+            "Index": -1,
+            "NameInSource": "Project",
+            "Alias": "Project",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "Item",
+            "Index": -1,
+            "NameInSource": "ItemName",
+            "Alias": "Item",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "ProjectType",
+            "Index": -1,
+            "NameInSource": "ProjectType",
+            "Alias": "ProjectType",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "Loc",
+            "Index": -1,
+            "NameInSource": "LocationName",
+            "Alias": "Loc",
+            "Type": "System.String"
+          },
+          "13": {
+            "Name": "RQuan",
+            "Index": -1,
+            "NameInSource": "Quan",
+            "Alias": "RQuan",
+            "Type": "System.Int32"
+          },
+          "14": {
+            "Name": "OutstandQuan",
+            "Index": -1,
+            "NameInSource": "OutstandQuan",
+            "Alias": "B/O",
+            "Type": "System.Int32"
+          }
+        },
+        "NameInSource": "Opportunities"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "b45e5a3fe5f844e7a1c4e6b6f9f19044",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;;;;solid:Black",
+      "Brush": "solid:White",
+      "Components": {
+        "0": {
+          "Ident": "StiPageHeaderBand",
+          "Name": "PageHeaderBand1",
+          "Guid": "61e7b1b0ab6d445a9771dfe2d594e0e4",
+          "PrintOn": "OnlyFirstPage",
+          "ClientRectangle": "0,0.2,10.22,1.35",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": "Bottom;;2;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text15",
+              "Guid": "bca8d047ef9745259b22b30a8ae59c95",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.01,0,4,0.35",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "RECEIVE ITEM REPORT"
+              },
+              "Font": ";24;Bold, Italic;",
+              "Border": "Bottom;;3;;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:91,155,213",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiImage",
+              "Name": "Image2",
+              "Guid": "d6235bae6c9c43c69539e12994b9567b",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7,0,3.2,1.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "HorAlignment": "Right",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "Stretch": true,
+              "AspectRatio": true,
+              "DataColumn": "CompanyDetails.Logo"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text21",
+              "Guid": "2e8c892237714e63a32dab024730dabd",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.82,6.37,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{CompanyDetails.Name}"
+              },
+              "Font": ";16;Bold;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:91,155,213",
+              "Type": "DataColumn"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text26",
+              "Guid": "d6dea992fb814fecb250f65d28e6a4da",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1.1,4.56,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Printed On {Format(\"{0:MM.dd.yyyy}\", Today)} By {paramUsername} "
+              },
+              "Font": ";10;;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text3",
+              "Guid": "7a621ab3ab6c48f1a338f092609b93b7",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.45,3.6,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{paramEDate}"
+              },
+              "Font": ";10;Bold;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            }
+          }
+        },
+        "1": {
+          "Ident": "StiPageFooterBand",
+          "Name": "PageFooterBand1",
+          "ClientRectangle": "0,7.52,10.22,0.2",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text2",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9,0,1.2,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{PageNofM}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text5",
+              "Guid": "ca1388d505064bcf8939226411170842",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.02,0,2.36,0.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Mobile Office Manager"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            }
+          }
+        },
+        "2": {
+          "Ident": "StiHeaderBand",
+          "Name": "HeaderOpportunities",
+          "ClientRectangle": "0,1.95,10.22,0.35",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "HeaderOpportunities_Date",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.05,0.8,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Date"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "HeaderOpportunities_ReceptionNO",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.8,0.05,0.5,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "RNo#"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              },
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "HeaderOpportunities_PO",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.3,0.05,0.5,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "PO"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "HeaderOpportunities_Ref",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.8,0.05,0.7,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Ref#"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              },
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "HeaderOpportunities_Description",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.1,0.05,2,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Description"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              }
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "HeaderOpportunities_Vendor",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.3,0.05,0.9,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Vendor"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              }
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text1",
+              "Guid": "f00157f1b9044770ad3046fec81a24d9",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.9,0.05,1.4,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Location"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              },
+              "Type": "Expression"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text7",
+              "Guid": "64edc7da9aa8403cb87847846f7fc49c",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.1,0.05,0.8,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Project #"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              },
+              "Type": "Expression"
+            },
+            "8": {
+              "Ident": "StiText",
+              "Name": "Text10",
+              "Guid": "372408bd3b1542a69e6e71ad1783b508",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "2.5,0.05,1.6,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Item #"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              },
+              "Type": "Expression"
+            },
+            "9": {
+              "Ident": "StiText",
+              "Name": "Text12",
+              "Guid": "59ad0159fb2f441cbc1706192f74a3c2",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.1,0.05,0.5,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "RQty"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              },
+              "Type": "Expression"
+            },
+            "10": {
+              "Ident": "StiText",
+              "Name": "Text14",
+              "Guid": "e88eaf88638f41f0be35794e6056c220",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.6,0.05,0.5,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "B/O"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:91,155,213",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 0.0,
+                "Bottom": 0.0
+              },
+              "Type": "Expression"
+            }
+          }
+        },
+        "3": {
+          "Ident": "StiDataBand",
+          "Name": "DataOpportunities",
+          "ClientRectangle": "0,2.7,10.22,0.3",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "DataOpportunities_Date",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,0.8,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.Date}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              },
+              "TextFormat": {
+                "Ident": "StiDateFormatService"
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "DataOpportunities_ReceptionNO",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.8,0,0.5,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.ReceptionNO}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "DataOpportunities_PO",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.3,0,0.5,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.PO}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "DataOpportunities_Ref",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.8,0,0.7,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.Ref}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              }
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "DataOpportunities_Description",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.1,0,2,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.Description}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              }
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "DataOpportunities_Vendor",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.3,0,0.9,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.Vendor}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              }
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text4",
+              "Guid": "8790ddc128fc4e368d8f8f776e7106f1",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.9,0,1.4,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.Loc}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              },
+              "Type": "DataColumn"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text8",
+              "Guid": "4bb5b8a0341a43fcb36920133d139638",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.1,0,0.8,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.Project}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              },
+              "Type": "DataColumn"
+            },
+            "8": {
+              "Ident": "StiText",
+              "Name": "Text11",
+              "Guid": "cfb6fd25d1da4861bfeb10061381ad66",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "2.5,0,1.6,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.Item}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              },
+              "Type": "DataColumn"
+            },
+            "9": {
+              "Ident": "StiText",
+              "Name": "Text13",
+              "Guid": "ffc3d67c607f43fd8682870a45ccdc49",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.1,0,0.5,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.RQuan}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              },
+              "Type": "DataColumn"
+            },
+            "10": {
+              "Ident": "StiText",
+              "Name": "Text16",
+              "Guid": "49c4a29777484858b5ecbf7a833313fe",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.6,0,0.5,0.3",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Opportunities.OutstandQuan}"
+              },
+              "Font": ";10;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Margins": {
+                "Left": 2.0,
+                "Right": 2.0,
+                "Top": 5.0,
+                "Bottom": 5.0
+              },
+              "Type": "DataColumn"
+            }
+          },
+          "DataSourceName": "Opportunities"
+        }
+      },
+      "Orientation": "Landscape",
+      "PageWidth": 11.0,
+      "PageHeight": 8.5,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      },
+      "Margins": {
+        "Left": 0.39,
+        "Right": 0.39,
+        "Top": 0.39,
+        "Bottom": 0.39
+      },
+      "ReportUnit": {
+        "Ident": "StiInchesUnit"
+      }
+    }
+  }
+}

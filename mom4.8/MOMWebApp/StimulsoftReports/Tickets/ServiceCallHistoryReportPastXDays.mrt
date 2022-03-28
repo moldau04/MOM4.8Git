@@ -1,0 +1,862 @@
+{
+  "ReportVersion": "2017.2.3.0",
+  "ReportGuid": "bff2561ff32646d9909e2deabd8d0536",
+  "ReportName": "Report",
+  "ReportAlias": "Report",
+  "ReportCreated": "/Date(1530575032000+0700)/",
+  "ReportChanged": "/Date(1530797294050+0700)/",
+  "EngineVersion": "EngineV2",
+  "CalculationMode": "Interpretation",
+  "Script": "using System;\r\nusing System.Drawing;\r\nusing System.Windows.Forms;\r\nusing System.Data;\r\nusing Stimulsoft.Controls;\r\nusing Stimulsoft.Base.Drawing;\r\nusing Stimulsoft.Report;\r\nusing Stimulsoft.Report.Dialogs;\r\nusing Stimulsoft.Report.Components;\r\n\r\nnamespace Reports\r\n{\r\n    public class Report : Stimulsoft.Report.StiReport\r\n    {\r\n        public Report()        {\r\n            this.InitializeComponent();\r\n        }\r\n\r\n        #region StiReport Designer generated code - do not modify\r\n\t\t#endregion StiReport Designer generated code - do not modify\r\n    }\r\n}\r\n",
+  "Styles": {
+    "0": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement, PlacementNestedLevel",
+          "Placement": "ReportTitle",
+          "ComponentType": "Text, Primitive, Image"
+        }
+      },
+      "Name": "Blue Steel_Report_Title1",
+      "Font": ";14;Bold;",
+      "Border": ";0,0,39;;;;;;solid:Black",
+      "Brush": "solid:",
+      "TextBrush": "solid:79,129,189"
+    },
+    "1": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement, PlacementNestedLevel",
+          "OperationPlacementNestedLevel": "GreaterThanOrEqualTo",
+          "Placement": "ReportTitle",
+          "PlacementNestedLevel": 2,
+          "ComponentType": "Text, Primitive, Image"
+        }
+      },
+      "Name": "Blue Steel_Report_Title2",
+      "Font": ";10;Bold;",
+      "Border": ";0,0,39;;;;;;solid:Black",
+      "Brush": "solid:",
+      "TextBrush": "solid:79,129,189"
+    },
+    "2": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement",
+          "Placement": "ReportSummary",
+          "ComponentType": "Text, Primitive, Image"
+        }
+      },
+      "Name": "Blue Steel_Report_Summary",
+      "Font": ";10;Bold;",
+      "Border": ";0,0,39;;;;;;solid:Black",
+      "Brush": "solid:",
+      "TextBrush": "solid:79,129,189"
+    },
+    "3": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement",
+          "Placement": "PageHeader",
+          "ComponentType": "Text, Primitive, Image"
+        }
+      },
+      "Name": "Blue Steel_Page_Header",
+      "Font": ";10;;",
+      "Border": ";0,0,39;;;;;;solid:Black",
+      "Brush": "solid:",
+      "TextBrush": "solid:Black"
+    },
+    "4": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement",
+          "Placement": "PageFooter",
+          "ComponentType": "Text, Primitive, Image"
+        }
+      },
+      "Name": "Blue Steel_Page_Footer",
+      "Font": ";10;;",
+      "Border": ";0,0,39;;;;;;solid:Black",
+      "Brush": "solid:",
+      "TextBrush": "solid:Black"
+    },
+    "5": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement, PlacementNestedLevel",
+          "OperationPlacementNestedLevel": "GreaterThanOrEqualTo",
+          "Placement": "GroupHeader",
+          "ComponentType": "Text, Primitive, Image"
+        }
+      },
+      "Name": "Blue Steel_Group_Header1",
+      "Font": ";13;Bold;",
+      "Border": "Top, Bottom;0,0,39;;;;;;solid:Black",
+      "Brush": "solid:",
+      "TextBrush": "solid:79,129,189"
+    },
+    "6": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement, PlacementNestedLevel",
+          "Placement": "GroupFooter",
+          "ComponentType": "Text, Primitive, Image"
+        }
+      },
+      "Name": "Blue Steel_Group_Footer1",
+      "Font": ";9.75;Bold;",
+      "Border": "Top, Bottom;0,0,39;;;;;;solid:Black",
+      "Brush": "solid:",
+      "TextBrush": "solid:79,129,189"
+    },
+    "7": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement, PlacementNestedLevel",
+          "OperationPlacementNestedLevel": "GreaterThanOrEqualTo",
+          "Placement": "Header",
+          "ComponentType": "Text, Primitive, Image"
+        }
+      },
+      "Name": "Blue Steel_Header1",
+      "Font": ";9.75;Bold;",
+      "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+      "Brush": "solid:79,129,189",
+      "TextBrush": "solid:White"
+    },
+    "8": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement, PlacementNestedLevel",
+          "OperationPlacementNestedLevel": "GreaterThanOrEqualTo",
+          "Placement": "Data",
+          "ComponentType": "Text, Primitive, Image, CheckBox"
+        }
+      },
+      "Name": "Blue Steel_Data1",
+      "Border": ";0,0,39;;;;;;solid:Black",
+      "Brush": "solid:",
+      "TextBrush": "solid:0,0,0"
+    },
+    "9": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "Placement, PlacementNestedLevel",
+          "OperationPlacementNestedLevel": "GreaterThanOrEqualTo",
+          "Placement": "DataOddStyle"
+        }
+      },
+      "Name": "Blue Steel_Data1_Odd Style",
+      "Border": ";0,0,39;;;;;;solid:Black",
+      "Brush": "solid:255,255,255",
+      "TextBrush": "solid:0,0,0"
+    },
+    "10": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "Placement, PlacementNestedLevel",
+          "OperationPlacementNestedLevel": "GreaterThanOrEqualTo",
+          "Placement": "DataEvenStyle"
+        }
+      },
+      "Name": "Blue Steel_Data1_Even Style",
+      "Border": ";0,0,39;;;;;;solid:Black",
+      "Brush": "solid:216,216,216",
+      "TextBrush": "solid:0,0,0"
+    },
+    "11": {
+      "Ident": "StiStyle",
+      "CollectionName": "Blue Steel",
+      "Conditions": {
+        "0": {
+          "Ident": "StiStyleCondition",
+          "Type": "ComponentType, Placement, PlacementNestedLevel",
+          "Placement": "Footer",
+          "ComponentType": "Text, Primitive, Image"
+        }
+      },
+      "Name": "Blue Steel_Footer1",
+      "Font": ";8.25;Bold;",
+      "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+      "Brush": "solid:White",
+      "TextBrush": "solid:Black"
+    }
+  },
+  "ReferencedAssemblies": {
+    "0": "System.Dll",
+    "1": "System.Drawing.Dll",
+    "2": "System.Windows.Forms.Dll",
+    "3": "System.Data.Dll",
+    "4": "System.Xml.Dll",
+    "5": "Stimulsoft.Controls.Dll",
+    "6": "Stimulsoft.Base.Dll",
+    "7": "Stimulsoft.Report.Dll"
+  },
+  "Dictionary": {
+    "Variables": {
+      "0": {
+        "Name": "ReportH",
+        "Alias": "ReportH",
+        "Type": "System.String"
+      },
+      "1": {
+        "Name": "paramUsername",
+        "Alias": "paramUsername",
+        "Type": "System.String",
+        "Description": "paramUsername"
+      },
+      "2": {
+        "Name": "paramSDate",
+        "Alias": "paramSDate",
+        "Type": "System.String",
+        "Description": "paramSDate"
+      },
+      "3": {
+        "Name": "paramEDate",
+        "Alias": "paramEDate",
+        "Type": "System.String",
+        "Description": "paramEDate"
+      },
+      "4": {
+        "Name": "lblTicket",
+        "Alias": "lblTicket",
+        "Type": "System.String"
+      }
+    },
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "ServiceCallHistoryReport",
+        "Alias": "ServiceCallHistoryReport",
+        "Columns": {
+          "0": {
+            "Name": "Locname",
+            "Index": -1,
+            "NameInSource": "Locname",
+            "Alias": "Locname",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "UNIT",
+            "Index": -1,
+            "NameInSource": "UNIT",
+            "Alias": "UNIT",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "RouteMechanic",
+            "Index": -1,
+            "NameInSource": "RouteMechanic",
+            "Alias": "RouteMechanic",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "TicketCount",
+            "Index": -1,
+            "NameInSource": "TicketCount",
+            "Alias": "TicketCount",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "ServiceCallHistoryReport"
+      },
+      "1": {
+        "Ident": "StiDataTableSource",
+        "Name": "dsCompany",
+        "Alias": "dsCompany",
+        "Columns": {
+          "0": {
+            "Name": "Name",
+            "Index": -1,
+            "NameInSource": "Name",
+            "Alias": "Name",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "Address",
+            "Index": -1,
+            "NameInSource": "Address",
+            "Alias": "Address",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "City",
+            "Index": -1,
+            "NameInSource": "City",
+            "Alias": "City",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "zip",
+            "Index": -1,
+            "NameInSource": "zip",
+            "Alias": "zip",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "phone",
+            "Index": -1,
+            "NameInSource": "phone",
+            "Alias": "phone",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "email",
+            "Index": -1,
+            "NameInSource": "email",
+            "Alias": "email",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "fax",
+            "Index": -1,
+            "NameInSource": "fax",
+            "Alias": "fax",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "Logo",
+            "Index": -1,
+            "NameInSource": "Logo",
+            "Alias": "Logo",
+            "Type": "System.Byte[]"
+          },
+          "8": {
+            "Name": "webaddress",
+            "Index": -1,
+            "NameInSource": "webaddress",
+            "Alias": "webaddress",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "dsCompany"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "fb8b0f9f8987c5df0f62ed142eee0bd7",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;;;;solid:Black",
+      "Brush": "solid:",
+      "Components": {
+        "0": {
+          "Ident": "StiPageHeaderBand",
+          "Name": "PageHeaderBand1",
+          "Guid": "26a08a2faafc466fa10ea5f61ec5f00d",
+          "ClientRectangle": "0,0.4,19.01,4.02",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": "Bottom;;2;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text15",
+              "Guid": "fab94344238f4a86b8c8b26732ae5397",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.05,0.25,10.3,0.72",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReportH}"
+              },
+              "Font": ";18;Bold;",
+              "Border": "Bottom;;3;;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:91,155,213",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text20",
+              "Guid": "42c2c7be7228479a82c1cf8e95be8c2f",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.25,1.19,4.98,0.64",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{paramSDate}"
+              },
+              "Font": ";10;Bold;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text29",
+              "Guid": "94a17c8f296e49b0acc220a856cd793f",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.33,1.19,2.94,0.64",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{paramEDate}"
+              },
+              "Font": ";10;Bold;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text21",
+              "Guid": "9a01fdb3d1c04936860ba808005a5ff1",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.05,2.34,9.02,0.63",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsCompany.Name}"
+              },
+              "Font": ";16;Bold;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:91,155,213",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text26",
+              "Guid": "d29f8a7feaea4b4da9913fedd0493cb3",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.05,3.16,8.99,0.63",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Printed On {Format(\"{0:MM.dd.yyyy}\", Today)} By {paramUsername}"
+              },
+              "Font": ";10;;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            }
+          }
+        },
+        "1": {
+          "Ident": "StiPageFooterBand",
+          "Name": "PageFooterBand1",
+          "Guid": "5bb209a597fd43969d5b9c8e6cc95b49",
+          "ClientRectangle": "0,26.67,19.01,1.02",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text1",
+              "Guid": "1ac7d4e0d72a41f59f6897f44ee982e5",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.11,0.25,6.75,0.77",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Mobile Office Manager "
+              },
+              "Font": ";10;;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text2",
+              "Guid": "f3624ed730724692a84b2c70186a9338",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.86,0.25,11.19,0.77",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{IIF(TotalPageCount > 1, (PageNumber) + \" of \" + (TotalPageCount), \"\")}"
+              },
+              "HorAlignment": "Right",
+              "Font": ";10;;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        },
+        "2": {
+          "Ident": "StiHeaderBand",
+          "Name": "HeaderServiceCallHistoryReport",
+          "ClientRectangle": "0,5.22,19.01,0.8",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "HeaderServiceCallHistoryReport_Locname",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,6.8,0.8",
+              "ComponentStyle": "Blue Steel_Header1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": " Location"
+              },
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "HeaderServiceCallHistoryReport_UNIT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.8,0,4.2,0.8",
+              "ComponentStyle": "Blue Steel_Header1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Unit"
+              },
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "HeaderServiceCallHistoryReport_RouteMechanic",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11,0,4,0.8",
+              "ComponentStyle": "Blue Steel_Header1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Route Mechanic"
+              },
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "HeaderServiceCallHistoryReport_TicketCount",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15,0,4,0.8",
+              "ComponentStyle": "Blue Steel_Header1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{lblTicket}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";9.75;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;True;solid:Black",
+              "Brush": "solid:79,129,189",
+              "TextBrush": "solid:White",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            }
+          }
+        },
+        "3": {
+          "Ident": "StiDataBand",
+          "Name": "DataServiceCallHistoryReport",
+          "ClientRectangle": "0,6.82,19.01,0.8",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "DataServiceCallHistoryReport_Locname",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.2,0,6.6,0.8",
+              "ComponentStyle": "Blue Steel_Data1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ServiceCallHistoryReport.Locname}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "DataServiceCallHistoryReport_UNIT",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.8,0,4.2,0.8",
+              "ComponentStyle": "Blue Steel_Data1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ServiceCallHistoryReport.UNIT}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "DataServiceCallHistoryReport_RouteMechanic",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11,0,4,0.8",
+              "ComponentStyle": "Blue Steel_Data1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ServiceCallHistoryReport.RouteMechanic}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "DataServiceCallHistoryReport_TicketCount",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15,0,4,0.8",
+              "ComponentStyle": "Blue Steel_Data1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ServiceCallHistoryReport.TicketCount}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";0,0,39;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            }
+          },
+          "DataSourceName": "ServiceCallHistoryReport",
+          "EvenStyle": "Blue Steel_Data1_Even Style",
+          "OddStyle": "Blue Steel_Data1_Odd Style",
+          "Sort": {
+            "0": "DESC",
+            "1": "TicketCount"
+          }
+        },
+        "4": {
+          "Ident": "StiFooterBand",
+          "Name": "FooterServiceCallHistoryReport",
+          "ClientRectangle": "0,8.42,19.01,0.8",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "FooterServiceCallHistoryReport_Locname",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,4.8,0.8",
+              "ComponentStyle": "Blue Steel_Footer1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";8.25;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "FooterServiceCallHistoryReport_UNIT",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.8,0,4.8,0.8",
+              "ComponentStyle": "Blue Steel_Footer1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";8.25;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "FooterServiceCallHistoryReport_RouteMechanic",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "9.6,0,4.8,0.8",
+              "ComponentStyle": "Blue Steel_Footer1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";8.25;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "FooterServiceCallHistoryReport_TicketCount",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "14.4,0,4.6,0.8",
+              "ComponentStyle": "Blue Steel_Footer1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";8.25;Bold;",
+              "Border": "Top, Bottom;0,0,39;2;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            }
+          }
+        }
+      },
+      "PageWidth": 21.01,
+      "PageHeight": 29.69,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      },
+      "Margins": {
+        "Left": 1.0,
+        "Right": 1.0,
+        "Top": 1.0,
+        "Bottom": 1.0
+      },
+      "ReportUnit": {
+        "Ident": "StiCentimetersUnit"
+      }
+    }
+  }
+}

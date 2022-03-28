@@ -1,0 +1,11 @@
+﻿CREATE Procedure [dbo].[spGetTestSetupEmailForms]
+AS
+SELECT [ID]
+      ,[Name]
+      ,[Body]      
+      ,[AddedBy]
+      ,[AddedOn]
+	  ,[UpdatedBy]
+      ,[UpdatedOn]	
+	  ,[IsActive]
+  FROM [dbo].[TestSetupEmailForms]

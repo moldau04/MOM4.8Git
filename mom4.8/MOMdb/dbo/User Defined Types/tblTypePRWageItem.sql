@@ -1,0 +1,40 @@
+﻿CREATE TYPE [tblTypePRWageItem] AS TABLE(
+	[Wage] [int] NULL,
+	[Reg] [numeric](30, 4) NOT NULL,
+	[OT] [numeric](30, 4) NOT NULL,
+	[DT] [numeric](30, 4) NOT NULL,
+	[TT] [numeric](30, 4) NOT NULL,
+	[NT] [numeric](30, 4) NOT NULL,
+	[CReg] [numeric](30, 4) NULL,
+	[COT] [numeric](30, 4) NULL,
+	[CDT] [numeric](30, 4) NULL,
+	[CTT] [numeric](30, 4) NULL,
+	[CNT] [numeric](30, 4) NULL,
+	[GL] [int] NULL,
+	[FIT] [smallint] NOT NULL,
+	[FICA] [smallint] NOT NULL,
+	[MEDI] [smallint] NOT NULL,
+	[FUTA] [smallint] NOT NULL,
+	[SIT] [smallint] NOT NULL,
+	[Vac] [smallint] NOT NULL,
+	[WC] [smallint] NOT NULL,
+	[Uni] [smallint] NOT NULL,
+	[InUse] [smallint] NOT NULL,
+	[Sick] [smallint] NOT NULL,
+	[Status] [tinyint] NULL,
+	[YTD] [numeric](30, 2) NOT NULL,
+	[YTDH] [numeric](30, 2) NOT NULL,
+	[OYTD] [numeric](30, 2) NOT NULL,
+	[OYTDH] [numeric](30, 2) NOT NULL,
+	[DYTD] [numeric](30, 2) NOT NULL,
+	[DYTDH] [numeric](30, 2) NOT NULL,
+	[TYTD] [numeric](30, 2) NOT NULL,
+	[TYTDH] [numeric](30, 2) NOT NULL,
+	[NYTD] [numeric](30, 2) NOT NULL,
+	[NYTDH] [numeric](30, 2) NOT NULL,
+	[VacR] [varchar](40) NULL
+	
+	
+	
+)
+GO

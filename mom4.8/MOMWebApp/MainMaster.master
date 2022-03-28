@@ -1,0 +1,390 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" Inherits="MainMaster" Codebehind="MainMaster.master.cs" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <link rel="SHORTCUT ICON" href="Images/logoicon.png" />
+    <title>Mobile Office Manager 4.0</title>
+    <link type="text/css" href="css/MS_style.css" rel="stylesheet" />
+    <link type="text/css" href="css/smoothness/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+    <link type="text/css" href="css/Notifycss/buttons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="js/signature/jquery.signaturepad.css" />
+
+    <script type="text/javascript" src="js/jquery-1.7.1.js"></script>
+
+    <script type="text/javascript" src="js/ui/jquery-ui-1.8.17.custom.min.js"></script>
+
+    <%--<script type="text/javascript" src="js/ui/jquery.ui.autocomplete.min.js"></script>--%>
+
+    <script type="text/javascript" src="js/RowClick.js"></script>
+
+    <script type="text/javascript" src="js/Notifyjs/jquery.noty.js"></script>
+
+    <script type="text/javascript" src="js/Notifyjs/themes/default.js"></script>
+
+    <script type="text/javascript" src="js/Notifyjs/layouts/topCenter.js"></script>
+
+    <style>
+        .ui-autocomplete-loading
+        {
+            background: white url('images/autocomp.gif') right center no-repeat;
+        }
+        #headerfix
+        {
+            /*position: fixed;
+            top: 0;
+            left: 0;
+            z-index:9999;  
+            opacity:0.95;
+            filter:alpha(opacity=95);   
+            */
+            width: 100%;
+            background: url('images/header_bg.png') repeat-x scroll 0 0 #fff;
+        }
+        .grayscales
+        {
+            filter: gray; /* IE6-9 */
+            filter: grayscale(1); /* Firefox 35+ */
+            -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+        }
+        /*#hover-content {
+            display:none; 
+        }
+    
+        #hover-me:hover #hover-content {
+            display:block;
+        }*/
+        #hover-me { float:right;
+        }
+        #hover-content {
+        opacity:0;   
+        -webkit-transition:.5s;
+        -moz-transition:.5s;
+        -o-transition:.5s;
+        -ms-transition:.5s;
+        transition:.5s;
+
+        }
+ 
+        #hover-me:hover #hover-content {
+            opacity:1;
+    
+        }
+    </style>
+ 
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server" defaultbutton="Button1">
+    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" ScriptMode="Release"
+        AsyncPostBackTimeout="360000">
+    </asp:ToolkitScriptManager>
+    <asp:Button ID="Button1" runat="server" Style="display: none;" Enabled="false" />
+    <!--div main start-->
+    <div id="main">
+        <div id="headerfix" runat="server">
+            <!--header start-->
+            <div id="header_main">
+                <div class="wrap">
+                    <div class="logo">
+                        <a href="home.aspx">
+                            <img src="images/logo_1.png" width="320px" /></a></div>
+                            <%--<div class="search_box">
+                	                <input name="" type="text" class="search_input" />
+                              </div>--%>
+                    <div>
+                        <asp:LinkButton ID="lnkLogout" Style="float: right; margin-left: 20px; margin-top: 10px;
+                            color: #2382b2; font-weight: bold; font-size: 14px;" runat="server" OnClick="lnkLogout_Click"
+                            CausesValidation="False">Logout</asp:LinkButton>
+                        <asp:Label ID="lblUser" Style="float: right; margin-top: 10px; color: #000; font-weight: bold;
+                            font-size: 13px;" runat="server"></asp:Label>
+                    </div>
+                    <div id="container" style="overflow: hidden;margin-left: 0px; margin-top: 0px;">
+                          <div id="hover-me" >
+                              <asp:Button ID="btnNotifyRecur" Style="background-color:lightblue;float: right; 
+                                margin-left: 0px; margin-top: 10px; margin-right: 30px;color:black;
+                                font-weight: bold; font-size: 14px;" runat="server" OnClick="btnNotifyRecur_Click"
+                                CausesValidation="False"></asp:Button>
+                               <div id="hover-content" style="width: 200px;padding-top: 10px;">
+                                    Process Adjustments
+                               </div>
+                         </div>
+                    </div>
+                    <div style="margin-right: 69px;">
+                        <asp:Label ID="lblCompany" Style="float: right; color: #000; font-weight: bold; font-size: 13px;"
+                            runat="server"></asp:Label>
+                    </div>
+                    <div style="padding-top: 21px; margin-right: 69px;">
+                        <asp:Label ID="lblSuper" Style="float: right; color: #000; font-weight: bold; font-size: 13px;"
+                            runat="server" Visible="false">Mode : Supervisor</asp:Label>
+                    </div>
+                </div>
+            </div>
+            <!--header end-->
+            <div class="clear">
+            </div>
+            <!--menu start-->
+            <div class="menu" runat="server" id="Menu">
+                <div class="wrap" runat="server" id="MenuWrap">
+                    <ul id="menu_list">
+                       <%-- <li runat="server" id="Li1"><a href="home.aspx">
+                            <img src="images/main_menu.png" width="18" height="16" align="absmiddle" />
+                            Main Menu </a></li>--%>
+                        <li runat="server" id="cstmMgr">
+                            <asp:HyperLink ID="cstmLink" runat="server">
+                        <img src="images/bullet_yellow.png" width="15" height="19" align="absmiddle" />
+                        Customer Manager</asp:HyperLink>
+                            <ul runat="server" id="cstmMgrSub" class="shadowmenu">
+                                <li>
+                                    <asp:HyperLink ID="lnkCustomersSmenu" NavigateUrl="~/Customers.aspx" runat="server">Customers</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkLocationsSMenu" NavigateUrl="~/locations.aspx" runat="server">Locations</asp:HyperLink></li>
+                                <li>
+                                    <asp:HyperLink ID="lnkEquipmentsSMenu" NavigateUrl="~/Equipments.aspx" runat="server">Equipments</asp:HyperLink></li>
+                                <%--<li><a href="#">Invoices</a></li>
+                            <li><a href="#">Service history</a></li>--%>
+                            </ul>
+                        </li>
+                        <li runat="server" id="cntractsMgr">
+                            <asp:HyperLink ID="lnkContract" runat="server">
+                        <img src="images/bullet_yellow.png" width="15" height="19" align="absmiddle" />
+                        Recurring Manager </asp:HyperLink>
+                            <ul runat="server" id="recurMgrSub" class="shadowmenu">
+                                <li>
+                                    <asp:HyperLink ID="lnkContractsMenu" NavigateUrl="~/RecContracts.aspx" runat="server">Recurring Contracts</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkInvoicesMenu" NavigateUrl="~/recurringinvoices.aspx" runat="server">Recurring Invoices</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkTicketsMenu" NavigateUrl="~/RecurringTickets.aspx" runat="server">Recurring Tickets</asp:HyperLink>
+                                </li>
+                            </ul>
+                        </li>
+                        <li runat="server" id="schMgr">
+                            <asp:HyperLink ID="lnkSchd" runat="server">
+                       <img src="images/bullet_yellow.png" width="15" height="19" align="absmiddle" />
+                        Schedule Manager </asp:HyperLink>
+                            <ul runat="server" id="schdMgrSub" class="shadowmenu">
+                                <li>
+                                    <asp:HyperLink ID="lnkScheduleMenu" NavigateUrl="~/Scheduler.aspx" runat="server">Schedule</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkListView" NavigateUrl="~/TicketListView.aspx" runat="server">Ticket List</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkTimesheet" NavigateUrl="~/etimesheet.aspx" runat="server">e-Timesheet</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkMapMenu" NavigateUrl="~/Map.aspx" runat="server">Map</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkRouteBuilder" NavigateUrl="~/RouteBuilder.aspx" runat="server">Route Builder</asp:HyperLink>
+                                </li>
+                            </ul>
+                        </li>
+                        <li runat="server" id="acctMgr">
+                            <asp:HyperLink ID="billingLink" runat="server">
+                       <img src="images/bullet_yellow.png" width="15" height="19" align="absmiddle" />
+                        Billing Manager </asp:HyperLink>
+                            <ul runat="server" id="billMgrSub" class="shadowmenu">
+                                <li>
+                                    <asp:HyperLink ID="lnkInvoicesSMenu" NavigateUrl="~/invoices.aspx" runat="server">Invoices</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkPaymentHistory" NavigateUrl="~/paymenthistory.aspx" runat="server">Payment History</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkBillcodeSMenu" NavigateUrl="~/billingcodes.aspx" runat="server">Billing Codes</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink Visible="false" ID="lnkPartsSMenu" NavigateUrl="~/parts.aspx" runat="server">Parts</asp:HyperLink>
+                                </li>
+                            </ul>
+                        </li>
+                        <li runat="server" id="salesMgr">
+                            <asp:HyperLink ID="SalesLink" runat="server">
+                       <img src="images/bullet_yellow.png" width="15" height="19" align="absmiddle" />
+                        Sales Manager </asp:HyperLink>
+                            <ul runat="server" id="SalesMgrSub" class="shadowmenu">
+                                <li>
+                                    <asp:HyperLink ID="lnkProspect" NavigateUrl="~/prospects.aspx" runat="server">Leads</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkOpportunities" NavigateUrl="~/opportunity.aspx" runat="server">Opportunities</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkTasks" NavigateUrl="~/tasks.aspx" runat="server">Tasks</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkProposals" NavigateUrl="" ToolTip="Coming Soon" runat="server">Proposals</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkCRM" NavigateUrl="~/salesdashboard.aspx" runat="server">CRM Dashboard</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkSalesSetup" NavigateUrl="~/salessetup.aspx" runat="server">Sales Setup</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkEstimate" NavigateUrl="~/estimate.aspx" runat="server">Estimate</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkEstimateTempl" NavigateUrl="~/estimatetemplate.aspx" runat="server">Templates</asp:HyperLink>
+                                </li>
+                            </ul>
+                        </li>
+                        <li runat="server" id="ProjectMgr">
+                            <asp:HyperLink ID="ProjectLink" runat="server">
+                       <img src="images/bullet_yellow.png" width="15" height="19" align="absmiddle" />
+                        Project Manager </asp:HyperLink>
+                            <ul runat="server" id="ProjectMgrSub" class="shadowmenu">
+                                <li>
+                                    <asp:HyperLink ID="lnkProject" NavigateUrl="~/project.aspx" runat="server">Projects</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkDepartments" NavigateUrl="~/setup.aspx?tab=1" runat="server">Departments</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkProjectTempl" NavigateUrl="~/projecttemplate.aspx" runat="server">Project Templates</asp:HyperLink>
+                                </li>
+                            </ul>
+                        </li>
+                        <li runat="server" id="financeMgr">
+                            <asp:HyperLink ID="lnkFinanceMgr" runat="server">
+                            <img src="images/bullet_yellow.png" width="15" height="19" align="absmiddle" />
+                            Financial Manager </asp:HyperLink>
+                            <ul runat="server" id="financeMgrSub" class="shadowmenu">
+                                <li>
+                                    <asp:HyperLink ID="lnkCOA" NavigateUrl="~/chartofaccount.aspx" runat="server">Chart of Account</asp:HyperLink>
+                                </li>
+                                 <li>
+                                    <asp:HyperLink ID="lnkJournalEntry" NavigateUrl="~/journalentry.aspx" runat="server">Journal Entry</asp:HyperLink>
+                                </li>
+                                 <li>
+                                    <asp:HyperLink ID="lnkReceivePayment" NavigateUrl="~/receivepayment.aspx" runat="server">Receive Payment</asp:HyperLink>
+                                </li>
+                                 <li>
+                                    <asp:HyperLink ID="lnkDeposit" NavigateUrl="~/managedeposit.aspx" runat="server">Make Deposit</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkAddBill" NavigateUrl="~/managebills.aspx" runat="server">Bills</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkWriteCheck" NavigateUrl="~/writechecks.aspx" runat="server">Write Checks</asp:HyperLink>
+                                </li>
+                                <%--<li>
+                                    <asp:HyperLink ID="lnkRecurringAdjust" NavigateUrl="~/journalentry.aspx?r=1" runat="server">Recurring Adjust</asp:HyperLink>
+                                </li>--%>
+                                <%-- <li>
+                                    <asp:HyperLink ID="lnkBankAccount" NavigateUrl="~/addbankaccount.aspx" runat="server">Add Bank Account</asp:HyperLink>
+                                </li>--%>
+                            </ul>
+                        </li>
+                        <li runat="server" id="progMgr">
+                            <asp:HyperLink ID="userlink" runat="server">
+                      <img src="images/bullet_yellow.png" width="15" height="19" align="absmiddle" />
+                        Program Manager </asp:HyperLink>
+                            <ul runat="server" id="progMgrSub" class="shadowmenu">
+                                <li>
+                                    <asp:HyperLink ID="lnkUsersSMenu" NavigateUrl="~/Users.aspx" runat="server">Users</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkSetup" NavigateUrl="~/setup.aspx" runat="server">Setup</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkCntrlPnl" NavigateUrl="~/controlpanel.aspx" runat="server">Control Panel</asp:HyperLink>
+                                </li>
+                                <li>
+                                    <asp:HyperLink ID="lnkCustomFields" NavigateUrl="~/CustomFields.aspx" runat="server">Custom Labels</asp:HyperLink>
+                                </li>
+                            </ul>
+                        </li>
+                         <asp:HoverMenuExtender ID="HoverMenuExtender1" runat="server" OffsetY="35" PopupControlID="financeMgrSub"
+                            TargetControlID="financeMgr" PopDelay="250">
+                        </asp:HoverMenuExtender>
+                        <asp:HoverMenuExtender ID="HoverMenuExtenderProg" runat="server" OffsetY="35" PopupControlID="progMgrSub"
+                            TargetControlID="progMgr" PopDelay="250">
+                        </asp:HoverMenuExtender>
+                        <asp:HoverMenuExtender ID="HoverMenuExtenderCstm" runat="server" OffsetY="35" PopupControlID="cstmMgrSub"
+                            TargetControlID="cstmMgr" PopDelay="250">
+                        </asp:HoverMenuExtender>
+                        <asp:HoverMenuExtender ID="HoverMenuExtenderSchd" runat="server" OffsetY="35" PopupControlID="SchdMgrSub"
+                            TargetControlID="SchMgr" PopDelay="250">
+                        </asp:HoverMenuExtender>
+                        <asp:HoverMenuExtender ID="HoverMenuExtenderRecr" runat="server" OffsetY="35" PopupControlID="recurMgrSub"
+                            TargetControlID="cntractsMgr" PopDelay="250">
+                        </asp:HoverMenuExtender>
+                        <asp:HoverMenuExtender ID="HoverMenuExtenderBill" runat="server" OffsetY="35" PopupControlID="billMgrSub"
+                            TargetControlID="acctMgr" PopDelay="250">
+                        </asp:HoverMenuExtender>
+                        <asp:HoverMenuExtender ID="HoverMenuExtenderSales" runat="server" OffsetY="35" PopupControlID="SalesMgrSub"
+                            TargetControlID="SalesMgr" PopDelay="250">
+                        </asp:HoverMenuExtender>
+                        <asp:HoverMenuExtender ID="HoverMenuExtenderProject" runat="server" OffsetY="35" PopupControlID="ProjectMgrSub"
+                            TargetControlID="ProjectMgr" PopDelay="250">
+                        </asp:HoverMenuExtender>
+                    </ul>
+                </div>
+            </div>
+            <div style="padding: 22px 0 3px 12px; background-color: #F7F7F7;" class="shadow">
+                <asp:SiteMapDataSource ID="smdsMaster" runat="server" />
+                <asp:SiteMapPath ID="SiteMapPath1" runat="server">
+                </asp:SiteMapPath>
+                <div runat="server" id="divQBContents" style="float: right; margin-right: 20px;">
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <asp:LinkButton ID="lnkLastsync" CausesValidation="false" Style="font-style: italic;
+                                float: left" runat="server" OnClick="lnkQBLastSync_Click"></asp:LinkButton>
+                            <asp:Label ID="lblQblastSync" Style="color: #000; font-style: italic; float: left"
+                                runat="server"></asp:Label>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
+        </div>
+        <!--menu end-->
+        <div class="content">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <div class="push">
+        </div>
+    </div>
+    <!--div main end-->
+    <!--footer-->
+    <div id="footer">
+        <div class="footer_container">
+            ©
+            <%= System.DateTime.Now.Year.ToString() %>
+             Mobile Office Manager.
+            All Rights Reserved.
+        </div>
+    </div>
+    <!--footer end-->
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="">
+        <ProgressTemplate>
+            <asp:Panel CssClass="pnlUpdateoverlay" Style="z-index: 900000" ID="Pnael1" runat="server"
+                HorizontalAlign="Center">
+                <asp:Image ID="Image1" runat="server" ImageUrl="images/loader_round.gif" Style="position: absolute;
+                    left: 50%; top: 50%; margin-left: -32px; /* -1 * image width / 2 */
+                                                    margin-top: -32px; /* -1 * image height / 2 */
+                                                    display: block;" />
+            </asp:Panel>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    </form>
+
+    <script type="text/javascript" src="js/Signature/jquery.signaturepad.js"></script>
+
+    <script type="text/javascript">
+        ///////////// Signature box handling  ////////////////////
+        $(document).ready(function() {
+            $('.sigPad').signaturePad();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+﻿CREATE PROCEDURE [dbo].[spDeleteRecurJE]
+	@Ref INT
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	
+	 DELETE FROM GLARecurI WHERE Ref = @Ref
+	 
+	 DELETE FROM GLARecur WHERE Ref = @Ref
+
+END

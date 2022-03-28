@@ -1,0 +1,417 @@
+﻿@using Kendo.Mvc.UI
+@model IEnumerable<BusinessEntity.Projects.ProjectListGridModel>
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+ 
+ 
+<div class="divbutton-container" style="margin-top:0px!important;">
+
+    
+    <style>
+        html {
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .k-grid tr {
+            font-size: 0.9rem !important;
+            white-space: nowrap !important;
+            line-height: 12px !important;
+            font-weight: 500;
+        }
+
+        .k-grid .k-alt {
+            background-color: #edf4fc !important; /* specify the alternate background-color */
+        }
+        .k-grid th { 
+          
+        }
+    </style>
+   
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.1023/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.1023/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.1023/styles/kendo.material.mobile.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/kendo.all.min.js"></script>  
+    <script src="https://kendo.cdn.telerik.com/2019.3.1023/js/kendo.aspnetmvc.min.js"></script>
+
+    <!--Grid Control-->
+    <link href="Design/css/grid.css" rel="stylesheet" />
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+
+            <div class="container row-color-grey" style="    margin-top: -15px!important; height: 40px!important;">
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div class="row" style="  height: 19px!important;">
+                            <div class="page-title">
+                                <i class="mdi-communication-contacts"></i>
+                                <label style="font-size:15px!important;font-weight:900;" ID="lblHeader">Project</label>
+                            </div>
+                            <div class="buttonContainer">
+                                <div class="btnlinks">
+                                    <a>Add</a>
+                                </div>
+                                <div class="btnlinks">
+                                    <a>Edit</a>
+
+                                </div>
+                                <div class="btnlinks menuAction">
+                                    <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                        Actions
+                                    </a>
+                                </div>
+                                <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                    <li>
+                                        <div class="btnlinks hide">
+                                            <a ID="lnkCopy" CausesValidation="False">Copy</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="btnlinks">
+                                            <a>Delete</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <ul id="dropdown1" class="dropdown-content">
+                                            <li>
+                                                <a>Export to Excel</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkExporttoExcelCustomLabel" OnClientClick="return CheckExistData();">Export to Excel Custom Label</a>
+                                            </li>
+                                        </ul>
+                                        <div class="btnlinks">
+                                            <a class="dropdown-button" data-beloworigin="true" href="#!" data-activates="dropdown1" style="height:32px!important;">
+                                                Export To Excel
+                                            </a>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="btnlinks">
+                                            <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="dynamicUI" style="height:32px!important;">
+                                                Reports
+                                            </a>
+                                        </div>
+                                        <ul id="dynamicUI" class="dropdown-content">
+                                            <li>
+                                                <a target="_blank" href="ProjectListingReport.aspx?type=Projects">Add New Report</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkDelivered" PostBackUrl="~/DeliveredNoDeliveryPaymentReport.aspx?type=Project">Delivered No Delivery Payment Report</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkInspected" PostBackUrl="~/InspectedNoFinalPaymentReport.aspx?type=Delivered">Inspected No Final Payment Report</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkDcaApproval" PostBackUrl="~/DCALocalApprovalNoPermit.aspx?type=Approval">DCA & Local Approval No Permit</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkApprovedByDca" PostBackUrl="~/ProjectApprovedByDCA.aspx">Project Approved by DCA</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkDrawing" PostBackUrl="~/DrawingsSentNotRcvdBack.aspx?type=Drawings">Drawings Sent Not Rcvd Back</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkOpenJob" Visible="false" PostBackUrl="~/OpenJobReport.aspx?type=OpenJob">Open Job Report</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkOutofWarrantyreport" Visible="false" PostBackUrl="~/OutofWarrantyreport.aspx">Out of Warranty Report</a>
+
+                                            </li>
+                                            <li>
+                                                <a ID="lnkUnitInspectedReport" PostBackUrl="~/UnitInspectedTrimNotCompleteReport.aspx?type=Approval">Unit Inspected Trim Not Complete Report</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkUnitFinishedReport" PostBackUrl="~/UnitFinishedTrimNotCompleteReport.aspx?type=Drawings">Unit Finished Trim Not Complete Report</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkSubstantialCompleteDeliveryNotPaidReport" Visible="false" PostBackUrl="~/SubstantialCompletionDeliveryNotPaidReport.aspx?type=OpenJob">Substantial Complete Delivery Not Paid Report</a>
+                                            </li>
+                                            <li>
+                                                <a ID="lnkSubstantialCompleteFinalNotPaidReport" Visible="false" PostBackUrl="~/SubstantialCompletionFinalNotPaidReport.aspx">Substantial Complete Final Not Paid Report</a>
+
+                                            </li>
+                                            <li>
+                                                <a href="#" onserverclick="lnkactualVsbudgeted_Click">Project Actual Vs Budget Report</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" onserverclick="lnkJobSummary_Click">Project Summary Listing Report</a>
+                                            </li>
+                                            <li>
+                                                <a href="ContractListingByRoute.aspx">Contract Listing by Route Report</a>
+                                            </li>
+                                            <li>
+                                                <a href="ContractListingByRouteActiveOnly.aspx">Contract Listing by Route Active Only Report</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" onserverclick="lnkProjectBacklog_Click">Project Backlog Report</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+
+
+
+
+                            </div>
+                            <div class="btnclosewrap">
+                                <a CssClass="icon-closed" ID="lnkClose" ToolTip="Close" CausesValidation="false"><i class="mdi-content-clear"></i></a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>       
+    <script>
+
+        function onClick(e) {
+            $("#NKgrid").data("kendoGrid").dataSource.read();
+        }
+
+
+
+        function additionalInfo() {
+            return {
+                startRange: $("#inputValueOne").val(),
+                endRange: $("#inputValueTwo").val(),
+                DateRageSearch: '1'
+            }
+        }
+    </script>
+</div>
+<div class="container accordian-wrap">
+    <div class="row">
+        @*<div class="col s12 m12 l12">*@
+
+        <div class="srchpane">
+
+            <div class="srchtitle" style="padding-left: 12px;">
+                Search
+            </div>
+            <div class="srchinputwrap">
+
+
+                @(Html.Kendo().DropDownList()
+                                      .Name("Search")
+                                        .BindTo(new List<SelectListItem>() {
+                                                      new SelectListItem() {
+                                                          Text = "Project #",
+                                                          Value = "0"
+                                                      },
+                                                      new SelectListItem() {
+                                                          Text = "Date",
+                                                          Value = "1"
+                                                      },
+                                                      new SelectListItem() {
+                                                          Text = "Location",
+                                                          Value = "3"
+                                                      },
+                                                      new SelectListItem() {
+                                                          Text = "Location City",
+                                                          Value = "3"
+                                                      }
+})
+                                      .HtmlAttributes(new { style = "width: 150px" })
+                )
+
+
+            </div>
+            <div class="srchinputwrap">
+
+                @(Html.Kendo().TextBox()
+                              .Name("Searchtxt")
+                )
+
+            </div>
+            <div class="srchinputwrap">
+
+
+
+
+                @(Html.Kendo().DropDownList()
+                                      .Name("Range")
+                                        .BindTo(new List<SelectListItem>() {
+                      new SelectListItem() {
+                          Text = "Cumulative",
+                          Value = "1"
+                      },
+                      new SelectListItem() {
+                          Text = "Date Range - Activity",
+                          Value = "2",
+                          Selected=true
+                      },
+                      new SelectListItem() {
+                          Text = "Date Range - Closed",
+                          Value = "3"
+                      },
+                      new SelectListItem() {
+                          Text = "Date Range - Created",
+                          Value = "4"
+                      }
+})
+                                      .HtmlAttributes(new { style = "width: 200px" })
+                )
+
+
+            </div>
+            <div class="srchinputwrap">
+
+                @(Html.Kendo().DatePicker()
+                                                                                                      .Name("inputValueOne")
+                                                                                                      .Value("12/12/2019")
+                                                                                                      .HtmlAttributes(new { style = "width: 150px", title = "datepicker" })
+                )
+            </div>
+            <div class="srchinputwrap">
+                @(Html.Kendo().DatePicker()
+                                                                                                                   .Name("inputValueTwo")
+                                                                                                                   .Value("12/12/2019")
+                                                                                                                   .HtmlAttributes(new { style = "width: 150px", title = "datepicker" })
+                )
+            </div>
+            <div class="srchinputwrap">
+                @(Html.Kendo().Button()
+                                                                                                                            .Name("refreshButton")
+                                                                                                                            .Icon("refresh")
+                                                                                                                            .Content("")
+                                                                                                                            .HtmlAttributes(new { type = "button" })
+                                                                                                                            .Events(ev => ev.Click("onClick")))
+            </div>
+            <div class="col lblsz2 lblszfloat">
+                <div class="row">
+                    <span class="tro trost accrd-trost">
+                       
+                        @(Html.Kendo().CheckBox().Name("lnkChk").Checked(false))
+                        <label ID="lblChkSelect" for="lnkChk" CssClass="title-check-text" style="font-size:14px!important;font-weight:900;">Incl. Closed</label>
+                    </span>
+                    <span class="tro trost accrd-trost">
+                        <a ID="lnkClear" style="font-size:14px!important;font-weight:900;">Clear</a>
+                    </span>
+                    <span class="tro trost accrd-trost">
+                        <a ID="lnkShowAll" style="font-size:14px!important;font-weight:900;">Show All Projects</a>
+                    </span>
+                    <span class="tro trost accrd-trost">
+
+                        <span>
+                            <label ID="lblRecordCount"></label>
+                        </span>
+
+                    </span>
+                </div>
+            </div>
+
+
+        </div>
+
+        @*</div>*@
+    </div>
+</div>
+<div class="container accordian-wrap">
+    <div class="row">
+
+        <ul class="tabs tab-demo-active white" style="width: 100%;">
+
+            @foreach (var dept in ViewBag.deptdataTop10)
+            {
+
+                <li class="tab col s2">
+                    <a class="white-text waves-effect waves-light active"><i class="mdi-action-done"></i>&nbsp;@dept.Name</a>
+                </li>
+
+            }
+
+            @foreach (var dept in ViewBag.deptdataSkip10)
+            {
+
+                <li class="tab col s2">
+                    <a class="white-text waves-effect waves-light "><i class="mdi-action-done"></i>&nbsp;@dept.Name</a>
+                </li>
+
+            }
+
+        </ul>
+
+      
+        <br />
+        <div id="activeone" class="tab-container-border lighten-4" style="display: block;">
+
+
+            <div class="grid_container">
+
+                <div class="form-section-row" style="margin-bottom: 0 !important;">
+
+                    <div>
+
+
+                        @(Html.Kendo().Grid<BusinessEntity.Projects.ProjectListGridModel>()
+                                                                                                                                                                                                        .Name("NKgrid")
+                                                                                                                                                                                                        .Columns(columns =>
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                            columns.Bound(p => p.ProjectID).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.ProjectName).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(180);
+                                                                                                                                                                                                            columns.Bound(p => p.CustomerName).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(180);
+                                                                                                                                                                                                            columns.Bound(p => p.LocationName).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(180);
+                                                                                                                                                                                                            columns.Bound(p => p.Status).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.ServiceType).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.TemplateType).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.Department).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.DefaultSalesPerson).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.DefaultWorker).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.ContractPrice).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.NotBilledYet).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.TotalBilled).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.ActualHours).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.LaborExpense).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.MaterialExpense).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.OtherExpense).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.TotalExpense).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.TotalPOOrder).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.ReceivePO).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.NetProfit).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                            columns.Bound(p => p.perInProfit).Filterable(ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(150);
+                                                                                                                                                                                                        })
+                                                                                                                                                                                                        .Pageable()
+                                                                                                                                                                                                        .Resizable(resize => resize.Columns(true))
+                                                                                                                                                                                                        .Sortable()
+                                                                                                                                                                                                        .ColumnMenu()
+                                                                                                                                                                                                        .Scrollable()
+                                                                                                                                                                                                        .Sortable()
+                                                                                                                                                                                                         .Pageable(pageable => pageable
+                                          .Input(true)
+                                          .Numeric(true)
+                                          .Info(true)
+                                          .PreviousNext(true)
+                                          .Refresh(true)
+                                          .PageSizes(false)
+                                                                                                                                                                                                        .Refresh(true)
+                                                                                                                                                                                                        .ButtonCount(10))
+
+
+                                                                                                                                                                                                        .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                                                                                                                                                                                                        .HtmlAttributes(new { style = "height:650px;width:100%;" })
+                                                                                                                                                                                                        .DataSource(dataSource => dataSource
+                                                                                                                                                                                                            .Ajax()
+                                                                                                                                                                                                            .PageSize(100)
+                                                                                                                                                                                                            .ServerOperation(true)
+                                                                                                                                                                                                            .Read(read => read.Action("Read_ProjectListDataAsync", "Projects").Data("additionalInfo"))
+                                                                                                                                                                                                         )
+                        )
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

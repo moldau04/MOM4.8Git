@@ -1,0 +1,155 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" MasterPageFile="~/HomeMaster.master" Inherits="NewSalesMaster" Codebehind="NewSalesMaster.master.cs" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <asp:ContentPlaceHolder ID="head" runat="server">
+        <script>
+            $(document).ready(function () {
+                if ($(window).width() > 767) {
+                    document.body.classList.add('page-sidebar-closed');
+                    document.getElementById('ctl00_toggleMenu').classList.add('page-sidebar-menu-closed');
+                }
+            });
+        </script>
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <div class="row">
+                <div id="dvestimateleftpanel" class="col-sm-3 col-md-3">
+                    <div class="recent-activity">
+                        <div class="ra-title">Recent Activity</div>
+                        <div class="page-cont-top">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <asp:UpdatePanel ID="upRecentItems" runat="server">
+                                                <ContentTemplate>
+                                                    <asp:GridView ID="gvRecent" runat="server" AutoGenerateColumns="False" ShowHeader="false" Width="100%"
+                                                        ShowFooter="false" CssClass="table table-bordered table-striped table-condensed flip-content ra-table">
+                                                        <SelectedRowStyle CssClass="selectedrowcolor" />
+                                                        <Columns>
+                                                            <asp:TemplateField>
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="lblID" runat="server" Visible="false" Text=' <%# Eval("ID") %>'></asp:Label>
+                                                                    <asp:Label ID="lblListType" runat="server" Visible="false" Text=' <%# Eval("listtype") %>'></asp:Label>
+                                                                    <table cellspacing="0" cellpadding="0">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <asp:Image ID="imgRecent" runat="server" ImageUrl='<%# RecentListIcons(Eval("listtype").ToString()) %>' Style="margin-right: 10px" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <asp:HyperLink ID="lnkRecent" runat="server" NavigateUrl='<%# RecentListURL(Eval("listtype").ToString(),Eval("ID").ToString()) %>'><%# Eval("Name") %></asp:HyperLink>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                        </Columns>
+                                                    </asp:GridView>
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <asp:Panel ID="pnlPendingrec" runat="server" Visible="false">
+                                            <div>
+                                                <asp:Panel ID="Panel1" runat="server" CssClass="pending-reco">
+                                                    <asp:Label CssClass="ra-title" Style="float: left; width: 100%" ID="Label1" runat="server">Pending Recommendations</asp:Label>
+                                                </asp:Panel>
+                                                <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                    <ContentTemplate>
+                                                        <div class="pr-text">
+                                                            <asp:GridView ID="gvPendingRecommendations" runat="server" AutoGenerateColumns="False"
+                                                                ShowHeader="false" ShowFooter="false" AllowPaging="true" Width="100%"
+                                                                PageSize="10"
+                                                                CssClass="altrowstable roundCorner "
+                                                                OnPageIndexChanging="gvPendingRecommendations_PageIndexChanging">
+                                                                <SelectedRowStyle CssClass="selectedrowcolor" />
+                                                                <Columns>
+                                                                    <asp:TemplateField>
+                                                                        <ItemTemplate>
+                                                                            <asp:Label ID="lblID" runat="server" Visible="false" Text=' <%# Eval("ID") %>'></asp:Label>
+                                                                            <table cellspacing="0" cellpadding="0" >
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <asp:HyperLink ID="lnkPendingRec" runat="server" NavigateUrl='<%# "addopprt.aspx?uid=" + Eval("id") %>'><%# Eval("fdesc")%></asp:HyperLink>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                 <tr>
+                                                                                    <td>
+                                                                                        <asp:Label ID="Label5" Font-Italic="true" runat="server" Text='<%# Eval("name") %>'></asp:Label>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                 <tr>
+                                                                                    <td>
+                                                                                        <asp:Label ID="Label6" Font-Italic="true" runat="server" Text='<%# Eval("defsales") %>'></asp:Label>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <asp:Label ID="Label2" Font-Italic="true" runat="server" Text='<%# Eval("closedate") %>'></asp:Label>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <br />
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                </Columns>
+                                                            </asp:GridView>
+                                                        </div>
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </div>
+                                        </asp:Panel>
+                                        <div class="clearfix"></div>
+                                        <asp:Panel ID="pnlPendingLeads" runat="server" Visible="false">                                            
+                                            <div>
+                                                <asp:Panel ID="Panel3" runat="server" class="ra-title pending-reco">
+                                                    <asp:Label ID="Label4" runat="server">Unassigned Leads</asp:Label>
+                                                </asp:Panel>
+                                                <div class="clearfix"></div>
+                                                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                                    <ContentTemplate>
+                                                        <asp:GridView ID="gvPendingLeads" runat="server" AutoGenerateColumns="False"
+                                                            ShowHeader="false" ShowFooter="false" AllowPaging="true"
+                                                            PageSize="10"
+                                                            CssClass="table table-bordered table-striped table-condensed flip-content ra-table " Width="100%" OnPageIndexChanging="gvPendingLeads_PageIndexChanging">
+                                                            <SelectedRowStyle CssClass="selectedrowcolor" />
+                                                            <Columns>
+                                                                <asp:TemplateField>
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblID" runat="server" Visible="false" Text=' <%# Eval("ID") %>'></asp:Label>
+                                                                        <table cellspacing="0" cellpadding="0">
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <asp:HyperLink ID="lnkPendingRec" runat="server" NavigateUrl='<%# "addprospect.aspx?uid=" + Eval("id") %>'><%# Eval("name")%></asp:HyperLink>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </ItemTemplate>
+                                                                </asp:TemplateField>
+                                                            </Columns>
+                                                        </asp:GridView>
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </div>
+                                        </asp:Panel>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="dvestimatemainpanel" class="col-sm-9 col-md-9" style="padding-bottom: 5px;">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+            <!-- edit-tab end -->
+            <div class="clearfix"></div>
+        </div>
+        <!-- END DASHBOARD STATS -->
+        <div class="clearfix"></div>
+    </div>
+</asp:Content>

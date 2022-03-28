@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GanttResourcesModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="GanttResourcesModelStoreContainer">
+          <EntitySet Name="GanttDependencies" EntityType="GanttResourcesModel.Store.GanttDependencies" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GanttResourceAssignments" EntityType="GanttResourcesModel.Store.GanttResourceAssignments" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GanttResources" EntityType="GanttResourcesModel.Store.GanttResources" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GanttTasks" EntityType="GanttResourcesModel.Store.GanttTasks" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_GanttTasks_GanttTasks" Association="GanttResourcesModel.Store.FK_GanttTasks_GanttTasks">
+            <End Role="GanttTasks" EntitySet="GanttTasks" />
+            <End Role="GanttTasks1" EntitySet="GanttTasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="GanttDependencies">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PredecessorID" Type="int" Nullable="false" />
+          <Property Name="SuccessorID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GanttResourceAssignments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TaskID" Type="int" Nullable="false" />
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="Units" Type="decimal" Nullable="false" Precision="5" Scale="2" />
+        </EntityType>
+        <EntityType Name="GanttResources">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Color" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="GanttTasks">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="ntext" />
+          <Property Name="Start" Type="datetime" Nullable="false" />
+          <Property Name="End" Type="datetime" Nullable="false" />
+          <Property Name="PercentComplete" Type="decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="Expanded" Type="bit" />
+          <Property Name="Summary" Type="bit" Nullable="false" />
+		      <Property Name="Description" Type="nvarchar"/>
+		      <Property Name="ProjectID" Type="int" Nullable="true"/>
+		      <Property Name="PlannerID" Type="int" Nullable="true"/>
+		      <Property Name="CusTaskType" Type="nvarchar" MaxLength="50" />
+		      <Property Name="CusDuration" Type="float" />
+          <Property Name="CusActualHour" Type="float" />
+		      <Property Name="VendorID" Type="int" Nullable="true"/>
+		      <Property Name="Vendor" Type="varchar" MaxLength="75"/>
+		      <Property Name="RootVendorID" Type="int" Nullable="true"/>
+		      <Property Name="RootVendorName" Type="varchar" MaxLength="75"/>
+		      <Property Name="ProjectName" Type="varchar" MaxLength="75"/>
+			  <Property Name="PlannerTaskID" Type="int" Nullable="true"/>
+			  <Property Name="ItemRefID" Type="int" Nullable="true"/>
+			  <Property Name="Dependency" Type="varchar" MaxLength="1000"/>
+        </EntityType>
+        <Association Name="FK_GanttTasks_GanttTasks">
+          <End Role="GanttTasks" Type="GanttResourcesModel.Store.GanttTasks" Multiplicity="0..1" />
+          <End Role="GanttTasks1" Type="GanttResourcesModel.Store.GanttTasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GanttTasks">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GanttTasks1">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GanttResourcesModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="GanttResourcesEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="GanttDependencies" EntityType="GanttResourcesModel.GanttDependency" />
+          <EntitySet Name="GanttResourceAssignments" EntityType="GanttResourcesModel.GanttResourceAssignment" />
+          <EntitySet Name="GanttResources" EntityType="GanttResourcesModel.GanttResource" />
+          <EntitySet Name="GanttTasks" EntityType="GanttResourcesModel.GanttTask" />
+          <AssociationSet Name="FK_GanttTasks_GanttTasks" Association="GanttResourcesModel.FK_GanttTasks_GanttTasks">
+            <End Role="GanttTasks" EntitySet="GanttTasks" />
+            <End Role="GanttTasks1" EntitySet="GanttTasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="GanttDependency">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="PredecessorID" Type="Int32" Nullable="false" />
+          <Property Name="SuccessorID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GanttResourceAssignment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskID" Type="Int32" Nullable="false" />
+          <Property Name="ResourceID" Type="Int32" Nullable="false" />
+          <Property Name="Units" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+        </EntityType>
+        <EntityType Name="GanttResource">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Color" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+        </EntityType>
+        <EntityType Name="GanttTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Start" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="End" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PercentComplete" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="Expanded" Type="Boolean" />
+          <Property Name="Summary" Type="Boolean" Nullable="false" />
+		  
+          <NavigationProperty Name="GanttTasks1" Relationship="GanttResourcesModel.FK_GanttTasks_GanttTasks" FromRole="GanttTasks" ToRole="GanttTasks1" />
+          <NavigationProperty Name="GanttTask1" Relationship="GanttResourcesModel.FK_GanttTasks_GanttTasks" FromRole="GanttTasks1" ToRole="GanttTasks" />
+          <Property Name="Description" Type="String" />
+          <Property Name="ProjectID" Type="Int32" Nullable="true" />
+          <Property Name="PlannerID" Type="Int32" Nullable="true" />
+          <Property Name="CusTaskType" Type="String" />
+          <Property Name="CusDuration" Type="Double" Nullable="true" />
+          <Property Name="CusActualHour" Type="Double" Nullable="true" />
+          <Property Name="VendorID" Type="Int32" Nullable="true" />
+          <Property Name="Vendor" Type="String" />
+          <Property Name="RootVendorID" Type="Int32" Nullable="true" />
+          <Property Name="RootVendorName" Type="String" />
+          <Property Name="ProjectName" Type="String" />
+		  <Property Name="PlannerTaskID" Type="Int32" Nullable="true" />
+		  <Property Name="ItemRefID" Type="Int32" Nullable="true" />
+		  <Property Name="Dependency" Type="String" />
+		  
+        </EntityType>
+        <Association Name="FK_GanttTasks_GanttTasks">
+          <End Role="GanttTasks" Type="GanttResourcesModel.GanttTask" Multiplicity="0..1" />
+          <End Role="GanttTasks1" Type="GanttResourcesModel.GanttTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GanttTasks">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GanttTasks1">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GanttResourcesModelStoreContainer" CdmEntityContainer="GanttResourcesEntities">
+          <EntitySetMapping Name="GanttDependencies">
+            <EntityTypeMapping TypeName="GanttResourcesModel.GanttDependency">
+              <MappingFragment StoreEntitySet="GanttDependencies">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PredecessorID" ColumnName="PredecessorID" />
+                <ScalarProperty Name="SuccessorID" ColumnName="SuccessorID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GanttResourceAssignments">
+            <EntityTypeMapping TypeName="GanttResourcesModel.GanttResourceAssignment">
+              <MappingFragment StoreEntitySet="GanttResourceAssignments">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+                <ScalarProperty Name="Units" ColumnName="Units" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GanttResources">
+            <EntityTypeMapping TypeName="GanttResourcesModel.GanttResource">
+              <MappingFragment StoreEntitySet="GanttResources">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GanttTasks">
+            <EntityTypeMapping TypeName="GanttResourcesModel.GanttTask">
+              <MappingFragment StoreEntitySet="GanttTasks">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="End" ColumnName="End" />
+                <ScalarProperty Name="PercentComplete" ColumnName="PercentComplete" />
+                <ScalarProperty Name="Expanded" ColumnName="Expanded" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+				        <ScalarProperty Name="Description" ColumnName="Description" />
+				        <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+				        <ScalarProperty Name="PlannerID" ColumnName="PlannerID" />
+				        <ScalarProperty Name="CusTaskType" ColumnName="CusTaskType" />
+				        <ScalarProperty Name="CusDuration" ColumnName="CusDuration" />
+                <ScalarProperty Name="CusActualHour" ColumnName="CusActualHour" />
+				        <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+				        <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+				        <ScalarProperty Name="RootVendorID" ColumnName="RootVendorID" />
+				        <ScalarProperty Name="RootVendorName" ColumnName="RootVendorName" />
+				        <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+						<ScalarProperty Name="PlannerTaskID" ColumnName="PlannerTaskID" />
+						<ScalarProperty Name="ItemRefID" ColumnName="ItemRefID" />
+						<ScalarProperty Name="Dependency" ColumnName="Dependency" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

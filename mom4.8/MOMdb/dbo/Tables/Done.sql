@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[Done] (
+    [ID]             INT             NOT NULL,
+    [Type]           SMALLINT        NULL,
+    [Rol]            INT             NULL,
+    [fDate]          DATETIME        NULL,
+    [fTime]          DATETIME        NULL,
+    [DateDone]       DATETIME        NULL,
+    [TimeDone]       DATETIME        NULL,
+    [Subject]        VARCHAR (50)    NULL,
+    [Remarks]        TEXT            NULL,
+    [Result]         TEXT            NULL,
+    [Keyword]        VARCHAR (50)    NULL,
+    [fUser]          VARCHAR (50)    NULL,
+    [fBy]            VARCHAR (50)    NULL,
+    [Duration]       NUMERIC (30, 2) NULL,
+    [Contact]        VARCHAR (50)    NULL,
+    [Source]         VARCHAR (25)    NULL,
+    [CreatedBy]      VARCHAR (50)    NULL,
+    [CreateDate]     DATETIME        NULL,
+    [LastUpdatedBy]  VARCHAR (50)    NULL,
+    [LastUpdateDate] DATETIME        NULL,
+	[Phone]           VARCHAR (50) NULL,
+	[Email]           VARCHAR (100) NULL,
+    [Screen] VARCHAR(255) NULL, 
+    [Ref] INT NULL, 
+    [IsAlert] BIT NULL
+);
+

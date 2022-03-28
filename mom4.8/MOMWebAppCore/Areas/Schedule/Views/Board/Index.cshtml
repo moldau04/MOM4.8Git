@@ -1,0 +1,949 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<link rel="icon" href="~/MOMUI/Design/images/favicon.png" sizes="32x32">
+<link href="~/MOMUI/Design/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+<link href="~/MOMUI/Design/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+<link href="~/MOMUI/Design/css/custom/custom.css" type="text/css" rel="stylesheet" media="screen,projection">
+<link href="~/MOMUI/Design/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection" />
+<link href="~/MOMUI/Design/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection" />
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+
+<script src="~/MOMUI/Design/js/UI/jquery-ui.js"></script>
+<script src="~/MOMUI/Design/js/materialize-plugins/forms.js"></script>
+<script src="~/MOMUI/Design/js/Notifyjs/jquery.noty.js"></script>
+<script src="~/MOMUI/Design/js/Notifyjs/themes/default.js"></script>
+<script src="~/MOMUI/Design/js/Notifyjs/layouts/topCenter.js"></script>
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+
+<script src="~/MOMUI/Design/js/date.format.js"></script>
+<script src="~/MOMUI/Design/js/tether.min.js"></script>
+<script src="~/MOMUI/Design/js/bootstrap.min.js"></script>
+<script src="~/MOMUI/Design/js/bootstrap-notify.js"></script>
+<script src="~/MOMUI/Design/js/datediff.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('[id*=chkboxSelectAll]').click(function () {
+            //debugger;
+            $("[id*='chkSelect']").attr('checked', this.checked);
+        });
+    });
+</script>
+
+<script>
+    (function ($) {
+        $(window).load(function () {
+            $(".content").mCustomScrollbar({
+                theme: "minimal"
+            });
+        });
+    })(jQuery);
+
+
+</script>
+<style>
+
+    .RadScheduler .rsMonthView .rsWrap,
+    .RadScheduler .rsMonthView .rsApt,
+    .RadScheduler .rsMonthView .rsAptOut,
+    .RadScheduler .rsMonthView .rsAptIn,
+    .RadScheduler .rsMonthView .rsAptMid,
+    .RadScheduler .rsMonthView .rsAptContent {
+        position: static !important;
+        height: auto !important;
+    }
+
+    .RadScheduler .rsMonthView .rsWrap {
+        overflow: hidden;
+        font-size: 0;
+        line-height: 0;
+    }
+
+    .RadScheduler .rsMonthView .rsLastWrap {
+        height: 16px !important;
+    }
+
+    .RadScheduler .rsMonthView .rsAptContent {
+        position: relative !important;
+        border-top: 0;
+        border-bottom: 0;
+        left: 0;
+        top: 0;
+    }
+
+    * html .RadScheduler .rsMonthView .rsAptIn {
+        border-width: 0 1px;
+        top: 0;
+        margin-left: -1px;
+        margin-right: -1px;
+    }
+
+    * html .RadScheduler .rsMonthView .rsAptMid {
+        top: 0;
+        left: 1px;
+        margin: 0 1px;
+        border-width: 1px 0;
+    }
+</style>
+<style>
+    .RadWindow_Material .rwTitleBar {
+        border-top-left-radius: 6px !important;
+        border-top-right-radius: 6px !important;
+        background-color: #1c5fb1 !important;
+        height: 40px !important;
+    }
+
+    .RadWindow RadWindow_Material {
+        height: auto !important;
+    }
+
+    .todo_notify {
+        padding: 0.75rem 1.25rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+        background-color: #ffffff;
+        width: 500px;
+        opacity: 0.9;
+        font-size: 12px;
+        padding-right: 25px;
+        padding-left: 50px;
+        -webkit-box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+        -moz-box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+        box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+    }
+
+        .todo_notify > button.close {
+            padding: 0;
+            cursor: pointer;
+            background: transparent;
+            border: 0;
+            -webkit-appearance: none;
+            float: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            opacity: .5;
+        }
+
+        .todo_notify > span[data-notify="title"] {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .todo_notify > .notifyIcon {
+            display: inline-block;
+            background-image: url(images/application_view_list.ico);
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            top: 15px;
+            left: 10px
+        }
+</style>
+<style type="text/css">
+    .spannk {
+        font-weight: bolder;
+        color: #826200 !important;
+    }
+
+    .spannk1 {
+        font-weight: 600;
+        color: #826200 !important;
+        font-size: 13px;
+    }
+
+    .spannk2 {
+        width: 20px;
+        height: 20px;
+        margin: 1px;
+        padding: 1px;
+        float: left;
+        display: none;
+    }
+
+    .spannk3 {
+        width: 20px;
+        height: 20px;
+        margin: 1px;
+        padding: 1px;
+        float: left;
+        display: block;
+    }
+
+
+
+    .tcktdiv1 {
+        width: 100% !important;
+        margin-left: -8px !important;
+        padding-left: 10px !important;
+        height: 0px !important;
+        line-height: 10px !important;
+        margin-top: -6px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .TimeNow1 {
+        border-bottom: 1px solid red !important;
+    }
+
+    .TimeNow2 {
+        border-bottom: 1px solid red !important;
+    }
+
+    .RadToolTip_Material {
+        background-color: #ffeaa8 !important;
+        width: 30% !important;
+    }
+
+        .RadToolTip_Material .rtCalloutTopRight, .RadToolTip_Material .rtCalloutTopCenter, .RadToolTip_Material .rtCalloutTopLeft {
+            border-top-color: #222 !important;
+        }
+
+            .RadToolTip_Material .rtCalloutTopRight:before, .RadToolTip_Material .rtCalloutTopCenter:before, .RadToolTip_Material .rtCalloutTopLeft:before {
+                border-top-color: #222 !important;
+            }
+
+    .padding-top-9 {
+        padding-top: 9px;
+    }
+
+    .min-width-200px {
+        min-width: 200px;
+    }
+
+    .RadScheduler_Material .rsAptContent {
+        background: linear-gradient(to bottom right, #ccc, #fff);
+        font-family: 'Lato', sans-serif !important;
+        font-size: 12.15px !important;
+        border: 1px solid #ccc !important;
+        width: 100%;
+        border-radius: 8px !important;
+        color: black !important;
+    }
+
+
+
+    .imgCategory {
+        width: 19px;
+        height: 19px;
+        margin: -2px;
+    }
+
+    .imgCategoryTicket {
+        width: 11px;
+        float: left;
+        font-weight: bold;
+        padding-right: 1.5px !important;
+        margin: 0.5px !important;
+    }
+
+    .TicketID {
+        padding-left: 0 !important;
+    }
+
+    .MiddlePane1 .rspSlideContent {
+        max-height: 130px;
+    }
+
+    .MiddlePane1 .rspSlidePane {
+        max-height: 168px;
+    }
+
+    .MiddlePane1 #RAD_SPLITTER_PANE_CONTENT_ctl00_ContentPlaceHolder1_Radpane1 {
+        max-height: 200px;
+    }
+
+    .LeftPane .rspSlideContent {
+        min-width: 350px;
+    }
+
+    .LeftPane .rspSlideHeader .rspSlideTitle, .MiddlePane1 .rspSlideHeader .rspSlideTitle {
+        height: 36px !important;
+        margin-top: -5px !important;
+    }
+
+    .LeftPane .rspSlideHeader > td > table, .MiddlePane1 .rspSlideHeader > td > table {
+        max-height: 36px;
+    }
+
+    .hideDesc_container {
+        margin-bottom: 10px !important;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $(function () {
+        $(".MiddlePane1 .rspSlideHeaderUndockIcon").click(function () {
+            $(".MiddlePane1 .rspTabsContainer").show();
+        });
+
+        $(".MiddlePane1 .rspPaneTabContainer").click(function () {
+            $(".MiddlePane1 .rspTabsContainer").hide();
+        });
+
+        var warningTimer;
+
+        warningTimer = setTimeout(function () {
+            //console.log('timeoutstart');
+            RefreshSchedular();
+        }, 60000);
+
+        $(document).on('mousemove', '.container', function () {
+            //console.log('timeoutclar');
+            ResetTimers();
+        });
+
+        function StartTimers() {
+            warningTimer = setTimeout(function () {
+                //console.log('timeoutstart');
+                RefreshSchedular();
+            }, 60000);
+        }
+
+        function ResetTimers() {
+            clearTimeout(warningTimer);
+            StartTimers();
+        }
+
+    });
+
+    function AddTicketClick(hyperlink) {
+        var id = $("#hdnAddeTicket").val();
+        if (id == "Y") {
+            return true;
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+
+    window.OnClientAppointmentContextMenu = function (sender, args) {
+        hideActiveToolTip();
+    }
+
+    window.hideActiveToolTip = function () {
+        try {
+            var tooltip = Telerik.Web.UI.RadToolTip.getCurrent();
+            if (tooltip) {
+                tooltip.hide();
+            }
+        }
+        catch{ }
+    }
+
+    window.rowDropping = function (sender, eventArgs) {
+        //debugger;
+        try {
+            if ($("#hdnAddeTicket").val() == 'N') {
+                noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 1000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                args.set_cancel(true);
+
+            }
+            else {
+
+                hideActiveToolTip();
+
+                var scheduler = $find("#RadScheduler1");
+                // Fired when the user drops a grid row
+                var htmlElement = eventArgs.get_destinationHtmlElement();
+
+                if (isPartOfSchedulerAppointmentArea(htmlElement)) {
+
+                    // The row was dropped over the scheduler appointment area
+                    // Find the exact time slot and save its unique index in the hidden field
+                    var timeSlot;
+                    if ($telerik.$(htmlElement).parents(".rsApt").length != 0) {
+                        timeSlot = scheduler.getAppointmentFromDomElement(htmlElement).get_timeSlot();
+
+                    }
+                    else
+                        timeSlot = scheduler._activeModel.getTimeSlotFromDomElement(htmlElement);
+                    var Resource = timeSlot.get_resource();
+                    var rsname = Resource._text;
+                    var startTime1 = new Date(timeSlot._startTime);
+                    // alert(Resource._id);
+                    if (rsname != '') {
+                        if (confirm('Do you really want to assign Ticket to ' + rsname + ' ?')) {
+                            $("#TargetSlotHiddenField").val(timeSlot.get_index());
+                            $("#hdnAssignworker").val(rsname);
+                            $("#hdnAssigndate").val(startTime1.toString());
+                            console.log(startTime1.toString());
+
+                            //window.location.href=window.location.href;
+                        }
+                        else {
+                            // The node was dropped elsewhere on the document
+                            eventArgs.set_cancel(true);
+                        }
+                    }
+
+                    // The HTML needs to be set in order for the postback to execute normally -----
+                    //eventArgs.set_destinationHtmlElement(TargetSlotHiddenField);
+
+                }
+                else {
+                    // The node was dropped elsewhere on the document
+                    eventArgs.set_cancel(true);
+                }
+            }
+        }
+        catch (e) { console.log(e); args.set_cancel(true); }
+    }
+
+    function isPartOfSchedulerAppointmentArea(htmlElement) {
+        // Determines if an HTML element is part of the scheduler appointment area
+        // This can be either the rsContent or the rsAllDay div (in day and week view)
+        return $telerik.$(htmlElement).parents().is("div.rsAllDay") ||
+            $telerik.$(htmlElement).parents().is("div.rsContent")
+    }
+
+
+
+    function RefreshSchedular() {
+
+        try {
+
+            var btn = $("#btnSearch");
+            btn.click();
+        } catch (e) { console.log(e) };
+    }
+
+
+    //Get date format for New Time slot.
+    function getFormattedString(d) {
+        return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear() + ' ' + d.toString().split(' ')[4];
+    }
+
+
+    function OnClientAppointmentMoveStart(sender, args) {
+        //debugger;
+        console.log(args.get_appointment().get_start());
+        try {
+            console.log('OnClientAppointmentMoveStart');
+            hideActiveToolTip();
+        } catch (e) {
+            args.set_cancel(true);
+            console.log('OnClientAppointmentMovingError');
+        }
+    }
+
+    function OnClientAppointmentMoving(sender, args) {
+        //debugger;
+        try {
+            //  console.log('OnClientAppointmentMoveing');
+
+        } catch (e) {
+            args.set_cancel(true);
+            console.log('OnClientAppointmentMovingerror');
+        }
+    }
+    function OnClientAppointmentClick(sender, eventArgs) {
+        var apt = eventArgs.get_appointment();
+        console.log(("You clicked on an appointment with the subject: " + apt.get_subject()));
+    }
+
+    function OnClientAppointmentMoveEnd(sender, args) {
+        //debugger;
+        console.log(args.get_appointment().get_end());
+
+        var scheduler = null;
+        // Cache the Scheduler object reference so we don't have to retrieve it every time
+        scheduler = sender;
+        try {
+            hideActiveToolTip();
+            if ($("#hdnEditeTicket").val() == 'N') {
+                noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 1000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                args.set_cancel(true);
+            }
+            else {
+                var appt = args.get_appointment();
+                var list = appt.get_attributes();
+                var attrAssigned = list.getAttribute('assigned');
+                var _NewStartDate = args.get_newStartTime();
+                var todaysDate = getFormattedString(_NewStartDate);
+                var NewTimeSlotIndex = args.get_targetSlot().get_index();
+                var TicketId = appt._id;
+                var resource = args.get_targetSlot().get_resource();
+                var workername = resource.get_text();
+
+                if (appt != null && list != null && attrAssigned != null && NewTimeSlotIndex != null) {
+                    if (attrAssigned == "4") {
+                        noty({ text: 'It is not allowed to move the completed ticket.', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 500, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                        args.set_cancel(true);
+                    }
+                    else if (attrAssigned != "4") {
+                        if (confirm('Do you really want to move ' + appt._subject + ' ?')) {
+
+
+                            //call Ajax request
+                            $.ajax({
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                url: "WS_Scheduler.asmx/AppointmentMove",
+                                data: '{ "TicketId" : "' + TicketId + '", "TimeSlotIndex": "' + NewTimeSlotIndex + '", "StartTime": "' + todaysDate + '", "workername" : "' + workername + '" }',
+                                dataType: "json",
+                                async: false,
+                                success: function (data) {
+                                    console.log(data.d);
+                                    args.set_cancel(false);
+                                },
+                                error: function (result) {
+                                    alert(result.responseText);
+                                    args.set_cancel(true);
+                                },
+                                failure: function (result) {
+                                    alert(result.responseText);
+                                    args.set_cancel(true);
+                                }
+                            });
+
+
+
+
+                        }
+                        else {
+                            args.set_cancel(true);
+                        }
+                    }
+                } else { args.set_cancel(true); }
+            }
+        } catch (e) { console.log(e); args.set_cancel(true); }
+
+    }
+
+    function overlapsWithAnotherAppointment(appointment, startTime, endTime) {
+        // Get all appointments in the given time range
+        var appointments = scheduler.get_appointments().getAppointmentsInRange(startTime, endTime);
+
+        // If there are no appointments in the range, there is no overlapping
+        if (appointments.get_count() == 0)
+            return false;
+
+        // If we are checking a specific appointment and it's the only one in the range, there is no overlapping
+        if (appointment && appointments.get_count() == 1 && appointments.getAppointment(0) == appointment)
+            return false;
+
+        return true;
+    }
+
+
+    function OnClientAppointmentResizeStart(sender, args) {
+
+
+        try {
+            hideActiveToolTip();
+
+            if ($("#hdnEditeTicket").val() == 'N') {
+                noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 1000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                args.set_cancel(true);
+
+            }
+            else {
+                var appt = args.get_appointment();
+                var list = appt.get_attributes();
+                var attrAssigned = list.getAttribute('assigned');
+                if (attrAssigned == "4") {
+                    noty({ text: 'It is not allowed to resize the completed ticket.', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 1000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                    args.set_cancel(true);
+                }
+            }
+        }
+        catch (e) { console.log(e); args.set_cancel(true); }
+    }
+
+    function OnClientAppointmentResizeEnd(sender, args) {
+
+
+        //debugger;
+        var scheduler = null;
+        // Cache the Scheduler object reference so we don't have to retrieve it every time
+        scheduler = sender;
+        try {
+            hideActiveToolTip();
+
+            if ($("#hdnEditeTicket").val() === 'Y') {
+                var appt = args.get_appointment();
+                var list = appt.get_attributes();
+                var attrAssigned = list.getAttribute('assigned');
+                var _NewStartDate = args.get_newStartTime();
+                var _NewEndDate = args.get_newEndTime();
+                var NewTimeSlotIndex = args.get_targetSlot().get_index();
+
+                if (appt !== null && list !== null && attrAssigned != null && NewTimeSlotIndex !== null && _NewStartDate !== null) {
+                    if (attrAssigned !== "4") {
+
+                        if (confirm('Do you really want to resize ' + appt._subject + ' ?')) {
+
+
+                            console.log('ApptID:-' + appt._id + 'NewTimeSlotIndex' + NewTimeSlotIndex + 'attrAssigned' + attrAssigned);
+
+                            var TicketId = appt._id;
+
+
+                            //call Ajax request
+                            $.ajax({
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                url: "WS_Scheduler.asmx/AppointmentResize",
+                                data: '{ "TicketId" : "' + TicketId + '", "ResizeNewStartDate": "' + _NewStartDate + '", "ResizeNewEndDate": "' + _NewEndDate + '"  }',
+                                dataType: "json",
+                                async: false,
+                                success: function (data) {
+                                    console.log(data.d);
+                                },
+                                error: function (result) {
+                                    alert(result.responseText);
+                                },
+                                failure: function (result) {
+                                    alert(result.responseText);
+                                }
+                            });
+
+
+                        }
+                    } else { args.set_cancel(true); }
+                } else { args.set_cancel(true); }
+            }
+        } catch (e) { console.log(e); args.set_cancel(true); }
+    }
+
+    function ShowHideToolTip(sender, eventArgs) {
+        try {
+            var isChecked = $("#chkHideTicketDesc").is(":checked");
+            var control = $(".RadScheduler1 .rsApt");
+            if (isChecked) {
+                eventArgs.set_cancel(true);
+                control.removeAttr("title");
+            }
+            else {
+
+
+                //copy the content first to allow the browser to cache the image
+                sender.set_content($get("ttipContent").innerHTML);
+                var dataKeys = sender.get_value().split("NK|");
+                var ttipParent = sender.get_popupElement();
+                var imgstatus = dataKeys[0];
+
+                $get("TicketID", ttipParent).innerHTML = dataKeys[1];
+                $get("Location", ttipParent).innerHTML = dataKeys[2];
+                $get("Customer", ttipParent).innerHTML = dataKeys[3];
+                $get("Category", ttipParent).innerHTML = dataKeys[4];
+                $get("address", ttipParent).innerHTML = dataKeys[5];
+                $get("City", ttipParent).innerHTML = dataKeys[6];
+                //$get("phone", ttipParent).innerHTML = dataKeys[7];
+                $get("edate", ttipParent).innerHTML = dataKeys[8];
+                $get("fdesc", ttipParent).innerHTML = dataKeys[9];
+                $get("descres", ttipParent).innerHTML = dataKeys[10];
+                //$get("WorkOrder", ttipParent).innerHTML = dataKeys[11];
+                $get("assigned", ttipParent).innerHTML = dataKeys[12];
+
+
+
+                var Isdoc = imgstatus.charAt(0);
+                var Isalert = imgstatus.charAt(1);
+                var Iscredithold = imgstatus.charAt(2);
+                var isMS = imgstatus.charAt(3);
+                var isSignature = imgstatus.charAt(4);
+                var isConfirmed = imgstatus.charAt(5);
+                var isdollarRed = imgstatus.charAt(6);
+                var isdollarblue = imgstatus.charAt(7);
+                var isdollar = imgstatus.charAt(8);
+                var Isreview = imgstatus.charAt(9);
+
+
+                if (Isdoc == '1') { $get("imgIsdoc", ttipParent).setAttribute("class", "spannk3"); }
+                if (Isalert == '1') { $get("imgIsalert", ttipParent).setAttribute("class", "spannk3"); }
+                if (Iscredithold == '1') { $get("imgIscredithold", ttipParent).setAttribute("class", "spannk3"); }
+                if (isMS == '1') { $get("imgisMS", ttipParent).setAttribute("class", "spannk3"); }
+                if (isSignature == '1') { $get("imgisSignature", ttipParent).setAttribute("class", "spannk3"); }
+                if (isConfirmed == '1') { $get("imgisConfirmed", ttipParent).setAttribute("class", "spannk3"); }
+                if (isdollarRed == '1') { $get("ImgisdollarRed", ttipParent).setAttribute("class", "spannk3"); }
+                if (isdollarblue == '1') { $get("Imgisdollarblue", ttipParent).setAttribute("class", "spannk3"); }
+                if (isdollar == '1') { $get("Imgisdollar", ttipParent).setAttribute("class", "spannk3"); }
+                if (Isreview == '1') { $get("imgIsreview", ttipParent).setAttribute("class", "spannk3"); }
+
+                eventArgs.set_cancel(false);
+            }
+        } catch (e) { eventArgs.set_cancel(true); };
+    }
+
+    function OnClientAppointmentContextMenuItemClicked(sender, eventArgs) {
+        try {
+            var itemValue = eventArgs.get_item().get_value();
+            var appt = eventArgs.get_appointment();
+            var list = appt.get_attributes();
+            var assigned = list.getAttribute('assigned');
+            var TicketID = appt._id;
+            //alert(TicketID);
+            //alert(assigned);
+            if (assigned == "4") {
+                if (itemValue == "Copy") { window.open('addticket.aspx?copy=1&id=' + TicketID + '&comp=0'); }
+                else if (itemValue == "Edit") { window.open('addticket.aspx?id=' + TicketID + '&comp=1#accrdcompleted'); }
+                else {
+                    noty({ text: 'It is not allowed to change of completed ticket.', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                }
+            }
+            else if (itemValue == "Delete") {
+                if ($("#hdnDeleteTicket").val() == "N") {
+                    noty({ text: 'You do not have delete permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                }
+                else
+                    if (confirm('Do you really want to delete Ticket#' + TicketID + ' ?')) {
+                        var btn = $("#TicketDelete");
+                        $("#hdnDeleteTicketId").val(TicketID);
+                        btn.click();
+                    }
+            }
+            else if (itemValue == "Void") {
+                if ($("#hdnTicketVoidPermission").val() == "N") {
+                    noty({ text: 'You do not have Void permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                }
+                else
+                    if (confirm('Are you sure you want to Void Ticket#' + TicketID + ' ?')) {
+                        var btnVoid = $("#btnTicketVoid");
+                        $("#hdnTicketVoidID").val(TicketID);
+                        btnVoid.click();
+                    }
+            }
+            else if ($("#hdnEditeTicket").val() == "N") {
+                noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            }
+            else if (itemValue == "Unassigned") { window.open('addticket.aspx?id=' + TicketID + '&st=0'); }
+            else if (itemValue == "Assigned") { window.open('addticket.aspx?id=' + TicketID + '&st=1'); }
+            else if (itemValue == "Enroute") { window.open('addticket.aspx?id=' + TicketID + '&st=2'); }
+            else if (itemValue == "Onsite") { window.open('addticket.aspx?id=' + TicketID + '&st=3'); }
+            else if (itemValue == "Completed") { window.open('addticket.aspx?id=' + TicketID + '&st=4'); }
+            else if (itemValue == "Hold") { window.open('addticket.aspx?id=' + TicketID + '&st=5'); }
+            else if (itemValue == "Edit") { window.open('addticket.aspx?id=' + TicketID + '&comp=0'); }
+            else if (itemValue == "Copy") { window.open('addticket.aspx?copy=1&id=' + TicketID + '&comp=0'); }
+
+            else if (itemValue == 'SendMessage') {
+                noty({
+                    dismissQueue: true,
+                    layout: 'topCenter',
+                    theme: 'noty_theme_default',
+                    animateOpen: { height: 'toggle' },
+                    animateClose: { height: 'toggle' },
+                    easing: 'swing',
+                    text: 'Do you want to send a text message to the assigned worker at this time?',
+                    type: 'alert',
+                    speed: 500,
+                    timeout: false,
+                    closeButton: false,
+                    closeOnSelfClick: true,
+                    closeOnSelfOver: false,
+                    force: false,
+                    onShow: false,
+                    onShown: false,
+                    onClose: false,
+                    onClosed: false,
+                    buttons: [
+                        {
+                            type: 'btn-primary', text: 'Yes', click: function ($noty) {
+                                $noty.close();
+                                window.open('mailticket.aspx?id=' + TicketID + '&c=' + assigned);
+                            }
+                        },
+                        {
+                            type: 'btn-danger', text: 'No', click: function ($noty) {
+                                $noty.close();
+                            }
+                        }
+                    ],
+                    modal: true,
+                    template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+                    cssPrefix: 'noty_',
+                    custom:
+                    {
+                        container: null
+                    }
+                });
+            }
+            else {
+                eventArgs.set_cancel(true);
+            }
+        } catch (e) { eventArgs.set_cancel(true); };
+    }
+</script>
+<script>
+
+    function myFunction() {
+        var x = document.getElementById("stats");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+
+<div class="wrapper">
+    <div>
+        <div>
+            <div id="divButtons">
+                <div id="breadcrumbs-wrapper">
+                    <header>
+                        <div class="container row-color-grey">
+                            <div class="row">
+                                <div class="col s12 m12 l12">
+                                    <div class="row">
+                                        <div class="page-title"><i class="mdi-calender"></i>&nbsp;Scheduler</div>
+                                        <div class="buttonContainer">
+                                            <div class="btnlinks">
+                                                <a ID="lnkAddticket" TabIndex="23" onclick="return AddTicketClick(this)" ToolTip="Add New Ticket" class="icon-addnew">Add New Ticket</a>
+                                            </div>
+
+                                            <div class="btnlinks">
+                                                <a onclick="myFunction()"><i class="mdi-action-search"></i></a>
+
+                                            </div>
+                                            <div class="btnlinks">
+                                                <input type="checkbox" ID="chkHideTicketDesc" AutoPostBack="true" />
+                                                <label for="chkHideTicketDesc">Hide Ticket Description</label>
+                                            </div>
+                                        </div>
+
+                                        <label id="loaderlbl"> </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </header>
+
+                </div>
+                <div class="container breadcrumbs-bg-custom">
+                    <div id="stats" style="background-color: #fff !important; display: none;">
+                        <div class="srchpane-advanced">
+                            <div class="srchpaneinner">
+                                <div class="srchinputwrap">
+
+                                    <label class="drpdwn-label">Supervisor</label>
+                                    <select ID="ddlSuper" style="width:180px" AutoPostBack="true" class="browser-default">
+                                        <option>Select</option>
+                                    </select>
+                                </div>
+
+                                <div class="srchinputwrap">
+
+                                    <label class="drpdwn-label">Status</label>
+                                    <select class="browser-default" style="width:180px" ID="ddlStatus">
+                                        <option Text=":: All ::" Value="-1" />
+                                        <option Text="Assigned" Value="1" />
+                                        <option Text="Enroute" Value="2" />
+                                        <option Text="Onsite" Value="3" />
+                                        <option Text="Completed" Value="4" />
+                                        <option Text="Hold" Value="5" />
+                                        <option Text="Voided" Value="6" />
+                                    </select>
+
+                                </div>
+
+                                <div class="srchinputwrap">
+                                    <label class="drpdwn-label">Worker</label>
+                                    <select class="browser-default" style="width:180px" ID="ddlworker" AutoPostBack="true">
+                                        <option>Select</option>
+                                    </select>
+                                </div>
+
+                                <div class="srchinputwrap">
+                                    <label class="drpdwn-label">Department</label>
+                                    <select class="browser-default" style="width:180px" ID="ddlDepartment">
+                                        <option>Select</option>
+                                    </select>
+                                </div>
+
+                                <div class="srchinputwrap">
+                                    <label class="drpdwn-label">Category</label>
+                                    <select class="browser-default" style="width:180px" ID="ddlCategory">
+                                        <option>Select</option>
+                                    </select>
+                                </div>
+
+                                <div class="srchinputwrap">
+                                    <label class="drpdwn-label">Location</label>
+                                    <input type="text" ID="txtSearch" placeholder="Search..." />
+                                </div>
+
+                                <div class="srchinputwrap">
+                                    <div class="btnlinks" style="float: right;">
+                                        <a ID="btnSearch" CausesValidation="false"><i class="mdi-notification-sync"></i></a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+        <div class="row">
+            @*<%--  OnClick="btnAppointmentMove_Click"--%>*@
+
+            <input type="text" ID="TicketDelete" Text="" Style="display: none;" CausesValidation="false" OnClick="TicketDelete_Click" />
+            <input type="text" ID="btnTicketVoid" Text="" Style="display: none;" CausesValidation="false" />
+            @*<%-- Ticket Delete--%>*@
+
+            @Html.Hidden("hdnDeleteTicketId", "")
+
+            @Html.Hidden("hdnTicketVoidID", "0")
+            @Html.Hidden("hdnTicketVoidPermission", "Y")
+
+            @*<%-- Ticket Resize--%>*@
+
+            @Html.Hidden("hdnResizeTicketId", "")
+            @Html.Hidden("hdnResizeNewTimeSlotIndex", "")
+            @Html.Hidden("hdnResizeNewStartDate", "")
+            @Html.Hidden("hdnResizeNewEndDate", "")
+
+            @*<%-- Ticket MOVE--%>*@
+
+            @Html.Hidden("hdnMoveTicketId", "")
+            @Html.Hidden("hdnMoveNewTimeSlotIndex", "")
+            @Html.Hidden("hdnStartTime", "")
+
+            @*<%-- Ticket Assign--%>*@
+            @Html.Hidden("hdnAssignworker")
+            @Html.Hidden("hdnAssigndate")
+            @Html.Hidden("TargetSlotHiddenField")
+
+
+            @Html.Hidden("hdnAddeTicket", "Y")
+            @Html.Hidden("hdnEditeTicket", "Y")
+            @Html.Hidden("hdnDeleteTicket", "Y")
+            @Html.Hidden("hdnViewTicket", "Y")
+
+            @*<%--Check action of scheduler--%>*@
+            @Html.Hidden("hdnCheckActionScheduler", "0")
+
+        </div>
+    </div>
+</div>
+
+<script src="~/MOMUI/Design/js/jquery.mCustomScrollbar.js"></script>
+<script src="~/MOMUI/Design/js/materialize.js"></script>
+<script src="~/MOMUI/Design/js/plugins/prism/prism.js"></script>
+<script src="~/MOMUI/Design/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="~/MOMUI/Design/js/plugins.js"></script>
+<script src="~/MOMUI/Design/js/custom-script.js"></script>
+@*<%--Calendar Scripts--%>*@
+<script src="~/MOMUI/Design/js/moment.js"></script>
+<script src="~/MOMUI/Design/js/pikaday.js"></script>
+<script src="~/MOMUI/Design/js/pikaday.jquery.js"></script>
+

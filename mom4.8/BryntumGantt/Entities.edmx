@@ -1,0 +1,757 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Bryntum.Gantt.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BryntumGanttStoreContainer">
+    <EntitySet Name="Assignments" EntityType="Bryntum.Gantt.Store.Assignments" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CalendarDays" EntityType="Bryntum.Gantt.Store.CalendarDays" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Calendars" EntityType="Bryntum.Gantt.Store.Calendars" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Dependencies" EntityType="Bryntum.Gantt.Store.Dependencies" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Options" EntityType="Bryntum.Gantt.Store.Options" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Resources" EntityType="Bryntum.Gantt.Store.Resources" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Tasks" EntityType="Bryntum.Gantt.Store.Tasks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TaskSegments" EntityType="Bryntum.Gantt.Store.TaskSegments" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Assignments_Resources" Association="Bryntum.Gantt.Store.FK_Assignments_Resources">
+      <End Role="Resources" EntitySet="Resources" />
+      <End Role="Assignments" EntitySet="Assignments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Assignments_Tasks" Association="Bryntum.Gantt.Store.FK_Assignments_Tasks">
+      <End Role="Tasks" EntitySet="Tasks" />
+      <End Role="Assignments" EntitySet="Assignments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Dependencies_Tasks" Association="Bryntum.Gantt.Store.FK_Dependencies_Tasks">
+      <End Role="Tasks" EntitySet="Tasks" />
+      <End Role="Dependencies" EntitySet="Dependencies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Dependencies_Tasks1" Association="Bryntum.Gantt.Store.FK_Dependencies_Tasks1">
+      <End Role="Tasks" EntitySet="Tasks" />
+      <End Role="Dependencies" EntitySet="Dependencies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tasks_Tasks" Association="Bryntum.Gantt.Store.FK_Tasks_Tasks">
+      <End Role="Task" EntitySet="Tasks" />
+      <End Role="Task1" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CalendarDays_Calendars1" Association="Bryntum.Gantt.Store.FK_CalendarDays_Calendars1">
+      <End Role="Calendar" EntitySet="Calendars" />
+      <End Role="CalendarDay" EntitySet="CalendarDays" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Calendars_Calendars1" Association="Bryntum.Gantt.Store.FK_Calendars_Calendars1">
+      <End Role="Calendar" EntitySet="Calendars" />
+      <End Role="Calendar1" EntitySet="Calendars" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Resources_Calendars1" Association="Bryntum.Gantt.Store.FK_Resources_Calendars1">
+      <End Role="Calendar" EntitySet="Calendars" />
+      <End Role="Resource" EntitySet="Resources" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tasks_Calendars1" Association="Bryntum.Gantt.Store.FK_Tasks_Calendars1">
+      <End Role="Calendar" EntitySet="Calendars" />
+      <End Role="Task" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TaskSegments_Tasks" Association="Bryntum.Gantt.Store.FK_TaskSegments_Tasks">
+      <End Role="Task" EntitySet="Tasks" />
+      <End Role="TaskSegment" EntitySet="TaskSegments" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Assignments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TaskIdRaw" Type="int" Nullable="false" />
+    <Property Name="ResourceIdRaw" Type="int" Nullable="false" />
+    <Property Name="Units" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CalendarDays">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CalendarIdRaw" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="45" />
+    <Property Name="Date" Type="datetime" Nullable="true" />
+    <Property Name="AvailabilityRaw" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Weekday" Type="int" Nullable="true" />
+    <Property Name="OverrideStartDate" Type="datetime" Nullable="true" />
+    <Property Name="OverrideEndDate" Type="datetime" Nullable="true" />
+    <Property Name="IsWorkingDayRaw" Type="tinyint" Nullable="true" />
+    <Property Name="Cls" Type="nvarchar" Nullable="true" MaxLength="45" />
+  </EntityType>
+  <EntityType Name="Calendars">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="parentIdRaw" Type="int" Nullable="true" />
+    <Property Name="Name" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="DaysPerMonth" Type="int" Nullable="true" />
+    <Property Name="DaysPerWeek" Type="int" Nullable="true" />
+    <Property Name="HoursPerDay" Type="int" Nullable="true" />
+    <Property Name="WeekendsAreWorkdaysRaw" Type="tinyint" Nullable="true" />
+    <Property Name="WeekendFirstDay" Type="int" Nullable="true" />
+    <Property Name="WeekendSecondDay" Type="int" Nullable="true" />
+    <Property Name="DefaultAvailabilityRaw" Type="nvarchar" Nullable="true" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Dependencies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FromIdRaw" Type="int" Nullable="false" />
+    <Property Name="ToIdRaw" Type="int" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="true" />
+    <Property Name="Cls" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Lag" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+    <Property Name="LagUnit" Type="nvarchar" Nullable="true" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Options">
+    <Key>
+      <PropertyRef Name="name" />
+    </Key>
+    <Property Name="name" Type="varchar" Nullable="false" MaxLength="45" />
+    <Property Name="value" Type="varchar" Nullable="true" MaxLength="45" />
+    <Property Name="dt" Type="binary" StoreGeneratedPattern="Computed" Nullable="false" MaxLength="8" />
+  </EntityType>
+  <EntityType Name="Resources">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CalendarIdRaw" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Tasks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="parentIdRaw" Type="int" Nullable="true" />
+    <Property Name="Name" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="StartDate" Type="datetime" Nullable="true" />
+    <Property Name="EndDate" Type="datetime" Nullable="true" />
+    <Property Name="Duration" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+    <Property Name="DurationUnit" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="PercentDone" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+    <Property Name="SchedulingMode" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="BaselineStartDate" Type="datetime" Nullable="true" />
+    <Property Name="BaselineEndDate" Type="datetime" Nullable="true" />
+    <Property Name="BaselinePercentDone" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+    <Property Name="Cls" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="CalendarIdRaw" Type="int" Nullable="true" />
+    <Property Name="index" Type="int" Nullable="true" />
+    <Property Name="expanded" Type="bit" Nullable="false" />
+    <Property Name="Effort" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+    <Property Name="EffortUnit" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="Note" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="ConstraintType" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="ConstraintDate" Type="datetime" Nullable="true" />
+    <Property Name="ManuallyScheduled" Type="bit" Nullable="false" />
+    <Property Name="Draggable" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="Resizable" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="Rollup" Type="bit" Nullable="false" />
+    <Property Name="ShowInTimeline" Type="bit" Nullable="false" />
+    <Property Name="Color" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="PlannerID" Type="int" Nullable="true" />
+    <Property Name="ProjectID" Type="int" Nullable="true" />
+    <Property Name="TaskType" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="TaskSegments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TaskIdRaw" Type="int" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
+    <Property Name="EndDate" Type="datetime" Nullable="true" />
+    <Property Name="Duration" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+    <Property Name="DurationUnit" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Cls" Type="nvarchar" Nullable="true" MaxLength="255" />
+  </EntityType>
+  <Association Name="FK_Assignments_Resources">
+    <End Role="Resources" Type="Bryntum.Gantt.Store.Resources" Multiplicity="1" />
+    <End Role="Assignments" Type="Bryntum.Gantt.Store.Assignments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Resources">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Assignments">
+        <PropertyRef Name="ResourceIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Assignments_Tasks">
+    <End Role="Tasks" Type="Bryntum.Gantt.Store.Tasks" Multiplicity="1" />
+    <End Role="Assignments" Type="Bryntum.Gantt.Store.Assignments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tasks">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Assignments">
+        <PropertyRef Name="TaskIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Dependencies_Tasks">
+    <End Role="Tasks" Type="Bryntum.Gantt.Store.Tasks" Multiplicity="1" />
+    <End Role="Dependencies" Type="Bryntum.Gantt.Store.Dependencies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tasks">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Dependencies">
+        <PropertyRef Name="FromIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Dependencies_Tasks1">
+    <End Role="Tasks" Type="Bryntum.Gantt.Store.Tasks" Multiplicity="1" />
+    <End Role="Dependencies" Type="Bryntum.Gantt.Store.Dependencies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tasks">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Dependencies">
+        <PropertyRef Name="ToIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tasks_Tasks">
+    <End Role="Task" Type="Bryntum.Gantt.Store.Tasks" Multiplicity="0..1" />
+    <End Role="Task1" Type="Bryntum.Gantt.Store.Tasks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Task">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task1">
+        <PropertyRef Name="parentIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CalendarDays_Calendars1">
+    <End Role="Calendar" Type="Bryntum.Gantt.Store.Calendars" Multiplicity="1" />
+    <End Role="CalendarDay" Type="Bryntum.Gantt.Store.CalendarDays" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Calendar">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CalendarDay">
+        <PropertyRef Name="CalendarIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Calendars_Calendars1">
+    <End Role="Calendar" Type="Bryntum.Gantt.Store.Calendars" Multiplicity="0..1" />
+    <End Role="Calendar1" Type="Bryntum.Gantt.Store.Calendars" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Calendar">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Calendar1">
+        <PropertyRef Name="parentIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Resources_Calendars1">
+    <End Role="Calendar" Type="Bryntum.Gantt.Store.Calendars" Multiplicity="0..1" />
+    <End Role="Resource" Type="Bryntum.Gantt.Store.Resources" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Calendar">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Resource">
+        <PropertyRef Name="CalendarIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tasks_Calendars1">
+    <End Role="Calendar" Type="Bryntum.Gantt.Store.Calendars" Multiplicity="0..1" />
+    <End Role="Task" Type="Bryntum.Gantt.Store.Tasks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Calendar">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="CalendarIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TaskSegments_Tasks">
+    <End Role="Task" Type="Bryntum.Gantt.Store.Tasks" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="TaskSegment" Type="Bryntum.Gantt.Store.TaskSegments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Task">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TaskSegment">
+        <PropertyRef Name="TaskIdRaw" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Bryntum.Gantt" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Assignment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskIdRaw" Type="Int32" Nullable="false" />
+          <Property Name="ResourceIdRaw" Type="Int32" Nullable="false" />
+          <Property Name="Units" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Resource" Relationship="Self.FK_Assignments_Resources" FromRole="Assignments" ToRole="Resources" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_Assignments_Tasks" FromRole="Assignments" ToRole="Tasks" />
+        </EntityType>
+        <EntityType Name="CalendarDay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CalendarIdRaw" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="AvailabilityRaw" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Weekday" Type="Int32" />
+          <Property Name="OverrideStartDate" Type="DateTime" Precision="0" />
+          <Property Name="OverrideEndDate" Type="DateTime" Precision="0" />
+          <Property Name="IsWorkingDayRaw" Type="Byte" />
+          <Property Name="Cls" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Calendar" Relationship="Bryntum.Gantt.FK_CalendarDays_Calendars1" FromRole="CalendarDay" ToRole="Calendar" />
+        </EntityType>
+        <EntityType Name="Calendar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="parentIdRaw" Type="Int32" Nullable="true" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DaysPerMonth" Type="Int32" />
+          <Property Name="DaysPerWeek" Type="Int32" />
+          <Property Name="HoursPerDay" Type="Int32" />
+          <Property Name="WeekendsAreWorkdaysRaw" Type="Byte" />
+          <Property Name="WeekendFirstDay" Type="Int32" />
+          <Property Name="WeekendSecondDay" Type="Int32" />
+          <Property Name="DefaultAvailabilityRaw" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CalendarDays" Relationship="Bryntum.Gantt.FK_CalendarDays_Calendars1" FromRole="Calendar" ToRole="CalendarDay" />
+          <NavigationProperty Name="ChildrenRaw" Relationship="Bryntum.Gantt.FK_Calendars_Calendars1" FromRole="Calendar" ToRole="Calendar1" />
+          <NavigationProperty Name="Parent" Relationship="Bryntum.Gantt.FK_Calendars_Calendars1" FromRole="Calendar1" ToRole="Calendar" />
+          <NavigationProperty Name="Resources" Relationship="Bryntum.Gantt.FK_Resources_Calendars1" FromRole="Calendar" ToRole="Resource" />
+          <NavigationProperty Name="Tasks" Relationship="Bryntum.Gantt.FK_Tasks_Calendars1" FromRole="Calendar" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Dependency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FromIdRaw" Type="Int32" Nullable="false" />
+          <Property Name="ToIdRaw" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="Cls" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Lag" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LagUnit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FromTask" Relationship="Self.FK_Dependencies_Tasks" FromRole="Dependencies" ToRole="Tasks" />
+          <NavigationProperty Name="ToTask" Relationship="Self.FK_Dependencies_Tasks1" FromRole="Dependencies" ToRole="Tasks" />
+        </EntityType>
+        <EntityType Name="Option">
+          <Key>
+            <PropertyRef Name="name" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="value" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="dt" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CalendarIdRaw" Type="Int32" />
+          <NavigationProperty Name="Assignments" Relationship="Self.FK_Assignments_Resources" FromRole="Resources" ToRole="Assignments" />
+          <NavigationProperty Name="Calendar" Relationship="Bryntum.Gantt.FK_Resources_Calendars1" FromRole="Resource" ToRole="Calendar" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="parentIdRaw" Type="Int32" Nullable="true" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="Duration" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DurationUnit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PercentDone" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SchedulingMode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BaselineStartDate" Type="DateTime" Precision="3" />
+          <Property Name="BaselineEndDate" Type="DateTime" Precision="3" />
+          <Property Name="BaselinePercentDone" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Cls" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CalendarIdRaw" Type="Int32" />
+          <NavigationProperty Name="Assignments" Relationship="Self.FK_Assignments_Tasks" FromRole="Tasks" ToRole="Assignments" />
+          <NavigationProperty Name="Predecessors" Relationship="Self.FK_Dependencies_Tasks" FromRole="Tasks" ToRole="Dependencies" />
+          <NavigationProperty Name="Successors" Relationship="Self.FK_Dependencies_Tasks1" FromRole="Tasks" ToRole="Dependencies" />
+          <NavigationProperty Name="ChildrenRaw" Relationship="Bryntum.Gantt.FK_Tasks_Tasks" FromRole="Task" ToRole="Task1" />
+          <NavigationProperty Name="Parent" Relationship="Bryntum.Gantt.FK_Tasks_Tasks" FromRole="Task1" ToRole="Task" />
+          <NavigationProperty Name="Calendar" Relationship="Bryntum.Gantt.FK_Tasks_Calendars1" FromRole="Task" ToRole="Calendar" />
+          <NavigationProperty Name="Segments" Relationship="Bryntum.Gantt.FK_TaskSegments_Tasks" FromRole="Task" ToRole="TaskSegment" />
+          <Property Name="index" Type="Int32" Nullable="true" />
+          <Property Name="expanded" Type="Boolean" Nullable="false" />
+          <Property Name="Effort" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EffortUnit" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Note" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ConstraintType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ConstraintDate" Type="DateTime" Precision="3" />
+          <Property Name="ManuallyScheduled" Type="Boolean" Nullable="false" />
+          <Property Name="Draggable" Type="Boolean" Nullable="false" DefaultValue="True" />
+          <Property Name="Resizable" Type="Boolean" Nullable="false" DefaultValue="True" />
+          <Property Name="Rollup" Type="Boolean" Nullable="false" />
+          <Property Name="ShowInTimeline" Type="Boolean" Nullable="false" />
+          <Property Name="Color" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PlannerID" Type="Int32" Nullable="true" />
+          <Property Name="ProjectID" Type="Int32" Nullable="true" />
+          <Property Name="TaskType" Type="String" Nullable="true" />
+        </EntityType>
+        <Association Name="FK_Assignments_Resources">
+          <End Role="Resources" Type="Self.Resource" Multiplicity="1" />
+          <End Role="Assignments" Type="Self.Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Assignments">
+              <PropertyRef Name="ResourceIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Assignments_Tasks">
+          <End Role="Tasks" Type="Self.Task" Multiplicity="1" />
+          <End Role="Assignments" Type="Self.Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tasks">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Assignments">
+              <PropertyRef Name="TaskIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dependencies_Tasks">
+          <End Role="Tasks" Type="Self.Task" Multiplicity="1" />
+          <End Role="Dependencies" Type="Self.Dependency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tasks">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dependencies">
+              <PropertyRef Name="FromIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dependencies_Tasks1">
+          <End Role="Tasks" Type="Self.Task" Multiplicity="1" />
+          <End Role="Dependencies" Type="Self.Dependency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tasks">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dependencies">
+              <PropertyRef Name="ToIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GanttEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Assignments" EntityType="Self.Assignment" />
+          <EntitySet Name="CalendarDays" EntityType="Self.CalendarDay" />
+          <EntitySet Name="Calendars" EntityType="Self.Calendar" />
+          <EntitySet Name="Dependencies" EntityType="Self.Dependency" />
+          <EntitySet Name="Options" EntityType="Self.Option" />
+          <EntitySet Name="Resources" EntityType="Self.Resource" />
+          <EntitySet Name="Tasks" EntityType="Self.Task" />
+          <AssociationSet Name="FK_Assignments_Resources" Association="Self.FK_Assignments_Resources">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="Assignments" EntitySet="Assignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assignments_Tasks" Association="Self.FK_Assignments_Tasks">
+            <End Role="Tasks" EntitySet="Tasks" />
+            <End Role="Assignments" EntitySet="Assignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dependencies_Tasks" Association="Self.FK_Dependencies_Tasks">
+            <End Role="Tasks" EntitySet="Tasks" />
+            <End Role="Dependencies" EntitySet="Dependencies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dependencies_Tasks1" Association="Self.FK_Dependencies_Tasks1">
+            <End Role="Tasks" EntitySet="Tasks" />
+            <End Role="Dependencies" EntitySet="Dependencies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Tasks" Association="Bryntum.Gantt.FK_Tasks_Tasks">
+            <End Role="Task" EntitySet="Tasks" />
+            <End Role="Task1" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CalendarDays_Calendars1" Association="Bryntum.Gantt.FK_CalendarDays_Calendars1">
+            <End Role="Calendar" EntitySet="Calendars" />
+            <End Role="CalendarDay" EntitySet="CalendarDays" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Calendars_Calendars1" Association="Bryntum.Gantt.FK_Calendars_Calendars1">
+            <End Role="Calendar" EntitySet="Calendars" />
+            <End Role="Calendar1" EntitySet="Calendars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resources_Calendars1" Association="Bryntum.Gantt.FK_Resources_Calendars1">
+            <End Role="Calendar" EntitySet="Calendars" />
+            <End Role="Resource" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Calendars1" Association="Bryntum.Gantt.FK_Tasks_Calendars1">
+            <End Role="Calendar" EntitySet="Calendars" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <EntitySet Name="TaskSegments" EntityType="Bryntum.Gantt.TaskSegment" />
+          <AssociationSet Name="FK_TaskSegments_Tasks" Association="Bryntum.Gantt.FK_TaskSegments_Tasks">
+            <End Role="Task" EntitySet="Tasks" />
+            <End Role="TaskSegment" EntitySet="TaskSegments" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Tasks_Tasks">
+          <End Type="Bryntum.Gantt.Task" Role="Task" Multiplicity="0..1" />
+          <End Type="Bryntum.Gantt.Task" Role="Task1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task1">
+              <PropertyRef Name="parentIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CalendarDays_Calendars1">
+          <End Type="Bryntum.Gantt.Calendar" Role="Calendar" Multiplicity="1" />
+          <End Type="Bryntum.Gantt.CalendarDay" Role="CalendarDay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calendar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CalendarDay">
+              <PropertyRef Name="CalendarIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Calendars_Calendars1">
+          <End Type="Bryntum.Gantt.Calendar" Role="Calendar" Multiplicity="0..1" />
+          <End Type="Bryntum.Gantt.Calendar" Role="Calendar1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calendar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Calendar1">
+              <PropertyRef Name="parentIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resources_Calendars1">
+          <End Type="Bryntum.Gantt.Calendar" Role="Calendar" Multiplicity="0..1" />
+          <End Type="Bryntum.Gantt.Resource" Role="Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calendar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Resource">
+              <PropertyRef Name="CalendarIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Calendars1">
+          <End Type="Bryntum.Gantt.Calendar" Role="Calendar" Multiplicity="0..1" />
+          <End Type="Bryntum.Gantt.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calendar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="CalendarIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TaskSegment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskIdRaw" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="Duration" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DurationUnit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Cls" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Task" Relationship="Bryntum.Gantt.FK_TaskSegments_Tasks" FromRole="TaskSegment" ToRole="Task" />
+        </EntityType>
+        <Association Name="FK_TaskSegments_Tasks">
+          <End Type="Bryntum.Gantt.Task" Role="Task" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Bryntum.Gantt.TaskSegment" Role="TaskSegment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TaskSegment">
+              <PropertyRef Name="TaskIdRaw" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BryntumGanttStoreContainer" CdmEntityContainer="GanttEntities">
+    <EntitySetMapping Name="Assignments">
+      <EntityTypeMapping TypeName="IsTypeOf(Bryntum.Gantt.Assignment)">
+        <MappingFragment StoreEntitySet="Assignments">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TaskIdRaw" ColumnName="TaskIdRaw" />
+          <ScalarProperty Name="ResourceIdRaw" ColumnName="ResourceIdRaw" />
+          <ScalarProperty Name="Units" ColumnName="Units" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CalendarDays">
+      <EntityTypeMapping TypeName="IsTypeOf(Bryntum.Gantt.CalendarDay)">
+        <MappingFragment StoreEntitySet="CalendarDays">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CalendarIdRaw" ColumnName="CalendarIdRaw" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="AvailabilityRaw" ColumnName="AvailabilityRaw" />
+          <ScalarProperty Name="Weekday" ColumnName="Weekday" />
+          <ScalarProperty Name="OverrideStartDate" ColumnName="OverrideStartDate" />
+          <ScalarProperty Name="OverrideEndDate" ColumnName="OverrideEndDate" />
+          <ScalarProperty Name="IsWorkingDayRaw" ColumnName="IsWorkingDayRaw" />
+          <ScalarProperty Name="Cls" ColumnName="Cls" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Calendars">
+      <EntityTypeMapping TypeName="IsTypeOf(Bryntum.Gantt.Calendar)">
+        <MappingFragment StoreEntitySet="Calendars">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="parentIdRaw" ColumnName="parentIdRaw" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DaysPerMonth" ColumnName="DaysPerMonth" />
+          <ScalarProperty Name="DaysPerWeek" ColumnName="DaysPerWeek" />
+          <ScalarProperty Name="HoursPerDay" ColumnName="HoursPerDay" />
+          <ScalarProperty Name="WeekendsAreWorkdaysRaw" ColumnName="WeekendsAreWorkdaysRaw" />
+          <ScalarProperty Name="WeekendFirstDay" ColumnName="WeekendFirstDay" />
+          <ScalarProperty Name="WeekendSecondDay" ColumnName="WeekendSecondDay" />
+          <ScalarProperty Name="DefaultAvailabilityRaw" ColumnName="DefaultAvailabilityRaw" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dependencies">
+      <EntityTypeMapping TypeName="IsTypeOf(Bryntum.Gantt.Dependency)">
+        <MappingFragment StoreEntitySet="Dependencies">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FromIdRaw" ColumnName="FromIdRaw" />
+          <ScalarProperty Name="ToIdRaw" ColumnName="ToIdRaw" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Cls" ColumnName="Cls" />
+          <ScalarProperty Name="Lag" ColumnName="Lag" />
+          <ScalarProperty Name="LagUnit" ColumnName="LagUnit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Options">
+      <EntityTypeMapping TypeName="IsTypeOf(Bryntum.Gantt.Option)">
+        <MappingFragment StoreEntitySet="Options">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Resources">
+      <EntityTypeMapping TypeName="IsTypeOf(Bryntum.Gantt.Resource)">
+        <MappingFragment StoreEntitySet="Resources">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CalendarIdRaw" ColumnName="CalendarIdRaw" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tasks">
+      <EntityTypeMapping TypeName="IsTypeOf(Bryntum.Gantt.Task)">
+        <MappingFragment StoreEntitySet="Tasks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="parentIdRaw" ColumnName="parentIdRaw" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
+          <ScalarProperty Name="DurationUnit" ColumnName="DurationUnit" />
+          <ScalarProperty Name="PercentDone" ColumnName="PercentDone" />
+          <ScalarProperty Name="SchedulingMode" ColumnName="SchedulingMode" />
+          <ScalarProperty Name="BaselineStartDate" ColumnName="BaselineStartDate" />
+          <ScalarProperty Name="BaselineEndDate" ColumnName="BaselineEndDate" />
+          <ScalarProperty Name="BaselinePercentDone" ColumnName="BaselinePercentDone" />
+          <ScalarProperty Name="Cls" ColumnName="Cls" />
+          <ScalarProperty Name="CalendarIdRaw" ColumnName="CalendarIdRaw" />
+          <ScalarProperty Name="index" ColumnName="index" />
+          <ScalarProperty Name="expanded" ColumnName="expanded" />
+          <ScalarProperty Name="Effort" ColumnName="Effort" />
+          <ScalarProperty Name="EffortUnit" ColumnName="EffortUnit" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="ConstraintType" ColumnName="ConstraintType" />
+          <ScalarProperty Name="ConstraintDate" ColumnName="ConstraintDate" />
+          <ScalarProperty Name="ManuallyScheduled" ColumnName="ManuallyScheduled" />
+          <ScalarProperty Name="Draggable" ColumnName="Draggable" />
+          <ScalarProperty Name="Resizable" ColumnName="Resizable" />
+          <ScalarProperty Name="Rollup" ColumnName="Rollup" />
+          <ScalarProperty Name="ShowInTimeline" ColumnName="ShowInTimeline" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="PlannerID" ColumnName="PlannerID" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="TaskType" ColumnName="TaskType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TaskSegments">
+      <EntityTypeMapping TypeName="IsTypeOf(Bryntum.Gantt.TaskSegment)">
+        <MappingFragment StoreEntitySet="TaskSegments">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TaskIdRaw" ColumnName="TaskIdRaw" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
+          <ScalarProperty Name="DurationUnit" ColumnName="DurationUnit" />
+          <ScalarProperty Name="Cls" ColumnName="Cls" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

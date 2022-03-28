@@ -1,0 +1,620 @@
+﻿ <!DOCTYPE html>
+<html>
+<head      >
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>MOM v6.0</title>
+    <link rel="icon" href="~/MOMUI/Design/images/favicon.png" sizes="32x32">
+    <link href="~/MOMUI/Design/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="~/MOMUI/Design/css/style.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="~/MOMUI/Design/css/custom/custom.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="~/MOMUI/Design/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="~/MOMUI/Design/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/827cb0cf39.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&key=AIzaSyCndNAw_XYuJaz2SLtNd40zaVw8e2S8N2Q"></script>
+    <script src="~/MOMUI/Design/js/UI/jquery-ui.js"></script>
+    <script src="~/MOMUI/Design/js/materialize-plugins/forms.js"></script>
+    <script src="~/MOMUI/Design/js/Notifyjs/jquery.noty.js"></script>
+    <script src="~/MOMUI/Design/js/Notifyjs/themes/default.js"></script>
+    <script src="~/MOMUI/Design/js/Notifyjs/layouts/topCenter.js"></script>
+    <link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+
+   <style>
+
+
+         .todo_notify {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+            background-color: #ffffff;
+            width: 500px;
+            opacity: 0.9;
+            font-size: 12px;
+            padding-right: 25px;
+            padding-left: 50px;
+            -webkit-box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+            -moz-box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+            box-shadow: 1px 1px 1px 1px rgba(112,104,112,1);
+        }
+        .todo_notify > button.close{
+            padding: 0;
+            cursor: pointer;
+            background: transparent;
+            border: 0;
+            -webkit-appearance: none;
+            float: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            opacity: .5;
+        }
+        .todo_notify > span[data-notify="title"]{
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .todo_notify > .notifyIcon {
+            display: inline-block;
+            background-image: url(images/application_view_list.ico);
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            top: 15px;
+            left: 10px
+        }
+   </style>    
+    <script>  function bell_alert() {}  </script>  
+</head>
+
+<body>
+    <form id="form1" autocomplete="off">
+        <header id="header" class="page-topbar">
+            <div class="navbar-fixed" id="divHeader">
+
+                <nav class="navbar-color">
+                    <div class="nav-wrapper">
+                        <ul class="left">
+                            <li>
+                                <h1 class="logo-wrapper">
+                                    <a href="Home.aspx" class="brand-logo darken-1">
+                                        <img src="~/MOMUI/Design/images/mom-logo.png" alt="MOM logo">
+                                    </a> <span class="logo-text"></span>
+                                </h1>
+                            </li>
+                        </ul>
+                        <ul class="right hide-on-med-and-down">
+                            <li>
+                                <div class="qb-wrp">
+                                    <div id="divBreadCrumbWithQB">
+                                        <div id="divQBContents">
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect waves-block waves-light toggle-fullscreen"><i class="mdi-action-settings-overscan"></i></a>
+                            </li>
+
+
+                            <li>
+                                <a href="#" data-activates="chat-out" class="waves-effect waves-block waves-light chat-collapse">
+                                    <div class="userinfoimg-btn">
+                                        <img src="~/MOMUI/Design/images/avatar.jpg" class="image-avatar" />
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul id="notifications" class="dropdown-content">
+                            <li>
+                                <h5>NOTIFICATIONS <span class="new badge">5</span></h5>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#!"><i class="mdi-action-add-shopping-cart"></i>A new order has been placed!</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">2 hours ago</time>
+                            </li>
+                            <li>
+                                <a href="#!"><i class="mdi-action-stars"></i>Completed the task</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">3 days ago</time>
+                            </li>
+                            <li>
+                                <a href="#!"><i class="mdi-action-settings"></i>Settings updated</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">4 days ago</time>
+                            </li>
+                            <li>
+                                <a href="#!"><i class="mdi-editor-insert-invitation"></i>Director meeting started</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">6 days ago</time>
+                            </li>
+                            <li>
+                                <a href="#!"><i class="mdi-action-trending-up"></i>Generate monthly report</a>
+                                <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">1 week ago</time>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <div id="main">
+            <div class="wrapper">
+
+                <div id="modal2" class="modal" style="display: none;">
+                    <div class="modal-content company-modal">
+                        <div class="section-ttle-popupheading">Select Office</div>
+                        <div class="modal-content-placeholder">
+
+                            <div class="sl-cmp">
+                                <span class="sl-cmp-spn1">
+                                    <input type="checkbox" name="check1" value="company1">
+                                </span><span class="sl-cmp-spn2">Office 1</span>
+                            </div>
+                            <div class="sl-cmp">
+                                <span class="sl-cmp-spn1">
+                                    <input type="checkbox" name="check1" value="company1">
+                                </span><span class="sl-cmp-spn2">Office 2</span>
+                            </div>
+                            <div class="sl-cmp">
+                                <span class="sl-cmp-spn1">
+                                    <input type="checkbox" name="check1" value="company1">
+                                </span><span class="sl-cmp-spn2">Office 3</span>
+                            </div>
+                            <div class="sl-cmp">
+                                <span class="sl-cmp-spn1">
+                                    <input type="checkbox" name="check1" value="company1">
+                                </span><span class="sl-cmp-spn2">Office 5</span>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default modal-btn-sbmt" data-dismiss="modal">SAVE</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer btnwrap-right">
+                        <button class="clk-btn">
+                            Save
+                        </button>
+
+                    </div>
+                </div>
+
+                <aside id="menu">
+                    <ul id="slide-out" class="side-nav fixed leftside-navigation" style="width: 170px;">
+                        <li class="user-details cyan darken-2" style="display: none;">
+                            <div class="row">
+                                <div class="col col s4 m4 l4 profile-img">
+                                    <img src="~/MOMUI/Design/images/avatar.jpg" alt="" class="circle responsive-img valign profile-image">
+                                </div>
+                                <div class="col col s8 m8 l8">
+                                    <ul id="profile-dropdown" class="dropdown-content">
+                                        <li class="prof">
+                                            <a href="UserProfile.aspx"><i class="mdi-action-face-unlock proficon"></i>Profile</a>
+                                        </li>
+                                        <li class="prof">
+                                            <a href="#"><i class="mdi-action-settings proficon"></i>Settings</a>
+                                        </li>
+                                        <li class="prof">
+                                            <a href="#"><i class="mdi-communication-live-help proficon"></i>Help</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="prof">
+                                            <a href="#"><i class="mdi-action-lock-outline proficon"></i>Lock</a>
+                                        </li>
+                                        <li class="prof"></li>
+                                    </ul>
+                                    <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">
+                                        <i class="mdi-navigation-arrow-drop-down right font-color-white" style="color: #fff !important"></i>
+                                    </a>
+                                    <p class="user-roal">
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="linkDashboarDefault" class="waves-effect waves-cyan collapsible-height-nl" href="~/dashboard/home/index"><i class="mdi-action-dashboard no-collapse"></i>Dashboard</a>
+
+
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="cstmMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-social-people"></i>Customers </a>
+                                    <div id="cstmMgrSub" class="collapsible-body">
+                                        <ul>
+                                            <li id="navCustomer" class="border-btm">
+                                                <a ID="lnkCustomersSmenu" href="~/Customers/List"><i class="mdi-image-navigate-next"></i>Customers</a>
+                                            </li>
+                                            <li id="navLocation" class="border-btm">
+                                                <a ID="lnkLocationsSMenu" href="~/Customers/locations"><i class="mdi-image-navigate-next"></i>Locations</a>
+                                            </li>
+                                            <li id="navEquipment" class="border-btm">
+                                                <a ID="lnkEquipmentsSMenu" href="~/Customers/Equipment"><i class="mdi-image-navigate-next"></i>Equipment</a>
+                                            </li>
+                                            <li id="navReceivePayment" class="border-btm">
+                                                <a ID="lnkReceivePayment" href="~/Customers/ReceivePayment"><i class="mdi-image-navigate-next"></i>Receive Payment</a>
+                                            </li>
+                                            <li id="navMakeDeposit" class="border-btm">
+                                                <a ID="lnkDeposit" href="~/Customers/MakeDeposit"><i class="mdi-image-navigate-next"></i>Make Deposit</a>
+                                            </li>
+                                            <li id="navCollections" class="border-btm">
+                                                <a ID="lnkCollections" href="~/Customers/Collections"><i class="mdi-image-navigate-next"></i>Collections</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="cntractsMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-notification-sync"></i>Recurring </a>
+                                    <div id="recurMgrSub" class="collapsible-body">
+                                        <ul>
+                                            <li id="navRecurringContracts" class="border-btm">
+                                                <a ID="lnkContractsMenu" href="~/Recurring/Contracts"><i class="mdi-image-navigate-next"></i>Recurring Contracts</a>
+                                            </li>
+
+                                            <li class="border-btm">
+                                                <a ID="lnkInvoicesMenu" href="~/Recurring/invoices"><i class="mdi-image-navigate-next"></i>Recurring Invoices</a>
+                                            </li>
+
+                                            <li class="border-btm">
+                                                <a ID="lnkTicketsMenu" href="~/Recurring/Tickets"><i class="mdi-image-navigate-next"></i>Recurring Tickets</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnk" href="~/Recurring/SafetyTests"><i class="mdi-image-navigate-next"></i>Safety Tests</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="cntractsMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-insert-invitation"></i>Schedule </a>
+                                    <div id="recurMgrSub" class="collapsible-body">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkScheduleMenu" href="~/Schedule/Board"><i class="mdi-image-navigate-next"></i>Schedule Board</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkListView" href="~/Schedule/List"><i class="mdi-image-navigate-next"></i>Ticket List</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="HyperLink1" href="~/Schedule/TimesheetEntry"><i class="mdi-image-navigate-next"></i>Timesheet Entry</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkTimesheet" href="~/Schedule/e_Timesheet"><i class="mdi-image-navigate-next"></i>e-Timesheet</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkMapMenu" href="~/Schedule/Map"><i class="mdi-image-navigate-next"></i>Map</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkRouteBuilder" href="~/Schedule/RouteBuilder"><i class="mdi-image-navigate-next"></i>Route Builder</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkRoutes" href="~/Schedule/Routes"><i class="mdi-image-navigate-next"></i>Routes</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="cntractsMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-payment"></i>Billing </a>
+                                    <div id="recurMgrSub" class="collapsible-body">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkInvoicesSMenu" href="~/Billing/Invoices"><i class="mdi-image-navigate-next"></i>Invoices</a>
+                                            </li>
+
+                                            <li class="border-btm">
+                                                <a ID="lnkBillcodeSMenu" href="~/Billing/BillingCodes"><i class="mdi-image-navigate-next"></i>Billing Codes</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkPaymentHistory" href="~/Billing/PaymentHistory"><i class="mdi-image-navigate-next"></i>Online Payment</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a Visible="false" ID="lnkPartsSMenu" style="display:none;" href="~/parts.aspx"><i class="mdi-image-navigate-next"></i>Parts</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="acctPayable" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-account-balance"></i>AP</a>
+                                    <div id="acctPayableSub" class="collapsible-body">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkVendors" href="~/AccountPayable/Vendor"><i class="mdi-image-navigate-next"></i>Vendors</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkAddBill" href="~/AccountPayable/Bills"><i class="mdi-image-navigate-next"></i>Bills</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkWriteCheck2" href="~/AccountPayable/ManageChecks"><i class="mdi-image-navigate-next"></i>Manage Checks</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="purchaseMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-work"></i>Purchasing </a>
+                                    <div class="collapsible-body" id="purchaseMgrSub">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkPO" href="~/managepo.aspx?f=c"><i class="mdi-image-navigate-next"></i>Purchase Orders</a>
+                                            </li>
+                                            <li class="border-btm" id="liReceivePO">
+                                                <a ID="lnkReceivePO" href="~/managereceivepo.aspx"><i class="mdi-image-navigate-next"></i>Receive PO</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="SalesMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-wallet-travel"></i>Sales </a>
+                                    <div id="SalesMgrSub" class="collapsible-body">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkProspect" href="~/prospects.aspx?f=c"><i class="mdi-image-navigate-next"></i>Leads</a>
+                                            </li>
+
+                                            <li class="border-btm">
+                                                <a ID="lnkTasks" href="~/tasks.aspx?f=c"><i class="mdi-image-navigate-next"></i>Tasks</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkOpportunities" href="~/opportunity.aspx?f=c"><i class="mdi-image-navigate-next"></i>Opportunities</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkEstimate" href="~/estimate.aspx?f=c"><i class="mdi-image-navigate-next"></i>Estimate</a>
+                                            </li>
+
+
+                                            <li class="border-btm">
+                                                <a ID="lnkEstimateTempl" href="~/estimatetemplate.aspx"><i class="mdi-image-navigate-next"></i>Templates</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkSalesSetup" href="~/salessetup.aspx"><i class="mdi-image-navigate-next"></i>Sales Setup</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="cntractsMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-assessment"></i>Project </a>
+                                    <div id="recurMgrSub" class="collapsible-body">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkProject" href="~/project/List"><i class="mdi-image-navigate-next"></i>Projects</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkDepartments" href="~/project/Departments"><i class="mdi-image-navigate-next"></i>Departments</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkProjectTempl" href="~/project/templates"><i class="mdi-image-navigate-next"></i>Project Templates</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="InventoryMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-format-align-justify"></i>Inventory </a>
+                                    <div id="ulInventoryMgr" class="collapsible-body">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkItemMaster" href="~/Inventory.aspx"><i class="mdi-image-navigate-next"></i>Item Master</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkAdjustment" href="~/InventoryAdjustments.aspx?f=c"><i class="mdi-image-navigate-next"></i>Item Adjustment</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkPostToProject" href="~/PostToProject.aspx?f=c"><i class="mdi-image-navigate-next"></i>Post To Project</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="prID" Visible="false" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-format-align-justify"></i>Payroll </a>
+                                    <div id="payrollmenutab" class="collapsible-body">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="runpayrolllink" href="~/etimesheet.aspx"><i class="mdi-image-navigate-next"></i>Run Payroll</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="Employeelink" href="~/EmployeeList.aspx"><i class="mdi-image-navigate-next"></i>Employees</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="payrollregisterlink" href="~/etimesheet.aspx"><i class="mdi-image-navigate-next"></i>Payroll Register</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="payrollformslink" href="~/etimesheet.aspx"><i class="mdi-image-navigate-next"></i>Payroll Forms</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="wagedeductionslink" href="~/WageDeductList.aspx"><i class="mdi-image-navigate-next"></i>Wages Deductions</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="wagecategorylink" href="~/WageCategoryList.aspx"><i class="mdi-image-navigate-next"></i>Wages Category</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="financeMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-attach-money"></i>Financials </a>
+                                    <div id="financeMgrSub" class="collapsible-body">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkCOA" href="~/chartofaccount.aspx?f=c"><i class="mdi-image-navigate-next"></i>Chart of Accounts</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkJournalEntry" href="~/journalentry.aspx?f=c"><i class="mdi-image-navigate-next"></i>Journal Entry</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkWriteCheck" href="~/managechecks.aspx?f=c"><i class="mdi-image-navigate-next"></i>Manage Checks</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkBankRecon" href="~/bankrecon.aspx"><i class="mdi-image-navigate-next"></i>Bank Reconciliation</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="financialStatement" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-editor-attach-money"></i>Statements</a>
+                                    <div class="collapsible-body" id="financeStateSub">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkTrialBalance" href="~/trialbalance.aspx"><i class="mdi-image-navigate-next"></i>Trial Balance </a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkBalanceSheet" href="~/balancesheet.aspx"><i class="mdi-image-navigate-next"></i>Balance Sheet</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkIncomeStatement" href="~/incomestatement.aspx"><i class="mdi-image-navigate-next"></i>Profit and Loss</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkComparativeStatement" href="~/ComparativeStatement.aspx"><i class="mdi-image-navigate-next"></i>Comparative Report</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkBudgets" href="~/Budgets.aspx"><i class="mdi-image-navigate-next"></i>Budgets</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="no-padding border-btm">
+                            <ul class="collapsible collapsible-accordion">
+                                <li class="bold">
+                                    <a ID="progMgr" class="collapsible-header waves-effect waves-cyan collapsible-height-nl"><i class="mdi-action-extension"></i>Programs </a>
+                                    <div id="progMgrSub" class="collapsible-body">
+                                        <ul>
+                                            <li class="border-btm">
+                                                <a ID="lnkUsersSMenu" href="~/Programs/Users"><i class="mdi-image-navigate-next"></i>Users</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkSetup" href="~/Programs/Setup"><i class="mdi-image-navigate-next"></i>Setup</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkCntrlPnl" href="~/Programs/ControlPanel"><i class="mdi-image-navigate-next"></i>Control Panel</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkCustomFields" href="~/Programs/CustomLabels"><i class="mdi-image-navigate-next"></i>Custom Labels</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkPeriodCloseOut" href="~/Programs/PeriodCloseOut"><i class="mdi-image-navigate-next"></i>Period Close Out</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkDataImport" href="~/Programs/DataImport"><i class="mdi-image-navigate-next"></i>Data Import</a>
+                                            </li>
+                                            <li class="border-btm">
+                                                <a ID="lnkManageCompanies" href="~/Programs/ManageCompanies"><i class="mdi-image-navigate-next"></i>Manage Companies</a>
+                                            </li> 
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="st-stat" style="height: 200px !important;"></li>
+                    </ul>
+                    <a href="#" data-activates="slide-out" class="sidenav-button sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan"><i class="mdi-navigation-menu"></i></a>
+                </aside>
+                <section id="content">
+
+                    @RenderBody()
+
+                </section>
+
+
+                <aside id="right-sidebar-nav">
+                    <ul id="chat-out" class="side-nav rightsidenav rightside-navigation side-nav-ht">
+
+
+
+                        <li class="li-hover">
+                            <a href="#" data-activates="chat-out" class="chat-close-collapse right"><i class="mdi-navigation-close"></i></a>
+                            <div id="right-search" class="row">
+                                <div class="userinfo">
+                                    <div class="userinfoimg">
+                                        <img src="~/MOMUI/Design/images/avatar.jpg" />
+                                    </div>
+                                    <div class="usernamewrp">
+                                        <span ID="lblUser"></span>
+                                    </div>
+                                    <div class="usernamewrpdept">
+                                        <span ID="lblSuper" class="small-text">Mode : Devlopment</span>
+                                    </div>
+                                    <div class="userlstwrap">
+                                        <ul class="userlst">
+                                            <li><a href="UserProfile.aspx">Profile</a></li>
+                                            <li>
+                                                <a href="UserProfile.aspx">Logout</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </aside>
+            </div>
+        </div>
+    </form>
+
+    <script src="~/MOMUI/Design/js/jquery.mCustomScrollbar.js"></script>
+    <script type="text/javascript" src="~/MOMUI/Design/js/materialize.js"></script>
+    <script type="text/javascript" src="~/MOMUI/Design/js/plugins/prism/prism.js"></script>
+    <script type="text/javascript" src="~/MOMUI/Design/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="~/MOMUI/Design/js/plugins.js"></script>
+    <script type="text/javascript" src="~/MOMUI/Design/js/custom-script.js"></script>
+    <script src="~/MOMUI/Design/js/moment.js"></script>
+    <script src="~/MOMUI/Design/js/pikaday.js"></script>
+    <script src="~/MOMUI/Design/js/pikaday.jquery.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript" src="~/MOMUI/Design/js/plugins/dropify/js/dropify.min.js"></script>
+    <!--File Upload Control-->
+    <link href="~/MOMUI/Design/js/plugins/dropify/css/dropify.css" type="text/css" rel="stylesheet" media="screen,projection">
+</body>
+</html>

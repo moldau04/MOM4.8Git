@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B6EC3853-4D2F-4EE5-8D8D-33A4A2FB459D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BryntumGanttChart</RootNamespace>
+    <AssemblyName>BryntumGanttChart</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Entities\GeneralBryntum.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Entities\Node.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Exception\Codes.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Exception\CrudException.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Request\GeneralRequest.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Request\LoadRequest.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Request\SyncRequest.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Request\SyncStoreRequest.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Request\SyncStoreRequestHandler.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Response\ErrorResponse.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Response\GeneralResponse.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Response\LoadResponse.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Response\LoadStoreResponse.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Response\SyncResponse.cs" />
+    <Compile Include="Bryntum\BryntumCRUD\CRUD\Response\SyncStoreResponse.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Assignment.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\Calendar.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\CalendarDay.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\Dependency.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\Entities.Context1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Entities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\Entities.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Entities.Designer.cs">
+      <DependentUpon>Entities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\Entities1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\Entities1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Entities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\GanttChart.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Entities\Assignment.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Entities\Calendar.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Entities\CalendarDay.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Entities\Dependency.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Entities\Resource.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Entities\Task.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Entities\TaskSegment.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Exception\GanttCodes.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Request\CalendarSyncRequest.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Request\GanttLoadRequest.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Request\GanttSyncRequest.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Request\Handler\AssignmentSyncHandler.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Request\Handler\CalendarDaySyncHandler.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Request\Handler\CalendarSyncHandler.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Request\Handler\DependencySyncHandler.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Request\Handler\ResourceSyncHandler.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Request\Handler\TaskSyncHandler.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Response\GanttLoadResponse.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Gantt\Response\GanttSyncResponse.cs" />
+    <Compile Include="Bryntum\BryntumGantt\Option.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\Resource.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\Task.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bryntum\BryntumGantt\TaskSegment.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Bryntum\BryntumGantt\Entities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Entities.Context1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Bryntum\BryntumGantt\Entities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Entities1.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="Bryntum\BryntumGantt\Entities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Entities1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Bryntum\BryntumGantt\Entities.edmx.diagram">
+      <DependentUpon>Entities.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bryntum\BryntumGantt\Gantt\Entities\Generated\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

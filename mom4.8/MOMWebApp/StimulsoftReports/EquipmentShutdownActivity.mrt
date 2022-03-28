@@ -1,0 +1,792 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="0" />
+    <DataSources isList="true" count="3">
+      <CompanyTable Ref="2" type="DataTableSource" isKey="true">
+        <Alias>CompanyTable</Alias>
+        <Columns isList="true" count="9">
+          <value>CompanyName,System.String</value>
+          <value>CompanyAddress,System.String</value>
+          <value>ContactNo,System.String</value>
+          <value>Email,System.String</value>
+          <value>City,System.String</value>
+          <value>State,System.String</value>
+          <value>Phone,System.String</value>
+          <value>Fax,System.String</value>
+          <value>Zip,System.String</value>
+        </Columns>
+        <Dictionary isRef="1" />
+        <Name>CompanyTable</Name>
+        <NameInSource>CompanyTable</NameInSource>
+      </CompanyTable>
+      <dtEquipShutdown Ref="3" type="DataTableSource" isKey="true">
+        <Alias>dtEquipShutdown</Alias>
+        <Columns isList="true" count="4">
+          <value>ID,System.Int32</value>
+          <value>Equipment,System.String</value>
+          <value>Location,System.String</value>
+          <value>Ticket,System.String</value>
+        </Columns>
+        <Dictionary isRef="1" />
+        <Name>dtEquipShutdown</Name>
+        <NameInSource>dtEquipShutdown</NameInSource>
+      </dtEquipShutdown>
+      <dtEquipShutdownHistory Ref="4" type="DataTableSource" isKey="true">
+        <Alias>dtEquipShutdownHistory</Alias>
+        <Columns isList="true" count="14">
+          <value>Date,System.DateTime</value>
+          <value>Equipment,System.String</value>
+          <value>ID,System.Int32</value>
+          <value>Location,System.String</value>
+          <value>LongDesc,Long_x0020_Desc,System.String</value>
+          <value>Mechanic,System.String</value>
+          <value>Planned,System.String</value>
+          <value>Reason,System.String</value>
+          <value>Row_x0023_,System.Int32</value>
+          <value>Status,System.String</value>
+          <value>Supervisor,System.String</value>
+          <value>Ticket,System.String</value>
+          <value>WorkCompleted,Work_x0020_Completed_x0020_Description,System.String</value>
+          <value>Worker,System.String</value>
+        </Columns>
+        <Dictionary isRef="1" />
+        <Name>dtEquipShutdownHistory</Name>
+        <NameInSource>dtEquipShutdownHistory</NameInSource>
+      </dtEquipShutdownHistory>
+    </DataSources>
+    <Relations isList="true" count="1">
+      <Relation Ref="5" type="DataRelation" isKey="true">
+        <Alias>Relation</Alias>
+        <ChildColumns isList="true" count="1">
+          <value>ID</value>
+        </ChildColumns>
+        <ChildSource isRef="4" />
+        <Dictionary isRef="1" />
+        <Name>Relation</Name>
+        <NameInSource>Relation</NameInSource>
+        <ParentColumns isList="true" count="1">
+          <value>ID</value>
+        </ParentColumns>
+        <ParentSource isRef="3" />
+      </Relation>
+    </Relations>
+    <Report isRef="0" />
+    <Resources isList="true" count="0" />
+    <Variables isList="true" count="4">
+      <value>,username,username,username,System.String,,False,False,False,False,_x003C__x003F_xml_x0020_version_x003D__x0022_1.0_x0022__x0020_encoding_x003D__x0022_utf-16_x0022__x0020_standalone_x003D__x0022_yes_x0022__x003F__x003E__x003C_StiSerializer_x0020_version_x003D__x0022_1.02_x0022__x0020_type_x003D__x0022_Net_x0022__x0020_application_x003D__x0022_State_x0022__x003E__x003C_DateTimeType_x003E_DateAndTime_x003C__x002F_DateTimeType_x003E__x003C_BindingVariable_x0020_isNull_x003D__x0022_true_x0022__x0020__x002F__x003E__x003C_Keys_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C_Values_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C_ValuesBinding_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C__x002F_StiSerializer_x003E_</value>
+      <value>,startDate,startDate,,System.Nullable`1[System.DateTime],,False,False,False,False,_x003C__x003F_xml_x0020_version_x003D__x0022_1.0_x0022__x0020_encoding_x003D__x0022_utf-16_x0022__x0020_standalone_x003D__x0022_yes_x0022__x003F__x003E__x003C_StiSerializer_x0020_version_x003D__x0022_1.02_x0022__x0020_type_x003D__x0022_Net_x0022__x0020_application_x003D__x0022_State_x0022__x003E__x003C_DateTimeType_x003E_DateAndTime_x003C__x002F_DateTimeType_x003E__x003C_BindingVariable_x0020_isNull_x003D__x0022_true_x0022__x0020__x002F__x003E__x003C_Keys_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C_Values_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C_ValuesBinding_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C__x002F_StiSerializer_x003E_,,True</value>
+      <value>,endDate,endDate,,System.DateTime,_x0031__x002F_15_x002F_2019_x0020_9:19:41_x0020_PM,False,False,False,False,_x003C__x003F_xml_x0020_version_x003D__x0022_1.0_x0022__x0020_encoding_x003D__x0022_utf-16_x0022__x0020_standalone_x003D__x0022_yes_x0022__x003F__x003E__x003C_StiSerializer_x0020_version_x003D__x0022_1.02_x0022__x0020_type_x003D__x0022_Net_x0022__x0020_application_x003D__x0022_State_x0022__x003E__x003C_DateTimeType_x003E_DateAndTime_x003C__x002F_DateTimeType_x003E__x003C_BindingVariable_x0020_isNull_x003D__x0022_true_x0022__x0020__x002F__x003E__x003C_Keys_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C_Values_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C_ValuesBinding_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C__x002F_StiSerializer_x003E_,,True</value>
+      <value>,IsSingleEq,IsSingleEq,,System.Boolean,true,False,False,False,False,_x003C__x003F_xml_x0020_version_x003D__x0022_1.0_x0022__x0020_encoding_x003D__x0022_utf-16_x0022__x0020_standalone_x003D__x0022_yes_x0022__x003F__x003E__x003C_StiSerializer_x0020_version_x003D__x0022_1.02_x0022__x0020_type_x003D__x0022_Net_x0022__x0020_application_x003D__x0022_State_x0022__x003E__x003C_DateTimeType_x003E_DateAndTime_x003C__x002F_DateTimeType_x003E__x003C_BindingVariable_x0020_isNull_x003D__x0022_true_x0022__x0020__x002F__x003E__x003C_Keys_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C_Values_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C_ValuesBinding_x0020_isList_x003D__x0022_true_x0022__x0020_count_x003D__x0022_0_x0022__x0020__x002F__x003E__x003C__x002F_StiSerializer_x003E_</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="2">
+    <Page1 Ref="6" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="4">
+        <PageHeaderBand1 Ref="7" type="PageHeaderBand" isKey="true">
+          <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.4,26.9,2.8</ClientRectangle>
+          <Components isList="true" count="9">
+            <Text1 Ref="8" type="Text" isKey="true">
+              <AllowHtmlTags>True</AllowHtmlTags>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,14.2,1.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,12,Bold</Font>
+              <Guid>e114bfa59dc946d3971703dacbf81ba0</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>EQUIPMENT{IIF(IsSingleEq,": [" + dtEquipShutdown.Equipment + "]", "")} SHUT DOWN ACTIVITY REPORT</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <TextQuality>Wysiwyg</TextQuality>
+              <Type>Expression</Type>
+            </Text1>
+            <Text46 Ref="9" type="Text" isKey="true">
+              <AllowHtmlTags>True</AllowHtmlTags>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>14.2,0,12.6,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>2245c7a556384ba7b149de987047823b</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text46</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>{CompanyTable.CompanyName}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextQuality>Wysiwyg</TextQuality>
+              <Type>Expression</Type>
+            </Text46>
+            <Text56 Ref="10" type="Text" isKey="true">
+              <AllowHtmlTags>True</AllowHtmlTags>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>15.4,0.6,11.4,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>f53b751b881d4809891c560568ba5711</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text56</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>{CompanyTable.City}, {CompanyTable.State} {CompanyTable.Zip} </Text>
+              <TextBrush>Black</TextBrush>
+              <TextQuality>Wysiwyg</TextQuality>
+              <Type>Expression</Type>
+            </Text56>
+            <Text57 Ref="11" type="Text" isKey="true">
+              <AllowHtmlTags>True</AllowHtmlTags>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>15.4,1,11.4,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>c9a40f9fb6f948838110d8f573c77e60</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text57</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>{IIF(CompanyTable.Phone == "", "", "Phone : ")}{IIF(CompanyTable.Phone == "", "", CompanyTable.Phone )}&amp;nbsp;</Text>
+              <TextBrush>Black</TextBrush>
+              <TextQuality>Wysiwyg</TextQuality>
+              <Type>Expression</Type>
+            </Text57>
+            <Text58 Ref="12" type="Text" isKey="true">
+              <AllowHtmlTags>True</AllowHtmlTags>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>15.4,1.4,11.4,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>fd642bb0cd4c43c28546e72df1e3d604</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text58</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>{IIF(CompanyTable.Fax == "", "", "Fax : ")} {IIF(CompanyTable.Fax == "", "", CompanyTable.Fax)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextQuality>Wysiwyg</TextQuality>
+              <Type>Expression</Type>
+            </Text58>
+            <Text60 Ref="13" type="Text" isKey="true">
+              <AllowHtmlTags>True</AllowHtmlTags>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>15.4,1.8,11.4,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>a64480623d604966b4d3baa8330d7f00</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text60</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>&amp;nbsp;{IIF(CompanyTable.Email == "", "", "Email : ")}{IIF(CompanyTable.Email == "", "", CompanyTable.Email)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextQuality>Wysiwyg</TextQuality>
+              <Type>Expression</Type>
+            </Text60>
+            <Text3 Ref="14" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,1.8,10.8,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>15be1e4955c4464998fbda6d1bfc1ef9</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>Print on  {Format("{0:MM/dd/yyyy}", Today)} By {username}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+            </Text3>
+            <Text2 Ref="15" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,1.2,12.8,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Guid>4509dc926e7448de9293c2f9af8dc734</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <Text>From {Format("{0:MM/dd/yyyy}", startDate)} to {Format("{0:MM/dd/yyyy}", endDate)}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+            </Text2>
+            <HorizontalLinePrimitive1 Ref="16" type="HorizontalLinePrimitive" isKey="true">
+              <ClientRectangle>0,2.4,26.8,0.0254</ClientRectangle>
+              <Color>Black</Color>
+              <EndCap Ref="17" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </EndCap>
+              <Name>HorizontalLinePrimitive1</Name>
+              <Page isRef="6" />
+              <Parent isRef="7" />
+              <StartCap Ref="18" type="Cap" isKey="true">
+                <Color>Black</Color>
+              </StartCap>
+            </HorizontalLinePrimitive1>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>PageHeaderBand1</Name>
+          <Page isRef="6" />
+          <Parent isRef="6" />
+          <PrintOn>OnlyFirstPage</PrintOn>
+        </PageHeaderBand1>
+        <PageFooterBand1 Ref="19" type="PageFooterBand" isKey="true">
+          <Brush>[255:255:255]</Brush>
+          <ClientRectangle>0,19.8,26.9,0.8</ClientRectangle>
+          <Components isList="true" count="2">
+            <Text62 Ref="20" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,0.11,7,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8,Bold</Font>
+              <Guid>72201cb5ca784b4eab94dadd125a51a3</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text62</Name>
+              <Page isRef="6" />
+              <Parent isRef="19" />
+              <Text>Mobile Office Manager</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text62>
+            <Text68 Ref="21" type="Text" isKey="true">
+              <Border>None;[0:0:0];1;Solid;False;4;[0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>19.8,0.11,7,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8,Bold</Font>
+              <Guid>5e16cfbd3b4a45848f2da12bbdb53be5</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text68</Name>
+              <Page isRef="6" />
+              <Parent isRef="19" />
+              <Text>Rev :{Today.ToString("MM/dd/yyyy")}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text68>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>PageFooterBand1</Name>
+          <Page isRef="6" />
+          <Parent isRef="6" />
+        </PageFooterBand1>
+        <HeaderdtEquipShutdown Ref="22" type="HeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,4,26.9,0.8</ClientRectangle>
+          <Components isList="true" count="2">
+            <HeaderdtEquipShutdown_Location Ref="23" type="Text" isKey="true">
+              <Border>None;[255:255:255];1;None;False;4;[0:0:0]</Border>
+              <Brush>[68:84:106]</Brush>
+              <ClientRectangle>0,0,18,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Margins>5,0,0,0</Margins>
+              <Name>HeaderdtEquipShutdown_Location</Name>
+              <Page isRef="6" />
+              <Parent isRef="22" />
+              <Text>Location</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </HeaderdtEquipShutdown_Location>
+            <HeaderdtEquipShutdown_Equipment Ref="24" type="Text" isKey="true">
+              <Border>None;[255:255:255];1;None;False;4;[0:0:0]</Border>
+              <Brush>[68:84:106]</Brush>
+              <ClientRectangle>18,0,8.8,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Margins>5,0,0,0</Margins>
+              <Name>HeaderdtEquipShutdown_Equipment</Name>
+              <Page isRef="6" />
+              <Parent isRef="22" />
+              <Text>Equipment</Text>
+              <TextBrush>[255:255:255]</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </HeaderdtEquipShutdown_Equipment>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>HeaderdtEquipShutdown</Name>
+          <Page isRef="6" />
+          <Parent isRef="6" />
+        </HeaderdtEquipShutdown>
+        <DatadtEquipShutdown Ref="25" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,5.6,26.9,2.4</ClientRectangle>
+          <Components isList="true" count="3">
+            <DatadtEquipShutdown_Location Ref="26" type="Text" isKey="true">
+              <Brush>[189:215:238]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,18,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Margins>5,0,0,0</Margins>
+              <Name>DatadtEquipShutdown_Location</Name>
+              <Page isRef="6" />
+              <Parent isRef="25" />
+              <Text>{dtEquipShutdown.Location}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </DatadtEquipShutdown_Location>
+            <DatadtEquipShutdown_Equipment Ref="27" type="Text" isKey="true">
+              <Brush>[189:215:238]</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>18,0,8.8,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,8</Font>
+              <Margins>5,0,0,0</Margins>
+              <Name>DatadtEquipShutdown_Equipment</Name>
+              <Page isRef="6" />
+              <Parent isRef="25" />
+              <Text>{dtEquipShutdown.Equipment}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </DatadtEquipShutdown_Equipment>
+            <SubReport1 Ref="28" type="SubReport" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.4,0.8,26.4,1.6</ClientRectangle>
+              <Components isList="true" count="0" />
+              <Name>SubReport1</Name>
+              <Page isRef="6" />
+              <Parameters isList="true" count="0" />
+              <Parent isRef="25" />
+              <SubReportPageGuid>aa4417b129b342108e6c82d105628bd8</SubReportPageGuid>
+            </SubReport1>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>dtEquipShutdown</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Name>DatadtEquipShutdown</Name>
+          <Page isRef="6" />
+          <Parent isRef="6" />
+          <Sort isList="true" count="0" />
+        </DatadtEquipShutdown>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>47efaa7ecb8244a89f3cec86d0b541d5</Guid>
+      <Margins>0.5,0.5,0.5,0.5</Margins>
+      <Name>Page1</Name>
+      <Orientation>Landscape</Orientation>
+      <PageHeight>21.6</PageHeight>
+      <PageWidth>27.9</PageWidth>
+      <PaperSize>Letter</PaperSize>
+      <Report isRef="0" />
+      <Watermark Ref="29" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+    <subReport_1 Ref="30" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="2">
+        <HeaderdtEquipShutdownHistory Ref="31" type="HeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.4,26.4,0.8</ClientRectangle>
+          <Components isList="true" count="9">
+            <HeaderdtEquipShutdownHistory_Date Ref="32" type="Text" isKey="true">
+              <Brush>[226:239:217]</Brush>
+              <ClientRectangle>0,0,2.8,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Margins>5,0,0,0</Margins>
+              <Name>HeaderdtEquipShutdownHistory_Date</Name>
+              <Page isRef="30" />
+              <Parent isRef="31" />
+              <Text>Date</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </HeaderdtEquipShutdownHistory_Date>
+            <HeaderdtEquipShutdownHistory_Mechanic Ref="33" type="Text" isKey="true">
+              <Brush>[226:239:217]</Brush>
+              <ClientRectangle>4.4,0,2.4,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Margins>5,0,0,0</Margins>
+              <Name>HeaderdtEquipShutdownHistory_Mechanic</Name>
+              <Page isRef="30" />
+              <Parent isRef="31" />
+              <Text>User</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </HeaderdtEquipShutdownHistory_Mechanic>
+            <HeaderdtEquipShutdownHistory_WorkCompletedDesc Ref="34" type="Text" isKey="true">
+              <Brush>[226:239:217]</Brush>
+              <ClientRectangle>18,0,4.8,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Margins>5,0,0,0</Margins>
+              <Name>HeaderdtEquipShutdownHistory_WorkCompletedDesc</Name>
+              <Page isRef="30" />
+              <Parent isRef="31" />
+              <Text> Long Description</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </HeaderdtEquipShutdownHistory_WorkCompletedDesc>
+            <HeaderdtEquipShutdownHistory_Status Ref="35" type="Text" isKey="true">
+              <Brush>[226:239:217]</Brush>
+              <ClientRectangle>22.8,0,1.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>HeaderdtEquipShutdownHistory_Status</Name>
+              <Page isRef="30" />
+              <Parent isRef="31" />
+              <Text>Status</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </HeaderdtEquipShutdownHistory_Status>
+            <HeaderdtEquipShutdownHistory_Supervisor Ref="36" type="Text" isKey="true">
+              <Brush>[226:239:217]</Brush>
+              <ClientRectangle>24.4,0,2,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Margins>5,0,0,0</Margins>
+              <Name>HeaderdtEquipShutdownHistory_Supervisor</Name>
+              <Page isRef="30" />
+              <Parent isRef="31" />
+              <Text>Supervisor</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <VertAlignment>Center</VertAlignment>
+            </HeaderdtEquipShutdownHistory_Supervisor>
+            <Text4 Ref="37" type="Text" isKey="true">
+              <Brush>[226:239:217]</Brush>
+              <ClientRectangle>14.4,0,3.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>6633917bce6b48bda11359ed060e387a</Guid>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="30" />
+              <Parent isRef="31" />
+              <Text>Reason</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text4>
+            <Text5 Ref="38" type="Text" isKey="true">
+              <Brush>[226:239:217]</Brush>
+              <ClientRectangle>6.8,0,1.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>58cd8a34682d41378329169883d31490</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text5</Name>
+              <Page isRef="30" />
+              <Parent isRef="31" />
+              <Text>Planned</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text5>
+            <Text8 Ref="39" type="Text" isKey="true">
+              <Brush>[226:239:217]</Brush>
+              <ClientRectangle>2.8,0,1.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>c6bc56fd11f84ecb9292db45fee19afb</Guid>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text8</Name>
+              <Page isRef="30" />
+              <Parent isRef="31" />
+              <Text>Ticket</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text8>
+            <Text10 Ref="40" type="Text" isKey="true">
+              <Brush>[226:239:217]</Brush>
+              <ClientRectangle>8.4,0,6,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Arial,10,Bold</Font>
+              <Guid>b103db81e2f04eb99bb9e0412569983e</Guid>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text10</Name>
+              <Page isRef="30" />
+              <Parent isRef="31" />
+              <Text>Work Completed Description</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text10>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>HeaderdtEquipShutdownHistory</Name>
+          <Page isRef="30" />
+          <Parent isRef="30" />
+        </HeaderdtEquipShutdownHistory>
+        <DatadtEquipShutdownHistory Ref="41" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,2,26.4,0.8</ClientRectangle>
+          <Components isList="true" count="9">
+            <DatadtEquipShutdownHistory_Date Ref="42" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>0,0,2.8,0.8</ClientRectangle>
+              <Conditions isList="true" count="2">
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Down_x0022__x007D_,[0:0:0],[237:237:237],Arial_x002C_8,True,False,,,None</value>
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Return_x0022__x007D_,[0:0:0],[255:255:255],Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
+              <Margins>2,2,4,4</Margins>
+              <Name>DatadtEquipShutdownHistory_Date</Name>
+              <Page isRef="30" />
+              <Parent isRef="41" />
+              <Text>{Format("{0:MM/dd/yyyy hh:mm tt}", dtEquipShutdownHistory.Date)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+            </DatadtEquipShutdownHistory_Date>
+            <DatadtEquipShutdownHistory_Mechanic Ref="43" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>4.4,0,2.4,0.8</ClientRectangle>
+              <Conditions isList="true" count="2">
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Down_x0022__x007D_,[0:0:0],[237:237:237],Arial_x002C_8,True,False,,,None</value>
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Return_x0022__x007D_,[0:0:0],[255:255:255],Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
+              <Margins>2,2,4,4</Margins>
+              <Name>DatadtEquipShutdownHistory_Mechanic</Name>
+              <Page isRef="30" />
+              <Parent isRef="41" />
+              <Text>{dtEquipShutdownHistory.Worker}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+            </DatadtEquipShutdownHistory_Mechanic>
+            <DatadtEquipShutdownHistory_WorkCompletedDesc Ref="44" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>18,0,4.8,0.8</ClientRectangle>
+              <Conditions isList="true" count="2">
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Down_x0022__x007D_,[0:0:0],[237:237:237],Arial_x002C_8,True,False,,,None</value>
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Return_x0022__x007D_,[0:0:0],[255:255:255],Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
+              <Margins>2,2,4,4</Margins>
+              <Name>DatadtEquipShutdownHistory_WorkCompletedDesc</Name>
+              <Page isRef="30" />
+              <Parent isRef="41" />
+              <Text>{dtEquipShutdownHistory.LongDesc}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+            </DatadtEquipShutdownHistory_WorkCompletedDesc>
+            <DatadtEquipShutdownHistory_Status Ref="45" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>22.8,0,1.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="2">
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Down_x0022__x007D_,[0:0:0],[237:237:237],Arial_x002C_8,True,False,,,None</value>
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Return_x0022__x007D_,[0:0:0],[255:255:255],Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,4,4</Margins>
+              <Name>DatadtEquipShutdownHistory_Status</Name>
+              <Page isRef="30" />
+              <Parent isRef="41" />
+              <Text>{dtEquipShutdownHistory.Status}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+            </DatadtEquipShutdownHistory_Status>
+            <DatadtEquipShutdownHistory_Supervisor Ref="46" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>24.4,0,2,0.8</ClientRectangle>
+              <Conditions isList="true" count="2">
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Down_x0022__x007D_,[0:0:0],[237:237:237],Arial_x002C_8,True,False,,,None</value>
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Return_x0022__x007D_,[0:0:0],[255:255:255],Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
+              <Margins>2,2,4,4</Margins>
+              <Name>DatadtEquipShutdownHistory_Supervisor</Name>
+              <Page isRef="30" />
+              <Parent isRef="41" />
+              <Text>{dtEquipShutdownHistory.Supervisor}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+            </DatadtEquipShutdownHistory_Supervisor>
+            <Text6 Ref="47" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>14.4,0,3.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="2">
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Down_x0022__x007D_,[0:0:0],[237:237:237],Arial_x002C_8,True,False,,,None</value>
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Return_x0022__x007D_,[0:0:0],[255:255:255],Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
+              <Margins>2,2,4,4</Margins>
+              <Name>Text6</Name>
+              <Page isRef="30" />
+              <Parent isRef="41" />
+              <Text>{dtEquipShutdownHistory.Reason}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+            </Text6>
+            <Text7 Ref="48" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>6.8,0,1.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="2">
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Down_x0022__x007D_,[0:0:0],[237:237:237],Arial_x002C_8,True,False,,,None</value>
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Return_x0022__x007D_,[0:0:0],[255:255:255],Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>2,2,4,4</Margins>
+              <Name>Text7</Name>
+              <Page isRef="30" />
+              <Parent isRef="41" />
+              <Text>{dtEquipShutdownHistory.Planned}</Text>
+              <TextBrush>Black</TextBrush>
+            </Text7>
+            <Text9 Ref="49" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>2.8,0,1.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="2">
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Down_x0022__x007D_,[0:0:0],[237:237:237],Arial_x002C_8,True,False,,,None</value>
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Return_x0022__x007D_,[0:0:0],[255:255:255],Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
+              <Guid>f9ad73faab5f4e5197d8fbc3a5732065</Guid>
+              <Margins>2,2,4,4</Margins>
+              <Name>Text9</Name>
+              <Page isRef="30" />
+              <Parent isRef="41" />
+              <Text>{dtEquipShutdownHistory.Ticket}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>DataColumn</Type>
+            </Text9>
+            <Text11 Ref="50" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanGrow>True</CanGrow>
+              <ClientRectangle>8.4,0,6,0.8</ClientRectangle>
+              <Conditions isList="true" count="2">
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Down_x0022__x007D_,[0:0:0],[237:237:237],Arial_x002C_8,True,False,,,None</value>
+                <value>_x007B_dtEquipShutdownHistory.Status_x0020__x003D__x003D__x0020__x0022_Return_x0022__x007D_,[0:0:0],Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
+              <Margins>2,2,4,4</Margins>
+              <Name>Text11</Name>
+              <Page isRef="30" />
+              <Parent isRef="41" />
+              <Text>{dtEquipShutdownHistory.WorkCompleted}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+            </Text11>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName>Relation</DataRelationName>
+          <DataSourceName>dtEquipShutdownHistory</DataSourceName>
+          <Filters isList="true" count="0" />
+          <MasterComponent isRef="25" />
+          <Name>DatadtEquipShutdownHistory</Name>
+          <Page isRef="30" />
+          <Parent isRef="30" />
+          <Sort isList="true" count="0" />
+        </DatadtEquipShutdownHistory>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>aa4417b129b342108e6c82d105628bd8</Guid>
+      <Margins>1,1,1,1</Margins>
+      <Name>subReport_1</Name>
+      <Orientation>Landscape</Orientation>
+      <PageHeight>29.7</PageHeight>
+      <PageWidth>28.4</PageWidth>
+      <Report isRef="0" />
+      <Watermark Ref="51" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </subReport_1>
+  </Pages>
+  <PrinterSettings Ref="52" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>12/14/2018 3:28:56 PM</ReportChanged>
+  <ReportCreated>12/14/2018 3:28:56 PM</ReportCreated>
+  <ReportGuid>6cd950a412e64362a9927e581d10fa3b</ReportGuid>
+  <ReportName>Report</ReportName>
+  <ReportUnit>Centimeters</ReportUnit>
+  <ReportVersion>2018.2.3.0</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="0" />
+</StiSerializer>

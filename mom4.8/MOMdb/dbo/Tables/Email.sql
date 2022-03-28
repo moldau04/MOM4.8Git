@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[Email](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Type] [varchar](20) NULL,
+	[Subject] [varchar](50) NULL,
+	[Body] [ntext] NULL,
+	[BitMap] [bit] NULL,
+	[BodyMulitple] [ntext] NULL,
+ CONSTRAINT [PK_Email] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO

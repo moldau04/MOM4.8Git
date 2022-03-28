@@ -1,0 +1,336 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+<style>
+    .autocomplete_completionListElement {
+        margin: 0px !important;
+        background-color: #fff;
+        color: windowtext;
+        border: buttonshadow;
+        border-width: 1px;
+        border-style: solid;
+        cursor: default;
+        overflow: auto;
+        height: 200px;
+        text-align: left;
+        list-style-type: none;
+    }
+</style>
+<style>
+    [id$='PageSizeComboBox'] {
+        width: 5.1em !important;
+    }
+</style>
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-action-payment"></i>&nbsp;Billing Codes</div>
+                                <div class="buttonContainer">
+                                    <div ID="pnlGridButtons">
+                                        <div class="btnlinks">
+                                            <a ID="lnkAddnew" onclick="OpenBillingCodetModal();return false">Add</a>
+                                            @*<div ID="RadWindowManager1" class="modal fade">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div ID="BillingCodeWindow" Width="650" Height="550">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <div class="btnlinks">
+                                                                    <label class="title_text">Select MCP Template</label>
+                                                                </div>
+                                                            </div>
+                                                            <div style="margin-top: 15px;" class="modal-body">
+
+                                                                <div class="form-section-row">
+                                                                    <div class="form-section2">
+                                                                        <div class="input-field col s12">
+                                                                            <div class="row">
+                                                                                <input type="text" ID="txtBillCode" class="Contact-search" MaxLength="30" />
+
+                                                                                <label for="txtBillCode">Billing Code</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-section2-blank">
+                                                                        &nbsp;
+                                                                    </div>
+                                                                    <div class="form-section2">
+                                                                        <div class="input-field col s12">
+                                                                            <div class="row">
+                                                                                <label class="drpdwn-label">Status</label>
+
+                                                                                <select ID="ddlStatus" class="browser-default">
+                                                                                    <option Value="0">Active</option>
+                                                                                    <option Value="1">Inactive</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-section-row" style="padding-left: 0 !important; margin-top: -20px;">
+                                                                    <div class="form-section2">
+                                                                        <div class="input-field col s12">
+                                                                            <div class="row">
+                                                                                <input type="text" ID="txtBillBal" MaxLength="25" class="Contact-search" />
+                                                                                <label for="txtBillBal">Rate</label>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="form-section2-blank">
+                                                                        &nbsp;
+                                                                    </div>
+                                                                    <div class="form-section2">
+                                                                        <div class="input-field col s12">
+                                                                            <div class="row">
+                                                                                <input type="text" ID="txtBillMeasure" MaxLength="10" class="Contact-search" />
+                                                                                <label for="txtBillMeasure">Measure</label>
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-section-row" style="padding-left: 0 !important; margin-top: -20px;">
+
+                                                                    <div class="input-field col s12">
+                                                                        <div class="row">
+                                                                            <input type="text" ID="txtAccount" class="Contact-search searchinput" onkeyup="EmptyValue(this);" autocomplete="off" placeholder="Search by Account # or Description" />
+                                                                            <label for="txtAccount">GL Account</label>
+                                                                            <div id="ListDivisor"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-section-row" style="padding-left: 0 !important; margin-top: -20px;">
+                                                                    <div class="input-field col s12">
+                                                                        <div class="row">
+                                                                            <textarea ID="txtBillDesc" TextMode="MultiLine" MaxLength="8000" class="materialize-textarea"></textarea>
+                                                                            <label for="txtBillDesc">Billing&nbsp;Code&nbsp;Description</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-section-row" style="padding-left: 0 !important; margin-top: -20px;">
+                                                                    <div class="input-field col s12">
+                                                                        <div class="row">
+                                                                            <label for="txtBillRemarks">Remarks</label>
+                                                                            <textarea ID="txtBillRemarks" TextMode="MultiLine" runat="server" MaxLength="8000" class="materialize-textarea"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div style="clear: both;"></div>
+
+                                                                <div style="float: left; padding-left: 0 !important; margin-top: -20px;">
+                                                                    <div class="btnlinks">
+                                                                        <a ID="lnkBillingCodesSave" ValidationGroup="serv">Save</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+                                        </div>
+                                        <div class="btnlinks">
+                                            <a ID="lnkBtnEdit" style="cursor: pointer;" onclick="OpenContactPopupEdit(this);return false">Edit</a>
+                                        </div>
+                                        <div class="btnlinks">
+                                            <a ID="lnkDeleteBillingCodes" onclick="return confirm('Do you really want to delete this Billing Code ?');" CausesValidation="False">Delete</a>
+                                        </div>
+                                    </div>
+
+                                    <ul id="dropdown1" class="dropdown-content">
+                                        <li>
+                                            <a href="CustomersReport.aspx?type=Customer">Add New Report</a>
+                                        </li>
+
+                                    </ul>
+                                    <div class="btnlinks">
+                                        <a class="dropdown-button" data-beloworigin="true" href="customersreport.aspx" data-activates="dropdown1">
+                                            Reports
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a ID="lnkClose" CausesValidation="false"><i class="mdi-content-clear"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="srchpane">
+            <div class="srchpaneinner">
+                <div class="col lblsz2 lblszfloat">
+                    <div class="row">
+                        <span class="tro trost">
+                            <span class="css-checkbox">
+                                <input type="checkbox" ID="lnkChk" AutoPostBack="True" />
+                                <label>Incl. Inactive</label>
+                            </span>
+                        </span>
+                        <span class="tro trost">
+                            <a ID="lnkShowAll">Show All </a>
+                        </span>
+                        <span class="tro trost">
+                            @*<div ID="updpnl" UpdateMode="Conditional">
+                                <div>*@
+                            <label ID="lblRecordCount" style="font-size:0.9rem">Record(s) found</label>
+                            @* </div>
+                                </div>*@
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid_container">
+            <div class="form-section-row" style="margin-bottom: 0 !important;">
+                <div class="RadGrid RadGrid_Material">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@Html.Hidden("hdnBillID")
+@Html.Hidden("hdnBillName")
+@Html.Hidden("hdnAddEdit")
+@Html.Hidden("hdnIsEdit", "Y")
+<input id="hdnPatientId" type="hidden" />
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+
+    });
+
+    function OpenBillingCodetModal() {
+        debugger;
+        $("#txtBillCode").val("");
+        $("#txtBillDesc").val("");
+        $("#txtAccount").val("");
+        $("#ddlStatus").val("");
+        $("#txtBillBal").val("");
+        $("#txtBillMeasure").val("");
+        $("#txtBillRemarks").val("");
+        $("#hdnBillName").val("");
+        $("#hdnAddEdit").val("0");
+        var wnd = $("#BillingCodeWindow");
+        var wnd = $("#BillingCodeWindow");
+        //wnd.set_title("Add Bill Code");
+        $("#RadWindowManager1").modal('show');
+        //wnd.show();
+
+    }
+    function OpenContactPopupEdit() {
+
+        var ID = "";
+        var Name = "";
+        var Description = "";
+        var Account = "";
+        var Statusid = "";
+        var Price1 = "";
+        var Measure = "";
+        var Remarks = "";
+        var AcctID = "";
+        $("#RadGrid_BillCodes").find('tr:not(:first, :last)').each(function () {
+            var $tr = $(this);
+            $tr.find('input[type="checkbox"]:checked').each(function (index, value) {
+                ID = $tr.find('span[id*=lblIndexID]').text();
+                Name = $tr.find('span[id*=lblId]').text();
+                Description = $tr.find('span[id*=lbldesc]').text();
+                Account = $tr.find('span[id*=lblaccount]').text();
+                Statusid = $tr.find('span[id*=lblStatusID]').text();
+                Price1 = $tr.find('span[id*=lblbalance]').text();
+                Measure = $tr.find('span[id*=lblMeasure]').text();
+                Remarks = $tr.find('span[id*=lblrem]').text();
+                AcctID = $tr.find('span[id*=lblAcctID]').text();
+            });
+        });
+        if (ID != "") {
+            $("#txtBillCode").val(Name);
+            $("#txtBillDesc").val(Description);
+            $("#txtAccount").val(Account);
+            $("#ddlStatus").val(Statusid);
+            $("#txtBillBal").val(Price1);
+            $("#txtBillMeasure").val(Measure);
+            $("#txtBillRemarks").val(Remarks);
+            $("#hdnBillID").val(ID);
+            $("#hdnBillName").val(Name);
+            $("#hdnPatientId").val(AcctID);
+            $("#hdnAddEdit").val("1");
+
+            var wnd = $find("#BillingCodeWindow");
+            wnd.set_title("Edit Bill Code");
+            var val = $("#hdnIsEdit").val();
+            if (val == "Y") {
+                wnd.Show();
+            }
+            Materialize.updateTextFields();
+
+        }
+
+    }
+    function CloseBillingCodeWindow() {
+        var wnd = $find("#BillingCodeWindow");
+        wnd.Close();
+    }
+    function ChkWarning() {
+        noty({
+            text: 'Please select any one to edit.',
+            type: 'warning',
+            layout: 'topCenter',
+            closeOnSelfClick: false,
+            timeout: 5000,
+            theme: 'noty_theme_default',
+            closable: true
+        });
+        return false;
+    }
+    function ace_itemSelected(sender, e) {
+        var hdnPatientId = document.getElementById("#hdnPatientId");
+        hdnPatientId.val(e.get_value());
+    }
+    function EmptyValue(txt) {
+        if ($(txt).val() == "") { $("#hdnPatientId").val(''); }
+    }
+    function ChkGL(sender, args) {
+        var hdnGL = document.getElementById("#hdnPatientId");
+        if (hdnGL.val() == '') {
+            args.IsValid = false;
+        }
+        else if (hdnGL.val() == '0') {
+            args.IsValid = false;
+        }
+    }
+</script>

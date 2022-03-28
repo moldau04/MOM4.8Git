@@ -1,0 +1,1471 @@
+{
+  "ReportVersion": "2018.2.3.0",
+  "ReportGuid": "6fb9ab8e45b04edda658c0c8159e3fd2",
+  "ReportName": "Report",
+  "ReportAlias": "Report",
+  "ReportCreated": "/Date(91800000+0700)/",
+  "ReportChanged": "/Date(1536656353742+0700)/",
+  "EngineVersion": "EngineV2",
+  "CalculationMode": "Interpretation",
+  "ReportUnit": "Inches",
+  "Script": "using System;\r\nusing System.Drawing;\r\nusing System.Windows.Forms;\r\nusing System.Data;\r\nusing Stimulsoft.Controls;\r\nusing Stimulsoft.Base.Drawing;\r\nusing Stimulsoft.Report;\r\nusing Stimulsoft.Report.Dialogs;\r\nusing Stimulsoft.Report.Components;\r\n\r\nnamespace Reports\r\n{\r\n    public class Report : Stimulsoft.Report.StiReport\r\n    {\r\n        public Report()        {\r\n            this.InitializeComponent();\r\n        }\r\n\r\n        #region StiReport Designer generated code - do not modify\r\n\t\t#endregion StiReport Designer generated code - do not modify\r\n    }\r\n}\r\n",
+  "Styles": {
+    "0": {
+      "Ident": "StiChartStyle",
+      "Name": "Style1",
+      "Border": ";;;;;;;solid:0,0,0",
+      "Brush": "solid:",
+      "BrushType": "Solid",
+      "StyleColors": {
+        "0": "237,125,49",
+        "1": "255,192,0",
+        "2": "91,155,213",
+        "3": "67,104,43",
+        "4": "38,68,120",
+        "5": "153,115,0"
+      },
+      "ChartAreaBrush": "solid:255,255,255",
+      "SeriesLabelsBrush": "solid:255,255,255",
+      "SeriesLabelsBorderColor": "140,140,140",
+      "LegendBrush": "solid:255,255,255",
+      "LegendBorderColor": "DimGray",
+      "LegendTitleColor": "DimGray",
+      "InterlacingHorBrush": "solid:10,155,155,155",
+      "InterlacingVertBrush": "solid:10,155,155,155",
+      "GridLinesHorColor": "100,105,105,105",
+      "GridLinesVertColor": "100,105,105,105"
+    }
+  },
+  "ReferencedAssemblies": {
+    "0": "System.Dll",
+    "1": "System.Drawing.Dll",
+    "2": "System.Windows.Forms.Dll",
+    "3": "System.Data.Dll",
+    "4": "System.Xml.Dll",
+    "5": "Stimulsoft.Controls.Dll",
+    "6": "Stimulsoft.Base.Dll",
+    "7": "Stimulsoft.Report.Dll"
+  },
+  "Dictionary": {
+    "Variables": {
+      "0": {
+        "Name": "paramSDate",
+        "Alias": "paramSDate",
+        "Type": "System.String",
+        "Description": "paramSDate"
+      },
+      "1": {
+        "Name": "paramEDate",
+        "Alias": "paramEDate",
+        "Type": "System.String",
+        "Description": "paramEDate"
+      },
+      "2": {
+        "Name": "paramUsername",
+        "Alias": "paramUsername",
+        "Type": "System.String",
+        "Description": "paramUsername"
+      },
+      "3": {
+        "Name": "paramNetAmount",
+        "Alias": "paramNetAmount",
+        "Type": "System.Double",
+        "Description": "paramNetAmount"
+      },
+      "4": {
+        "Name": "paramNetText",
+        "Alias": "paramNetText",
+        "Type": "System.String",
+        "Description": "paramNetText"
+      },
+      "5": {
+        "Name": "paramExpCIIAll",
+        "Alias": "paramExpCIIAll",
+        "Type": "System.String",
+        "Description": "paramExpCIIAll"
+      },
+      "6": {
+        "Name": "paramPercent",
+        "Alias": "paramPercent",
+        "Type": "System.String",
+        "Description": "paramPercent"
+      },
+      "7": {
+        "Name": "paramRev",
+        "Alias": "paramRev",
+        "Type": "System.Double",
+        "Description": "paramRev"
+      },
+      "8": {
+        "Name": "paramCPercent",
+        "Alias": "paramCPercent",
+        "Type": "System.String",
+        "Description": "paramCPercent"
+      },
+      "9": {
+        "Name": "paramEPercent",
+        "Alias": "paramEPercent",
+        "Type": "System.String",
+        "Description": "paramEPercent"
+      }
+    },
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "dsCompany",
+        "Alias": "dsCompany",
+        "Columns": {
+          "0": {
+            "Name": "Name",
+            "Index": -1,
+            "NameInSource": "Name",
+            "Alias": "Name",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "Address",
+            "Index": -1,
+            "NameInSource": "Address",
+            "Alias": "Address",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "City",
+            "Index": -1,
+            "NameInSource": "City",
+            "Alias": "City",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "state",
+            "Index": -1,
+            "NameInSource": "state",
+            "Alias": "state",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "zip",
+            "Index": -1,
+            "NameInSource": "zip",
+            "Alias": "zip",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "phone",
+            "Index": -1,
+            "NameInSource": "phone",
+            "Alias": "phone",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "email",
+            "Index": -1,
+            "NameInSource": "email",
+            "Alias": "email",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "fax",
+            "Index": -1,
+            "NameInSource": "fax",
+            "Alias": "fax",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "Logo",
+            "Index": -1,
+            "NameInSource": "Logo",
+            "Alias": "Logo",
+            "Type": "System.Byte[]"
+          },
+          "9": {
+            "Name": "webaddress",
+            "Index": -1,
+            "NameInSource": "webaddress",
+            "Alias": "webaddress",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "dsCompany"
+      },
+      "1": {
+        "Ident": "StiDataTableSource",
+        "Name": "dsDetails",
+        "Alias": "dsDetails",
+        "Columns": {
+          "0": {
+            "Name": "paramSDate",
+            "Index": -1,
+            "NameInSource": "paramSDate",
+            "Alias": "paramSDate",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "paramEDate",
+            "Index": -1,
+            "NameInSource": "paramEDate",
+            "Alias": "paramEDate",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "paramUsername",
+            "Index": -1,
+            "NameInSource": "paramUsername",
+            "Alias": "paramUsername",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "dsDetails"
+      },
+      "2": {
+        "Ident": "StiDataTableSource",
+        "Name": "Revenues",
+        "Alias": "Revenues",
+        "Columns": {
+          "0": {
+            "Name": "Account",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Account",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "DepartmentName",
+            "Index": -1,
+            "NameInSource": "DepartmentName",
+            "Alias": "DepartmentName",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "GSO",
+            "Index": -1,
+            "NameInSource": "GSO",
+            "Alias": "GSO",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "UNI",
+            "Index": -1,
+            "NameInSource": "UNI",
+            "Alias": "UNI",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "MED",
+            "Index": -1,
+            "NameInSource": "MED",
+            "Alias": "MED",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CLT",
+            "Index": -1,
+            "NameInSource": "CLT",
+            "Alias": "CLT",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "ERO",
+            "Index": -1,
+            "NameInSource": "ERO",
+            "Alias": "ERO",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "ROA",
+            "Index": -1,
+            "NameInSource": "ROA",
+            "Alias": "ROA",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "COL",
+            "Index": -1,
+            "NameInSource": "COL",
+            "Alias": "COL",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "RIC",
+            "Index": -1,
+            "NameInSource": "RIC",
+            "Alias": "RIC",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "HQ",
+            "Index": -1,
+            "NameInSource": "HQ",
+            "Alias": "HQ",
+            "Type": "System.String"
+          },
+          "13": {
+            "Name": "SEG",
+            "Index": -1,
+            "NameInSource": "SEG",
+            "Alias": "SEG",
+            "Type": "System.String"
+          },
+          "14": {
+            "Name": "Dept Total",
+            "Index": -1,
+            "NameInSource": "Dept Total",
+            "Alias": "Dept Total",
+            "Type": "System.String"
+          },
+          "15": {
+            "Name": "DUR",
+            "Index": -1,
+            "NameInSource": "DUR",
+            "Alias": "DUR",
+            "Type": "System.String"
+          },
+          "16": {
+            "Name": "1BANK",
+            "Index": -1,
+            "NameInSource": "1BANK",
+            "Alias": "1BANK",
+            "Type": "System.String"
+          },
+          "17": {
+            "Name": "BBT",
+            "Index": -1,
+            "NameInSource": "BBT",
+            "Alias": "BBT",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "Revenues"
+      },
+      "3": {
+        "Ident": "StiDataTableSource",
+        "Name": "CostOfSales",
+        "Alias": "CostOfSales",
+        "Columns": {
+          "0": {
+            "Name": "Account",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Account",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "DepartmentName",
+            "Index": -1,
+            "NameInSource": "DepartmentName",
+            "Alias": "DepartmentName",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "GSO",
+            "Index": -1,
+            "NameInSource": "GSO",
+            "Alias": "GSO",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "UNI",
+            "Index": -1,
+            "NameInSource": "UNI",
+            "Alias": "UNI",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "MED",
+            "Index": -1,
+            "NameInSource": "MED",
+            "Alias": "MED",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CLT",
+            "Index": -1,
+            "NameInSource": "CLT",
+            "Alias": "CLT",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "ERO",
+            "Index": -1,
+            "NameInSource": "ERO",
+            "Alias": "ERO",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "ROA",
+            "Index": -1,
+            "NameInSource": "ROA",
+            "Alias": "ROA",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "COL",
+            "Index": -1,
+            "NameInSource": "COL",
+            "Alias": "COL",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "RIC",
+            "Index": -1,
+            "NameInSource": "RIC",
+            "Alias": "RIC",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "HQ",
+            "Index": -1,
+            "NameInSource": "HQ",
+            "Alias": "HQ",
+            "Type": "System.String"
+          },
+          "13": {
+            "Name": "SEG",
+            "Index": -1,
+            "NameInSource": "SEG",
+            "Alias": "SEG",
+            "Type": "System.String"
+          },
+          "14": {
+            "Name": "Dept Total",
+            "Index": -1,
+            "NameInSource": "Dept Total",
+            "Alias": "Dept Total",
+            "Type": "System.String"
+          },
+          "15": {
+            "Name": "DUR",
+            "Index": -1,
+            "NameInSource": "DUR",
+            "Alias": "DUR",
+            "Type": "System.String"
+          },
+          "16": {
+            "Name": "1BANK",
+            "Index": -1,
+            "NameInSource": "1BANK",
+            "Alias": "1BANK",
+            "Type": "System.String"
+          },
+          "17": {
+            "Name": "BBT",
+            "Index": -1,
+            "NameInSource": "BBT",
+            "Alias": "BBT",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "CostOfSales"
+      },
+      "4": {
+        "Ident": "StiDataTableSource",
+        "Name": "Expenses",
+        "Alias": "Expenses",
+        "Columns": {
+          "0": {
+            "Name": "Account",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Account",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "DepartmentName",
+            "Index": -1,
+            "NameInSource": "DepartmentName",
+            "Alias": "DepartmentName",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "GSO",
+            "Index": -1,
+            "NameInSource": "GSO",
+            "Alias": "GSO",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "UNI",
+            "Index": -1,
+            "NameInSource": "UNI",
+            "Alias": "UNI",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "MED",
+            "Index": -1,
+            "NameInSource": "MED",
+            "Alias": "MED",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CLT",
+            "Index": -1,
+            "NameInSource": "CLT",
+            "Alias": "CLT",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "ERO",
+            "Index": -1,
+            "NameInSource": "ERO",
+            "Alias": "ERO",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "ROA",
+            "Index": -1,
+            "NameInSource": "ROA",
+            "Alias": "ROA",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "COL",
+            "Index": -1,
+            "NameInSource": "COL",
+            "Alias": "COL",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "RIC",
+            "Index": -1,
+            "NameInSource": "RIC",
+            "Alias": "RIC",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "HQ",
+            "Index": -1,
+            "NameInSource": "HQ",
+            "Alias": "HQ",
+            "Type": "System.String"
+          },
+          "13": {
+            "Name": "SEG",
+            "Index": -1,
+            "NameInSource": "SEG",
+            "Alias": "SEG",
+            "Type": "System.String"
+          },
+          "14": {
+            "Name": "Dept Total",
+            "Index": -1,
+            "NameInSource": "Dept Total",
+            "Alias": "Dept Total",
+            "Type": "System.String"
+          },
+          "15": {
+            "Name": "DUR",
+            "Index": -1,
+            "NameInSource": "DUR",
+            "Alias": "DUR",
+            "Type": "System.String"
+          },
+          "16": {
+            "Name": "1BANK",
+            "Index": -1,
+            "NameInSource": "1BANK",
+            "Alias": "1BANK",
+            "Type": "System.String"
+          },
+          "17": {
+            "Name": "BBT",
+            "Index": -1,
+            "NameInSource": "BBT",
+            "Alias": "BBT",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "Expenses"
+      },
+      "5": {
+        "Ident": "StiDataTableSource",
+        "Name": "RevenuesTotal",
+        "Alias": "RevenuesTotal",
+        "Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "DepartmentName",
+            "Index": -1,
+            "NameInSource": "DepartmentName",
+            "Alias": "DepartmentName",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "GSO",
+            "Index": -1,
+            "NameInSource": "GSO",
+            "Alias": "GSO",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "UNI",
+            "Index": -1,
+            "NameInSource": "UNI",
+            "Alias": "UNI",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "MED",
+            "Index": -1,
+            "NameInSource": "MED",
+            "Alias": "MED",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CLT",
+            "Index": -1,
+            "NameInSource": "CLT",
+            "Alias": "CLT",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "ERO",
+            "Index": -1,
+            "NameInSource": "ERO",
+            "Alias": "ERO",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "ROA",
+            "Index": -1,
+            "NameInSource": "ROA",
+            "Alias": "ROA",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "COL",
+            "Index": -1,
+            "NameInSource": "COL",
+            "Alias": "COL",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "RIC",
+            "Index": -1,
+            "NameInSource": "RIC",
+            "Alias": "RIC",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "HQ",
+            "Index": -1,
+            "NameInSource": "HQ",
+            "Alias": "HQ",
+            "Type": "System.String"
+          },
+          "13": {
+            "Name": "SEG",
+            "Index": -1,
+            "NameInSource": "SEG",
+            "Alias": "SEG",
+            "Type": "System.String"
+          },
+          "14": {
+            "Name": "Dept Total",
+            "Index": -1,
+            "NameInSource": "Dept Total",
+            "Alias": "Dept Total",
+            "Type": "System.String"
+          },
+          "15": {
+            "Name": "DUR",
+            "Index": -1,
+            "NameInSource": "DUR",
+            "Alias": "DUR",
+            "Type": "System.String"
+          },
+          "16": {
+            "Name": "1BANK",
+            "Index": -1,
+            "NameInSource": "1BANK",
+            "Alias": "1BANK",
+            "Type": "System.String"
+          },
+          "17": {
+            "Name": "BBT",
+            "Index": -1,
+            "NameInSource": "BBT",
+            "Alias": "BBT",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "RevenuesTotal"
+      },
+      "6": {
+        "Ident": "StiDataTableSource",
+        "Name": "CostOfSalesTotal",
+        "Alias": "CostOfSalesTotal",
+        "Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "DepartmentName",
+            "Index": -1,
+            "NameInSource": "DepartmentName",
+            "Alias": "DepartmentName",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "GSO",
+            "Index": -1,
+            "NameInSource": "GSO",
+            "Alias": "GSO",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "UNI",
+            "Index": -1,
+            "NameInSource": "UNI",
+            "Alias": "UNI",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "MED",
+            "Index": -1,
+            "NameInSource": "MED",
+            "Alias": "MED",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CLT",
+            "Index": -1,
+            "NameInSource": "CLT",
+            "Alias": "CLT",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "ERO",
+            "Index": -1,
+            "NameInSource": "ERO",
+            "Alias": "ERO",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "ROA",
+            "Index": -1,
+            "NameInSource": "ROA",
+            "Alias": "ROA",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "COL",
+            "Index": -1,
+            "NameInSource": "COL",
+            "Alias": "COL",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "RIC",
+            "Index": -1,
+            "NameInSource": "RIC",
+            "Alias": "RIC",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "HQ",
+            "Index": -1,
+            "NameInSource": "HQ",
+            "Alias": "HQ",
+            "Type": "System.String"
+          },
+          "13": {
+            "Name": "SEG",
+            "Index": -1,
+            "NameInSource": "SEG",
+            "Alias": "SEG",
+            "Type": "System.String"
+          },
+          "14": {
+            "Name": "Dept Total",
+            "Index": -1,
+            "NameInSource": "Dept Total",
+            "Alias": "Dept Total",
+            "Type": "System.String"
+          },
+          "15": {
+            "Name": "DUR",
+            "Index": -1,
+            "NameInSource": "DUR",
+            "Alias": "DUR",
+            "Type": "System.String"
+          },
+          "16": {
+            "Name": "1BANK",
+            "Index": -1,
+            "NameInSource": "1BANK",
+            "Alias": "1BANK",
+            "Type": "System.String"
+          },
+          "17": {
+            "Name": "BBT",
+            "Index": -1,
+            "NameInSource": "BBT",
+            "Alias": "BBT",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "CostOfSalesTotal"
+      },
+      "7": {
+        "Ident": "StiDataTableSource",
+        "Name": "ExpensesTotal",
+        "Alias": "ExpensesTotal",
+        "Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "DepartmentName",
+            "Index": -1,
+            "NameInSource": "DepartmentName",
+            "Alias": "DepartmentName",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "GSO",
+            "Index": -1,
+            "NameInSource": "GSO",
+            "Alias": "GSO",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "UNI",
+            "Index": -1,
+            "NameInSource": "UNI",
+            "Alias": "UNI",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "MED",
+            "Index": -1,
+            "NameInSource": "MED",
+            "Alias": "MED",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CLT",
+            "Index": -1,
+            "NameInSource": "CLT",
+            "Alias": "CLT",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "ERO",
+            "Index": -1,
+            "NameInSource": "ERO",
+            "Alias": "ERO",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "ROA",
+            "Index": -1,
+            "NameInSource": "ROA",
+            "Alias": "ROA",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "COL",
+            "Index": -1,
+            "NameInSource": "COL",
+            "Alias": "COL",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "RIC",
+            "Index": -1,
+            "NameInSource": "RIC",
+            "Alias": "RIC",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "HQ",
+            "Index": -1,
+            "NameInSource": "HQ",
+            "Alias": "HQ",
+            "Type": "System.String"
+          },
+          "13": {
+            "Name": "SEG",
+            "Index": -1,
+            "NameInSource": "SEG",
+            "Alias": "SEG",
+            "Type": "System.String"
+          },
+          "14": {
+            "Name": "Dept Total",
+            "Index": -1,
+            "NameInSource": "Dept Total",
+            "Alias": "Dept Total",
+            "Type": "System.String"
+          },
+          "15": {
+            "Name": "DUR",
+            "Index": -1,
+            "NameInSource": "DUR",
+            "Alias": "DUR",
+            "Type": "System.String"
+          },
+          "16": {
+            "Name": "1BANK",
+            "Index": -1,
+            "NameInSource": "1BANK",
+            "Alias": "1BANK",
+            "Type": "System.String"
+          },
+          "17": {
+            "Name": "BBT",
+            "Index": -1,
+            "NameInSource": "BBT",
+            "Alias": "BBT",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "ExpensesTotal"
+      },
+      "8": {
+        "Ident": "StiDataTableSource",
+        "Name": "NetProfitTotal",
+        "Alias": "NetProfitTotal",
+        "Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "DepartmentName",
+            "Index": -1,
+            "NameInSource": "DepartmentName",
+            "Alias": "DepartmentName",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "GSO",
+            "Index": -1,
+            "NameInSource": "GSO",
+            "Alias": "GSO",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "UNI",
+            "Index": -1,
+            "NameInSource": "UNI",
+            "Alias": "UNI",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "MED",
+            "Index": -1,
+            "NameInSource": "MED",
+            "Alias": "MED",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CLT",
+            "Index": -1,
+            "NameInSource": "CLT",
+            "Alias": "CLT",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "ERO",
+            "Index": -1,
+            "NameInSource": "ERO",
+            "Alias": "ERO",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "ROA",
+            "Index": -1,
+            "NameInSource": "ROA",
+            "Alias": "ROA",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "COL",
+            "Index": -1,
+            "NameInSource": "COL",
+            "Alias": "COL",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "RIC",
+            "Index": -1,
+            "NameInSource": "RIC",
+            "Alias": "RIC",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "HQ",
+            "Index": -1,
+            "NameInSource": "HQ",
+            "Alias": "HQ",
+            "Type": "System.String"
+          },
+          "13": {
+            "Name": "SEG",
+            "Index": -1,
+            "NameInSource": "SEG",
+            "Alias": "SEG",
+            "Type": "System.String"
+          },
+          "14": {
+            "Name": "Dept Total",
+            "Index": -1,
+            "NameInSource": "Dept Total",
+            "Alias": "Dept Total",
+            "Type": "System.String"
+          },
+          "15": {
+            "Name": "DUR",
+            "Index": -1,
+            "NameInSource": "DUR",
+            "Alias": "DUR",
+            "Type": "System.String"
+          },
+          "16": {
+            "Name": "1BANK",
+            "Index": -1,
+            "NameInSource": "1BANK",
+            "Alias": "1BANK",
+            "Type": "System.String"
+          },
+          "17": {
+            "Name": "BBT",
+            "Index": -1,
+            "NameInSource": "BBT",
+            "Alias": "BBT",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "NetProfitTotal"
+      },
+      "9": {
+        "Ident": "StiDataTableSource",
+        "Name": "GrossProfit",
+        "Alias": "GrossProfit",
+        "Columns": {
+          "0": {
+            "Name": "Acct",
+            "Index": -1,
+            "NameInSource": "Acct",
+            "Alias": "Acct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "fDesc",
+            "Index": -1,
+            "NameInSource": "fDesc",
+            "Alias": "fDesc",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "Department",
+            "Index": -1,
+            "NameInSource": "Department",
+            "Alias": "Department",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "DepartmentName",
+            "Index": -1,
+            "NameInSource": "DepartmentName",
+            "Alias": "DepartmentName",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "GSO",
+            "Index": -1,
+            "NameInSource": "GSO",
+            "Alias": "GSO",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "UNI",
+            "Index": -1,
+            "NameInSource": "UNI",
+            "Alias": "UNI",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "MED",
+            "Index": -1,
+            "NameInSource": "MED",
+            "Alias": "MED",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "CLT",
+            "Index": -1,
+            "NameInSource": "CLT",
+            "Alias": "CLT",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "ERO",
+            "Index": -1,
+            "NameInSource": "ERO",
+            "Alias": "ERO",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "ROA",
+            "Index": -1,
+            "NameInSource": "ROA",
+            "Alias": "ROA",
+            "Type": "System.String"
+          },
+          "10": {
+            "Name": "COL",
+            "Index": -1,
+            "NameInSource": "COL",
+            "Alias": "COL",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "RIC",
+            "Index": -1,
+            "NameInSource": "RIC",
+            "Alias": "RIC",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "HQ",
+            "Index": -1,
+            "NameInSource": "HQ",
+            "Alias": "HQ",
+            "Type": "System.String"
+          },
+          "13": {
+            "Name": "SEG",
+            "Index": -1,
+            "NameInSource": "SEG",
+            "Alias": "SEG",
+            "Type": "System.String"
+          },
+          "14": {
+            "Name": "Dept Total",
+            "Index": -1,
+            "NameInSource": "Dept Total",
+            "Alias": "Dept Total",
+            "Type": "System.String"
+          },
+          "15": {
+            "Name": "DUR",
+            "Index": -1,
+            "NameInSource": "DUR",
+            "Alias": "DUR",
+            "Type": "System.String"
+          },
+          "16": {
+            "Name": "1BANK",
+            "Index": -1,
+            "NameInSource": "1BANK",
+            "Alias": "1BANK",
+            "Type": "System.String"
+          },
+          "17": {
+            "Name": "BBT",
+            "Index": -1,
+            "NameInSource": "BBT",
+            "Alias": "BBT",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "GrossProfit"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "b45e5a3fe5f844e7a1c4e6b6f9f19044",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;;;;solid:Black",
+      "Brush": "solid:",
+      "Components": {
+        "0": {
+          "Ident": "StiPageHeaderBand",
+          "Name": "PageHeaderBand1",
+          "Guid": "61e7b1b0ab6d445a9771dfe2d594e0e4",
+          "PrintOn": "OnlyFirstPage",
+          "ClientRectangle": "0,0.2,7.72,2",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": "Bottom;;2;;;;;solid:Black",
+          "Brush": "solid:White",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text15",
+              "Guid": "bca8d047ef9745259b22b30a8ae59c95",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.1,0.02,4.91,0.76",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "STANDARD INCOME STATEMENT \r\nCOMPARATIVE FS WITH CENTER"
+              },
+              "Font": ";20;Bold, Italic;",
+              "Border": "Bottom;;3;;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:91,155,213",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiImage",
+              "Name": "Image2",
+              "Guid": "d6235bae6c9c43c69539e12994b9567b",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5.2,0,2.5,1.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "HorAlignment": "Right",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "DataColumn": "dsCompany.Logo"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text21",
+              "Guid": "2e8c892237714e63a32dab024730dabd",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.1,1.12,4.97,0.35",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{dsCompany.Name}"
+              },
+              "Font": ";16;Bold;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:91,155,213",
+              "Type": "Expression"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text26",
+              "Guid": "d6dea992fb814fecb250f65d28e6a4da",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.1,1.5,5.76,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Printed On {Format(\"{0:MM.dd.yyyy}\", Today)} By {paramUsername}"
+              },
+              "Font": ";10;;",
+              "Border": "All;;;None;;;;solid:Black",
+              "Brush": "empty",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text1",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.1,0.8,1.96,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{paramSDate}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text3",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "2.1,0.8,2.26,0.25",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{paramEDate}"
+              },
+              "VertAlignment": "Center",
+              "Font": ";10;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:White",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        },
+        "1": {
+          "Ident": "StiPageFooterBand",
+          "Name": "PageFooterBand1",
+          "ClientRectangle": "0,9.92,7.72,0.3",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:"
+        },
+        "2": {
+          "Ident": "StiText",
+          "Name": "Text2",
+          "MinSize": "0,0",
+          "MaxSize": "0,0",
+          "ClientRectangle": "9,10,1.2,0.2",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{PageNofM}"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "TextBrush": "solid:Black"
+        }
+      },
+      "PaperSize": "Letter",
+      "PageWidth": 8.5,
+      "PageHeight": 11.0,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      },
+      "Margins": {
+        "Left": 0.39,
+        "Right": 0.39,
+        "Top": 0.39,
+        "Bottom": 0.39
+      }
+    }
+  }
+}

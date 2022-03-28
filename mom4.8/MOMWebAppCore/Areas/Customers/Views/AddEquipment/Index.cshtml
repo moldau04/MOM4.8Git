@@ -1,0 +1,1286 @@
+﻿@{
+    ViewData["Title"] = "Add Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<!--File Upload Control-->
+<link href="~/MOMUI/Design/js/plugins/dropify/css/dropify.css" rel="stylesheet" media="screen,projection" type="text/css" />
+
+<style>
+    div.row.checkbox {
+        border-bottom: 1px solid #9e9e9e;
+        padding-bottom: 17px;
+        margin-bottom: 10px !important;
+    }
+
+    #overlay {
+        position: fixed; /* Sit on top of the page content */
+        display: none; /* Hidden by default */
+        width: 100%; /* Full width (cover the whole page) */
+        height: 100%; /* Full height (cover the whole page) */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+        z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
+        cursor: pointer; /* Add a pointer on hover */
+    }
+</style>
+
+<script type="text/javascript">
+    //-----Ticket-------
+    function AddTicketClick(hyperlink) {
+
+        var id = $("#hdnAddeTicket").val();
+        if (id == "Y") { return editticket(); } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+
+    var changes = 0;
+    $(document).on("change", ":input", function () {
+        changes = 1;
+    });
+
+    function getLocInfo() {
+        var LocID = $("#hdnLocId").val();
+        $.ajax({
+            type: "POST",
+            url: 'AddEquipment.aspx/FillLocInfo',
+            data: '{LocID:"' + LocID + '"}',
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+
+                $("#txtCompany").val(response.d);
+                Materialize.updateTextFields();
+            }
+        });
+    }
+
+    $(document).ready(function () {
+
+
+        var queryloc = "";
+        function dtaa() {
+            this.prefixText = null;
+            this.con = $("#hdnCon").val();
+            this.custID = null;
+        }
+
+        //if ((window.location.href.indexOf("page=addprospect") === -1)) {
+        //    $("#txtLocation").autocomplete(
+        //        {
+        //            source: function (request, response) {
+        //                var dtaaa = new dtaa();
+        //                dtaaa.prefixText = request.term;
+        //                dtaaa.custID = 0;
+        //                var hdnpat = $("#hdnPatientId").val();
+        //                if (hdnpat != "") {
+        //                    dtaaa.custID = hdnpat;
+        //                }
+
+        //                queryloc = request.term;
+        //                $.ajax({
+        //                    type: "POST",
+        //                    contentType: "application/json; charset=utf-8",
+        //                    url: "CustomerAuto.asmx/GetLocation",
+        //                    data: JSON.stringify(dtaaa),
+        //                    dataType: "json",
+        //                    async: true,
+        //                    success: function (data) {
+        //                        response($.parseJSON(data.d));
+        //                    },
+        //                    error: function (result) {
+        //                        alert("Due to unexpected errors we were unable to load customers");
+        //                    }
+        //                    //                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+        //                    //                                var err = eval("(" + XMLHttpRequest.responseText + ")");
+        //                    //                                alert(err.Message);
+        //                    //                            }
+        //                });
+
+        //            },
+        //            select: function (event, ui) {
+        //                //window.onbeforeunload = null;
+        //                $("#txtLocation").val(ui.item.label);
+        //                $("#hdnLocId").val(ui.item.value);
+        //                $("#btnSelectLoc").click();
+        //                return false;
+        //            },
+        //            focus: function (event, ui) {
+        //                $("#txtLocation").val(ui.item.label);
+        //                return false;
+        //            },
+        //            minLength: 0,
+        //            delay: 250
+        //        })
+        //        .data("ui-autocomplete")._renderItem = function (ul, item) {
+        //            var result_item = item.label;
+        //            var result_desc = item.desc;
+        //            var x = new RegExp('\\b' + queryloc, 'ig'); // notice the escape \ here...
+        //            result_item = result_item.replace(x, function (FullMatch, n) {
+        //                return '<span class="highlight">' + FullMatch + '</span>'
+        //            });
+        //            if (result_desc != null) {
+        //                result_desc = result_desc.replace(x, function (FullMatch, n) {
+        //                    return '<span class="highlight">' + FullMatch + '</span>'
+        //                });
+        //            }
+        //            return $("<li></li>")
+        //                .data("item.autocomplete", item)
+        //                .append("<a>" + result_item + ", <span style='color:Gray;'>" + result_desc + "</span></a>")
+        //                .appendTo(ul);
+        //        };
+
+
+        //    $("#txtLocation").keyup(function (event) {
+        //        var hdnLocId = $("#hdnLocId");
+        //        if ($("#txtLocation").val() == "") {
+        //            hdnLocId.val() = "";
+        //        }
+        //    });
+        //}
+
+
+        ///////////////// Prevent page from leaving before save ////////////////////
+
+    });
+    //////////////////////
+
+    function ChangeConfirm(ddl) {
+        var totalRows = $("#RadGrid_gvCtemplItems tr").length;
+        if (totalRows > 0) {
+            if (!confirm('Are you sure you want to change the template? This will erase the information under the current template.')) {
+                $(ddl).val($("#hdnSelectedVal").val());
+                return false;
+            }
+        }
+    }
+
+    function ChkLocation(sender, args) {
+        var hdnLocId = $("#hdnLocId");
+        if (hdnLocId.val() == "") {
+            args.IsValid = false;
+        }
+    }
+
+
+    ////////////////// Called when save form and validation caused on tab 1 //////////////
+
+    function showModalPopupViaClientCust(lblTicketId, lblComp) {
+        //            document.getElementById('<%= iframeCustomer.ClientID %>').src = "addticket.aspx?id=" + lblTicketId + "&comp=" + lblComp;
+        //            var modalPopupBehavior = $find('PMPBehaviour');
+        //            modalPopupBehavior.show();
+        //alert(lblTicketId);
+
+        if ('<%= Session["type"].ToString() %>' == 'c') {
+            window.open('Printticket.aspx?id=' + lblTicketId + '&c=' + lblComp + '&pop=1', '_blank');
+        }
+        else {
+            window.open('addticket.aspx?id=' + lblTicketId + '&comp=' + lblComp + '&pop=1', '_blank');
+        }
+    }
+
+    function linkstyle(internet) {
+        alert(internet);
+        var style = "cursor:pointer";
+        if ('<%= Session["type"].ToString() %>' == 'c') {
+            if (internet == "0") { style = "color:black" }
+        }
+        alert(style);
+        return style;
+    }
+
+    function hideModalPopup() {
+        var modalPopupBehavior = $find('PMPBehaviour');
+        modalPopupBehavior.hide();
+        $("#iframeCustomer").src = "";
+    }
+
+    function ClientSidePrint() {
+        //debugger
+        //var idDiv = '<%=imgQR.ClientID %>';
+
+        var w = 300;
+        var h = 300;
+        var l = (window.screen.availWidth - w) / 2;
+        var t = (window.screen.availHeight - h) / 2;
+
+        var sOption = "toolbar=no,location=no,directories=no,menubar=no,scrollbars=yes,width=" + w + ",height=" + h + ",left=" + l + ",top=" + t;
+        // Get the HTML content of the div
+        var sDivText = window.document.getElementById("#imgQR").src;
+        var unittext = window.document.getElementById("#txtEquipID").val();
+        if (window.location.href.indexOf("page=addprospect") === -1) {
+            var loctext = window.document.getElementById("#txtLocation").val();
+        }
+        else {
+            var loctext = "";
+        }
+        // Open a new window
+        var objWindow = window.open("", "Print", sOption);
+        // Write the div element to the window
+
+        objWindow.document.write("<div style='width:100%;'>");
+        objWindow.document.write("<img id='img' src='" + sDivText + "'/>");
+        objWindow.document.write("</div><div>" + unittext + " - " + loctext + "</div>");
+
+        objWindow.document.close();
+
+        setTimeout(function () { objWindow.print(); objWindow.close(); }, 1000);
+
+    }
+
+    function checkLocChange() {
+        var oldloc = $("#hdnLocPrevious");
+        var newloc = $("#hdnLocId");
+
+        var ret = true;
+        if (oldloc.val() != '') {
+            if (oldloc.val() != newloc.val()) {
+                if (getUrlParameter("t") != "c") {
+                    ret = confirm('You have changed the equipment location. This will also change the location for completed tickets having this equipment. Do you want to continue?');
+                }
+
+                //if (ret == false)
+                //    hdnUpdateTicket.val('1');
+                //else
+                //    hdnUpdateTicket.val('');
+
+            }
+        }
+        return ret;
+
+    }
+
+    ///////////RefreshAddTicket/////////
+    function RefreshAddTicket() {
+
+        if (window.opener && !window.opener.closed) {
+            if (window.opener.document.getElementById("btnSelectLoc"))
+                window.opener.document.getElementById("btnSelectLoc").click();
+            window.close();
+
+        }
+    }
+
+
+</script>
+
+<style type="text/css">
+    .RadGrid td .CalendarBlue .ajax__calendar td {
+        padding: 0;
+    }
+
+    .RadInput .rcSelect {
+        height: 31px;
+    }
+    /*.RadInput .rcSelect a {
+          display: inline-block;
+       }*/
+
+    /*rad datepicker input font*/
+    .RadInput {
+        font-family: 'Lato', sans-serif !important;
+    }
+</style>
+
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+    //$(function () {
+    function pageLoad() {
+        $("[id*=gvCtemplItems]").sortable({
+            items: 'tr:not(tr:first-child)',
+            cursor: 'pointer',
+            axis: 'y',
+            dropOnEmpty: false,
+            start: function (e, ui) {
+                ui.item.addClass("selected");
+            },
+            stop: function (e, ui) {
+                ui.item.removeClass("selected");
+                updategridindex();
+            },
+            receive: function (e, ui) {
+                $(this).find("tbody").append(ui.item);
+            }
+        });
+    }
+    //});
+    function updategridindex() {
+        var grid1 = 1;
+        $("#RadGrid_gvCtemplItems > tbody  > tr").not(':first').not(':last').each(function () {
+            var cat = $(this).find('input[id*="txtRowLine"]');
+            cat.val(grid1);
+            grid1 = grid1 + 1;
+            console.log(cat.val());
+        });
+    }
+</script>
+<script type="text/javascript">
+    //Sys.Application.add_init(appl_init);
+
+    //function appl_init() {
+    //    var pgRegMgr = Sys.WebForms.PageRequestManager.getInstance();
+    //    pgRegMgr.add_beginRequest(BlockUI);
+    //    pgRegMgr.add_endRequest(UnblockUI);
+    //}
+
+    function BlockUI(sender, args) {
+        $("#overlay").style('display', 'block');
+    }
+    function UnblockUI(sender, args) {
+        $("#overlay").style('display', 'none');
+    }
+</script>
+<!--start container-->
+<div id="overlay">
+    <img src="~/MOMUI/images/wheel.gif" alt="Be patient..." style="position:` fixed; margin-top: 25%; margin-left: 50%;" />
+</div>
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div ID="RadAP_Equipment_MainButton">
+                        <div class="row">
+                            <div class="col s12 m12 l12">
+                                <div class="row">
+                                    <div class="page-title"><i class="mdi-maps-local-laundry-service"></i>&nbsp;<label class="title_text" ID="lblHeader" style="font-size:15px">Add Equipment</label></div>
+                                    <div class="buttonContainer">
+                                        <div class="btnlinks">
+                                            <a ID="btnSubmit" class="return ShutdownReasonValidation();"
+                                               ValidationGroup="general, rep" ToolTip="Save">Save</a>
+                                        </div>
+                                        <div class="btnlinks">
+                                            <a ID="lnkReport">Report</a>
+                                        </div>
+                                    </div>
+                                    <div class="btnclosewrap">
+                                        <a ID="lnkClose" ToolTip="Close" CausesValidation="false">
+                                            <i class="mdi-content-clear"></i>
+                                        </a>
+                                    </div>
+                                    <div class="rght-content">
+                                        <div class="editlabel">
+                                            <label class="title_text_Name" ID="lblEquipName"></label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <div class="tblnks">
+                            <ul class="anchor-links">
+                                <li id="liGeneral"><a href="#accrdgeneralTab">General</a></li>
+                                <li id="liCustom"><a href="#accrdcustomTab">Custom</a></li>
+                                <li id="liShutdownLogs"><a href="#accrdshutdownlogsTab">Shut Down History</a></li>
+                                <li id="liMCPTemp"><a href="#accrdtemplateTab">MCP Template</a></li>
+                                <li id="liMCPHistory"><a href="#accrdhistoryTab">MCP History</a></li>
+                                <li id="liTest"><a href="#accrdtestTab">Tests</a></li>
+                                <li id="liLogs"><a href="#accrdlogs">Logs</a></li>
+                                <li id="lidocuments"><a href="#accrddocuments">Documents</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="tblnksright" id="pnlNext">
+                            <div class="nextprev">
+                                <span class="angleicons">
+                                    <a ID="lnkFirst" ToolTip="First" CausesValidation="False"><i class="fa fa-angle-double-left"></i></a>
+                                </span>
+                                <span class="angleicons">
+                                    <a ID="lnkPrevious" ToolTip="Previous" CausesValidation="False"><i class="fa fa-angle-left"></i></a>
+                                </span>
+                                <span class="angleicons">
+                                    <a ID="lnkNext" ToolTip="Next" class="icon-next" CausesValidation="False">
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </span>
+                                <span class="angleicons">
+                                    <a ID="lnkLast" ToolTip="Last" class="icon-last" CausesValidation="False"><i class="fa fa-angle-double-right"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container accordian-wrap">
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <div class="row">
+                <ul class="collapsible popout collapsible-accordion form-accordion-head" data-collapsible="expandable">
+                    <li id="pnlEquipments">
+                        <div id="accrdgeneralTab" class="collapsible-header accrd active accordian-text-custom "><i class="mdi-social-poll"></i>General</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="form-section-row">
+                                        @*<telerik:RadAjaxPanel ID="RadAP_Equipment_Info">*@
+                                        <div class="section-ttle">Equipment Info.</div>
+                                        @*<%--hidden fields--%>*@
+                                        <input id="hdnPatientId" type="hidden" />
+                                        <input id="hdnCon" type="hidden" />
+                                        <input id="hdnLocId" type="hidden" />
+                                        <input id="hdnSaved" value="0" type="hidden" />
+                                        <input id="hdnLocPrevious" type="hidden" />
+                                        <input id="hdnUpdateTicket" type="hidden" />
+                                        <input type="button" CausesValidation="false" ID="btnSelectLoc" value="Button" style="display: block;" onclick="getLocInfo();return false" />
+
+                                        @Html.Hidden("hdnShutdownReasonMode")
+                                        @Html.Hidden("hdnShutdownLongDesc")
+                                        @Html.Hidden("hdnShutdownReasonPlanned")
+                                        @Html.Hidden("hdnEqShutdownStatus")
+
+                                        @*<%--hidden fields--%>*@
+
+                                        <div class="form-section3">
+                                            <div class="input-field col s12" id="location_container">
+                                                <div class="row">
+                                                    <input type="text" ID="txtLocation"
+                                                           autocomplete="off" placeholder="Search by location name, phone#, address etc." />
+
+                                                    <label for="txtLocation">Location Name</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtEquipID" class="form-control" MaxLength="20" />
+                                                    <label class="active" for="txtEquipID">Equipment ID</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12" id="dvCompanyPermission">
+                                                <div class="row">
+                                                    <input type="text" ID="txtCompany" />
+                                                    <label for="txtCompany">Company</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtManuf"
+                                                           autocomplete="off" />
+                                                    <label for="txtManuf">Manufacturer</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtDesc" />
+                                                    <label for="txtDesc">Description</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+
+                                                    <label ID="lblType" class="drpdwn-label"></label>
+
+                                                    <select ID="ddlType" class="browser-default">
+                                                        <option>Select</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12" id="divContractType" style="display: none">
+                                                <div class="row">
+                                                    <label ID="lblContractType" class="form-control"></label>
+                                                    <label for="lblContractType">Contract Type</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Service Type</label>
+                                                    <select ID="ddlServiceType" class="browser-default">
+                                                        <option>Select</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s12">
+                                                <div class="row">
+
+                                                    <label ID="lblCategory" class="drpdwn-label"></label>
+
+                                                    <select ID="ddlCategory" class="browser-default">
+                                                        <option>Select</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+
+                                                    <label ID="lblBuilding" class="drpdwn-label"></label>
+
+                                                    <select ID="ddlBuilding" class="browser-default">
+                                                        <option>Select</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Status</label>
+                                                    <select ID="rbStatus" class="browser-default">
+                                                        <option Value="0">Active</option>
+                                                        <option Value="1">Inactive</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+
+                                        <div class="form-section3">
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <label ID="lblClassification" class="drpdwn-label"></label>
+
+                                                    <select ID="ddlClassification" class="browser-default">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row checkbox">
+                                                    <span class="css-checkbox">
+                                                        <input id="chkShutdown" type="checkbox" name="chkShutdown" class="css-checkbox">
+                                                        <label for="chkShutdown" class="css-label">Shut Down</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s12" style="padding: 0;" id="divShutdownReason">
+                                                <div class="row col s11" style="padding-left: 0;">
+                                                    <label class="drpdwn-label">Shut Down Reason</label>
+                                                    <select ID="ddlShutdownReason" class="browser-default">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                                <div class="row col s1" style="text-align: center; margin-left: -10px; margin-top: 5px;">
+                                                    <div class="btnlinksicon">
+                                                        <a ID="lnkAddEditShutdownReason" onclick="OpenShutdownReasonModal();return false" CausesValidation="false" Visible="True">
+                                                            <i class="mdi-social-person-add"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s12 ">
+                                                <div class="row" id="divShutdownReasonDesc">
+                                                    <input type="text" ID="txtShutdownReason"
+                                                           autocomplete="off" Enabled="false" />
+                                                    <label for="txtShutdownReason">Shut Down Description</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtSerial"
+                                                           autocomplete="off" />
+                                                    <label for="txtSerial">Serial #</label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtUnique" />
+                                                    <label for="txtUnique">Unique #</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field2 col s12">
+                                                <div class="row">
+                                                    <label class="date-label">Installed</label>
+                                                    <input type="text" ID="txtInstalled" class="datepicker_mom" />
+
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field2 col s12">
+                                                <div class="row">
+                                                    <label class="date-label">Service Since</label>
+                                                    <input type="text" ID="txtSince" class="datepicker_mom" />
+                                                </div>
+                                            </div>
+                                            <div class="input-field2 col s12">
+                                                <div class="row">
+                                                    <label class="date-label">Last Service</label>
+                                                    <input type="text" ID="txtLast" class="datepicker_mom" MaxLength="50" />
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <input type="text" ID="txtPrice" value="00.00" />
+                                                    <label for="txtPrice">Price</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+
+                                        <div class="form-section3">
+
+
+                                            <div class="input-field col s12">
+                                                <div class="row">
+                                                    <textarea ID="txtRemarks" TextMode="MultiLine"
+                                                              class="materialize-textarea"></textarea>
+                                                    <label for="txtRemarks">Remarks</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s12">
+                                                <div class="row" style="text-align: center;">
+                                                    <div ID="pnlQR" Visible="true">
+                                                        <img ID="imgQR" style="height:250px; width:250px;" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="input-field col s12 cntrbtn">
+                                                <div class="row" style="text-align: center;">
+                                                    <div class="btnlinks">
+                                                        <a onclick="ClientSidePrint();" title="Print QR Code">Print</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        @*</telerik:RadAjaxPanel>*@
+                                    </div>
+                                    <div class="cf"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+
+
+                    <li id="tpCustom">
+                        <div id="accrdcustomTab" class="collapsible-header accrd accordian-text-custom"><i class="mdi-action-perm-data-setting"></i>Custom</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="srchpaneinner">
+                                        <div class="srchtitle" style="padding-left: 15px;">
+                                            Select Template
+                                        </div>
+                                        <div class="srchinputwrap">
+
+                                            <select ID="ddlCustTemplate" onchange="ChangeConfirm(this);" class="browser-default selectst" AutoPostBack="True">
+                                                <option>--Select--</option>
+                                            </select>
+                                            <input id="hdnSelectedVal" type="hidden" />
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+                                            </div>
+
+                                            <div class="cf"></div>
+                                        </div>
+                                    </div>
+                                    <div style="clear: both;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li id="tbShutdownLogs">
+                        <div id="accrdshutdownlogsTab" class="collapsible-header accrd accordian-text-custom"><i class="mdi-content-content-paste"></i>Shut Down History</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material">
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+
+                    <li id="tpREP">
+                        <div id="accrdtemplateTab" class="collapsible-header accrd accordian-text-custom"><i class="mdi-action-open-in-browser"></i>MCP Template</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+
+                                    @*<telerik:RadAjaxPanel ID="RadAjaxPanel_gvTemplateItems" ClientEvents-OnRequestStart="requestStart" ClientEvents-OnResponseEnd="responseEnd">*@
+
+                                    <div class="grid_container" style="margin-bottom: 10px;">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+
+                                    <div class="btnlinks">
+                                        <a ID="btnAddNewItem" ToolTip="Add New"
+                                           CausesValidation="False">Add</a>
+
+                                    </div>
+                                    <div class="btnlinks">
+
+                                        <a ID="btnDeleteItem" CausesValidation="False" ToolTip="Delete">Delete</a>
+
+                                    </div>
+
+                                    <div class="grid_container" style="margin-top: 10px" id="gvtempgrid">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+
+                                    @*</telerik:RadAjaxPanel>*@
+                                </div>
+                            </div>
+
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+
+                    <li id="tpnlREPH">
+                        <div id="accrdhistoryTab" class="collapsible-header accrd accordian-text-custom"><i class="mdi-action-cached"></i>MCP History</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="srchpaneinner">
+                                        <div class="srchtitle" style="padding-left: 15px;">
+                                            Search
+                                        </div>
+                                        <div class="srchinputwrap">
+                                            <select ID="ddlSearch" AutoPostBack="True" class="browser-default selectst">
+                                                <option Value=" ">--Select--</option>
+                                                <option Value="rd.ticketID">Ticket #</option>
+                                                <option Value="fwork">Worker</option>
+                                                <option Value="rd.Code">Code</option>
+                                                <option Value="eti.fDesc">Desc</option>
+                                                <option Value="template">Template</option>
+                                                <option Value="eti.frequency">Frequency</option>
+                                            </select>
+                                        </div>
+                                        <div class="srchinputwrap">
+                                            <input type="text" ID="txtSearch" class="srchcstm" placeholder="Search..." />
+                                            <input type="text" ID="txtCodeSearch" class="srchcstm"
+                                                   style="display:none" autocomplete="off" />
+
+                                            <select ID="ddlTemplate" style="display:none" class="browser-default selectst">
+                                                <option>Select</option>
+                                            </select>
+                                            <select ID="ddlFreq" style="display:none" class="browser-default selectst">
+                                                <option Value="0">Daily</option>
+                                                <option Value="1">Weekly</option>
+                                                <option Value="2">Bi-Weekly</option>
+                                                <option Value="3">Monthly</option>
+                                                <option Value="4">Bi-Monthly</option>
+                                                <option Value="5">Quarterly</option>
+                                                <option Value="6">Semi-Annually </option>
+                                                <option Value="7">Annually</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="srchpaneinner">
+                                        <div class="srchtitle" style="padding-left: 15px;">
+                                            Date
+                                        </div>
+                                        <div class="srchinputwrap">
+                                            <select ID="ddlDates" class="browser-default selectst">
+                                                <option Value="0">Last Date</option>
+                                                <option Value="1">Next Due Date</option>
+                                            </select>
+                                        </div>
+                                        <div class="srchinputwrap">
+                                            <input type="text" ID="txtfromDate" class="srchcstm" />
+                                        </div>
+                                        <div class="srchinputwrap">
+                                            <input type="text" ID="txtToDate" class="srchcstm" />
+                                        </div>
+                                        <div class="srchinputwrap">
+                                            <div class="btnlinksicon">
+                                                <a ID="btnSearch" CausesValidation="False" ToolTip="Search"><i class="mdi-action-search"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="btnlinksicon">
+                                            <label ID="lblRecordCountHist" style="font-size:15px">0 record(s) found.</label>
+
+                                        </div>
+                                        <div class="btnlinks">
+
+                                            <a ID="lnkclear">Clear</a>
+                                        </div>
+                                        <div class="btnlinksicon">
+                                            <a ID="lnkPrintMCP" ToolTip="Print Maintenance Control Plan Report">
+                                                <i class="fa fa-print"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="srchpaneinner">
+                                        <div class="btnlinks">
+                                            <a ID="lnkAddTicket" onclick="return AddTicketClick(this)" ToolTip="Add New">Add</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li id="tbTests">
+                        <div id="accrdtestTab" class="collapsible-header accrd accordian-text-custom"><i class="mdi-content-content-paste"></i>Tests</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="btncontainer" id="divTestButton">
+                                        <div class="btnlinks">
+                                            <a ID="lnkAddTest" ToolTip="Add New" CausesValidation="False">Add</a>
+                                        </div>
+                                        <div class="btnlinks">
+                                            <a ID="lnkDelTest" CausesValidation="False" ToolTip="Delete">Delete</a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+
+                    <li id="tbLogs">
+                        <div id="accrdlogs" class="collapsible-header accrd accordian-text-custom"><i class="mdi-content-content-paste"></i>Logs</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material">
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+
+                    <li id="dvDocuments">
+                        <div id="accrddocuments" class="collapsible-header accrd accordian-text-custom"><i class="mdi-action-credit-card"></i>Documents</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="form-section-row">
+                                        <div class="col s12 m12 l12">
+                                            <div class="row">
+                                                <!--<p>Maximum file upload size 2MB.</p>-->
+                                                <input type="file" id="FileUpload1"
+                                                       onchange="AddDocumentClick(this);" class="dropify" />
+                                                <!--data-max-file-size="2M"-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a ID="lnkUploadDoc"
+                                           CausesValidation="False"
+                                           Style="display: block">Upload</a>
+                                        <a ID="lnkPostback"
+                                           CausesValidation="False" Style="display: block">Postback</a>
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a ID="lnkDeleteDoc" CausesValidation="False" onclick="return DeleteDocumentClick(this);">Delete</a>
+                                    </div>
+
+
+                                    <div class="grid_container" style="margin-top: 10px;">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end container-->
+
+<input type="button" ID="hiddenTargetControlForModalPopup" Style="display: none"
+       CausesValidation="False" />
+<div class="modal fade" tabindex="-1" id="programmaticPopup"
+     data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="btnlinks">
+                    <label class="title_text" ID="Label13">Select MCP Template</label>
+                    <a ID="lnkCloseTemplate" CausesValidation="False">Close</a>
+
+                    <a ID="lnkSaveTemplate" ValidationGroup="templ00">Add</a>
+                    @Html.Hidden("HdnEquipTempID")
+                </div>
+
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div style="padding: 10px">
+                        <table style="padding: 20px;">
+                            <tr>
+                                <td>
+                                    <b>MCP Template</b>
+                                </td>
+                                <td>
+                                    <select ID="ddlRepTemp" class="browser-default"
+                                            ValidationGroup="templ">
+                                        <option>Select</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Last Date
+                                </td>
+                                <td style="padding-top: 10px">
+                                    <input type="text" ID="txtLastDate" class="browser-default" MaxLength="25" />
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@*<input type="button" ID="btnhidden" Style="display: block" CausesValidation="False" />
+    <div ID="Panel1" Style="display: block; background: #fff; border: solid;">
+        <div>
+            <iframe id="iframeCustomer" class="iframe-eqipment" frameborder="0"></iframe>
+        </div>
+    </div>*@
+
+@*<input id="hideModalPopupViaServer" style="display: block;"
+    onclick="hideModalPopup();" type="button" value="button" />*@
+
+@Html.Hidden("hdnAddeTicket", "Y")
+@Html.Hidden("hdnAddeDocument", "Y")
+@Html.Hidden("hdnDeleteDocument", "Y")
+@Html.Hidden("hdnViewDocument", "Y")
+@Html.Hidden("hdnEditeDocument", "Y")
+@Html.Hidden("hdnAddSafetyTest", "Y")
+@Html.Hidden("hdnDeleteSafetyTest", "Y")
+
+<script src="~/MOMUI/Design/js/plugins/dropify/js/dropify.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnAddNewItem").click(function () {
+            $("#programmaticPopup").modal('show');
+        });
+
+        $("#lnkCloseTemplate").click(function () {
+            $("#programmaticPopup").modal('hide');
+        });
+    });
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('a[href^="#accrd"]').on('click', function (e) {
+            e.preventDefault();
+
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+
+        $(".dropdown-content.select-dropdown li").on("click", function () {
+            var that = this;
+            setTimeout(function () {
+                if ($(that).parent().hasClass('active')) {
+                    $(that).parent().removeClass('active');
+                    $(that).parent().hide();
+                }
+            }, 100);
+        });
+
+        //Dropify Basic
+        $('.dropify').dropify();
+        // Used events
+        var drEvent = $('.dropify-event').dropify();
+
+        drEvent.on('dropify.beforeClear', function (event, element) {
+            return confirm("Do you really want to delete \"" + element.filename + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function (event, element) {
+            alert('File deleted');
+        });
+
+
+        $("#accrdgeneralTab").addClass("active");
+        $("#firstTab").show();
+
+    });
+    function ViewDocumentClick(hyperlink) {
+        var IsView = $("#hdnViewDocument").val();
+        if (IsView == "Y") {
+            return true;
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function DeleteDocumentClick(hyperlink) {
+        var IsDelete = $("#hdnDeleteDocument").val();
+        if (IsDelete == "Y") {
+            return checkdelete();
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function AddDocumentClick(hyperlink) {
+        var IsAdd = $("#hdnAddeDocument").val();
+        if (IsAdd == "Y") {
+            ConfirmUpload(ctl00_ContentPlaceHolder1_FileUpload1.val())
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+        }
+    }
+
+    function ConfirmUpload(value) {
+        var filename;
+        var fullPath = value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = filename.substring(1);
+            }
+        }
+
+        if (confirm('Upload ' + filename + '?')) { $("#lnkUploadDoc").click(); }
+        else { $("#lnkPostback").click(); }
+    }
+
+    function EnablePopupValidation() {
+        var valName = $("#rfvPopupShutdownReason");
+        ValidatorEnable(valName, true);
+    }
+
+    function CloseShutdownReasonWindow() {
+        var valName = $("#rfvPopupShutdownReason");
+        ValidatorEnable(valName, false);
+        var wnd = $find("#ShutdownReasonWindow");
+        wnd.Close();
+    }
+    function OpenShutdownReasonModal() {
+        var shutdownReasonID = $("#ddlShutdownReason").val();
+        if (shutdownReasonID == "0") {
+            $("#txtPopupShutdownReason").val("");
+            $("#hdnShutdownReasonMode").val("0"); // Addnew mode
+            $("#chkPopupPlanned").prop('checked', false);
+
+            var wnd = $find("#ShutdownReasonWindow");
+            wnd.set_title("Add Shut Down Reason");
+            wnd.Show();
+        }
+        else {
+            $("#hdnShutdownReasonMode").val("1"); // Edit mode
+            var shutdownReason = $("#ddlShutdownReason option:selected").text();
+            var shutdownReasonPlanned = $("#hdnShutdownReasonPlanned").val();
+            //debugger
+            $("#txtPopupShutdownReason").val(shutdownReason);
+            if (shutdownReasonPlanned == '1') {
+                $("#chkPopupPlanned").prop('checked', true);
+            } else {
+                $("#chkPopupPlanned").prop('checked', false);
+            }
+
+            var wnd = $find("#ShutdownReasonWindow");
+            wnd.set_title("Edit Shut Down Reason");
+            wnd.Show();
+        }
+        Materialize.updateTextFields();
+
+    }
+
+    function CloseShutdownReasonDescWindow() {
+
+        var wnd = $find("#ShutdownReasonDescWindow");
+        wnd.Close();
+    }
+    function OpenShutdownReasonDescModal() {
+        $("#txtPopupShutdownReasonDesc").val("");
+        var wnd = $find("#ShutdownReasonDescWindow");
+        wnd.set_title("Enter Shut Down Reason");
+        wnd.Show();
+
+        //Materialize.updateTextFields();
+    }
+
+    function ShutdownReasonValidation() {
+        // debugger
+        var retVal = false;
+        if (Page_ClientValidate() == true) {
+            window.btn_clicked = true;
+
+
+            retVal = checkLocChange();
+
+            if (retVal) {
+                var shutdownReasonPlanned = $("#hdnShutdownReasonPlanned").val();
+                var isShutdown = $("#chkShutdown").prop('checked');
+                var shutdownReasonID = $("#ddlShutdownReason").val();
+                var orgShutdownStatus = false;
+                //debugger
+                if ($("#hdnEqShutdownStatus").val() == "1") {
+                    orgShutdownStatus = true;
+                }
+                if (orgShutdownStatus != isShutdown) {
+                    if (isShutdown == true) {
+                        //if (shutdownReasonPlanned == '1') {// Planned
+                        //    retVal = true;
+                        //} else {// unplanned
+                        //    // Show Popup for enter reason
+                        //    if (shutdownReasonID == "0") {
+                        //        noty({ text: 'Please select a reason for shut down equipment!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                        //    } else {
+                        //        OpenShutdownReasonDescModal();
+                        //    }
+
+                        //    retVal = false;
+                        //}
+                        // Show Popup for enter reason
+                        if (shutdownReasonID == "0") {
+                            noty({ text: 'Please select a reason for shut down equipment!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                        } else {
+                            OpenShutdownReasonDescModal();
+                        }
+
+                        retVal = false;
+                    } else {
+                        retVal = true;
+                    }
+                }
+            }
+        }
+        return retVal;
+    }
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+</script>

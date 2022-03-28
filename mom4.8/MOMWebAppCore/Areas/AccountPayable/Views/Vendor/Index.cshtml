@@ -1,0 +1,250 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-communication-contacts"></i>&nbsp;Vendors</div>
+                                <div ID="pnlGridButtons">
+                                    <div class="buttonContainer">
+                                        <div class="btnlinks">
+                                            <a ID="lnkAddnew" onclick="return AddVendorsClick(this)" href="@Url.Action("Index","AddVendor")">Add</a>
+                                        </div>
+                                        <div class="btnlinks">
+                                            <a ID="btnEdit" onclick="return EditVendorsClick(this)">Edit</a>
+                                        </div>
+                                        <div class="btnlinks menuAction">
+                                            <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                                Actions
+                                            </a>
+                                        </div>
+
+                                        <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                            <li>
+                                                <div class="btnlinks">
+                                                    <a id="btnCopy" onclick="return AddVendorsClick(this)">
+                                                        Copy
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="btnlinks">
+                                                    <a ID="lnkDelete" onclick="return DeleteVendorsClick(this)">Delete</a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="btnlinks">
+                                                    <a ID="lnkExcel">Export to Excel</a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="btnlinks">
+                                                    <a class="dropdown-button" data-beloworigin="true" data-activates="dropdown1">
+                                                        Reports
+                                                    </a>
+                                                </div>
+                                                <ul id="dropdown1" class="dropdown-content">
+                                                    <li>
+                                                    </li>
+                                                    <li>
+                                                        <a href="VendorLbl5160.aspx" class="-text">Vendor Label 5160</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="VendorLbl5163.aspx" class="-text">Vendor Label 5163</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="Vendor1099.aspx" class="-text">Federal 1099</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="btnclosewrap">
+                                    <a ID="lnkClose"><i class="mdi-content-clear"></i></a>
+                                </div>
+                                <div class="rght-content">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="srchpane">
+            <div ID="upPannelSearch" UpdateMode="Conditional">
+                <div>
+                    <div class="srchtitle" style="padding-left: 15px;">
+                        Search
+                    </div>
+                    <div class="srchinputwrap">
+                        <select ID="ddlSearch" class="browser-default selectst selectsml" AutoPostBack="true">
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="srchinputwrap">
+                        <select ID="ddlType" class="browser-default selectst" style="display:none">
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="srchinputwrap">
+                        <select ID="ddlStatus" class="browser-default selectst" style="display:none">
+                            <option Value="Active">Active</option>
+                            <option Value="InActive">InActive</option>
+                            <option Value="Hold">Hold</option>
+                        </select>
+                    </div>
+
+                    <div class="srchinputwrap">
+                        <input type="text" ID="txtSearch" class="srchcstm" placeholder="Search..." />
+                    </div>
+                    <div class="srchinputwrap srchclr btnlinksicon">
+
+                        <a ID="lnkSearch">
+                            <i class="mdi-action-search"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col lblsz2 lblszfloat">
+                <div class="row">
+                    <span class="tro trost">
+                        <span class="css-checkbox">
+                            <input type="checkbox" ID="lnkChk" />
+                            <label for="lnkChk" style="font-size:0.9rem;">Incl. Inactive</label>
+                        </span>
+                    </span>
+                    <span class="tro trost">
+                        <a ID="lnkShowAll">Show All </a>
+                    </span>
+                    <span class="tro trost">
+                        <a ID="lnkClear">Clear</a>
+                    </span>
+                    <span class="tro trost">
+                        <label ID="lblRecordCount" style="font-size:0.9rem;">0 Record(s) found.</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid_container">
+        <div class="form-section-row" style="margin-bottom: 0 !important;">
+            <div class="RadGrid RadGrid_Material">
+              
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Field -->
+@Html.Hidden("hdnAddVendors","Y")
+@Html.Hidden("hdnEditVendors","Y")
+@Html.Hidden("hdnDeleteVendors","Y")
+@Html.Hidden("hdnViewVendors","Y")
+
+<script type="text/javascript">
+    function AddVendorsClick(hyperlink) {
+        var id = $("#hdnAddVendors").val();
+        if (id == "Y") {
+            return true;
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function EditVendorsClick(hyperlink) {
+
+        var id = $("#hdnEditVendors").val();
+        if (id == "Y") { return true; } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function DeleteVendorsClick(hyperlink) {
+        var id = $("#hdnDeleteVendors").val();
+        if (id == "Y") {
+            return SelectedRowDelete("#RadGrid_Vendor", "Vendor");
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+
+    function clear() {
+        ("#ddlType");
+    }
+    function jsFunction(value) {
+        alert(value);
+
+        if (value == "Rol.Type") {
+            //$(txtSearch).val("");
+            //$('#searchField').attr("value", "");
+            $("#txtSearch").val("");
+            $("#ddlType").css('display','block');
+            $("#ddlStatus").css('display','none');
+            $("#txtSearch").css('display','none');
+
+        }
+        else if (value == "Vendor.Status") {
+            //$(txtSearch).val("");
+            $("#txtSearch").val("");
+            $("#ddlType").css('display','none');
+            $("#ddlStatus").css('display','block');
+            $("#txtSearch").css('display','none');
+
+        }
+        else {
+            $("#ddlType").css('display','none');
+            $("#ddlStatus").css('display','none');
+            $("#txtSearch").css('display','block');
+        }
+
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        //$('#colorNav #dynamicUI li').remove();
+        //$(reports).each(function (index, report) {
+        //    var imagePath = null;
+        //    if (report.IsGlobal == true) {
+        //        imagePath = "images/globe.png";
+        //    }
+        //    else {
+        //        imagePath = "images/blog_private.png";
+        //    }
+
+        //    $('#dynamicUI').append('<li><a href="VendorListReport.aspx?reportId=' + report.ReportId + '&reportName=' + report.ReportName + '&type=Vendor"><span><img src=images/reportfolder.png> ' + report.ReportName + '</span><div style="clear:both;"></div></a></li>')
+
+        //});
+
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+    });
+</script>

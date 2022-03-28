@@ -1,0 +1,1638 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<!--File Upload Control-->
+<link href="~/MOMUI/Design/js/plugins/dropify/css/dropify.css" type="text/css" rel="stylesheet" media="screen,projection">
+
+<style>
+    .spanStyle {
+        color: grey;
+        font-weight: normal;
+        font-size: 14px;
+        font-family: sans-serif;
+        text-align: center;
+        align-self: center;
+    }
+
+    .form-control1, .form-control_2.input-sm {
+        border: 1px solid #e0e0e0;
+        padding: 5px;
+        color: #808080;
+        background: #fff;
+        width: 100%;
+        font-size: small;
+        font-weight: 300;
+        font-family: sans-serif;
+        border-radius: 2px !important;
+        -webkit-appearance: none;
+        outline: none;
+        height: 28px;
+        display: initial !important;
+    }
+
+    .form-control {
+        display: initial !important;
+    }
+
+    .btn {
+        border: 1px solid #0086b3;
+        font-weight: 700;
+        letter-spacing: 1px;
+        outline: ridge;
+        height: 28px;
+        margin-top: -4px !important;
+    }
+
+        .btn:focus, .btn:active:focus, .btn.active:focus {
+            outline: ridge;
+        }
+
+    .btn-primary {
+        background: #0099cc !important;
+        border-color: #208eb3 !important;
+        /*color: #ffffff !important;*/
+        /*border-right-color:#007399!important;
+            border-right:thin!important;*/
+        padding: 3px 10px !important;
+        /*box-shadow: 0 3px 0 0 #4380b5;*/
+    }
+
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+            background: #33a6cc !important;
+            height: 28px;
+        }
+
+        .btn-primary:active, .btn-primary.active {
+            background: #007299 !important;
+            box-shadow: none;
+            height: 28px;
+        }
+
+    .istyle {
+        padding-right: 0px;
+        margin-right: -1px;
+        margin-top: -4px !important;
+        padding: 2px !important;
+        margin-left: -1px !important;
+    }
+
+    .checkbox-custom, .radio-custom {
+        opacity: 0;
+        position: absolute;
+    }
+
+    .checkbox-custom, .checkbox-custom-label, .radio-custom, .radio-custom-label {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 5px;
+        cursor: pointer;
+    }
+
+    .checkbox-custom-label, .radio-custom-label {
+        position: relative;
+    }
+
+    .checkbox-custom + .checkbox-custom-label:before, .radio-custom + .radio-custom-label:before {
+        content: '';
+        background: #fff;
+        border: 2px solid #3EAFE6;
+        display: inline-block;
+        vertical-align: middle;
+        width: 20px;
+        height: 20px;
+        padding: 2px;
+        margin-right: 10px;
+        text-align: center;
+    }
+
+    .checkbox-custom:checked + .checkbox-custom-label:before {
+        background: #3EAFE6;
+    }
+
+    .radio-custom + .radio-custom-label:before {
+        border-radius: 50%;
+    }
+
+    .radio-custom:checked + .radio-custom-label:before {
+        background: #3EAFE6;
+    }
+
+
+    .checkbox-custom:focus + .checkbox-custom-label, .radio-custom:focus + .radio-custom-label {
+        outline: 1px solid #ddd;
+        / focus style /;
+    }
+
+    .rd-flt {
+        float: left;
+        margin-right: 20px;
+        margin-bottom: 5px;
+    }
+
+    .trost-label2 a {
+        color: #1565C0 !important;
+    }
+
+    [id$='RadGrid_VendorTran'] .rgHeader > a {
+        white-space: nowrap;
+        padding-left: 0 !important;
+    }
+    /*[id$='RadGrid_VendorTran'] .rgRow > td {
+            white-space: nowrap;
+            padding-left: 30px !important;
+        }
+        [id$='RadGrid_VendorTran'] .rgAltRow > td {
+            white-space: nowrap;
+            padding-left: 30px !important;
+        }*/
+
+</style>
+<script type="text/javascript" src="~/MOMUI/Design/js/jquery.geocomplete.js"></script>
+<script>
+    //$(document).ready(function () {
+    //    $(function () {
+    //        $("#txtAddress").geocomplete({
+    //            map: false,
+    //            details: "#divmain",
+    //            types: ["geocode", "establishment"],
+    //            address_components: "#txtAddress",
+    //            city: "#txtCity",
+    //            state: "#txtState",
+    //            zip: "#txtZip"
+
+
+    //        }).bind("geocode:result", function (event, result) {
+
+    //            var countryCode = "", city = "", cityAlt = "", getCountry = "";
+    //            for (var i = 0; i < result.address_components.length; i++) {
+
+    //                var addr = result.address_components[i];
+
+    //                if (addr.types[0] == 'country')
+    //                    getCountry = addr.short_name;
+    //                if (addr.types[0] == 'locality')
+    //                    city = addr.long_name;
+    //                if (addr.types[0] == 'administrative_area_level_1')
+    //                    cityAlt = addr.short_name;
+    //                if (addr.types[0] == 'postal_code')
+    //                    countryCode = addr.long_name;
+    //            }
+    //            if (cityAlt.length > 2)
+    //                for (var i = 0; i < result.address_components.length; i++) {
+    //                    var addr = result.address_components[i];
+    //                    if (addr.types[0] == 'administrative_area_level_2')
+    //                        cityAlt = addr.short_name;
+    //                }
+    //            $("#txtCountry").val(getCountry);
+    //            $("#txtZip").val(countryCode);
+    //            $("#txtState").val(cityAlt);
+    //            $("#txtCity").val(city);
+    //            Materialize.updateTextFields();
+    //            // $('<%=btnSelectAdd").click();
+    //        });
+    //        initialize();
+    //    });
+    //});
+    //function initialize() {
+    //    try {
+    //        var address = new google.maps.LatLng($("#lat").val(), $("#lng").val());
+    //        var marker;
+    //        var map;
+    //        var mapOptions = {
+    //            zoom: 13,
+    //            mapTypeId: google.maps.MapTypeId.ROADMAP,
+    //            center: address,
+
+    //        };
+
+    //        map = new google.maps.Map($('map'),
+    //            mapOptions);
+
+    //        marker = new google.maps.Marker({
+    //            map: map,
+    //            draggable: false,
+    //            position: address
+    //        });
+    //    } catch (e) {
+
+    //    }
+    //}
+
+    //function isNumberKey(evt, txt) {
+
+    //    var charCode = (evt.which) ? evt.which : event.keyCode
+
+    //    if (charCode > 31 && (charCode < 48 || charCode > 57))
+    //        return false;
+
+    //    return true;
+    //}
+    //function pageLoad(sender, args) {
+    //    var SearchValue = $("#hdnSearchValue").val();
+
+    //    var SearchBy = $("#hdnSearchBy").val();
+
+    //    if (SearchValue == "rdAll") {
+    //        $("#rdAll").css('checked', true);
+
+    //    }
+    //    else if (SearchValue == "rdOpen") {
+    //        $("#rdOpen").css('checked', true);
+
+    //    }
+    //    else if (SearchValue == "rdClosed") {
+    //        $("#rdClosed").css('checked', true);
+    //    }
+    //    else {
+    //        $("#rdAll").css('checked', true);
+    //    }
+    //    if (SearchBy == "rdAll2") {
+    //        $("#rdAll2").css('checked', true);
+
+    //    }
+    //    else if (SearchBy == "rdCharges") {
+    //        $("#rdCharges").css('checked', true);
+
+    //    }
+    //    else if (SearchBy == "rdCredit") {
+    //        $("#rdCredit").css('checked', true);
+    //    }
+    //    else {
+    //        $("#rdAll2").css('checked', true);
+    //    }
+    //}
+
+    //$(document).ready(function () {
+    //    var query = "";
+    //    function dtaa() {
+    //        this.prefixText = null;
+    //        this.con = null;
+    //        this.custID = null;
+    //    }
+    //    $("#txtDefaultAcct").autocomplete({
+    //        source: function (request, response) {
+    //            var dtaaa = new dtaa();
+    //            dtaaa.prefixText = request.term;
+    //            query = request.term;
+    //            $.ajax({
+    //                type: "POST",
+    //                contentType: "application/json; charset=utf-8",
+    //                url: "AccountAutoFill.asmx/GetAccountName",
+    //                data: JSON.stringify(dtaaa),
+    //                dataType: "json",
+    //                async: true,
+    //                success: function (data) {
+    //                    response($.parseJSON(data.d));
+    //                },
+    //                error: function (result) {
+    //                    alert("Due to unexpected errors we were unable to load accounts");
+    //                }
+    //            });
+    //        },
+    //        select: function (event, ui) {
+    //            $("#txtDefaultAcct").val(ui.item.label);
+    //            $("#hdnAcctID").val(ui.item.value);
+    //            return false;
+    //        },
+    //        focus: function (event, ui) {
+    //            $("#txtDefaultAcct").val(ui.item.label);
+    //            return false;
+    //        },
+    //        minLength: 0,
+    //        delay: 250
+    //    })
+    //        .bind('click', function () { $(this).autocomplete("search"); })
+    //        .data("ui-autocomplete")._renderItem = function (ul, item) {
+    //            //debugger;
+    //            var ula = ul;
+    //            var itema = item;
+    //            var result_value = item.value;
+    //            var result_item = item.acct;
+    //            var result_desc = item.label;
+
+    //            var x = new RegExp('\\b' + query, 'ig'); // notice the escape \ here...
+    //            result_item = result_item.replace(x, function (FullMatch, n) {
+    //                return '<span class="highlight">' + FullMatch + '</span>'
+    //            });
+    //            if (result_desc != null) {
+    //                result_desc = result_desc.replace(x, function (FullMatch, n) {
+    //                    return '<span class="highlight">' + FullMatch + '</span>'
+    //                });
+    //            }
+
+    //            if (result_value == 0) {
+    //                //return $("<li></li>")
+    //                //.data("item.autocomplete", item)
+    //                //.append("<a>" + result_item + "</a>")
+    //                //.appendTo(ul);
+    //            }
+    //            else {
+    //                return $("<li></li>")
+    //                    .data("item.autocomplete", item)
+    //                    .append("<a>" + result_item + " : <span>" + result_desc + "</span></a>")
+    //                    .appendTo(ul);
+    //            }
+    //        };
+    //});
+</script>
+<style>
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto; /* prevent horizontal scrollbar */
+        overflow-x: hidden; /* add padding to account for vertical scrollbar */
+        z-index: 1000 !important;
+    }
+
+    .pnlUpdate {
+        left: 33vw;
+        width: 500px !important;
+    }
+</style>
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title">
+                                    <i class="mdi-social-person-outline"></i>&nbsp;
+                                    <label class="title_text" ID="lblHeader" style="font-size:15px;">Add New Vendor</label>
+                                    <label class="title_text_Name" ID="lblUserName"></label>
+                                </div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a class="icon-save" ID="btnSubmit" ValidationGroup="general, rep">Save</a>
+                                    </div>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a class="icon-closed" ID="lnkClose" CausesValidation="false" ToolTip="Close">
+                                        <i class="mdi-content-clear"></i>
+                                    </a>
+                                </div>
+                                <div class="rght-content">
+                                    <div class="editlabel">
+                                        <label ID="lblVendorName"></label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <div class="tblnks">
+                            <ul class="anchor-links">
+                                <li><a href="#accrdVendorInfo">Vendor Info</a></li>
+                                <li><a href="#accrdContacts">Contacts</a></li>
+                                <li id="liTransactions"><a href="#accrdTransactions">Transactions</a></li>
+                                <li id="liLogs"><a href="#accrdlogs">Logs</a></li>
+                            </ul>
+                        </div>
+                        <div class="tblnksright">
+                            <div class="nextprev">
+                                <div ID="pnlNext">
+                                    <span class="angleicons">
+                                        <a ID="lnkFirst" ToolTip="First" CausesValidation="False">
+                                            <i class="fa fa-angle-double-left"></i>
+                                        </a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkPrevious" ToolTip="Previous" CausesValidation="False">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkNext" ToolTip="Next" CausesValidation="False">
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkLast" ToolTip="Last" class="icon-last" CausesValidation="False">
+                                            <i class="fa fa-angle-double-right"></i>
+                                        </a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container accordian-wrap">
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <div class="row">
+                <ul class="collapsible popout collapsible-accordion form-accordion-head" data-collapsible="expandable">
+                    <li>
+                        <div id="accrdVendorInfo" class="collapsible-header accrd active accordian-text-custom "><i class="mdi-social-poll"></i>Vendor Info.</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="form-section-row">
+                                        <div class="col s12">
+                                            <div class="form-section-row">
+                                                <div class="section-ttle">Vendor Details</div>
+                                                <div class="form-section3">
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            @Html.Hidden("hdnRolID")
+                                                            <input type="text" ID="txtAccountid" MaxLength="31" />
+                                                            <label ID="lbltxtAccountid" for="txtAccountid">Vendor ID</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtName" MaxLength="75" />
+
+                                                            <label ID="lbltxtName" for="txtName">Vendor Name</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtContact" MaxLength="50" />
+                                                            <label ID="lbltxtContact" for="txtContact">Contact Name</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtPhone" class="form-control phone" TabIndex="12" MaxLength="28" />
+                                                            <label ID="lbltxtPhone" for="txtPhone">Phone</label>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="form-section3-blank">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="form-section3">
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label ID="lbltxtAddress" for="txtAddress">Address</label>
+                                                            <textarea ID="txtAddress" TextMode="MultiLine" class="materialize-textarea" placeholder="" MaxLength="255"></textarea>
+                                                            <input type="button" ID="btnSelectAdd" CausesValidation="False" style="display: none;" value="Button" />
+                                                            <input id="lat" type="text" style="display: block;" />
+                                                            <input id="lng" type="text" style="display: block;" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtCity" MaxLength="50" />
+                                                            <label ID="lbltxtCity" for="txtCity">City</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtZip" MaxLength="10" />
+                                                            <label ID="lbltxtZip" for="txtZip">Zip</label>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtState" MaxLength="10" />
+                                                            <label ID="Label5" for="txtState">State</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <div class="row">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s5">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtCountry" Text="United States" />
+                                                            <label ID="Label2" for="txtCountry">Country</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12" id="dvCompanyPermission">
+                                                        <div class="row">
+                                                            <label ID="lbltxtCompany" for="txtCompany">Company</label>
+                                                            <input type="text" ID="txtCompany" Enabled="false" />
+
+                                                            <label id="lblddlCompany" class="drpdwn-label">Company</label>
+                                                            <select ID="ddlCompany" class="browser-default">
+                                                                <option>Select</option>
+                                                            </select>
+                                                            <div class="srchclr btnlinksicon rowbtn">
+                                                                <a ID="btnCompanyPopUp" Style="cursor: pointer;" onclick="OpenCompanyPopUp(this);" ToolTip="Change Company">
+                                                                    <i class="mdi-action-work" style="margin-left:0px !important;"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-section3-blank">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="form-section3">
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+
+                                                            <input type="text" ID="txtFax" MaxLength="28" />
+                                                            <label ID="lbltxtFax" for="txtFax">Fax</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtEmailid" TextMode="Email" MaxLength="50" />
+                                                            <label ID="lbltxtEmailid" for="txtEmailid">Email</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtCellular" MaxLength="28" placeholder="(xxx)xxx-xxxx" />
+                                                            <label ID="lbltxtCellular" for="txtCellular">Cellular</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtWebsite" MaxLength="50" />
+                                                            <label ID="lbltxtWebsite" for="txtWebsite">Web Address</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s4">
+                                                        <div class="checkrow">
+                                                            <span class="css-checkbox">
+                                                                <input type="checkbox" ID="chkmainEmailPO" />
+                                                                <label for="chkmainEmailPO">Email PO</label>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="form-section-row">
+                                                <div class="section-ttle">General</div>
+                                                <div class="form-section3">
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtAcct" Text="" />
+                                                            <label ID="lbltxtAcct" for="txtAcct">Acct #</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label class="drpdwn-label">Type</label>
+                                                            <select ID="ddlType" class="browser-default">
+                                                                <option>Select</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+
+                                                            <input type="text" ID="txtCreditlimit" value="0.0" />
+                                                            <label ID="lbltxtCreditlimit" for="txtCreditlimit">Credit Limit</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field2 col s10">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtDays" value="10" />
+                                                            <label ID="lbltxtDays" for="txtDays">If Paid In</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field2 col s2" style="padding-left: 25px; padding-top: 10px;">
+                                                        <div class="row">
+                                                            Days
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-section3-blank">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="form-section3">
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label ID="Label3" for="txtDays">Remit To</label>
+                                                            <textarea ID="txtRemitTo" class="materialize-textarea remit-ht" TextMode="MultiLine" MaxLength="255"></textarea>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label class="drpdwn-label">Status</label>
+                                                            <select ID="ddlStatus" class="browser-default">
+                                                                <option Value="-1">Select</option>
+                                                                <option Value="0">Active</option>
+                                                                <option Value="1">Inactive</option>
+                                                                <option Value="2">Hold</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label class="drpdwn-label">Terms</label>
+                                                            <select ID="ddlTerms" class="browser-default">
+                                                                <option>Select</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-section3-blank">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="form-section3">
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <label ID="Label1" for="txtDays">Remark</label>
+                                                            <textarea ID="txtvenremark" class="materialize-textarea remit-ht" TextMode="MultiLine" MaxLength="255"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-section-row">
+                                                <div class="section-ttle">Control</div>
+                                                <div class="form-section3">
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtShipvia" MaxLength="50" />
+                                                            <label ID="Label4" for="txtDays">Ship Via</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtDefaultAcct" MaxLength="75"
+                                                                   Placeholder="Search by acct# and name" />
+                                                            @Html.Hidden("hdnAcctID")
+                                                            <label ID="lbltxtDefaultAcct" for="txtDefaultAcct">Default Acct</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtBalance" placeholder="0.0" readOnly="readOnly" />
+                                                            <label ID="lbltxtBalance" for="txtBalance">Balance</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12" id="div1099" visible="false">
+                                                        <div class="row">
+                                                            <input type="text" ID="txt1099" Visible="false" Text="1" />
+                                                            <label ID="Label13" for="txt1099">1099 Box</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-section3-blank">
+                                                    &nbsp;
+                                                </div>
+
+                                                <div class="form-section3">
+                                                    <div class="input-field col s4">
+                                                        <div class="checkrow">
+                                                            <span class="css-checkbox">
+                                                                <input type="checkbox" ID="chk1099" />
+                                                                <label for="chk1099">1099</label>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s1">
+                                                        &nbsp;
+                                                    </div>
+
+                                                    <div class="input-field col s7">
+                                                        <div class="row">
+                                                            <input type="text" ID="txt1099Box" MaxLength="50"
+                                                                   onkeypress="return isNumberKey(event,this)" autocomplete="off" Text="7" />
+                                                            <label ID="lbltxt1099Box" for="txt1099Box">1099 Box</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtFedID" MaxLength="15" />
+                                                            <label ID="lbltxtFedID" for="txtFedID">Fed Id #</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12" id="divLast">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtLast" />
+                                                            <label ID="Label12" for="txtLast">Last</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12" id="divInuse">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtInuse" Text="1" />
+                                                            <label ID="Label15" for="txtInuse">InUse</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-section3-blank">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="form-section3">
+                                                    <div class="input-field col s12" style="display:block;" id="ddlSTaxgv">
+                                                        <div class="row">
+
+                                                            <label class="drpdwn-label" id="spansalestax">Sales Tax</label>
+                                                            <select ID="ddlSTax" class="browser-default">
+                                                                <option>Select</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-field col s12" style="display:none;" id="ddlUseTaxgv">
+                                                        <div class="row">
+                                                            <label class="drpdwn-label">Use Tax</label>
+                                                            <select ID="ddlUseTax" class="browser-default">
+                                                                <option>Select</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12" id="divSince">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtSince" />
+                                                            <label ID="Label11" for="txtSince">Since</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-field col s12" id="divGeolock">
+                                                        <div class="row">
+                                                            <input type="text" ID="txtGeolock" Text="0" />
+                                                            <label ID="Label14" for="txtGeolock">GeoLock</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cf"></div>
+                                        </div>
+                                        <div class="cf"></div>
+                                    </div>
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div id="accrdContacts" class="collapsible-header accrd accordian-text-custom"><i class="mdi-social-people"></i>Contacts</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap form-content-wrapwd">
+                                <div class="form-content-pd">
+                                    <div class="form-section-row">
+                                        <div class="srchpaneinner">
+                                            <div class="btnlinks">
+                                                <a class="icon-addnew" ID="lnkAddnew" CausesValidation="False" onclick="return AddContactClick(this);">Add</a>
+                                            </div>
+                                            <div class="btnlinks">
+                                                <a class="icon-edit"
+                                                   ID="btnEdit"
+                                                   onclick="return EditContactClick(this);" CausesValidation="False">Edit</a>
+                                            </div>
+                                            <div class="btnlinks">
+                                                <a class="icon-delete" ID="btnDelete" CausesValidation="False" onclick="return DeleteContactClick(this);">Delete</a>
+                                            </div>
+                                            <div class="btnlinks">
+                                                <a id="lnkMail" class="icon-mail">Email</a>
+                                            </div>
+                                        </div>
+                                        <div class="grid_container">
+                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                                            </div>
+                                        </div>
+                                        <div class="cf"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+                    <li id="adTransactions">
+                        <div id="accrdTransactions" class="collapsible-header accrd accordian-text-custom"><i class="mdi-action-cached"></i>Transactions</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap form-content-wrapwd">
+                                <div class="form-content-pd">
+                                    <div class="srchpaneinner">
+                                        <div class="srchtitle" style="padding-left: 2px; padding-right: 13px;">
+                                            Date
+                                        </div>
+                                        <div class="srchinputwrap">
+                                            <input type="text" ID="txtFromDate" MaxLength="50" class="datepicker_mom" />
+                                        </div>
+                                        <div class="srchinputwrap">
+                                            <input type="text" ID="txtToDate" MaxLength="50" class="datepicker_mom" />
+                                        </div>
+                                        <div class="srchinputwrap tabcontainer">
+                                            <ul class="tabselect accrd-tabselect" id="testradiobutton">
+                                                <li>
+                                                    <a AutoPostBack="False" ID="decDate" onclick="dec_date('dec','ctl00_ContentPlaceHolder1_txtToDate','ctl00_ContentPlaceHolder1_txtFromDate','rdCal');return false;"><i class='mdi-hardware-keyboard-arrow-left'></i></a>
+                                                </li>
+                                                <li>
+                                                    <label id="lblDay">
+                                                        <input type="radio" id="rdDay" name="rdCal" value="rdDay" onclick="SelectDate('Day', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#lblDay', 'hdnInvoiceDate', 'rdCal')" />
+                                                        Day
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label id="lblWeek">
+                                                        <input type="radio" id="rdWeek" name="rdCal" value="rdWeek" onclick="SelectDate('Week', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#ctl00_ContentPlaceHolder1_lblWeek', 'hdnInvoiceDate', 'rdCal')" />
+                                                        Week
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label id="lblMonth">
+                                                        <input type="radio" id="rdMonth" name="rdCal" value="rdMonth" onclick="SelectDate('Month', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#ctl00_ContentPlaceHolder1_lblMonth', 'hdnInvoiceDate', 'rdCal')" />
+                                                        Month
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label id="lblQuarter">
+                                                        <input type="radio" id="rdQuarter" name="rdCal" value="rdQuarter" onclick="SelectDate('Quarter', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#ctl00_ContentPlaceHolder1_lblQuarter', 'hdnInvoiceDate', 'rdCal')" />
+                                                        Quarter
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label id="lblYear">
+                                                        <input type="radio" id="rdYear" name="rdCal" value="rdYear" onclick="SelectDate('Year', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#ctl00_ContentPlaceHolder1_lblYear', 'hdnInvoiceDate', 'rdCal')" />
+                                                        Year
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <a ID="incDate" onclick="dec_date('inc','ctl00_ContentPlaceHolder1_txtToDate','ctl00_ContentPlaceHolder1_txtFromDate','rdCal');return false"><i class='mdi-hardware-keyboard-arrow-right'></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+                                        <div class="btnlinksicon">
+                                            <a ID="lnkSearch" CausesValidation="false" ToolTip="Search"><i class="mdi-action-search"></i></a>
+                                        </div>
+                                        <div class="btnlinks" style="float: right;">
+                                            <a ID="lnkTransactionExcel">Export to Excel</a>
+
+                                        </div>
+                                        <div style="float:right;padding-right: 10px;padding-top: 5px;">
+                                            <span>
+                                                Vendor Balance:
+                                                <label ID="lblVendorBalance">$0.00</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="srchpaneinner">
+                                        <div class="rd-flt">
+                                            <input id="rdAll" class="radio-custom" name="radio-group" type="radio" value="rdAll">
+                                            <label ID="lblrdAll" class="radio-custom-label" for="rdAll">All</label>
+                                        </div>
+                                        <div class="rd-flt">
+                                            <input id="rdOpen" class="radio-custom" name="radio-group" type="radio" value="rdOpen">
+                                            <label ID="Label6" class="radio-custom-label" for="rdOpen">Open</label>
+                                        </div>
+
+                                        <div class="rd-flt">
+                                            <input id="rdClosed" class="radio-custom" name="radio-group" type="radio" value="rdClosed">
+                                            <label ID="Label7" class="radio-custom-label" for="rdClosed">Closed</label>
+                                        </div>
+                                        @Html.Hidden("hdnSearchValue")
+
+                                        <div class="rd-flt rd-fltdifference">
+                                            <input id="rdAll2" class="radio-custom" name="radio-group1" type="radio" value="rdAll2">
+                                            <label ID="Label8" class="radio-custom-label" for="rdAll2">All</label>
+                                        </div>
+                                        <div class="rd-flt">
+                                            <input id="rdCharges" class="radio-custom" name="radio-group1" type="radio" value="rdCharges">
+                                            <label ID="Label9" class="radio-custom-label" for="rdCharges">Charges</label>
+                                        </div>
+
+                                        <div class="rd-flt">
+                                            <input id="rdCredit" class="radio-custom" name="radio-group1" type="radio" value="rdCredit">
+                                            <label ID="Label10" class="radio-custom-label" for="rdCredit">Credits</label>
+                                        </div>
+                                        @Html.Hidden("hdnSearchBy")
+
+
+                                        <div class="col lblsz2 lblszfloat">
+                                            <div class="row">
+                                                <span class="tro trost-label2 accrd-trost">
+                                                    <label ID="lblRecordCount"></label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col lblsz2 lblszfloat">
+                                            <div class="row">
+                                                <span class="tro trost-label2 accrd-trost">
+                                                    <a ID="lnkShowAll">Show All </a>
+                                                </span>
+                                                <span class="tro trost-label2 accrd-trost">
+                                                    <a ID="lnkClear">Clear</a>
+                                                </span>
+                                                <span class="tro trost-label2 accrd-trost">
+                                                    <a ID="lnkShowAllOpen" CausesValidation="False">Show All Open</a>
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+                    <li id="tbLogs">
+                        <div id="accrdlogs" class="collapsible-header accrd accordian-text-custom"><i class="mdi-content-content-paste"></i>Logs</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Field -->
+@Html.Hidden("hdnAddeContact", "Y")
+@Html.Hidden("hdnEditeContact", "Y")
+@Html.Hidden("hdnDeleteContact", "Y")
+@Html.Hidden("hdnViewContact", "Y")
+@Html.Hidden("hdnVendorTranSelectDtRange", "")
+@Html.Hidden("hdnCssActive", "1")
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+
+        //$("[id*=txtPhone]").mask("(999) 999-9999? Ext 99999");
+        //$("[id*=txtPhone]").bind('paste', function () { $(this).val(''); });
+        //$("[id*=txtCell]").mask("(999) 999-9999");
+        //$("[id*=txtFax]").mask("(999) 999-9999");
+
+
+        ////Contact Popup
+        //$("[id*=txtContPhone]").mask("(999) 999-9999? Ext 99999");
+        //$("[id*=txtContPhone]").bind('paste', function () { $(this).val(''); });
+        //$("[id*=txtContCell]").mask("(999) 999-9999");
+        //$("[id*=txtContFax]").mask("(999) 999-9999");
+
+
+        //$.ajax({
+        //    type: "POST",
+        //    contentType: "application/json; charset=utf-8",
+        //    url: "AccountAutoFill.asmx/GetIsSalesTaxAPBill",
+        //    //data: '{"prefixText": "' + dtaaa.prefixText + '", "IsJob": "' + false + '", "con": "' + dtaaa.con + '"}',
+        //    dataType: "json",
+        //    async: true,
+        //    success: function (data) {
+        //        debugger
+        //        //response($.parseJSON(data.d));
+        //        var ui = JSON.parse(data.d);
+
+        //        if (ui.length > 0) {
+        //            var IsSalesTaxAPBill = ui[0].IsSalesTaxAPBill;
+        //            var IsUseTaxAPBill = ui[0].IsUseTaxAPBill;
+        //            if (IsSalesTaxAPBill == "1") {
+
+        //                $("#ddlSTaxgv").css('display', 'block');
+        //                //$('ddlUseTaxgv').style.display = 'block';
+        //            } else {
+
+
+        //                $("#ddlSTaxgv").css('display', 'none');
+        //                //$('ddlUseTaxgv').style.display = 'none';
+        //            }
+        //            if (IsUseTaxAPBill == "1") {
+        //                $("#ddlUseTaxgv").css('display', 'none');
+
+        //            } else {
+
+        //                $("#ddlUseTaxgv").css('display', 'none');
+
+        //            }
+        //            //$(txtGvAcctName).val(ui[0].DefaultAcct);
+        //        }
+
+
+        //    },
+        //    error: function (result) {
+        //        alert("Due to unexpected errors we were unable to load phase details");
+        //    }
+        //});
+
+
+    });
+</script>
+
+<script type="text/javascript">
+    //var prm = Sys.WebForms.PageRequestManager.getInstance();
+    //prm.add_pageLoaded(function () {
+    //    $("[id*=txtContPhone]").mask("(999) 999-9999? Ext 99999");
+    //    $("[id*=txtContPhone]").bind('paste', function () { $(this).val(''); });
+    //    $("[id*=txtContCell]").mask("(999) 999-9999");
+    //    $("[id*=txtContFax]").mask("(999) 999-9999");
+    //});
+</script>
+
+
+<script type="text/javascript" src="~/MOMUI/Design/js/plugins/dropify/js/dropify.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('a[href^="#accrd"]').on('click', function (e) {
+            e.preventDefault();
+
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+
+
+        //Dropify Basic
+        $('.dropify').dropify();
+        // Used events
+        var drEvent = $('.dropify-event').dropify();
+
+        drEvent.on('dropify.beforeClear', function (event, element) {
+            return confirm("Do you really want to delete \"" + element.filename + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function (event, element) {
+            alert('File deleted');
+        });
+    });
+</script>
+<script type="text/javascript">
+    function CssClearLabel() {
+        $("#lblDay").removeClass("labelactive");
+        $("#lblWeek").removeClass("labelactive");
+        $("#lblMonth").removeClass("labelactive");
+        $("#lblQuarter").removeClass("labelactive");
+        $("#lblYear").removeClass("labelactive");
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('label input[type=radio]').click(function () {
+            $('input[name="' + this.name + '"]').each(function () {
+                $(this.parentNode).toggleClass('labelactive', this.checked);
+            });
+        });
+        debugger;
+        if (typeof (Storage) !== "undefined") {
+
+            // Retrieve
+            var SesVar = '<%= Convert.ToString(Session["lblVendorTranActive"])%>';
+            var val;
+            val = localStorage.getItem("hdnVendorTranDate");
+            if (SesVar == '2') {
+                $("#lblDay").addClass("");
+                $("#lblWeek").addClass("");
+                $("#lblMonth").addClass("");
+                $("#lblQuarter").addClass("");
+                $("#lblYear").addClass("");
+            }
+            else {
+                if (val == 'Day') {
+                    $("#lblDay").addClass("labelactive");
+                    $("#rdDay").css('checked', true);
+                }
+                else if (val == 'Week') {
+
+                    $("#lblWeek").addClass("labelactive");
+                    $("#rdWeek").css('checked', true);
+                }
+                else if (val == 'Month') {
+
+                    $("#lblMonth").addClass("labelactive");
+                    $("#rdMonth").css('checked', true);
+                }
+                else if (val == 'Quarter') {
+
+                    $("#lblQuarter").addClass("labelactive");
+                    $("#rdQuarter").css('checked', true);
+                }
+                else if (val == 'Year') {
+
+                    $("#lblYear").addClass("labelactive");
+                    $("#rdYear").css('checked', true);
+                }
+                else {
+                    $("#lblWeek").addClass("labelactive");
+                    $("#rdWeek").css('checked', true);
+                }
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    function dec_date(select, txtDateTo, txtDateFrom, rdGroup) {
+        var select = select;
+        var txtDateTo = txtDateTo;
+        var txtDateFrom = txtDateFrom;
+        var rdGroup = rdGroup;
+        var xday;
+        var xWeek;
+        var xMonth;
+        var xYear;
+        var xQuarter;
+        if (select == "dec") {
+            xday = -1;
+            xWeek = -7;
+            xMonth = -1;
+            xQuarter = -3;
+            xYear = -1;
+        }
+        if (select == "inc") {
+
+            xday = 1;
+            xWeek = 7;
+            xMonth = 1;
+            xQuarter = 3;
+            xYear = 1;
+        }
+        var radio = document.getElementsByName(rdGroup); //Client ID of the RadioButtonList1
+        var selected;
+        for (var i = 0; i < radio.length; i++) {
+            if (radio[i].checked) { // Checked property to check radio Button check or not
+                //alert("Radio button having value " + radio[i].value + " was checked."); // Show the checked value
+                selected = radio[i].value;
+
+            }
+            if (selected == "") {
+                selected = 'rdWeek';
+            }
+        }
+        if (selected == 'rdDay') {
+
+            //dec the from date
+            var tt = $(txtDateFrom).val();
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+
+            newdate.setDate(newdate.getDate() + xday);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            $(txtDateFrom).val(someFormattedDate);
+            //dec the to date
+
+            var TT = $(txtDateTo).val();
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+
+            NEWDATE.setDate(NEWDATE.getDate() + xday);
+
+            var DD = NEWDATE.getDate();
+            var MM = NEWDATE.getMonth() + 1;
+            var Y = NEWDATE.getFullYear();
+
+            var someFormattedDATE = MM + '/' + DD + '/' + Y;
+            $(txtDateTo).val(someFormattedDATE);
+        }
+        else if (selected == 'rdWeek') {
+            //dec the from date
+            var tt = $(txtDateFrom).val();
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+
+            newdate.setDate(newdate.getDate() + xWeek);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            $(txtDateFrom).val(someFormattedDate);
+            //dec the to date
+
+            var TT = $(txtDateTo).val();
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+
+            NEWDATE.setDate(NEWDATE.getDate() + xWeek);
+
+            var DD = NEWDATE.getDate();
+            var MM = NEWDATE.getMonth() + 1;
+            var Y = NEWDATE.getFullYear();
+
+            var someFormattedDATE = MM + '/' + DD + '/' + Y;
+            $(txtDateTo).val(someFormattedDATE);
+        }
+        else if (selected == 'rdMonth') {
+            //dec the from date
+
+            Date.isLeapYear = function (year) {
+                return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
+            };
+
+            Date.getDaysInMonth = function (year, month) {
+                return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+            };
+
+            Date.prototype.isLeapYear = function () {
+                return Date.isLeapYear(this.getFullYear());
+            };
+
+            Date.prototype.getDaysInMonth = function () {
+                return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+            };
+
+            Date.prototype.addMonths = function (value) {
+
+                var n = this.getDate();
+                this.setDate(1);
+                this.setMonth(this.getMonth() + value);
+                this.setDate(Math.min(n, this.getDaysInMonth()));
+                return this;
+            };
+
+            Date.prototype.addMonthsLast = function (value) {
+
+                var n = this.getDate();
+                this.setDate(1);
+                this.setMonth(this.getMonth() + 1);
+                if (this.getDaysInMonth() == 31) {
+
+                    this.setDate(Math.max(n, this.getDaysInMonth()));
+                }
+                else {
+                    this.setDate(Math.min(n, this.getDaysInMonth()));
+
+                }
+
+                return this;
+            };
+
+            Date.prototype.addMonthsLastDec = function (value) {
+
+                var n = this.getDate();
+                this.setDate(1);
+                this.setMonth(this.getMonth() - 1);
+                if (this.getDaysInMonth() == 31) {
+
+                    this.setDate(Math.max(n, this.getDaysInMonth()));
+                }
+                else {
+                    this.setDate(Math.min(n, this.getDaysInMonth()));
+
+                }
+
+                return this;
+            };
+            var tt = $(txtDateFrom).val()
+
+            var date = new Date(tt).toDateString();
+            var newdate = new Date(date);
+
+            newdate.addMonths(xMonth);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            $(txtDateFrom).val(someFormattedDate);
+
+
+            //dec the to date
+            if (select == 'dec') {
+                var ti = $(txtDateTo).val();
+                var date = new Date(ti).toDateString();
+                var newdateti = new Date(date);
+                newdateti.addMonthsLastDec(xMonth);
+
+                var dd = newdateti.getDate();
+                var mm = newdateti.getMonth() + 1;
+                var y = newdateti.getFullYear();
+
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                $(txtDateTo).val(someFormattedDate);
+            }
+
+            else {
+                var ti = $(txtDateTo).val();
+
+                var date = new Date(ti).toDateString();
+                var newdateti = new Date(date);
+                newdateti.addMonthsLast(xMonth);
+
+                var dd = newdateti.getDate();
+                var mm = newdateti.getMonth() + 1;
+                var y = newdateti.getFullYear();
+
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                $(txtDateTo).val(someFormattedDate);
+            }
+        }
+
+
+        else if (selected == 'rdQuarter') {
+            //dec the from date
+            var tt = $(txtDateFrom).val();
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+
+            newdate.setMonth(newdate.getMonth() + xQuarter);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            $(txtDateFrom).val(someFormattedDate);
+            //dec the to date
+
+            var TT = $(txtDateTo).val();
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+
+            //decrease date range
+            if (select == 'dec') {
+                xQuarter = -3;
+
+                if (DATE.getMonth() == 11) {
+                    NEWDATE.setDate(NEWDATE.getDate() - 1);
+                    NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+
+                }
+                else if (DATE.getMonth() == 5) {
+                    NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+                    NEWDATE.setDate(NEWDATE.getDate() + 1);
+
+                }
+                else {
+                    NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+
+                }
+            }
+            else {
+                xQuarter = 3;
+                NEWDATE.setDate(NEWDATE.getDate() - 1);
+                NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+                if (NEWDATE.getMonth() == 11 || NEWDATE.getMonth() == 12 || DATE.getMonth() == 11) {
+                    NEWDATE.setDate(31);
+                } else {
+                    if (DATE.getMonth() == 5) { NEWDATE.setDate(NEWDATE.getDate() + 1); }
+                    else { NEWDATE.setDate(NEWDATE.getDate()); }
+
+                }
+            }
+            var DD = NEWDATE.getDate();
+            var MM = NEWDATE.getMonth() + 1;
+            var Y = NEWDATE.getFullYear();
+
+            var someFormattedDATE = MM + '/' + DD + '/' + Y;
+            $(txtDateTo).val(someFormattedDATE);
+        }
+        else if (selected == 'rdYear') {
+
+            var tt = $(txtDateFrom).val();
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+
+            newdate.setFullYear(newdate.getFullYear() + xYear);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            $(txtDateFrom).val(someFormattedDate);
+            //dec the to date
+
+            var TT = $(txtDateTo).val();
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+
+            NEWDATE.setFullYear(NEWDATE.getFullYear() + xYear);
+            var DD = NEWDATE.getDate();
+            var MM = NEWDATE.getMonth() + 1;
+            var Y = NEWDATE.getFullYear();
+
+            var someFormattedDATE = MM + '/' + DD + '/' + Y;
+            $(txtDateTo).val(someFormattedDATE);
+        }
+
+        return false;
+
+    }
+    function SelectDate(type, txtDateFrom, txtdateTo, label, UniqueVal, rdGroup) {
+        var type = type;
+        var txtDateFrom = txtDateFrom;
+        var txtdateTo = txtdateTo;
+        var UniqueVal = UniqueVal;
+        var label = label;
+        if (type == 'Day') {
+            var todaydate = new Date();
+            var day = todaydate.getDate();
+            var month = todaydate.getMonth() + 1;
+            var year = todaydate.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtdateTo).val(datestring);
+            $(txtDateFrom).val(datestring);
+            $(label).addClass("labelactive");
+            $("#hdnVendorTranSelectDtRange").val("Day");
+        }
+        if (type == 'Week') {
+
+            Date.prototype.GetFirstDayOfWeek = function () {
+                return (new Date(this.setDate(this.getDate() - this.getDay())));
+            }
+
+            Date.prototype.GetLastDayOfWeek = function () {
+                return (new Date(this.setDate(this.getDate() - this.getDay() + 6)));
+            }
+            var today = new Date();
+            var Firstdate = today.GetFirstDayOfWeek();
+            var day = Firstdate.getDate();
+            var month = Firstdate.getMonth() + 1;
+            var year = Firstdate.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtDateFrom).val(datestring);
+            var Lastdate = today.GetLastDayOfWeek();
+            var day = Lastdate.getDate();
+            var month = Lastdate.getMonth() + 1;
+            var year = Lastdate.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            $(txtdateTo).val(dateString);
+            $(label).addClass("labelactive");
+            $("#hdnVendorTranSelectDtRange").val("Week");
+        }
+        if (type == 'Month') {
+            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+            var FirstDayOfMonth = new Date(y, m, 1);
+            var lastDayOfMonth = new Date(y, m + 1, 0);
+            var day = FirstDayOfMonth.getDate();
+            var month = FirstDayOfMonth.getMonth() + 1;
+            var year = FirstDayOfMonth.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtDateFrom).val(datestring);
+            var day = lastDayOfMonth.getDate();
+            var month = lastDayOfMonth.getMonth() + 1;
+            var year = lastDayOfMonth.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            $(txtdateTo).val(dateString);
+            $(label).addClass("labelactive");
+            $("#hdnVendorTranSelectDtRange").val("Month");
+        }
+        if (type == 'Quarter') {
+            var d = new Date();
+            var quarter = Math.floor((d.getMonth() / 3));
+            var firstDate = new Date(d.getFullYear(), quarter * 3, 1);
+            var lastDate = new Date(firstDate.getFullYear(), firstDate.getMonth() + 3, 0);
+            var day = firstDate.getDate();
+            var month = firstDate.getMonth() + 1;
+            var year = firstDate.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtDateFrom).val(datestring);
+            var day = lastDate.getDate();
+            var month = lastDate.getMonth() + 1;
+            var year = lastDate.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            $(txtdateTo).val(dateString);
+            $(label).addClass("labelactive");
+            $("#hdnVendorTranSelectDtRange").val("Quarter");
+        }
+        if (type == 'Year') {
+            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+            var FirstDayOfYear = new Date(y, 1, 1);
+            var lastDayOfYear = new Date(y, 11, 31);
+            var day = FirstDayOfYear.getDate();
+            var month = FirstDayOfYear.getMonth();
+            var year = FirstDayOfYear.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtDateFrom).val(datestring);
+            var day = lastDayOfYear.getDate();
+            var month = lastDayOfYear.getMonth() + 1;
+            var year = lastDayOfYear.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            $(txtdateTo).val(dateString);
+            $(label).addClass("labelactive");
+            $("#hdnVendorTranSelectDtRange").val("Year");
+        }
+        if (typeof (Storage) !== "undefined") {
+            // Store
+            localStorage.setItem(UniqueVal, $("#hdnVendorTranSelectDtRange").val());
+        }
+        $("#hdnCssActive").val("CssActive");
+        var clickSearchButton = $("#lnkSearch");
+        clickSearchButton.click();
+        $("#hdnCssActive").val("1");
+    }
+</script>
+<script type="text/javascript">
+
+    function OpenCompanyPopUp() {
+        var wnd = $find("#RadWindowCompany");
+        wnd.set_title("Select Company");
+        wnd.Show();
+    }
+    function CloseCompanyPopUp() {
+        var wnd = $find("#RadWindowCompany");
+        wnd.Close();
+    }
+    function ShowHistoryTransactionPopup(Uid, Type, owner, loc, status, TransID) {
+
+        var oWnd = $find("#RadWindowHistoryTransaction");
+        oWnd.setUrl("VendorTransactionHistory.aspx?uid=" + Uid + "&type=" + Type + "&vendor=" + owner + "&loc=" + loc + "&status=" + status + "&tid=" + TransID + "&page=addcustomer");
+        oWnd.setSize(800, 400);
+        oWnd.show();
+    }
+    function setCustomPosition(sender, args) {
+
+        var elmnt = $("#RadGrid_VendorTran");
+
+        sender.moveTo(sender.get_left(), elmnt.offsetTop);
+    }
+</script>

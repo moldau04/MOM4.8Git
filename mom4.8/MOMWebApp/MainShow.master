@@ -1,0 +1,423 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" Inherits="MainShow" Codebehind="MainShow.master.cs" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Easy Admin Panel Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Bootstrap Core CSS -->
+<!-- CSS App -->
+<link rel="stylesheet" type="text/css" href="HTMLcss/style2.css" />
+<link rel="stylesheet" type="text/css" href="HTMLcss/flat-blue.css"/>
+<link href="HTMLcss/dcalendar.picker.css" rel="stylesheet" type="text/css"/>
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css"/>
+<!-- Custom CSS -->
+<link href="HTMLcss/sb-admin-2.css" rel="stylesheet"/>
+<link href="HTMLcss/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<!-- CSS Libs -->
+<link rel="stylesheet" type="text/css" href="HTMLcss/bootstrap.css"/>
+<!-- Custom CSS -->
+<link href="HTMLcss/style.css" rel='stylesheet' type='text/css' />
+<!-- Graph CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+<!-- jQuery -->
+<!-- lined-icons -->
+<!--<link rel="stylesheet" href="css/icon-font.min.css" type='text/css' />-->
+<!-- //lined-icons -->
+<script src="js/Chart.js"></script>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="sticky-header left-side-collapsed">>
+    <form id="form1" runat="server">
+        <div>
+            <section>
+  <!-- left side start-->
+  <div class="left-side sticky-left-side">
+    <div class="left-side-inner">
+      <!--sidebar nav start-->
+      <ul class="nav nav-pills nav-stacked custom-nav">
+        <li class="active"><a href="index.html"><i class="icon fa fa-dashboard" aria-hidden="true"></i><span>Dashboard</span> </a></li>
+        <li class="menu-list"> <a href="#"><i class="icon fa fa-user" aria-hidden="true"></i> <span>Customer Manager<i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="#" id="ctl00_lnkCustomersSmenu">Customers</a> </li>
+            <li> <a href="#" id="ctl00_lnkLocationsSMenu">Locations</a></li>
+            <li> <a href="#" id="ctl00_lnkEquipmentsSMenu">Equipments</a></li>
+            <li> <a class="grayscales" disabled="disabled" id="ctl00_lnkReceivePayment">Receive Payment</a> </li>
+            <li> <a class="grayscales" disabled="disabled" id="ctl00_lnkDeposit">Make Deposit</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"> <a href="#"><i aria-hidden="true" class="fa fa-refresh"></i> <span>Recurring Manager<i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="RecContracts.aspx" id="ctl00_lnkContractsMenu">Recurring Contracts</a> </li>
+            <li> <a href="recurringinvoices.aspx" id="ctl00_lnkInvoicesMenu">Recurring Invoices</a> </li>
+            <li> <a href="RecurringTickets.aspx" id="ctl00_lnkTicketsMenu">Recurring Tickets</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"> <a href="#"><i class="icon fa fa-calendar" aria-hidden="true"></i> <span>Schedule Manager<i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="Scheduler.aspx" id="ctl00_lnkScheduleMenu">Schedule</a> </li>
+            <li> <a href="TicketListView.aspx" id="ctl00_lnkListView">Ticket List</a> </li>
+            <li> <a href="etimesheet.aspx" id="ctl00_lnkTimesheet">e-Timesheet</a> </li>
+            <li> <a href="Map.aspx" id="ctl00_lnkMapMenu">Map</a> </li>
+            <li> <a href="RouteBuilder.aspx" id="ctl00_lnkRouteBuilder">Route Builder</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"><a href="#"><i class="icon fa fa-tasks" aria-hidden="true"></i> <span>Project Manager<i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a class="grayscales" disabled="disabled" id="ctl00_lnkProject">Projects</a> </li>
+            <li> <a href="setup.aspx?tab=1" id="ctl00_lnkDepartments">Departments</a> </li>
+            <li> <a href="projecttemplate.aspx" id="ctl00_lnkProjectTempl">Project Templates</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"><a href="#"><i aria-hidden="true" class="fa fa-money"></i><span>Billing Manager <i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="invoices.aspx" id="ctl00_lnkInvoicesSMenu">Invoices</a> </li>
+            <li> <a href="paymenthistory.aspx" id="ctl00_lnkPaymentHistory">Payment History</a> </li>
+            <li> <a href="billingcodes.aspx" id="ctl00_lnkBillcodeSMenu">Billing Codes</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"><a href="#"> <i class="icon fa fa-cart-arrow-down" aria-hidden="true"></i> <span>Purchasing <i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="managereceivepo.aspx" id="ctl00_lnkReceivePO">Receive PO</a> </li>
+          </ul>
+        </li>
+        <li><a href="media.html"><i class="icon fa fa-dollar" aria-hidden="true"></i> <span>Accounts Payable</span></a> </li>
+        <li class="menu-list"><a href="#"><i class="icon fa fa-list" aria-hidden="true"></i><span>Inventory Manager <i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="Inventory.aspx" id="ctl00_lnkItemMaster">Item Master</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"><a href="#"><i class="icon fa fa-line-chart" aria-hidden="true"></i><span>Sales Manager<i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="prospects.aspx" id="ctl00_lnkProspect">Leads</a> </li>
+            <li> <a href="opportunity.aspx" id="ctl00_lnkOpportunities">Opportunities</a> </li>
+            <li> <a href="tasks.aspx" id="ctl00_lnkTasks">Tasks</a> </li>
+            <li> <a title="Coming Soon" id="ctl00_lnkProposals">Proposals</a> </li>
+            <li> <a href="salesdashboard.aspx" id="ctl00_lnkCRM">CRM Dashboard</a> </li>
+            <li> <a href="salessetup.aspx" id="ctl00_lnkSalesSetup">Sales Setup</a> </li>
+            <li> <a href="estimate.aspx" id="ctl00_lnkEstimate">Estimate</a> </li>
+            <li> <a href="estimatetemplate.aspx" id="ctl00_lnkEstimateTempl">Estimate Template</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"><a href="#"><i class="icon fa fa-area-chart" aria-hidden="true"></i><span>Financial Manager<i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a class="grayscales" disabled="disabled" id="ctl00_lnkCOA">Chart of Account</a> </li>
+            <li> <a class="grayscales" disabled="disabled" id="ctl00_lnkJournalEntry">Journal Entry</a> </li>
+            <li> <a href="managechecks.aspx" id="ctl00_lnkWriteCheck">Write Checks</a> </li>
+            <li> <a class="grayscales" disabled="disabled" id="ctl00_lnkBankRecon">Bank Reconciliation</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"><a href="#"><i class="icon fa fa-archive" aria-hidden="true"></i><span>Financial Statement<i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="trialbalance.aspx" id="ctl00_lnkTrialBalance">Trial Balance</a> </li>
+            <li> <a href="incomestatement.aspx" id="ctl00_lnkIncomeStatement">Profit and Loss</a> </li>
+            <li> <a href="balancesheet.aspx" id="ctl00_lnkBalanceSheet">Balance Sheet</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"><a href="#"><i class="icon fa fa-pie-chart" aria-hidden="true"></i><span>Report Manager<i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="Reports.aspx?type=Customer" id="ctl00_lnkCustMgrReport">Customer Manager</a> </li>
+            <li> <a href="Reports.aspx?type=Recurring" id="ctl00_lnkRecMgrReport">Recurring Manager</a> </li>
+            <li> <a href="Reports.aspx?type=Scheduler" id="ctl00_lnkSchdMgrReport">Schedule Manager</a> </li>
+            <li> <a href="Reports.aspx?type=Billing" id="ctl00_lnkBlngMgrReport">Billing Manager</a> </li>
+            <li> <a href="Reports.aspx?type=Sales" id="ctl00_lnkSalesMgrReport">Sales Manager</a> </li>
+            <li> <a href="Reports.aspx?type=Project" id="ctl00_lnkPrjMgrReport">Project Manager</a> </li>
+            <li> <a href="Reports.aspx?type=Financial" id="ctl00_lnkFnclMgrReport">Financial Manager</a> </li>
+            <li> <a href="Reports.aspx?type=Program" id="ctl00_lnkPrgmMgrReport">Program Manager</a> </li>
+          </ul>
+        </li>
+        <li class="menu-list"><a href="#"><i class="icon fa fa-gear" aria-hidden="true"></i><span>Program Manager <i aria-hidden="true" class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu-list">
+            <li> <a href="Users.aspx" id="ctl00_lnkUsersSMenu">Users</a> </li>
+            <li> <a href="setup.aspx" id="ctl00_lnkSetup">Setup</a> </li>
+            <li> <a href="controlpanel.aspx" id="ctl00_lnkCntrlPnl">Control Panel</a> </li>
+            <li> <a href="CustomFields.aspx" id="ctl00_lnkCustomFields">Custom Labels</a> </li>
+            <li> <a href="periodcloseout.aspx" id="ctl00_lnkPeriodCloseOut">Period Close Out</a> </li>
+          </ul>
+        </li>
+      </ul>
+      <!--sidebar nav end-->
+    </div>
+  </div>
+  <!-- left side end-->
+  <!-- main content start-->
+  <div class="main-content">
+    <!-- header-starts -->
+    <div class="header-section black-bg">
+      <!--logo and iconic logo start-->
+      <div class="logo-box col-sm-1 col-xs-12"> <a href="index.html"><img src="HTMLimages/logo.png" alt="logo"> </a>
+        <!--toggle button start-->
+        <a class="toggle-btn  menu-collapsed"><i class="fa fa-bars"></i></a>
+        <!--toggle button end-->
+      </div>
+      <!--logo and iconic logo end-->
+      <!--notification menu start -->
+      <div class="menu-right">
+        <div class="user-panel-top col-md-11 pdr-none">
+          <div class="col-md-4 col-sm-5 col-xs-5 pd-none mobile_office">
+            <h4>MOBILE OFFICE MANAGER 4.0</h4>
+          </div>
+          <div class="col-md-3 col-sm-5 col-xs-4 pd-none" id="date-sec"> <span class="cale-box">  </span> <span class="today">Today</span> <span class="date-t">13 Sep</span> <span class="sep"></span> <span class="cloud"><img alt="" src="HTMLimages/claud.png"></span> <span class="temp">20  ℃ <sub>Cloudy</sub></span> </div>
+          <div class="col-md-2 col-sm-5 col-xs-6  profile_details_left">
+            <ul class="nofitications-dropdown navbar-top-links">
+              <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope-o"></i><span class="badge blue1">6</span></a>
+                <ul class="dropdown-menu dropdown-messages">
+                  <h6><span>ESS Mail</span><span class="pull-right"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;<i aria-hidden="true" class="fa fa-pencil-square-o"></i></span></h6>
+                  <li>
+                    <input type="checkbox" value="" name="">
+                    <a href="#">
+                    <div> <strong>Lorem ipsum</strong> <span class="pull-right text-muted"> <em>Yesterday</em> </span> </div>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                    </a> </li>
+                  <li class="divider"></li>
+                  <li>
+                    <input type="checkbox" value="" name="">
+                    <a href="#">
+                    <div> <strong>Lorem ipsum</strong> <span class="pull-right text-muted"> <em>Yesterday</em> </span> </div>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                    </a> </li>
+                  <li class="divider"></li>
+                  <li>
+                    <input type="checkbox" value="" name="">
+                    <a href="#">
+                    <div> <strong>Lorem ipsum</strong> <span class="pull-right text-muted"> <em>Yesterday</em> </span> </div>
+                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                    </a> </li>
+                  <li class="divider"></li>
+                  <li class="align-center more-aerrow"><a href="#"><i aria-hidden="true" class="fa fa-chevron-down"></i></a> </li>
+                </ul>
+              </li>
+              <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-pencil"></i><span class="badge blue">4</span></a>
+                <ul class="dropdown-menu dropdown-messages task">
+                  <h6><span>Task</span><span class="pull-right"><i aria-hidden="true" class="fa fa-plus-circle"></i></span></h6>
+                  <li>
+                    <div data-example-id="dismissible-alert-js" class="bs-example bs-example-standalone">
+                      <div role="alert" class="alert alert-warning alert-dismissible fade in">
+                        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                        <strong>Task:</strong> Finalize ESS meeting <strong>Description:</strong> Show the final product </div>
+                      <p>Due: 12/1/2015</p>
+                    </div>
+                  </li>
+                  <li>
+                    <div data-example-id="dismissible-alert-js" class="bs-example bs-example-standalone">
+                      <div role="alert" class="alert alert-warning alert-dismissible fade in">
+                        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                        <strong>Task:</strong> Finalize ESS meeting <strong>Description:</strong> Show the final product </div>
+                      <p>Due: 12/1/2015</p>
+                    </div>
+                  </li>
+                  <p class="align-center more-aerrow"><a href="#"><i class="fa fa-chevron-down" aria-hidden="true"></i></a> </p>
+                </ul>
+              </li>
+              <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-comment-o"></i><span class="badge label-danger">8</span></a>
+                <ul class="dropdown-menu dropdown-messages task alerts">
+                  <h6><span>Alerts</span><span class="pull-right"><i aria-hidden="true" class="fa fa-plus-circle"></i></span></h6>
+                  <li>
+                    <div data-example-id="dismissible-alert-js" class="bs-example bs-example-standalone">
+                      <div role="alert" class="alert alert-warning alert-dismissible fade in">
+                        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                        <strong>Lorem ipsum</strong><br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. </div>
+                      <p>Dec 4,2015</p>
+                    </div>
+                  </li>
+                  <li>
+                    <div data-example-id="dismissible-alert-js" class="bs-example bs-example-standalone">
+                      <div role="alert" class="alert alert-warning alert-dismissible fade in">
+                        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                        <strong>Lorem ipsum</strong><br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. </div>
+                      <p>Dec 4,2015</p>
+                    </div>
+                  </li>
+                  <p class="align-center more-aerrow"><a href="#"><i class="fa fa-chevron-down" aria-hidden="true"></i></a> </p>
+                </ul>
+              </li>
+              <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"></i><span class="badge">12</span></a>
+                <ul class="dropdown-menu dropdown-messages task alerts">
+                  <h6><span>Alerts</span><span class="pull-right"><i aria-hidden="true" class="fa fa-plus-circle"></i></span></h6>
+                  <li>
+                    <div data-example-id="dismissible-alert-js" class="bs-example bs-example-standalone">
+                      <div role="alert" class="alert alert-warning alert-dismissible fade in">
+                        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                        <strong>Lorem ipsum</strong><br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. </div>
+                      <p>Dec 4,2015</p>
+                    </div>
+                  </li>
+                  <li>
+                    <div data-example-id="dismissible-alert-js" class="bs-example bs-example-standalone">
+                      <div role="alert" class="alert alert-warning alert-dismissible fade in">
+                        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                        <strong>Lorem ipsum</strong><br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. </div>
+                      <p>Dec 4,2015</p>
+                    </div>
+                  </li>
+                  <p class="align-center more-aerrow"><a href="#"><i class="fa fa-chevron-down" aria-hidden="true"></i></a> </p>
+                </ul>
+              </li>
+              <div class="clearfix"></div>
+            </ul>
+          </div>
+          <div class="col-md-2  col-sm-5 col-xs-4 profile_details  pull-right pd-none">
+            <ul>
+              <li class="dropdown profile_details_drop"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <div class="profile_img">
+                  <div class="user-name"> <span class="profile-name"> Admin </span> <br>
+                    <span class="small-text">XYZ Company</span> </div>
+                  <span class="user-img"> <img src="HTMLimages/1.png" alt=""></span><i aria-hidden="true" class="fa fa-angle-down"></i>
+                  <div class="clearfix"></div>
+                </div>
+                </a>
+                <ul class="dropdown-menu dropdown-messages drp-mnu">
+                  <li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li>
+                  <li> <a href="#"><i class="fa fa-user"></i>Profile</a> </li>
+                  <li> <a href="sign-up.html"><i class="fa fa-sign-out"></i> Logout</a> </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix"> </div>
+          <p class="breadcrumb-text col-md-12 pull-right">Dashboard /</p>
+        </div>
+      </div>
+      <!--notification menu end -->
+    </div>
+    <!-- //header-ends -->
+    <div id="page-wrapper">
+      <div class="side-body padding-top">
+        <!--left-sec start-->
+        <div class="col-md-8 left-sec" >
+          <div class="chart">
+            <h4><span>KPI’s</span></h4>
+            <img src="HTMLimages/chart.jpg" alt=""></div>
+          <div class="clearfix"></div>
+          <br>
+          <div class="col-md-6">
+            <h4><span>News</span></h4>
+            <div data-example-id="togglable-tabs" class="bs-example bs-example-tabs">
+              <ul role="tablist" id="myTabs" class="nav nav-tabs">
+                <li class="active" role="presentation"><a aria-expanded="true" aria-controls="home" data-toggle="tab" role="tab" id="company-tab" href="#company">Company</a></li>
+                <li role="presentation" class=""><a aria-controls="profile" data-toggle="tab" id="industry-tab" role="tab" href="#industry" aria-expanded="false">Industry</a></li>
+                <li role="presentation" class=""><a aria-controls="profile" data-toggle="tab" id="ess-tab" role="tab" href="#ess" aria-expanded="false">ESS</a></li>
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                <div aria-labelledby="company-tab" id="company" role="tabpanel" class="tab-pane fade active in">
+                  <div class="row-sec"> <img src="HTMLimages/news-img-1.jpg" alt="">
+                    <h5>The standard Lorem Ipsum <span class="pull-right">|     March 1st, 2015</span></h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut...</p>
+                  </div>
+                  <div class="row-sec"> <img src="HTMLimages/news-img-2.jpg" alt="">
+                    <h5>The standard Lorem Ipsum <span class="pull-right">|     March 1st, 2015</span></h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut...</p>
+                  </div>
+                </div>
+                <div aria-labelledby="industry-tab" id="industry" role="tabpanel" class="tab-pane fade">
+                  <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR.</p>
+                  <p> Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. </p>
+                </div>
+                <div aria-labelledby="ess-tab" id="ess" role="tabpanel" class="tab-pane fade">
+                  <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
+                  <p> Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. </p>
+                </div>
+                <p class="align-center"><a href="#"><i aria-hidden="true" class="fa fa-chevron-down"></i></a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 bookmarks">
+            <h4><span>Bookmarks</span> <a class="pull-right" href="#"><i aria-hidden="true" class="fa fa-pencil-square-o"></i></a></h4>
+            <ul>
+              <li><a href="#"><img src="HTMLimages/google.gif" alt="">Google.com</a></li>
+              <li><a href="#"><img src="HTMLimages/wordpress.gif" alt="">Wordpress</a></li>
+              <li><a href="#"><img src="HTMLimages/google.gif" alt="">Google.com</a></li>
+              <li><a href="#"><img src="HTMLimages/wordpress.gif" alt="">Wordpress</a></li>
+              <li><a href="#"><img src="HTMLimages/google.gif" alt="">Google.com</a></li>
+              <li><a href="#"><img src="HTMLimages/wordpress.gif" alt="">Wordpress</a></li>
+            </ul>
+            <p class="align-center"><a href="#"><i aria-hidden="true" class="fa fa-chevron-down"></i></a></p>
+          </div>
+          <div class="col-md-3 documents">
+            <h4><span>My Documents</span> <a class="pull-right" href="#"><i aria-hidden="true" class="fa fa-pencil-square-o"></i></a></h4>
+            <ul>
+              <li><img src="HTMLimages/word.gif" alt=""><a href="#">
+                <p>Referral Letter</p>
+                <span>Microsoft Word</span></a></li>
+              <li><img src="HTMLimages/exel.gif" alt=""><a href="#">
+                <p>Accounting</p>
+                <span>Excel Sheet</span></a></li>
+              <li><img src="HTMLimages/word.gif" alt=""><a href="#">
+                <p>Referral Letter</p>
+                <span>Microsoft Word</span></a></li>
+              <li><img src="HTMLimages/exel.gif" alt=""><a href="#">
+                <p>Accounting</p>
+                <span>Excel Sheet</span></a></li>
+              <li><img src="HTMLimages/word.gif" alt=""><a href="#">
+                <p>Referral Letter</p>
+                <span>Microsoft Word</span></a></li>
+              <li><img src="HTMLimages/exel.gif" alt=""><a href="#">
+                <p>Accounting</p>
+                <span>Excel Sheet</span></a></li>
+              <li><img src="HTMLimages/word.gif" alt=""><a href="#">
+                <p>Referral Letter</p>
+                <span>Microsoft Word</span></a></li>
+            </ul>
+            <p class="align-center"><a href="#"><i aria-hidden="true" class="fa fa-chevron-down"></i></a></p>
+          </div>
+        </div>
+        <!--left-sec end-->
+        <!--right-sec start-->
+        <div class="col-md-4 right-sec">
+          <div class="report">
+            <h4><span>My Reports</span><a class="pull-right" href="#"><i aria-hidden="true" class="fa fa-pencil-square-o"></i></a></h4>
+            <div class="list">
+              <ul class="col-md-6">
+                <li><a href="#"><i aria-hidden="true" class="fa fa-check"></i>Lorem ipsum dolor</a></li>
+                <li><a href="#"><i aria-hidden="true" class="fa fa-check"></i>Lorem ipsum dolor</a></li>
+                <li><a href="#"><i aria-hidden="true" class="fa fa-check"></i>Lorem ipsum dolor</a></li>
+                <li><a href="#"><i aria-hidden="true" class="fa fa-check"></i>Lorem ipsum dolor</a></li>
+              </ul>
+              <ul class="col-md-6">
+                <li><a href="#"><i aria-hidden="true" class="fa fa-check"></i>Lorem ipsum dolor</a></li>
+                <li><a href="#"><i aria-hidden="true" class="fa fa-check"></i>Lorem ipsum dolor</a></li>
+                <li><a href="#"><i aria-hidden="true" class="fa fa-check"></i>Lorem ipsum dolor</a></li>
+                <li><a href="#"><i aria-hidden="true" class="fa fa-check"></i>Lorem ipsum dolor</a></li>
+              </ul>
+              <p class="align-center"><a href="#"><i aria-hidden="true" class="fa fa-chevron-down"></i></a></p>
+            </div>
+          </div>
+          <br>
+          <h4><span>My Calendar</span><a class="pull-right" href="#"><i aria-hidden="true" class="fa fa-pencil-square-o"></i></a></h4>
+          <table id="calendar-demo" class="calendar">
+          </table>
+          <div class="event-box"><a href="#" class="btn btn-info">Add Event</a> <a href="#" class="btn btn-info">Add Task</a> <a class="all-notes" href="#">All notes <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> </div>
+          <div class="event-time"> <span class=" col-md-6 event-time">.</span> <span class="col-md-3 event-time"> Mar, 20 </span> <span class="col-md-3 event-time"> 07:10pm <a href="#"><i aria-hidden="true" class="fa fa-angle-right"></i></a></span></div>
+        </div>
+        <!--right-sec end-->
+      </div>
+      <!--body wrapper start-->
+    </div>
+    <!--body wrapper end-->
+  </div>
+  <!--footer section start-->
+  <!--  <footer>
+    <p>&copy 2015 Easy Admin Panel. All Rights Reserved | Design by <a href="https://w3layouts.com/" target="_blank">w3layouts.</a></p>
+  </footer>-->
+  <!--footer section end-->
+  <!-- main content end-->
+</section>
+        </div>
+    <div>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

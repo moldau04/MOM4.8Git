@@ -1,0 +1,62 @@
+/* critical paths styling */
+/* The color that is mixed into critical tasks/dependency colors */
+/* The percentage used to mix $gantt-critical-paths-base-color into critical tasks/dependency colors */
+/* The color that is mixed into critical summary tasks background color */
+/* The color that is mixed into critical tasks background color */
+/* The color that is mixed into critical dependencies stroke color */
+/* baseline styling */
+.b-percentdonecircle {
+  display: inline-block;
+  position: relative;
+  border-radius: 100%;
+  background-color: #eee;
+  background-image: linear-gradient(to right, transparent 50%, #03a9f4 0);
+  text-align: center;
+}
+
+.b-percentdonecircle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  border-radius: 0 100% 100% 0 / 50%;
+  background-color: inherit;
+  transform-origin: left;
+  animation: spin 50s linear infinite, bg 100s step-end infinite;
+  animation-play-state: paused;
+  animation-delay: inherit;
+}
+
+.b-percentdonecircle::after {
+  content: attr(data-value);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  transform: translate(-50%, -50%);
+  border-radius: 100%;
+  background: #fff;
+  font-size: 0.8em;
+}
+
+.b-theme-dark .b-percentdonecircle {
+  background: #666;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(0.5turn);
+  }
+}
+
+@keyframes bg {
+  50% {
+    background: #03a9f4;
+  }
+}

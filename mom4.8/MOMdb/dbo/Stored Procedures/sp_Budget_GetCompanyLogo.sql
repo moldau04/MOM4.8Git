@@ -1,0 +1,5 @@
+﻿CREATE PROCEDURE [dbo].[Budget_GetCompanyLogo]
+AS
+	SET NOCOUNT ON;
+	SELECT Logo FROM Control
+RETURN

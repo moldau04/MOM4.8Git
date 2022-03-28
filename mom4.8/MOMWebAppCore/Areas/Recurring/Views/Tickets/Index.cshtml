@@ -1,0 +1,951 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<!--File Upload Control-->
+<link href="~/MOMUI/Design/js/plugins/dropify/css/dropify.css" type="text/css" rel="stylesheet" media="screen,projection" />
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+
+<style>
+
+    #overlay {
+        background: #ffffff;
+        color: #666666;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        z-index: 5000;
+        top: 0;
+        left: 0;
+        float: left;
+        text-align: center;
+        padding-top: 25%;
+        opacity: .80;
+    }
+</style>
+
+<script type="text/javascript">
+
+    function AddTicketClick(hyperlink) {
+        if (validateForm()) {
+            var id = $("#hdnAddeTicket").val();
+            if (id == "Y") {
+
+
+
+                if (ValidateOptionsPanel()) {
+                    $("#overlay").css('display', 'block');
+                    return true;
+                }
+                else { return false; }
+
+
+
+            } else {
+                noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                return false;
+            }
+        }
+        else return false;
+
+    }
+    // For clear ViewState["RecTicketSrch"]
+    function ReloadPage() {
+        $("#btnclear2").click();
+    }
+
+    function CheckDelete() {
+        // var result = false;
+        var checkNumberRow = 0;
+        var valueRowChecked = "";
+        valueRowChecked = $(".gvOpenCalls input[type='checkbox']:checked").closest("tr").find(".tdContract a").eq(0).text();
+        var checkCheckboxChecked = $(".gvOpenCalls input[type='checkbox']:checked").length;
+
+        if (checkCheckboxChecked === 1) {
+            checkNumberRow = 1;
+        }
+        else if (checkCheckboxChecked > 1) {
+            checkNumberRow = 2;
+        }
+
+
+        if (checkNumberRow === 1) {
+            return confirm('Are you sure you want to remove contract [' + valueRowChecked + '] from this period?');
+        }
+        else if (checkNumberRow === 2) {
+            return confirm('Are you sure you want to remove selected contracts from this period?');
+        }
+        else {
+            alert('Please select Ticket.')
+            return false;
+        }
+    }
+
+    $(document).ready(function () {
+
+        $("#chkisAllTicketsUnassigned").change(function () {
+
+            $("#lnkSearch").click();
+        });
+
+        $("#chkPerEquip").change(function () {
+            $("#lnkSearch").click();
+        });
+
+        $("#chkDemand").change(function () {
+            $("#lnkSearch").click();
+        });
+
+        $("#chkContrRemarks").change(function () {
+            $("#lnkSearch").click();
+        });
+        $("#chkIsAllTicketsOnHold").change(function () {
+            $("#lnkSearch").click();
+        });
+
+
+        $("#txtStartDt").keypress(function (event) {
+            if (event.keyCode == 13) {
+                $("#lnkSearch").click();
+            }
+        });
+
+        $("#txtEndDate").keypress(function (event) {
+            if (event.keyCode == 13) {
+                $("#lnkSearch").click();
+            }
+        });
+
+        ///////////// Ajax call for customer auto search ////////////////////
+        var query = "";
+        function dtaa() {
+            this.prefixText = null;
+            this.con = "";//$('ctl00_ContentPlaceHolder1_hdnCon').value;
+            this.custID = null;
+        }
+        $("#txtCustomer").autocomplete({
+            source: function (request, response) {
+                var dtaaa = new dtaa();
+                dtaaa.prefixText = request.term;
+                query = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/GetCustomer",
+                    data: JSON.stringify(dtaaa),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+                        try {
+                            $("#txtCustomer").val("");
+                            $("#hdnPatientId").val("");
+                            $("#txtLocation").val("");
+                            $("#hdnLocId").val("");
+                            //alert("Due to unexpected errors we were unable to load customers");
+                        } catch{ }
+                    }
+                });
+            },
+            select: function (event, ui) {
+                try {
+                    $("#txtCustomer").val(ui.item.label);
+                    $("#hdnPatientId").val(ui.item.value);
+                    $("#txtLocation").focus();
+                    $("#txtLocation").val("");
+                    $("#hdnLocId").val("");
+                } catch{ }
+                //                 $('ctl00_ContentPlaceHolder1_btnSelectCustomer').click();
+                return false;
+            },
+            focus: function (event, ui) {
+                try {
+                    $("#txtCustomer").val(ui.item.label);
+                } catch{ }
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                try {
+                    var result_item = item.label;
+                    var result_desc = item.desc;
+                    var x = new RegExp('\\b' + query, 'ig'); // notice the escape \ here...
+                    result_item = result_item.replace(x, function (FullMatch, n) {
+                        return '<span class="highlight">' + FullMatch + '</span>'
+                    });
+                    if (result_desc != null) {
+                        result_desc = result_desc.replace(x, function (FullMatch, n) {
+                            return '<span class="highlight">' + FullMatch + '</span>'
+                        });
+                    }
+                    return $("<li></li>")
+                        .data("ui-autocomplete-item", item)
+                        .append("<a>" + result_item + ", <span style='color:Gray;'>" + result_desc + "</span></a>")
+                        .appendTo(ul);
+                } catch{ }
+            };
+
+
+        ///////////// Ajax call for location auto search ////////////////////
+        var queryloc = "";
+        $("#txtLocation").autocomplete(
+            {
+                source: function (request, response) {
+                    //                        if ($('ctl00_ContentPlaceHolder1_hdnPatientId').value != "") {
+                    var dtaaa = new dtaa();
+                    dtaaa.prefixText = request.term;
+                    dtaaa.custID = 0;
+                    if ($("#hdnPatientId").val() != "") {
+                        dtaaa.custID = $("#hdnPatientId").val();
+                    }
+                    queryloc = request.term;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "CustomerAuto.asmx/GetLocation",
+                        data: JSON.stringify(dtaaa),
+                        dataType: "json",
+                        async: true,
+                        success: function (data) {
+                            try {
+                                response($.parseJSON(data.d));
+                            } catch{ }
+                        },
+                        error: function (result) {
+                            try {
+                                $("#txtLocation").val("");
+                                $("#hdnLocId").val("");
+                                // alert("Due to unexpected errors we were unable to load Location.");
+                            } catch{ }
+                        }
+
+                    });
+
+
+                },
+                select: function (event, ui) {
+                    try {
+                        $("#txtLocation").val(ui.item.label);
+                        $("#hdnLocId").val(ui.item.value);
+                    } catch{ }
+                    //                        $('ctl00_ContentPlaceHolder1_btnSelectLoc').click();
+                    return false;
+                },
+                focus: function (event, ui) {
+                    $("#txtLocation").val(ui.item.label);
+                    return false;
+                },
+                minLength: 0,
+                delay: 250
+            })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+
+                try {
+                    var result_item = item.label;
+                    var result_desc = item.desc;
+                    var x = new RegExp('\\b' + queryloc, 'ig'); // notice the escape \ here...
+                    result_item = result_item.replace(x, function (FullMatch, n) {
+                        return '<span class="highlight">' + FullMatch + '</span>'
+                    });
+                    if (result_desc != null) {
+                        result_desc = result_desc.replace(x, function (FullMatch, n) {
+                            return '<span class="highlight">' + FullMatch + '</span>'
+                        });
+                    }
+                    return $("<li></li>")
+                        .data("ui-autocomplete-item", item)
+                        .append("<a>" + result_item + ", <span style='color:Gray;'>" + result_desc + "</span></a>")
+                        .appendTo(ul);
+                } catch{ }
+            };
+
+
+        //            $("#<%--<%=pnlOptionsHeader.ClientID%>--%>").click(function() {
+        //                $("#<%--<%=pnlOptions.ClientID%>--%>").slideToggle();
+        //                return false;
+        //            });
+
+
+        ///////////// Validations for auto search ////////////////////
+        $("#txtCustomer").keyup(function (event) {
+            var hdnPatientId = $("#hdnPatientId");
+            if ($("#txtCustomer").val() == "") {
+                hdnPatientId.val("");
+            }
+        });
+
+        $("#txtLocation").keyup(function (event) {
+            var hdnLocId = $("#hdnLocId");
+            if ($("#txtLocation").val() == "") {
+                hdnLocId.val("");
+            }
+        });
+
+
+
+        //TextboxState();
+    });
+
+
+
+
+    ///////////// Custom validator function for customer auto search  ////////////////////
+    function ChkCustomer(sender, args) {
+        var hdnPatientId = $("#hdnPatientId");
+        if (hdnPatientId.val() == "") {
+            args.IsValid = false;
+        }
+    }
+
+    ///////////// Custom validator function for location auto search  ////////////////////
+    function ChkLocation(sender, args) {
+        var hdnLocId = $("#hdnLocId");
+        if (hdnLocId.val() == "") {
+            args.IsValid = false;
+        }
+    }
+
+    function showModalPopupViaClientCust(lblTicketId, lblComp) {
+        $("#iframeCustomer").css('width', '1024px');
+        $("#iframeCustomer").src = "addticket.aspx?id=" + lblTicketId + "&comp=" + lblComp;
+        $("#Panel2").css('display', 'none');
+        var modalPopupBehavior = $find('PMPBehaviour');
+        modalPopupBehavior.show();
+    }
+
+
+    function ValidateOptionsPanel() {
+        Page_ClientValidate();
+        var isv = true;
+        var ctrvalid = $("#notes")
+
+        if (!ctrvalid.isvalid) {
+            isv = false;
+        }
+        if (!isv) {
+            //cpe._doOpen();
+        }
+        else {
+            //cpe._doClose();
+        }
+
+        if (Page_ClientValidate()) {
+            var ConfirmMessage1 = "Some preferred worker are inactive. Unable to process tickets?";
+
+            var ConfirmMessage2 = "You are about to process tickets for selected period. This process will generate tickets for eligible accounts. Are you sure you want to proceed?  \n \n Please note contracts with assigned tickets will not generate for the same period. ";
+
+            var ConfirmMessage3 = "Some location(s) are on credit hold. Would you like to exclude contracts for locations on credit hold?";
+
+            var hdnConfirm = $("#HdnConfirm").val();
+
+            var hdnCreditHold = $("#hdnCreditHold").val();
+
+            if (hdnConfirm == "1") {
+                alert(ConfirmMessage1);
+                return false;
+            }
+
+            if (hdnCreditHold == "1") {
+                if (confirm(ConfirmMessage3)) return true;
+                else
+                    return false;
+            }
+
+            return confirm(ConfirmMessage2);
+
+        }
+    }
+
+
+    function isDate(txtDate) {
+        var currVal = txtDate;
+        if (currVal == "")
+            return false;
+        //Declare Regex
+        var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
+        var dtArray = currVal.match(rxDatePattern); // is format OK?
+        if (dtArray == null)
+            return false;
+        //Checks for mm/dd/yyyy format.
+        dtMonth = dtArray[1];
+        dtDay = dtArray[3];
+        dtYear = dtArray[5];
+
+        if (dtMonth < 1 || dtMonth > 12)
+            return false;
+        else if (dtDay < 1 || dtDay > 31)
+            return false;
+        else if ((dtMonth == 4 || dtMonth == 6 || dtMonth == 9 || dtMonth == 11) && dtDay == 31)
+            return false;
+        else if (dtMonth == 2) {
+            var isleap = (dtYear % 4 == 0 && (dtYear % 100 != 0 || dtYear % 400 == 0));
+            if (dtDay > 29 || (dtDay == 29 && !isleap))
+                return false;
+        }
+        return true;
+    }
+
+    ///////////// Validate Form ////////////////////
+    function validateForm() {
+        var check = false;
+        var msg = "";
+        var fromDate = $(".txtStartDt").val();
+        var toDate = $(".txtEndDate").val();
+        var preferredWorker = $(".ddlRoute").val();
+        var ticketNote = $(".notes").val();
+        var checkRequireStartDt = $("[id$='_vceStartDt_popupTable']").is(":visible");
+        var checkRequireEndDt = $("[id$='_vceEndDt_popupTable']").is(":visible");
+        var checkRequireNotes = $("[id$='_ValidatorCalloutExtender1_popupTable']").is(":visible");
+
+
+        if (checkRequireStartDt || checkRequireEndDt || checkRequireNotes) {
+            check = false;
+            return check;
+        }
+
+        if (fromDate.length === 0) {
+            msg = "Please set a date range."
+            alert(msg);
+            check = false;
+            return check;
+        }
+        else if (fromDate.length > 0 && !isDate(fromDate)) {
+            msg = "From Date is invalid. Please set a date range again."
+            alert(msg);
+            check = false;
+            return check;
+        }
+        else {
+            check = true;
+        }
+
+        if (toDate.length === 0) {
+            msg = "Please set a date range."
+            alert(msg);
+            check = false;
+            return check;
+        }
+        else if (toDate.length > 0 && !isDate(toDate)) {
+            msg = "End Date is invalid. Please set a date range again."
+            alert(msg);
+            check = false;
+            return check;
+        }
+        else {
+            check = true;
+        }
+
+
+        if (ticketNote.length == 0) {
+            msg = "Please input Ticket Notes."
+            alert(msg);
+            check = false;
+            return check;
+        }
+        else {
+            check = true;
+        }
+        return check;
+    }
+
+    ///////////// Select all checkbox ////////////////////
+    function checkAllChecBox() {
+        var checked = $(".chkSelectAll input").is(":checked");
+        if (checked) {
+            $(".chkSelect input").prop("checked", true)
+        }
+        else {
+            $(".chkSelect input").prop("checked", false)
+        }
+    }
+
+    ///////////// Unselect all checkbox ////////////////////
+    function unCheckSelectAll() {
+        var checked = $(".chkSelect input").is(":checked");
+        var checkedAll = $(".chkSelectAll input").is(":checked");
+        var checkCountCheckbox = $(".chkSelect input:checked").length;
+        var checkCountCheckboxSelected = $(".chkSelect input").length
+        if (checked && checkedAll) {
+            $(".chkSelectAll input").prop("checked", false);
+        }
+
+        if (checkCountCheckbox === checkCountCheckboxSelected) {
+            $(".chkSelectAll input").prop("checked", true);
+        }
+
+    }
+    ///////////// Hide select all checkbox ////////////////////
+    function hideSelectAllChkb() {
+        $(".chkSelectAll").hide();
+    }
+    ///////////// Show select all checkbox ////////////////////
+    function showSelectAllChkb() {
+        $(".chkSelectAll").show();
+    }
+</script>
+
+<style type="text/css">
+    .ui-autocomplete {
+        max-height: 300px;
+        overflow-y: auto; /* prevent horizontal scrollbar */
+        overflow-x: hidden; /* add padding to account for vertical scrollbar */ /*padding-right: 20px;*/
+    }
+    /* IE 6 doesn't support max-height
+         * we use height instead, but this forces the menu to always be this tall
+         */ * html .ui-autocomplete {
+        height: 300px;
+    }
+
+    .highlight {
+        background-color: Yellow;
+    }
+
+    [id$='_popupTable'] {
+        width: 200px;
+    }
+
+    [id$='ValidatorCalloutExtender1_popupTable'] {
+        top: -61px !important;
+    }
+
+
+
+    .textarea-border {
+        border: 1px solid #aaa !important;
+        border-radius: 5px !important;
+        padding-left: 10px !important;
+    }
+
+    .lnkSearch {
+        margin-right: 0 !important;
+    }
+
+    .display-inline-block {
+        display: inline-block;
+    }
+
+    /*[id$='_RadAjaxPanel_RecurringTicket'] .raDiv {
+            background-position: top !important;
+        }*/
+</style>
+<!--start container-->
+<div id="overlay" style="display:none;">
+    <div class="spinner"></div>
+    <br />
+    Processing...
+</div>
+<div class="divbutton-container">
+    <div id="divButtons" class="">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-content-reply-all"></i>&nbsp;Recurring Tickets</div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a ID="lnkProcess" CausesValidation="true"
+                                           ToolTip="Process"
+                                           onclick="return AddTicketClick(this)"
+                                           Enabled="true" ValidationGroup="dateTime">Process</a>
+
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a class="dropdown-button" data-beloworigin="true" href="#!" data-activates="dropdown1">
+                                            Reports
+                                        </a>
+                                    </div>
+                                    <ul id="dropdown1" class="dropdown-content">
+                                        <li>
+                                            <a id="lnkAddNewReport" class="-text">Add New Report</a>
+                                        </li>
+                                    </ul>
+                                    <div class="btnlinks menuAction">
+                                        <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                            Actions
+                                        </a>
+                                    </div>
+                                    <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                        <li>
+                                            <div class="btnlinks" style="margin-bottom: 4px;">
+                                                <a id="btnDelete" onclick="return CheckDelete();">
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkExcel">Export to Excel</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a ID="lnkClose" ToolTip="Close" CausesValidation="false"><i class="mdi-content-clear"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <ul class="anchor-links" style="float: right;">
+                            <li>
+                                <label ID="lblUserName" class="title_text_Name_1"></label>
+                            </li>
+                            <li>
+                                <label ID="lblLastProcessDate" class="title_text_Name_1"></label>
+                            </li>
+
+                            <li>
+                                <label ID="lblProcessPeriod" class="title_text_Name_1"></label>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="srchpane-advanced">
+            <div class="srchpaneinner">
+                <div class="srchtitle srchtitlecustomwidth" style="padding-left: 15px; min-width: 75px;">
+                    Date
+                </div>
+                <div class="srchinputwrap">
+                    <input type="text" ID="txtStartDt" Style="width: 80px !important;" TabIndex="5" class="srchcstm datepicker_mom txtStartDt" ValidationGroup="dateTime" onblur="validateDatetime();" placeholder="From" />
+                </div>
+                <div class="srchinputwrap">
+                    <input type="text" ID="txtEndDate" Style="width: 80px !important;" class="srchcstm datepicker_mom txtEndDate" onblur="validateDatetime();" placeholder="To" />
+
+                </div>
+                <div class="srchtitle srchtitlecustomwidth" style="padding-left: 15px;">
+                    <span id="spnWorker">Worker</span>
+                </div>
+                <div class="srchinputwrap">
+                    <select ID="ddlRoute" class="browser-default selectst selectsml ddlRoute" Style="width: 250px !important;" TabIndex="5">
+                        <option>:: Select ::</option>
+                    </select>
+                </div>
+                <div class="srchtitle srchtitlecustomwidth" style="padding-left: 15px;">
+                    Special Notes
+                </div>
+                <div class="srchinputwrap">
+                    <select class="browser-default selectst selectsml">
+                        <option>All</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="srchpaneinner">
+
+                <div class="srchtitle srchtitlecustomwidth" style="padding-left: 15px;">
+                    Customer
+                </div>
+
+                <div class="srchinputwrap">
+
+                    <input type="text" ID="txtCustomer" onkeydown="return (event.keyCode!=13);" autocomplete="off" class="validate srchcstm"
+                           placeholder="Customer Name"
+                           TabIndex="1" />
+                </div>
+                <div class="srchtitle srchtitlecustomwidth">
+                    Location
+                </div>
+
+                <div class="srchinputwrap">
+                    <input type="text" ID="txtLocation" onkeydown="return (event.keyCode!=13);" autocomplete="off" class="validate srchcstm"
+                           placeholder="Location Name"
+                           TabIndex="2" />
+                </div>
+                <div class="srchtitle srchtitlecustomwidth" style="padding-left: 15px;">
+                    State
+                </div>
+                <div class="srchinputwrap">
+                    <select ID="ddlState" ToolTip="State" class="browser-default selectst selectsml">
+                        <option Value="">Select</option>
+                        <option Value="AL">Alabama</option>
+                        <option Value="AK">Alaska</option>
+                        <option Value="AZ">Arizona</option>
+                        <option Value="AR">Arkansas</option>
+                        <option Value="CA">California</option>
+                        <option Value="CO">Colorado</option>
+                        <option Value="CT">Connecticut</option>
+                        <option Value="DC">District of Columbia</option>
+                        <option Value="DE">Delaware</option>
+                        <option Value="FL">Florida</option>
+                        <option Value="GA">Georgia</option>
+                        <option Value="HI">Hawaii</option>
+                        <option Value="ID">Idaho</option>
+                        <option Value="IL">Illinois</option>
+                        <option Value="IN">Indiana</option>
+                        <option Value="IA">Iowa</option>
+                        <option Value="KS">Kansas</option>
+                        <option Value="KY">Kentucky</option>
+                        <option Value="LA">Louisiana</option>
+                        <option Value="ME">Maine</option>
+                        <option Value="MD">Maryland</option>
+                        <option Value="MA">Massachusetts</option>
+                        <option Value="MI">Michigan</option>
+                        <option Value="MN">Minnesota</option>
+                        <option Value="MS">Mississippi</option>
+                        <option Value="MO">Missouri</option>
+                        <option Value="MT">Montana</option>
+                        <option Value="NE">Nebraska</option>
+                        <option Value="NV">Nevada</option>
+                        <option Value="NH">New Hampshire</option>
+                        <option Value="NJ">New Jersey</option>
+                        <option Value="NM">New Mexico</option>
+                        <option Value="NY">New York</option>
+                        <option Value="NC">North Carolina</option>
+                        <option Value="ND">North Dakota</option>
+                        <option Value="OH">Ohio</option>
+                        <option Value="OK">Oklahoma</option>
+                        <option Value="OR">Oregon</option>
+                        <option Value="PA">Pennsylvania</option>
+                        <option Value="RI">Rhode Island</option>
+                        <option Value="SC">South Carolina</option>
+                        <option Value="SD">South Dakota</option>
+                        <option Value="TN">Tennessee</option>
+                        <option Value="TX">Texas</option>
+                        <option Value="UT">Utah</option>
+                        <option Value="VT">Vermont</option>
+                        <option Value="VA">Virginia</option>
+                        <option Value="WA">Washington</option>
+                        <option Value="WV">West Virginia</option>
+                        <option Value="WI">Wisconsin</option>
+                        <option Value="WY">Wyoming</option>
+                        <option Value="AB">Alberta</option>
+                        <option Value="BC">British Columbia</option>
+                        <option Value="MB">Manitoba</option>
+                        <option Value="NB">New Brunswick</option>
+                        <option Value="NL">Newfoundland and Labrador</option>
+                        <option Value="NT">Northwest Territories</option>
+                        <option Value="NS">Nova Scotia</option>
+                        <option Value="NU">Nunavut</option>
+                        <option Value="PE">Prince Edward Island</option>
+                        <option Value="SK">Saskatchewan</option>
+                        <option Value="ON">Ontario</option>
+                        <option Value="QC">Quebec</option>
+                        <option Value="YT">Yukon</option>
+                    </select>
+                </div>
+                <div class="srchinputwrap srchclr btnlinksicon lnkSearch">
+                    <div ID="RadAjaxPanelSearch">
+                        <a ID="lnkSearch" class="submit" CausesValidation="false" ToolTip="Refresh"><i class="mdi-action-search"></i></a>
+                    </div>
+                </div>
+
+                <div class="col lblsz2 lblszfloat" style="width: 200px;">
+                    <div class="row">
+                        <span class="tro trost">
+                            <a ID="lnkClear">Clear</a>
+                            <a ID="btnclear2"></a>
+                        </span>
+                        <div ID="upSearch" UpdateMode="Conditional">
+                            <div>
+                                <div class="srchinputwrap col lblsz2 lblszfloat">
+                                    <div class="row">
+                                        <span class="tro trost">
+                                            <label ID="lblRecordCount" style="font-size:0.9rem">0 Record found</label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div>
+                    @Html.Hidden("hdnCon")
+                    @Html.Hidden("hdnPatientId")
+                    @Html.Hidden("hdnLocId")
+                    <input type="button" CausesValidation="false" ID="btnSelectCustomer" value="Button"
+                           Style="display: none;" />
+                    <input type="button" CausesValidation="false" ID="btnSelectLoc" value="Button"
+                           Style="display: none;" />
+                </div>
+            </div>
+
+            <div class="srchpaneinner" style="margin-top: 10px;">
+                <div class="section-ttle"><label style="float: left; font-size: 14px; color: black;">Set Options</label></div>
+                <div class="form-section-row">
+                    <div class="input-field col s3">
+                        <div class="checkrow">
+                            <span class="css-checkbox">
+                                <input type="checkbox" ID="chkContrRemarks" style="float: left; margin-top: 6px;"/>
+                            </span>
+                            <label for="chkContrRemarks">Include Contract Description</label>
+                        </div>
+                    </div>
+                    <div class="input-field col s2">
+                        <div class="checkrow">
+                            <span class="css-checkbox">
+                                <input type="checkbox" ID="chkPerEquip" style="float: left; margin-top: 6px;"/>
+                            </span>
+                            <label for="chkPerEquip">Per Equipment</label>
+                        </div>
+                    </div>
+                    <div class="input-field col s2">
+                        <div class="checkrow">
+                            <span class="css-checkbox">
+                                <input type="checkbox" ID="chkDemand" style="float: left; margin-top: 6px;"/>
+                            </span>
+                            <label for="chkDemand">On Demand</label>
+                        </div>
+                    </div>
+                    <div class="input-field col s2">
+                        <div class="checkrow">
+                            <span class="css-checkbox">
+                                <input type="checkbox" ID="chkIsAllTicketsOnHold" style="float: left; margin-top: 6px;"/>
+                            </span>
+                            <label for="chkIsAllTicketsOnHold">All Tickets Hold</label>
+                        </div>
+                    </div>
+                    <div class="input-field col s2">
+                        <div class="checkrow">
+                            <span class="css-checkbox">
+                                <input type="checkbox" ID="chkisAllTicketsUnassigned" style="float: left; margin-top: 6px;"/>
+                            </span>
+                            <label for="chkisAllTicketsUnassigned">All Tickets Unassigned</label>
+                        </div>
+                    </div>
+                    <div class="input-field col s12" style="margin-top: 30px;">
+                        <div class="row">
+                            <textarea ID="notes" rows="2" cols="20" class="textarea-border materialize-textarea notes" TextMode="MultiLine"></textarea>
+                            <label for="notes" class="txtbrdlbl">Ticket Notes</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="grid_container" style="margin-bottom: 30px;">
+                <div class="form-section-row" style="margin-bottom: 0 !important;">
+                    <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end container-->
+<!-- edit-tab end -->
+<div class="clearfix"></div>
+
+<!-- END DASHBOARD STATS -->
+<div class="clearfix"></div>
+
+<input type="button" ID="hiddenTargetControlForModalPopup" Style="display: none"
+       CausesValidation="False" />
+
+<div ID="Panel1" Style="display: none; background: #fff; border: solid;">
+    <div ID="Panel2" Style="background-color: #DDDDDD; border: solid 1px Gray; color: Black; text-align: center;">
+        <div class="title_bar_popup">
+            <a id="A1" href="#" style="float: right; margin-right: 20px; color: #fff; margin-left: 10px; height: 16px;">Close</a>
+        </div>
+    </div>
+    <div>
+        <iframe id="iframeCustomer" width="1024px" height="600px" frameborder="0"></iframe>
+    </div>
+</div>
+<input type="button" ID="hideModalPopupViaServer" Style="float: right; margin-right: 20px; color: #fff; margin-left: 10px; height: 16px; display: none;"
+       value="Close" CausesValidation="false" />
+
+@Html.Hidden("HdnConfirm", "0")
+@Html.Hidden("hdnCreditHold", "0")
+@Html.Hidden("hdnAddeTicket", "Y")
+
+<script src="~/MOMUI/Design/js/moment.js"></script>
+<script src="~/MOMUI/Design/js/pikaday.js"></script>
+
+<script type="text/javascript">
+    function validateDatetime() {
+        var valueFromDt = new Date($(".txtStartDt").val());
+        var valueEndDt = new Date($(".txtEndDate").val());
+        var str = "From Date cannot be greater than To Date.";
+        if (valueFromDt > valueEndDt) {
+            noty({ text: str, type: 'error', layout: 'topCenter', closeOnSelfClick: false, timeout: 5000, theme: 'noty_theme_default', closable: true });
+        }
+
+    }
+
+    function DismissPopUp(className) {
+        $('.' + className).hide();
+    }
+    $(document).ready(function () {
+
+        $('a[href^="#accrd"]').on('click', function (e) {
+            e.preventDefault();
+
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+        $('#addinfo').hide();
+        $('.add-btn-click').click(function () {
+
+            $('#addinfo').slideToggle('2000', "swing", function () {
+                // Animation complete.
+
+            });
+
+            if ($('.divbutton-container').height() != 65)
+                $('.divbutton-container').animate({ height: 65 }, 500);
+            else
+                $('.divbutton-container').animate({ height: 350 }, 500);
+
+
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+
+    });
+</script>

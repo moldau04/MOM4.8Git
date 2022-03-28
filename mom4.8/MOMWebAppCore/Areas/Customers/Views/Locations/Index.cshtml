@@ -1,0 +1,546 @@
+﻿@{
+    ViewData["Title"] = "List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+
+  
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<style>
+    [id$='PageSizeComboBox'] {
+        width: 5.1em !important;
+    }
+</style>
+<script type="text/javascript">
+    function AddLocClick(hyperlink) {
+        var id = $("#hdnAddeLoc").val();
+        if (id == "Y") {
+            return true;
+        } else {
+
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function EditLocClick(hyperlink) {
+
+        var id = $("#hdnEditeLoc").val();
+        if (id == "Y") { return true; } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function DeleteLocClick(hyperlink) {
+        var id = $("#hdnDeleteLoc").val();
+        if (id == "Y") {
+            return SelectedRowDelete('<%= RadGrid_Location.ClientID%>', 'location');
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function CopyLocClick(hyperlink) {
+        var id = $("#hdnAddeLoc").val();
+        if (id == "Y") {
+            return true;
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        // showfilter();
+        debugger;
+        $('#colorNav #dynamicUI li').remove();
+        //$(reports).each(function (index, report) {
+        //    var imagePath = null;
+        //    if (report.IsGlobal == true) {
+        //        imagePath = "images/globe.png";
+        //    }
+        //    else {
+        //        imagePath = "images/blog_private.png";
+        //    }
+
+        //    $('#dynamicUI').append('<li><a href="LocationReport.aspx?reportId=' + report.ReportId + '&reportName=' + report.ReportName + '&type=Location"><span><img src=images/reportfolder.png> ' + report.ReportName + '</span><div style="clear:both;"></div></a></li>')
+
+        //});
+    });
+</script>
+<!--start container-->
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-communication-contacts"></i>&nbsp;Locations</div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a ID="lnkAddnew" onclick='return AddLocClick(this)' href="@Url.Action("Index","AddLocation")">Add</a>
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a ID="btnEdit" onclick='return EditLocClick(this)'>Edit</a>
+                                    </div>
+
+                                    <div class="btnlinks menuAction">
+                                        <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                            Actions
+                                        </a>
+                                    </div>
+                                    <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="btnCopy" onclick='return CopyLocClick(this)'>Copy</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="btnDelete" onclick='return DeleteLocClick(this)'>Delete</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkExcel">Export to Excel</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <ul id="dropdown1" class="dropdown-content">
+                                                <li>
+                                                    <a href="LocationReport.aspx?type=Location" class="-text">Add New Report</a>
+                                                </li>
+                                                <li>
+                                                    <a href="AcctLabels5160.aspx" class="-text">Location Label 5160</a>
+                                                </li>
+                                                <li>
+                                                    <a href="AcctLabels5163.aspx" class="-text">Location Label 5163</a>
+                                                </li>
+                                                <li style="display:none">
+                                                    <a ID="lnkCustomReports">Custom Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkEquipmentListReport">Location Equipment List Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkLocationBusinessType" Text="Location by Business Type Report"></a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkLocationDetails">Location Details Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkLocationHomeOwner">Location with Home Owner Report</a>
+                                                </li>
+                                            </ul>
+                                            <div class="btnlinks">
+                                                <a class="dropdown-button" data-beloworigin="true" href="LocationReport.aspx" data-activates="dropdown1">
+                                                    Reports
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="btnlinks">
+                                        <a ID="lnkMassAttachDocuments">Mass Attach Documents</a>
+                                    </div>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a href="~/dashboard/home/index" class="mdi-content-clear" id="lnkClose" title="Close"><i></i></a>
+                                </div>                                <div class="rght-content">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="srchpane">
+            <div class="srchtitle" style="padding-left: 15px;">
+                Search
+            </div>
+            <div class="srchinputwrap">
+                <select name="ddlSearch" id="ddlSearch" class="browser-default selectst selectsml" onchange="showfilter();return false;">
+                    <option>Select</option>
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_rbBilling" style="display: none">
+                <select name="rbBilling" id="rbBilling" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_rbCredit" style="display: none">
+                <select name="rbCredit" id="rbCredit" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+
+            <div class="srchinputwrap" id="div_rbDispAlert" style="display: none">
+                <select name="rbDispAlert" id="rbDispAlert" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_rbPrintInvoice" style="display: none">
+                <select name="rbPrintInvoice" id="rbPrintInvoice" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_rbEmailInvoice" style="display: none">
+                <select name="rbEmailInvoice" id="rbEmailInvoice" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_rbNoCustomerStatement" style="display: none">
+                <select name="rbNoCustomerStatement" id="rbNoCustomerStatement" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_rbStatus" style="display: none">
+                <select name="rbStatus" id="rbStatus" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_rbMaint" style="display: none">
+                <select name="rbMaint" id="rbMaint" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_ddlUserType" style="display: none">
+                <telerik:RadComboBox RenderMode="Lightweight" ID="ddlUserType" CssClass="browser-default selectst selectsml"
+                                     Visible="true" CheckBoxes="true" EnableCheckAllItemsCheckBox="true">
+                </telerik:RadComboBox>
+            </div>
+            <div class="srchinputwrap" id="div_ddlCompany" style="display: none">
+                <select name="ddlCompany" id="ddlCompany" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_ddlTerr" style="display: none">
+                <select name="ddlTerr" id="ddlTerr" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_ddlTerr2" style="display: none">
+                <select name="ddlTerr2" id="ddlTerr2" class="browser-default selectst selectsml" style="display:block">
+                </select>
+            </div>
+            <div class="srchinputwrap" id="div_ddlZone1" style="display: none">
+                <telerik:RadComboBox RenderMode="Lightweight" ID="ddlZone1" CheckBoxes="true" EnableCheckAllItemsCheckBox="true" CssClass="browser-default selectst selectsml"
+                                     Visible="true">
+                </telerik:RadComboBox>
+            </div>
+            <div class="srchinputwrap" id="div_ddlRoute" style="display: none;width:150px !important;">
+                <telerik:RadComboBox RenderMode="Lightweight" ID="ddlRoute" CheckBoxes="true" EnableCheckAllItemsCheckBox="true" CssClass="browser-default selectst selectsml"
+                                     Visible="true">
+                </telerik:RadComboBox>
+            </div>
+            <div class="srchinputwrap" id="div_ddlBusinessType" style="display: none">
+                <select name="ddlBusinessType" id="ddlBusinessType" class="browser-default selectst selectsml" style="display:block">
+                </select>
+
+            </div>
+            <div class="srchinputwrap" id="div_txtSearch" style="display: block">
+                <input type="text" id="txtSearch" class="srchcstm" placeholder="Search..." />
+            </div>
+
+            <div class="srchinputwrap srchclr btnlinksicon" style="margin-left: -10px; margin-top: -2px;">
+
+                <a ID="lnkSearch" CausesValidation="false"
+                                OnClick="lnkSearch_Click">
+                    <i class="mdi-action-search"></i>
+                </a>
+            </div>
+
+
+            <div class="col lblsz2 lblszfloat">
+                <div class="row">
+                    <span class="tro trost">
+                        <input type="checkbox" ID="lnkChk" onchange="lnkchk_Click" AutoPostBack="True" CssClass="css-checkbox" Text="Incl. Inactive" />
+                        <label for="lnkChk" class="css-checkbox">Incl. Inactive</label><br>
+                    </span>
+                    <span class="tro trost">
+                        <a ID="lnkShowAll" onclick="resetShowAll();">Show All </a>
+                    </span>
+                    <span class="tro trost">
+                        <a ID="lnkClear" onclick="resetShowAll();">Clear</a>
+                    </span>
+                    <span class="tro trost">
+                        <a ID="lblRecordCount" style="font-size:14px!important;font-weight:900;">Record(s) found</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid_container">
+            <div class="form-section-row" aria-autocomplete="none" style="margin-bottom: 0 !important;">
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+@Html.Hidden("hdnAddeLoc", "Y")
+@Html.Hidden("hdnEditeLoc", "Y")
+@Html.Hidden("hdnDeleteLoc", "Y")
+@Html.Hidden("hdnViewLoc", "Y")
+
+<!--end container-->
+<script>
+    $(document).ready(function () {
+
+        //$("#<%=RadGrid_Location.ClientID%>").attr("autocomplete", "off");
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $('#divButtons').addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $('#divButtons').removeClass('fixed-header');
+            }
+        });
+    });
+    function resetShowAll() {
+
+        var ddlSearch = $("#ddlSearch").val();
+        $("#ddlSearch").val("selected");
+        var txt = $("#txtSearch").val();
+        $("#txtSearch").val("");
+        var rbMaint = $("#div_rbMaint").val();
+        var rbStatus = $("#div_rbStatus").val();
+        var txtSearch = $("#div_txtSearch").val();
+        var ddlCompany = $("#div_ddlCompany").val();
+        var rbBilling = $("#div_rbBilling").val();
+        var rbCredit = $("#div_rbCredit").val();
+        var rbDispAlert = $("#div_rbDispAlert").val(); 
+        var rbEmailInvoice = $("#div_rbEmailInvoice").val();
+        var rbPrintInvoice = $("#div_rbPrintInvoice").val();
+        var ddlTerr = $("#div_ddlTerr").val();
+        var ddlTerr2 = $("#div_ddlTerr2").val();
+        var rbNoCustomerStatement = $("#div_rbNoCustomerStatement").val(); 
+        var ddlZone1 = $("#div_ddlZone1").val();
+        var ddlUserType = $("#div_ddlUserType").val();
+        var ddlRoute = $("#div_ddlRoute").val(); 
+        var ddlBusinessType = $("#div_ddlBusinessType").val();
+
+        try {
+
+            $("#rbStatus").val($("#rbStatus option:first").val());
+            $("#rbBilling").val($("#rbBilling option:first").val());
+            $("#rbCredit").val($("#rbCredit option:first").val());
+            $("#rbDispAlert").val($("#rbDispAlert option:first").val());
+            $("#rbEmailInvoice").val($("#rbEmailInvoice option:first").val());
+            $("#rbPrintInvoice").val($("#rbPrintInvoice option:first").val());
+            $("#rbNoCustomerStatement").val($("#rbNoCustomerStatement option:first").val());
+            $("#rbMaint").val($("#rbMaint option:first").val());
+            $("#ddlTerr").val($("#ddlTerr option:first").val());
+            $("#ddlTerr2").val($("#ddlTerr2 option:first").val());
+
+        } catch (ex) { }
+
+        $("#div_rbMaint").css('display', 'none');
+        $("#div_rbStatus").css('display', 'none');
+        $("#div_txtSearch").css('display', 'none');
+        $("#div_ddlCompany").css('display', 'none');
+        $("#div_rbBilling").css('display', 'none');
+        $("#div_rbCredit").css('display', 'none');
+        $("#div_rbDispAlert").css('display', 'none');
+        $("#div_rbEmailInvoice").css('display', 'none');
+        $("#div_rbPrintInvoice").css('display', 'none');
+        $("#div_ddlTerr").css('display', 'none');
+        $("#div_ddlTerr2").css('display', 'none');
+        $("#div_rbNoCustomerStatement").css('display', 'none');
+        $("#div_ddlZone1").css('display', 'none');
+        $("#div_ddlUserType").css('display', 'none');
+        $("#div_ddlRoute").css('display', 'none');
+        $("#div_ddlBusinessType").css('display', 'none');
+        $("#div_txtSearch").css('display', 'block');
+
+
+        try {
+
+            $("#rbStatus").val($("#rbStatus option:first").val());
+            $("#rbBilling").val($("#rbBilling option:first").val());
+            $("#rbCredit").val($("#rbCredit option:first").val());
+            $("#rbDispAlert").val($("#rbDispAlert option:first").val());
+            $("#rbEmailInvoice").val($("#rbEmailInvoice option:first").val());
+            $("#rbPrintInvoice").val($("#rbPrintInvoice option:first").val());
+            $("#rbNoCustomerStatement").val($("#rbNoCustomerStatement option:first").val());
+            $("#rbMaint").val($("#rbMaint option:first").val());
+            $("#ddlTerr").val($("#ddlTerr option:first").val());
+
+            $("#ddlTerr2").val($("#ddlTerr2 option:first").val());
+            var comboUserType = $find("#ddlUserType");
+            comboUserType.trackChanges();
+            for (var i = 0; i < comboUserType.get_items().get_count(); i++) {
+                comboUserType.get_items().getItem(i).set_checked(false);
+            }
+            comboUserType.commitChanges();
+
+
+            var comboRoute = $find("ddlRoute");
+            comboRoute.trackChanges();
+            for (var i = 0; i < comboRoute.get_items().get_count(); i++) {
+                comboRoute.get_items().getItem(i).set_checked(false);
+            }
+            comboRoute.commitChanges();
+
+            var comboZone1 = $find("#ddlZone1");
+            comboZone1.trackChanges();
+            for (var i = 0; i < comboZone1.get_items().get_count(); i++) {
+                comboZone1.get_items().getItem(i).set_checked(false);
+            }
+            comboZone1.commitChanges();
+
+            var comboBusinessType = $find("#ddlBusinessType");
+            comboBusinessType.trackChanges();
+            for (var i = 0; i < comboBusinessType.get_items().get_count(); i++) {
+                comboBusinessType.get_items().getItem(i).set_checked(false);
+            }
+            comboBusinessType.commitChanges();
+
+
+
+        } catch (ex) { }
+
+    }
+
+    function showfilter() {
+        //debugger;
+        var ddlSearch = $("#ddlSearch").val();
+        var rbMaint =$("#div_rbMaint").val();
+        var rbStatus =$("#div_rbStatus").val(); 
+        var txtSearch = $("#div_txtSearch").val();
+        var ddlCompany =$("#div_ddlCompany").val(); 
+        var rbBilling =$("#div_rbBilling").val(); 
+        var rbCredit =$("#div_rbCredit").val(); 
+        var rbDispAlert =$("#div_rbDispAlert").val();
+        var rbEmailInvoice =$("#div_rbEmailInvoice").val(); 
+        var rbPrintInvoice =$("#div_rbPrintInvoice").val(); 
+        var ddlTerr =$("#div_ddlTerr").val(); 
+        var ddlTerr2 =$("#div_ddlTerr2").val(); 
+        var rbNoCustomerStatement = $("#div_rbNoCustomerStatement").val();
+        var ddlZone1 = $("#div_ddlZone1").val();
+        var ddlUserType =$("#div_ddlUserType").val();
+        var ddlRoute = $("#div_ddlRoute").val();
+        var ddlBusinessType =$("#div_ddlBusinessType").val();
+
+        $("#div_rbMaint").css('display', 'none');
+        $("#div_rbStatus").css('display', 'none');
+        $("#div_txtSearch").css('display', 'none');
+        $("#div_ddlCompany").css('display', 'none');
+        $("#div_rbBilling").css('display', 'none');
+        $("#div_rbCredit").css('display', 'none');
+        $("#div_rbDispAlert").css('display', 'none');
+        $("#div_rbEmailInvoice").css('display', 'none');
+        $("#div_rbPrintInvoice").css('display', 'none');
+        $("#div_ddlTerr").css('display', 'none');
+        $("#div_ddlTerr2").css('display', 'none');
+        $("#div_rbNoCustomerStatement").css('display', 'none');
+        $("#div_ddlZone1").css('display', 'none');
+        $("#div_ddlRoute").css('display', 'none');
+        $("#div_ddlUserType").css('display', 'none');
+        $("#div_ddlBusinessType").css('display', 'none');
+     
+
+        switch (String(ddlSearch)) {
+            case "l.Status":
+                   $("#div_rbStatus").css('display', 'block');
+              
+                break;
+            case "b.Name":
+                  $("#div_ddlCompany").css('display', 'block');
+              
+                break;
+            case "l.Maint":
+                $("#div_rbMaint").css('display', 'block');
+                break;
+            case "l.Billing":
+                $("#div_rbBilling").css('display', 'block');
+                break;
+            case "l.Credit":
+                $("#div_rbCredit").css('display', 'block');
+                break;
+            case "l.EmailInvoice":
+                $("#div_rbEmailInvoice").css('display', 'block');
+                break;
+            case "l.PrintInvoice":
+                $("#div_rbPrintInvoice").css('display', 'block');
+                break;
+            case "l.DispAlert":
+                $("#div_rbDispAlert").css('display', 'block');
+                break;
+            case "l.Terr":
+                $("#div_ddlTerr").css('display', 'block');
+                break;
+            case "l.Terr2":
+                $("#div_ddlTerr2").css('display', 'block');
+                break;
+            case "l.NoCustomerStatement":
+                $("#div_rbNoCustomerStatement").css('display', 'block');
+                break;
+            case "l.Zone":
+                $("#div_ddlZone1").css('display', 'block');
+                break;
+            case "l.type":
+                $("#div_ddlUserType").css('display', 'block');
+                break;
+            case "rt.Name":
+                $("#div_ddlRoute").css('display', 'block');
+                break;
+            case "l.businesstype":
+                $("#div_ddlBusinessType").css('display', 'block');
+                break;
+            default:
+                $("#div_txtSearch").css('display', 'block');
+                var txt = $('#txtSearch').val();
+                $('#txtSearch').val("");
+                break;
+        }
+
+
+        try {
+
+            $("#rbStatus").val($("#rbStatus option:first").val());
+            $("#rbBilling").val($("#rbBilling option:first").val());
+            $("#rbCredit").val($("#rbCredit option:first").val());
+            $("#rbDispAlert").val($("#rbDispAlert option:first").val());
+            $("#rbEmailInvoice").val($("#rbEmailInvoice option:first").val());
+            $("#rbPrintInvoice").val($("#rbPrintInvoice option:first").val());
+            $("#rbNoCustomerStatement").val($("#rbNoCustomerStatement option:first").val());
+            $("#rbMaint").val($("#rbMaint option:first").val());
+            $("#ddlTerr").val($("#ddlTerr option:first").val());
+
+            $("#ddlTerr2").val($("#ddlTerr2 option:first").val());
+            var comboUserType = $find("ddlUserType");
+            comboUserType.trackChanges();
+            for (var i = 0; i < comboUserType.get_items().get_count(); i++) {
+                comboUserType.get_items().getItem(i).set_checked(false);
+            }
+            comboUserType.commitChanges();
+
+
+            var comboRoute = $find("ddlRoute");
+            comboRoute.trackChanges();
+            for (var i = 0; i < comboRoute.get_items().get_count(); i++) {
+                comboRoute.get_items().getItem(i).set_checked(false);
+            }
+            comboRoute.commitChanges();
+
+            var comboZone1 = $find("ddlZone1");
+            comboZone1.trackChanges();
+            for (var i = 0; i < comboZone1.get_items().get_count(); i++) {
+                comboZone1.get_items().getItem(i).set_checked(false);
+            }
+            comboZone1.commitChanges();
+
+            var comboBusinessType = $find("ddlBusinessType");
+            comboBusinessType.trackChanges();
+            for (var i = 0; i < comboBusinessType.get_items().get_count(); i++) {
+                comboBusinessType.get_items().getItem(i).set_checked(false);
+            }
+            comboBusinessType.commitChanges();
+
+
+
+        } catch (ex) { }
+
+    }
+
+</script>

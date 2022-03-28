@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="valuta" targetNamespace="http://tempuri.org/valuta.xsd" elementFormDefault="qualified"
+	attributeFormDefault="qualified" xmlns="http://tempuri.org/valuta.xsd" xmlns:mstns="http://tempuri.org/valuta.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="ExchanceRate" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Exchance">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Country" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Initial" type="xs:string" minOccurs="0" maxOccurs="1" />
+										<xs:element name="Name" type="xs:string" minOccurs="0" maxOccurs="1" />
+										<xs:element name="Rate" type="xs:double" minOccurs="0" maxOccurs="1" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="Date" type="xs:date" />
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

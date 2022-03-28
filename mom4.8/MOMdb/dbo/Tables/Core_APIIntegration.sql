@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Core_APIIntegration]
+(	
+	ID INT IDENTITY(1,1) NOT NULL,
+	ModuleName VARCHAR(100) NOT NULL,
+	Integration SMALLINT NOT NULL,
+	UpdateOn DATETIME NOT NULL, 
+    CONSTRAINT [PK_Core_APIIntegration] PRIMARY KEY ([ID])
+)

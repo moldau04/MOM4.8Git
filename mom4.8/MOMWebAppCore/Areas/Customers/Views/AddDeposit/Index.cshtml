@@ -1,0 +1,1148 @@
+﻿@{
+    ViewData["Title"] = "Add Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+@*<%--Calendar CSS--%>*@
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+@*<%--MAKE DEPOSIT--%>*@
+<script src="~/MOMUI/Design/js/jquery.formatCurrency.js"></script>
+<script type="text/javascript">
+    function makeReadonly(txt) {
+        $("#" + txt.id).prop('readonly', true);
+    }
+</script>
+<style>
+    .rptSti tr:nth-child(2n+1) {
+        background: none !important;
+    }
+
+    .rm_mm td {
+        background-color: none !important;
+    }
+
+    #overlay {
+        position: fixed; /* Sit on top of the page content */
+        display: none; /* Hidden by default */
+        width: 100%; /* Full width (cover the whole page) */
+        height: 100%; /* Full height (cover the whole page) */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+        z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
+        cursor: pointer; /* Add a pointer on hover */
+    }
+</style>
+
+
+<!--start container-->
+<script type="text/javascript">
+    //Sys.Application.add_init(appl_init);
+
+    function appl_init() {
+        var pgRegMgr = Sys.WebForms.PageRequestManager.getInstance();
+        pgRegMgr.add_beginRequest(BlockUI);
+        pgRegMgr.add_endRequest(UnblockUI);
+    }
+
+    function BlockUI(sender, args) {
+        $("overlay").css("display", "block");
+    }
+    function UnblockUI(sender, args) {
+        $("overlay").css("display", "none");
+    }
+</script>
+<div id="overlay">
+    <img src="~/MOMUI/images/wheel.gif" alt="Be patient..." style="position: fixed; margin-top: 25%; margin-left: 50%;" />
+</div>
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title">
+                                    <i class="mdi-action-account-balance"></i>&nbsp;
+                                    <label ID="lblHeader" style="font-size:15px">Make Deposit</label>
+                                </div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a ToolTip="Save" ID="btnSubmit" ValidationGroup="Deposit" onclick="return Confirm();">Save</a>
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a ID="lnkPrint" ToolTip="Print" ValidationGroup="Deposit" onclick="return DisableButton()" CausesValidation="true">Print </a>
+
+                                    </div>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a ID="lnkClose" ToolTip="Close" CausesValidation="false">   
+                                    <i class="mdi-content-clear"></i>
+                                    </a>
+                                </div>
+                                <div class="rght-content">
+                                    <div class="editlabel">
+                                        <label ID="lblRef" style="display:none">Ref #</label>
+                                        <label ID="lblRefId" style="display:none"></label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <div class="tblnks">
+                            <ul class="anchor-links">
+                                <li id="liGLAccount"><a href="#accrdGlAccount">GL Account</a></li>
+                                <li id="liReceiptPay"><a href="#accrdPayment">Payment Info</a></li>
+                                <li id="liInvoice"><a href="#accrdInvoice">Invoice Info</a></li>
+                            </ul>
+                        </div>
+                        <div class="tblnksright">
+                            <div class="nextprev">
+                                <div ID="pnlNext" style="display:block">
+                                    <span class="angleicons">
+                                        <a ID="lnkFirst" ToolTip="First" CausesValidation="False">
+                                            <i class="fa fa-angle-double-left"></i>
+                                        </a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkPrevious" ToolTip="Previous" CausesValidation="False">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkNext" ToolTip="Next" CausesValidation="False">
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkLast" ToolTip="Last" CausesValidation="False">
+                                            <i class="fa fa-angle-double-right"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="srchpane-advanced" style="border-radius: 6px;">
+            <div class="card-content">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <div style="display: block;">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="form-section-row">
+                                        @Html.Hidden("hdnTransId")
+                                        @Html.Hidden("hdnIsRecon")
+                                        <div class="alert alert-success" id="divSuccess" style="text-align: left;">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            These month/year period is closed out. You do not have permission to add/update this record.
+                                        </div>
+                                        <div class="form-section3">
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <label class="drpdwn-label">Bank</label>
+                                                    <select ID="ddlBank" class="browser-default">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <div class="row">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                            <div class="input-field2 col s5">
+                                                <div class="row">
+                                                    <label for="txtDate">Date</label>
+                                                    <input type="text" ID="txtDateDeposite" autocomplete="off" />
+                                                    <input type="button" ID="btnDateDeposite" Style="display: none;" CausesValidation="false" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-section3">
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <input name="txtMemo" type="text" id="txtMemo" autocomplete="off">
+                                                    <label for="txtMemo" class="active">Memo </label>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <div class="row">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s5">
+                                                <div class="row">
+                                                    <div id="UpdDeposit" style="display: block;">
+
+                                                        <label class="active">Deposit Total</label>
+                                                        <span id="lblDepositTotal" style="float: right !important; font-size: 0.9em; width: 100%; color: #000 !important; margin-top: 12px; border-bottom: 1px solid #9e9e9e; padding-bottom: 6px; text-align: left;">$0.00</span>
+                                                        <input type="hidden" name="hdDepositTotal" id="hdDepositTotal" value="$0.00">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-section3-blank">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-section3">
+                                            <div class="input-field col s5" style="text-align: center; padding-top: 5px;">
+                                                <img ID="imgCleared" src="~/MOMUI/images/icon/Cleared.png" style="display:none"/>
+                                            </div>
+                                            <div class="input-field col s1">
+                                                <div class="row">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s6" style="padding-top: 12px;">
+                                                <label ID="lblRecordCount">0 Record(s) found</label>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="cf"></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @*<%--Add Area--%>*@
+        <div>
+            <div class="container accordian-wrap">
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div class="row">
+                            <ul class="collapsible popout collapsible-accordion form-accordion-head" data-collapsible="expandable">
+                                <li>
+                                    <div id="accrdGlAccount" class="collapsible-header accrd accordian-text-custom "><i class="mdi-action-info"></i>GL Account Info</div>
+                                    <div class="collapsible-body">
+                                        <div class="form-content-wrap">
+                                            <div class="form-content-pd">
+                                                <div class="form-section-row">
+                                                    <div class="grid_container">
+                                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="cf"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li id="adEditPayment">
+                                    <div id="accrdPayment" class="collapsible-header accrd active accordian-text-custom "><i class="mdi-action-info"></i>Payment Info</div>
+                                    <div class="collapsible-body">
+                                        <div class="form-content-wrap">
+                                            <div class="form-content-pd">
+                                                <div class="form-section-row">
+                                                    <div class="grid_container">
+                                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+
+                                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+                                                                <div ID="RadAjaxPanel_gvReceivePayment" LoadingPanelID="RadAjaxLoadingPanel_Deposit">
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="cf"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </li>
+                                <li id="adEditInvoice">
+
+                                    <div id="accrdInvoice" class="collapsible-header accrd  accordian-text-custom "><i class="mdi-action-info"></i>Invoices Info</div>
+                                    <div class="collapsible-body">
+                                        <div class="form-content-wrap">
+                                            <div class="form-content-pd">
+                                                <div class="form-section-row">
+                                                    <div class="grid_container">
+                                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                                            <div class="RadGrid RadGrid_Material FormGrid">
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="cf"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end container-->
+<input id="hdnCon" type="hidden" />
+<input id="hdnAreaActive" type="hidden" value="1" />
+<input ID="Confirm_Value" type="hidden" ClientIDMode="Static" />
+
+<script type="text/javascript">
+
+    //var picker = new Pikaday(
+    //    {
+    //        field: $("#txtDateDeposite"),
+    //        firstDay: 0,
+    //        format: 'MM/DD/YYYY',
+    //        minDate: new Date(2000, 1, 1),
+    //        maxDate: new Date(2100, 12, 31),
+    //        yearRange: [2000, 2100],
+
+    //        onSelect: function () {
+    //            CallMe();
+    //        }
+    //    });
+
+    function CallMe() {
+        $("#btnDateDeposite").click();
+    }
+
+    $(document).ready(function () {
+        CalCountAmount();
+        Materialize.updateTextFields();
+        $(".dropdown-content.select-dropdown li").on("click", function () {
+            var that = this;
+            setTimeout(function () {
+                if ($(that).parent().hasClass('active')) {
+                    $(that).parent().removeClass('active');
+                    $(that).parent().hide();
+                }
+            }, 100);
+        });
+
+
+    });
+
+
+    $("[id*=ChkAll]").change(function () {
+        $("#RadGrid_gvReceivePayment input[id*='chkSelect']:checkbox").prop('checked', $(this).prop("checked"));
+
+        $("#RadGrid_gvReceivePayment input[id*='chkSelect']:checkbox").each(function (index) {
+            var chk = $(this).attr('id');
+            if ($(this).prop('checked') == true) {
+                SelectedRowStyle("#RadGrid_gvReceivePayment")
+            }
+            else if ($(this).prop('checked') == false) {
+                $(this).closest('tr').removeAttr("style");
+            }
+        });
+
+        CalCountAmount();
+    });
+    $("[id*=lnkGLAddnewRow]").mouseup(function () {
+        CalCountAmount();
+    });
+    $("[id*=txtGLAmount]").blur(function () {
+        var tmp = $(this).val().replace(/[\$\(\),]/g, '');
+
+        tmp = cleanUpCurrency("$" + parseFloat(tmp).toLocaleString("en-US", { minimumFractionDigits: 2 }))
+        if (tmp != "$NaN") {
+            $(this).val(tmp);
+        }
+        CalCountAmount();
+    });
+    $("[id*=ibtnDeleteGLRow]").mouseup(function () {
+        CalCountAmount();
+    });
+    $("[id*=txtAmount]").blur(function () {
+        var hdnAmountDue = this.id.replace('txtAmount', 'hdnAmountDue');
+        var currentAmount = parseFloat($(hdnAmountDue).value.toString().replace(/[\$\(\),]/g, ''));
+        var tmp = $(this).val().replace(/[\$\(\),]/g, '');
+
+        tmp = cleanUpCurrency("$" + parseFloat(tmp).toLocaleString("en-US", { minimumFractionDigits: 2 }))
+        if (tmp != "$NaN") {
+            $(this).val(tmp);
+        }
+        CalCountAmount();
+    });
+    $("[id*=chkSelect]").change(function () {
+
+        var chk = $(this).attr('id');
+        if ($(this).prop('checked') == true) {
+            SelectedRowStyle("#RadGrid_gvReceivePayment")
+        }
+        else if ($(this).prop('checked') == false) {
+            $(this).closest('tr').removeAttr("style");
+        }
+
+        CalCountAmount();
+    });
+
+    function CalCountAmount() {
+        var _count = 0;
+        var _amountTotal = 0;
+        var expression = /[\(\)]/g
+
+        $("#RadGrid_gvReceivePayment input[id*='chkSelect']:checkbox").each(function (index) {
+            try {
+                var chk = $(this).attr('id');
+                if ($(this).prop('checked') == true) {
+                    var _amount = 0;
+                    var lblAmount = $(chk.replace('chkSelect', 'lblAmount'));
+                    if ($(lblAmount).text().match(expression)) {
+                        _amount = parseFloat($(lblAmount).text().toString().replace(/[\$\(\),]/g, ''));
+                        _amount = _amount * -1
+                    }
+                    else {
+                        _amount = parseFloat($(lblAmount).text().toString().replace(/[\$\(\),]/g, ''));
+                    }
+
+                    _amountTotal = parseFloat(_amountTotal) + parseFloat(_amount);
+                    _count = parseInt(_count) + 1;
+                }
+            } catch (ex) {
+
+            }
+
+
+        });
+
+        //GL Account
+        var _countGL = 0;
+        var _amountGLTotal = 0;
+        //debugger
+        $("#RadGrid_gvDepositGL").find('tr:not(:first,:last)').each(function () {
+            try {
+                // debugger
+                var $tr = $(this);
+                var _amountGL = 0;
+                var acct = $tr.find('input[id*=hdnID]').val();
+                var temp = $tr.find('input[id*=txtGLAmount]').val();
+                if (acct && acct != '') {
+                    if (temp.match(expression)) {
+                        _amountGL = parseFloat(temp.toString().replace(/[\$\(\),]/g, ''));
+                        _amountGL = _amountGL * -1
+                    }
+                    else {
+                        _amountGL = parseFloat(temp.toString().replace(/[\$\(\),]/g, ''));
+                    }
+
+                    _amountGLTotal = parseFloat(_amountGLTotal) + parseFloat(_amountGL);
+                    _countGL = parseInt(_countGL) + 1;
+                }
+
+            } catch (ex) { }
+
+        });
+        //Invoice
+        var _countInvoice = 0;
+        var _amountInvoiceTotal = 0.00;
+        $("#RadGrid_gvInvoiceDeposit").find('tr:not(:first,:last)').each(function () {
+            try {
+                //debugger
+                var $tr = $(this);
+                var _amountInvoice = 0;
+                var Amount;
+                if ($tr.find('input[id*=hdnID]').val() == "0") {
+                    Amount = $tr.find('input[id*=txtAmount]').val();
+                } else {
+                    Amount = $tr.find('input[id*=hdnAmountDue]').val();
+                }
+
+                if (Amount.match(expression)) {
+                    _amountInvoice = parseFloat(Amount.toString().replace(/[\$\(\),]/g, ''));
+                    _amountInvoice = _amountInvoice * -1
+                }
+                else {
+                    _amountInvoice = parseFloat(Amount.toString().replace(/[\$\(\),]/g, ''));
+                }
+
+                _amountInvoiceTotal = _amountInvoiceTotal + _amountInvoice;
+                _countInvoice = parseInt(_countInvoice) + 1;
+
+            } catch (ex) { }
+
+        });
+
+        debugger
+        $("[id*=lblSelectedItems]").html("Selected Item(s) " + _count);
+
+        //Javascript issue: 86.96 -0.01=86.94999999999999
+        var displayDepAmount = parseFloat(_amountTotal + _amountGLTotal + _amountInvoiceTotal).toLocaleString("en-US", { minimumFractionDigits: 2 });
+        var displayInvoiceTotal = parseFloat(_amountInvoiceTotal).toLocaleString("en-US", { minimumFractionDigits: 2 });
+        var displayGLAmount = parseFloat(_amountGLTotal).toLocaleString("en-US", { minimumFractionDigits: 2 });
+        if (displayDepAmount == 0) displayDepAmount = parseFloat(0.00).toLocaleString("en-US", { minimumFractionDigits: 2 });
+        if (displayInvoiceTotal == 0) displayInvoiceTotal = parseFloat(0.00).toLocaleString("en-US", { minimumFractionDigits: 2 });
+        if (displayGLAmount == 0) displayGLAmount = parseFloat(0.00).toLocaleString("en-US", { minimumFractionDigits: 2 });
+
+        $("#lblDepositTotal").html(cleanUpCurrency("$" + displayDepAmount));
+        $("#hdDepositTotal").val(cleanUpCurrency("$" + displayDepAmount));
+
+        $("[id*=lblTotalInvPayAmount]").html(cleanUpCurrency("$" + displayInvoiceTotal));
+        $("[id*=lblTotalGLAmount]").html(cleanUpCurrency("$" + displayGLAmount));
+        $("[id*=lblRecordCount]").html(_count + _countGL + _countInvoice + " Record(s) found");
+
+
+    }
+
+
+    function SelectedRowStyle(gridview) {
+        try {
+            var grid = $(gridview);
+            $('#' + gridview + ' tr').each(function () {
+                var $tr = $(this);
+                var chk = $tr.find('input[id*=chkSelect]');
+                if (chk.prop('checked') == true) {
+                    $tr.css('background-color', '#e0eefe');
+                }
+            })
+        } catch (ex) {
+
+        }
+
+    }
+
+    var pending = false;
+    function DisableButton() {
+        if (pending) {
+            return false;
+        }
+        else {
+            if (Confirm() == true) {
+                if (Page_ClientValidate(""))
+                    pending = true;
+            }
+            return pending;
+        }
+    }
+
+
+    function isNumberKey(evt, txt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+</script>
+<script>
+
+
+    function pageLoad(sender, args) {
+        function dtaa() {
+            this.prefixText = null;
+            this.con = $("#hdnCon").val();
+        }
+        //txtOwnerName
+        $("[id*=txtCustomerName]").autocomplete({
+
+            source: function (request, response) {
+                var dtaaa = new dtaa();
+                dtaaa.prefixText = request.term;
+                query = request.term;
+
+                var str = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/GetCustomerWithInactive",
+                    data: JSON.stringify(dtaaa),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+
+                        noty({ text: 'Due to unexpected errors we were unable to load job code', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                    }
+                });
+            },
+            select: function (event, ui) {
+                // debugger
+                var txtOwnerName = this.id;
+                var hdnOwner = $(txtOwnerName.replace('txtCustomerName', 'hdnOwner'));
+                $(hdnOwner).val(ui.item.value);
+                $(this).val(ui.item.label);
+
+                var txtInvoice = $(txtOwnerName.replace('txtCustomerName', 'txtInvoiceID'));
+
+                var hdnLoc = $(txtOwnerName.replace('txtCustomerName', 'hdnLoc'));
+                var txtLocationName = $(txtOwnerName.replace('txtCustomerName', 'txtLocationName'));
+
+                var txtAmount = $(txtOwnerName.replace('txtCustomerName', 'txtAmount'));
+                var hdnAmountDue = $(txtOwnerName.replace('txtCustomerName', 'hdnAmountDue'));
+
+
+
+                hdnLoc.value = "0";
+                txtLocationName.value = "";
+                if (txtAmount != null) {
+                    txtAmount.value = 0;
+                }
+
+                hdnAmountDue.value = 0;
+                if (txtInvoice != null) {
+                    txtInvoice.value = "0";
+                }
+
+                return false;
+            },
+            focus: function (event, ui) {
+                $(this).val(ui.item.label);
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        }).click(function () {
+            $(this).autocomplete('search', $(this).val())
+        });
+
+        $.each($(".txtCustomerNameSearch"), function (index, item) {
+            $(item).data("ui-autocomplete")._renderItem = function (ul, item) {
+                var result_item = item.label;
+
+                var result_value = item.value;
+                var x = new RegExp('\\b' + query, 'ig'); // notice the escape \ here...
+                result_item = result_item.toString().replace(x, function (FullMatch, n) {
+                    return '<span class="highlight">' + FullMatch + '</span>'
+                });
+
+                if (result_value == 0) {
+                    return $("<li></li>")
+                        .data("item.autocomplete", item)
+                        .append("<a>" + result_item + "</a>")
+                        .appendTo(ul);
+                }
+                else {
+                    return $("<li></li>")
+                        .data("item.autocomplete", item)
+                        .append("<a>" + result_item + "</a>")
+                        .appendTo(ul);
+                }
+            };
+        });
+
+        //txtLocationName
+        $("[id*=txtLocationName]").autocomplete({
+            source: function (request, response) {
+                var hdnOwner
+                var dtaaa = new dtaa();
+                dtaaa.prefixText = request.term;
+                query = request.term;
+                dtaaa.custID = 0;
+                var txtLocationName = this.element[0].id;
+                if (txtLocationName) {
+                    hdnOwner = $(txtLocationName.replace('txtLocationName', 'hdnOwner'));
+                }
+                if ($(hdnOwner).val() != '') {
+                    dtaaa.custID = $(hdnOwner).val();
+                }
+                var str = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/GetLocationWithInactive",
+                    data: JSON.stringify(dtaaa),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+                        noty({ text: 'Due to unexpected errors we were unable to load job code', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                    }
+                });
+            },
+            select: function (event, ui) {
+                // debugger
+                var txtLocationName = this.id;
+
+                var hdnLoc = $(txtLocationName.replace('txtLocationName', 'hdnLoc'));
+
+                var txtCustomerName = $(txtLocationName.replace('txtLocationName', 'txtCustomerName'));
+                var hdnOwner = $(txtLocationName.replace('txtLocationName', 'hdnOwner'));
+
+                var txtInvoice = $(txtLocationName.replace('txtLocationName', 'txtInvoiceID'));
+
+                hdnLoc.value = ui.item.loc;
+
+                txtCustomerName.value = ui.item.CompanyName;
+                hdnOwner.value = ui.item.OwnerID;
+                if (txtInvoice != null) {
+                    txtInvoice.value = "0";
+                }
+                $(this).val(ui.item.label);
+                return false;
+            },
+            focus: function (event, ui) {
+                $(this).val(ui.item.label);
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        }).click(function () {
+            $(this).autocomplete('search', $(this).val())
+        });
+
+        $.each($(".txtLocationNameSearch"), function (index, item) {
+            $(item).data("ui-autocomplete")._renderItem = function (ul, item) {
+                var result_item = item.label;
+                var result_value = item.desc;
+                var x = new RegExp('\\b' + query, 'ig'); // notice the escape \ here...
+                result_item = result_item.toString().replace(x, function (FullMatch, n) {
+                    return '<span class="highlight">' + FullMatch + '</span>'
+                });
+
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<span class='auto_item'>" + result_item + "</span> <span class='auto_desc'>" + result_value + "</span>")
+                    .appendTo(ul);
+
+
+            };
+        });
+
+        $("[id*=txtInvoiceID]").autocomplete({
+
+            source: function (request, response) {
+
+                var dataValue = "{ prefixText: '" + request.term + "', count: 0, contextKey: '' }";
+                var str = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/ServiceGetListOpenInvoice",
+                    data: dataValue,
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+                        console.log("Due to unexpected errors we were unable to load invoice");
+                    }
+                });
+            },
+            select: function (event, ui) {
+
+                var str = ui.item.Invoice;
+                if (str == "No Record Found!") {
+                    $(this).val("");
+                }
+                else {
+                    $(this).val(ui.item.Invoice);
+
+                    var txtAmount = this.id.replace('txtInvoiceID', 'txtAmount');
+                    var hdnAmountDue = this.id.replace('txtInvoiceID', 'hdnAmountDue');
+                    var txtCustomerName = this.id.replace('txtInvoiceID', 'txtCustomerName');
+                    var txtLocationName = this.id.replace('txtInvoiceID', 'txtLocationName');
+                    var hdnOwner = this.id.replace('txtInvoiceID', 'hdnOwner');
+                    var hdnLoc = this.id.replace('txtInvoiceID', 'hdnLoc');
+                    $(hdnAmountDue).value = cleanUpCurrency('$' + ui.item.AmountDue.toLocaleString("en-US", { minimumFractionDigits: 2 }));
+                    $(txtAmount).value = cleanUpCurrency('$' + ui.item.AmountDue.toLocaleString("en-US", { minimumFractionDigits: 2 }));
+                    $(txtCustomerName).value = ui.item.OwnerName;
+                    $(txtLocationName).value = ui.item.Tag;
+                    $(hdnOwner).value = ui.item.Owner;
+                    $(hdnLoc).value = ui.item.Loc;
+                    CalCountAmount();
+                    Materialize.updateTextFields();
+                }
+                return false;
+            },
+            focus: function (event, ui) {
+
+                $(this).val(ui.item.Invoice);
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        }).click(function () {
+            $(this).autocomplete('search', $(this).val())
+        })
+        $.each($(".searchinput_invoice"), function (index, item) {
+            $(item).data("ui-autocomplete")._renderItem = function (ul, item) {
+                var result_item = item.Invoice;
+
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<a>" + result_item + "</a>")
+                    .appendTo(ul);
+
+            };
+        });
+
+
+
+        //txtAcct
+        $("[id*=txtAcct]").autocomplete({
+
+            source: function (request, response) {
+
+                var dataValue = "{ prefixText: '" + request.term + "', count: 0, contextKey: '' }";
+                var str = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/ServiceGLAccount",
+                    data: dataValue,
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+                        console.log("Due to unexpected errors we were unable to load invoice");
+                    }
+                });
+            },
+            select: function (event, ui) {
+
+                var str = ui.item.Acct;
+                if (str == "No Record Found!") {
+                    $(this).val("");
+                }
+                else {
+                    $(this).val(ui.item.Acct);
+                    var hdnID = this.id.replace('txtAcct', 'hdnID');
+                    var hdnTitle = this.id.replace('txtAcct', 'hdnTitle');
+                    var lblTitle = this.id.replace('txtAcct', 'lblTitle');
+                    var txtDesc = this.id.replace('txtAcct', 'txtDesc');
+                    var txtGLAmount = this.id.replace('txtAcct', 'txtGLAmount');
+
+                    $(txtGLAmount).value = 0;
+                    $(txtDesc).value = '';
+                    $(hdnTitle).value = ui.item.fDesc;
+                    $(lblTitle).innerHTML = ui.item.fDesc;
+                    $(hdnID).value = ui.item.ID;
+
+                }
+                return false;
+            },
+            focus: function (event, ui) {
+
+                $(this).val(ui.item.Acct);
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        }).click(function () {
+            $(this).autocomplete('search', $(this).val())
+        })
+        $.each($(".searchinput_glAccount"), function (index, item) {
+            try {
+                $(item).data("ui-autocomplete")._renderItem = function (ul, item) {
+                    var result_item = item.Acct;
+
+                    return $("<li></li>")
+                        .data("item.autocomplete", item)
+                        .append("<a>" + result_item + "  : " + item.fDesc + "</a>")
+                        .appendTo(ul);
+
+                };
+            } catch (ex) { }
+        });
+        $("[id*=ibtnDeleteGLRow]").mouseup(function () {
+            CalCountAmount();
+        });
+
+        $("[id*=lnkGLAddnewRow]").mouseup(function () {
+            CalCountAmount();
+        });
+        $("[id*=txtGLAmount]").blur(function () {
+            var tmp = $(this).val().replace(/[\$\(\),]/g, '');
+            tmp = cleanUpCurrency("$" + parseFloat(tmp).toLocaleString("en-US", { minimumFractionDigits: 2 }))
+            if (tmp != "$NaN") {
+                $(this).val(tmp);
+            }
+            CalCountAmount();
+            Materialize.updateTextFields();
+        });
+        $("[id*=chkSelect]").change(function () {
+            var chk = $(this).attr('id');
+            if ($(this).prop('checked') == true) {
+                SelectedRowStyle("#RadGrid_gvReceivePayment")
+            }
+            else if ($(this).prop('checked') == false) {
+                $(this).closest('tr').removeAttr("style");
+            }
+
+            CalCountAmount();
+        });
+        $("[id*=txtAmount]").blur(function () {
+            var tmp = $(this).val().replace(/[\$\(\),]/g, '');
+            tmp = cleanUpCurrency("$" + parseFloat(tmp).toLocaleString("en-US", { minimumFractionDigits: 2 }))
+            if (tmp != "$NaN") {
+                $(this).val(tmp);
+            }
+            CalCountAmount();
+            Materialize.updateTextFields();
+        });
+        function CalCountAmount() {
+            var _count = 0;
+            var _amountTotal = 0;
+            var expression = /[\(\)]/g
+            $("#RadGrid_gvReceivePayment input[id*='chkSelect']:checkbox").each(function (index) {
+                try {
+                    var chk = $(this).attr('id');
+                    if ($(this).prop('checked') == true) {
+                        var _amount = 0;
+                        var lblAmount = $(chk.replace('chkSelect', 'lblAmount'));
+                        if ($(lblAmount).text().match(expression)) {
+                            _amount = parseFloat($(lblAmount).text().toString().replace(/[\$\(\),]/g, ''));
+                            _amount = _amount * -1
+                        }
+                        else {
+                            _amount = parseFloat($(lblAmount).text().toString().replace(/[\$\(\),]/g, ''));
+                        }
+
+                        _amountTotal = parseFloat(_amountTotal) + parseFloat(_amount);
+                        _count = parseInt(_count) + 1;
+                    }
+                } catch (ex) { }
+
+            });
+
+            //GL Account
+            var _countGL = 0;
+            var _amountGLTotal = 0;
+            debugger
+            $("#RadGrid_gvDepositGL").find('tr:not(:first,:last)').each(function () {
+                try {
+                    var $tr = $(this);
+                    var acct = $tr.find('input[id*=hdnID]').val();
+
+                    var _amountGL = 0;
+                    var temp = $tr.find('input[id*=txtGLAmount]').val();
+                    if (acct && acct != '') {
+                        if (temp.match(expression)) {
+                            _amountGL = parseFloat(temp.toString().replace(/[\$\(\),]/g, ''));
+                            _amountGL = _amountGL * -1
+                        }
+                        else {
+                            _amountGL = parseFloat(temp.toString().replace(/[\$\(\),]/g, ''));
+                        }
+
+                        _amountGLTotal = parseFloat(_amountGLTotal) + parseFloat(_amountGL);
+                        _countGL = parseInt(_countGL) + 1;
+                    }
+
+                } catch (ex) { }
+
+            });
+            //Invoice
+            var _countInvoice = 0;
+            var _amountInvoiceTotal = 0.00;
+            $("#RadGrid_gvInvoiceDeposit").find('tr:not(:first,:last)').each(function () {
+                try {
+                    var $tr = $(this);
+                    var _amountInvoice = 0;
+                    if ($tr.find('input[id*=hdnID]').val() == "0") {
+                        Amount = $tr.find('input[id*=txtAmount]').val();
+                    } else {
+                        Amount = $tr.find('input[id*=hdnAmountDue]').val();
+                    }
+
+                    if (Amount.match(expression)) {
+                        _amountInvoice = parseFloat(Amount.toString().replace(/[\$\(\),]/g, ''));
+                        _amountInvoice = _amountInvoice * -1
+                    }
+                    else {
+                        _amountInvoice = parseFloat(Amount.toString().replace(/[\$\(\),]/g, ''));
+                    }
+
+                    _amountInvoiceTotal = _amountInvoiceTotal + _amountInvoice;
+                    _countInvoice = parseInt(_countInvoice) + 1;
+
+                } catch (ex) { }
+
+            });
+
+            var displayDepAmount = parseFloat(_amountTotal + _amountGLTotal + _amountInvoiceTotal).toLocaleString("en-US", { minimumFractionDigits: 2 });
+            var displayInvoiceTotal = parseFloat(_amountInvoiceTotal).toLocaleString("en-US", { minimumFractionDigits: 2 });
+            var displayGLAmount = parseFloat(_amountGLTotal).toLocaleString("en-US", { minimumFractionDigits: 2 });
+            if (displayDepAmount == 0) displayDepAmount = parseFloat(0.00).toLocaleString("en-US", { minimumFractionDigits: 2 });
+            if (displayInvoiceTotal == 0) displayInvoiceTotal = parseFloat(0.00).toLocaleString("en-US", { minimumFractionDigits: 2 });
+            if (displayGLAmount == 0) displayGLAmount = parseFloat(0.00).toLocaleString("en-US", { minimumFractionDigits: 2 });
+
+            $("#lblDepositTotal").html(cleanUpCurrency("$" + displayDepAmount));
+            $("#hdDepositTotal").val(cleanUpCurrency("$" + displayDepAmount));
+
+            $("[id*=lblSelectedItems]").html("Selected Item(s) " + _count);
+            $("[id*=lblTotalInvPayAmount]").html(cleanUpCurrency("$" + displayInvoiceTotal));
+            $("[id*=lblTotalGLAmount]").html(cleanUpCurrency("$" + displayGLAmount));
+            $("[id*=lblRecordCount]").html(_count + _countGL + _countInvoice + " Record(s) found");
+
+        }
+
+    }
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('a[href^="#accrd"]').on('click', function (e) {
+            e.preventDefault();
+
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+    });
+    $(document).ready(function () {
+        if ($("#hdnAreaActive").val() == "0") {
+            $("#accrdGlAccount").click();
+        } else {
+            $("#accrdInvoice").click()
+        }
+
+    });
+    function cleanUpCurrency(s) {
+        if (s.indexOf('-') == 0) {
+            //It matched - strip out - and append parentheses
+            return s.replace("-", "\(") + ")";
+        } else if (s.indexOf('$-') == 0) {
+            return s.replace("$-", "\($") + ")";
+        } else {
+            return s;
+        }
+    }
+    function Confirm() {
+
+        var isEmptyLocation = true;
+        $("#RadGrid_gvInvoiceDeposit").find('tr:not(:first,:last)').each(function () {
+            try {
+                var $tr = $(this);
+                var temp = $tr.find('input[id*=hdnLoc]').val();
+                if (temp != undefined && temp == "0") {
+                    isEmptyLocation = false;
+
+                }
+            } catch (ex) { }
+
+        });
+
+        if (isEmptyLocation == false) {
+            noty({ text: 'Location is empty', dismissQueue: true, type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: false, theme: 'noty_theme_default', closable: false });
+            return false;
+        }
+        var _count = 0;
+        $("#RadGrid_gvReceivePayment input[id*='chkSelect']:checkbox").each(function (index) {
+            var chk = $(this).attr('id');
+            if ($(this).prop('checked') == true) {
+                _count = parseInt(_count) + 1;
+            }
+        });
+        debugger
+        //GL Account
+        var _countGL = 0;
+        debugger
+        $("#RadGrid_gvDepositGL").find('tr:not(:first,:last)').each(function () {
+            try {
+                var $tr = $(this);
+                var temp = $tr.find('input[id*=hdnID]').val();
+                var templblAcct = $tr.find('span[id*=lblAcct]').text();
+                if (temp && temp != "") {
+                    _countGL = parseInt(_countGL) + 1;
+                }
+                if (templblAcct && templblAcct != "") {
+                    _countGL = parseInt(_countGL) + 1;
+                }
+            } catch (ex) { }
+
+        });
+        //Invoice
+        var _countInvoice = 0;
+
+        $("#RadGrid_gvInvoiceDeposit").find('tr:not(:first,:last)').each(function () {
+            try {
+                var $tr = $(this);
+                var temp = $tr.find('input[id*=hdnAmountDue]').val();
+                if (temp && temp != "0") {
+                    _countInvoice = parseInt(_countInvoice) + 1;
+                }
+            } catch (ex) { }
+
+        });
+
+        var depVal = _count + _countGL + _countInvoice;
+        if (depVal != 0) {
+            var Val;
+            if (confirm("Do you want to print?") == true) {
+                Val = "Yes";
+            } else {
+                Val = "No";
+            }
+
+            $("Confirm_Value").value = Val;
+            return true;
+        } else {
+            noty({ text: 'Please select a item ', dismissQueue: true, type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: false, theme: 'noty_theme_default', closable: false });
+            return false;
+        }
+    }
+
+
+</script>

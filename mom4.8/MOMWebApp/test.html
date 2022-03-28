@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        //var LINE_LENGTH_CHARS = 30;
+        //$(document).ready(function () {
+        //    //$(document).on('input propertychange','textarea',function(e){
+        //    $('#your-input').keypress(function (e) {
+
+        //        var lines = $(this).val().split("\n");
+        //        var last_line = lines[lines.length - 1];
+
+        //        //if (lines.length > 4)
+        //        //{ e.preventDefault();  }
+        //        //else
+        //        if (last_line.length >= LINE_LENGTH_CHARS) {
+        //            $(this).val($(this).val() + "\n");
+        //        }
+
+        //    });
+
+        //});
+
+        $(document).ready(function () {
+            $('#your-input').keypress(function (e) {
+
+                limitTextareaLine(this, e);
+
+                //    var text = $(this).val();
+                //    var arr = text.split("\n");
+
+                //    //if (arr.length > 5) {
+                //    //    event.preventDefault(); 
+                //    //} else {
+                //    for (var i = 0; i < arr.length; i++) {
+                //        if (arr[i].length > 24) {//&& i < 3
+                //            if (arr[i].charAt(25)!='\n')
+                //                arr[i] = arr[i] + '\n';
+                //            alert(arr[i].charAt(25));
+                //            $(this).val(arr);
+                //            //if (event.keyCode != 13) {
+                //                event.preventDefault(); 
+                //            //}
+                //        }
+                //    }
+                //    //}
+
+            });
+        });
+
+        function limitTextareaLine(x, e) {
+
+            var rows = $(x).val().split("\n").length;   //number of rows
+            var lineCharLimit = $(x).attr('chars');     //number of characters to limit each row to
+            var rowLimit = $(x).attr('row');           //number of rows to allow
+
+            //limit length of lines
+            for (var i = 0; i < rows; i++) {
+                var rowLength = $(x).val().split("\n")[i].length;
+
+                //check to see if any of the rows have a length greater than the limit
+                if (rowLength > lineCharLimit) {
+
+                    //if it does save the beg index of the row
+                    var rowstartindex = $(x).val().indexOf($(x).val().split("\n")[i]);
+
+                    //use the index to get a new value w/ first lineCharLimit number of characters
+                    var newval = $(x).val().substring(0, rowstartindex + lineCharLimit)
+                         + $(x).val().substring(rowstartindex + rowLength, $(x).val().length);
+
+                    //replace that value in the textarea
+                    $(x).val(newval);
+
+                    //set character position back to end of the modified row
+                    setCaretPosition($(x)[0], rowstartindex + lineCharLimit);
+                }
+            }
+
+            //limit # of lines to limit to is rows attribute
+            while ($(x).val().split("\n").length > rowLimit) {
+                $(x).val($(x).val().substring(0, $(x).val().length - $(x).val().split("\n")[rowLimit].length - 1));
+            }
+        }
+
+        //Set caret position in the supplied control to position
+        //From: http://blog.vishalon.net/index.php/javascript-getting-and-setting-caret-position-in-textarea/
+        function setCaretPosition(ctrl, pos) {
+            if (ctrl.setSelectionRange) {
+                ctrl.focus();
+                ctrl.setSelectionRange(pos, pos);
+            }
+            else if (ctrl.createTextRange) {
+                var range = ctrl.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', pos);
+                range.moveStart('character', pos);
+                range.select();
+            }
+        }
+    </script>
+</head>
+<body>
+    <textarea rows="10" row="4" cols="50" chars="30" id="your-input"></textarea>
+</body>
+</html>

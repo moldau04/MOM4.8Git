@@ -1,0 +1,760 @@
+﻿@{
+    ViewData["Title"] = "List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+@*<%--Calendar CSS--%>*@
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+<style>
+    [id$='PageSizeComboBox'] {
+        width: 5.1em !important;
+    }
+</style>
+
+
+
+<!--start container-->
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-communication-contacts"></i>&nbsp;Receive Payment</div>
+                                <div class="buttonContainer">
+                                    <div ID="pnlGridButtons">
+                                        <div class="btnlinks">
+                                            <a ID="lnkAddnew" href="@Url.Action("Index","AddReceivepayment")">Add</a>
+                                        </div>
+                                        <div class="btnlinks">
+                                            <a ID="lnkAddMulti"> Batch Receipt</a>
+                                        </div>
+                                        <div class="btnlinks">
+                                            <a ID="btnEdit">Edit</a>
+                                        </div>
+                                        <div class="btnlinks menuAction">
+                                            <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                                Actions
+                                            </a>
+                                        </div>
+                                        <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                            <li>
+                                                <div class="btnlinks">
+                                                    <a ID="lnkDelete">Delete</a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="btnlinks">
+                                                    <a class="dropdown-button" data-beloworigin="true" data-activates="dropdown1">Reports</a>
+                                                </div>
+
+                                                <ul id="dropdown1" class="dropdown-content">
+                                                    <li>
+                                                        <a ID="lnkReceivePayment">Receive Payment Report</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <div class="btnlinks">
+                                                    <a ID="lnkExcel">Export to Excel</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a href="~/dashboard/home/index" class="mdi-content-clear" id="lnkClose" title="Close"><i></i></a>
+                                </div>                                <div class="rght-content">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="srchpane">
+            <div class="srchpaneinner">
+                <div class="srchtitle" style="padding-left: 15px;">
+                    Date
+                </div>
+                <div class="srchinputwrap">
+                    <input type="text" id="txtFromDate" class="srchcstm datepicker_mom" />
+                </div>
+                <div class="srchinputwrap">
+                    <input type="text" id="txtToDate" class="srchcstm datepicker_mom" />
+                </div>
+                <div class="srchinputwrap srchclr btnlinksicon" style="margin-left: -10px; margin-top: -2px;">
+                    <a ID="lnkSearch" onclick="return ResetSearch();" CausesValidation="false" ToolTip="Search"><i class="mdi-action-search"></i></a>
+                    <div style="display:none">
+                        <a ID="lnkSearchSelectDate" CausesValidation="false" ToolTip="Search"><i class="mdi-action-search"></i></a>
+                    </div>
+                </div>
+                <div class="srchinputwrap">
+                    <ul class="tabselect accrd-tabselect" id="testradiobutton">
+                        <li>
+                            <a id="decDate" onclick="dec_date('dec','ctl00_ContentPlaceHolder1_txtToDate','ctl00_ContentPlaceHolder1_txtFromDate','rdCal');return false;"><i class='mdi-hardware-keyboard-arrow-left'></i></a>
+                        </li>
+                        <li>
+                            <label id="lblDay">
+                                <input type="radio" id="rdDay" name="rdCal" value="rdDay" onclick="SelectDate('Day', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#lblDay', 'hdnRecvDate', 'rdCal')" />
+                                Day
+                            </label>
+                        </li>
+                        <li>
+                            <label id="lblWeek">
+                                <input type="radio" id="rdWeek" name="rdCal" value="rdWeek" onclick="SelectDate('Week', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#ctl00_ContentPlaceHolder1_lblWeek', 'hdnRecvDate', 'rdCal')" />
+                                Week
+                            </label>
+                        </li>
+                        <li>
+                            <label id="lblMonth">
+                                <input type="radio" id="rdMonth" name="rdCal" value="rdMonth" onclick="SelectDate('Month', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#ctl00_ContentPlaceHolder1_lblMonth', 'hdnRecvDate', 'rdCal')" />
+                                Month
+                            </label>
+                        </li>
+                        <li>
+                            <label id="lblQuarter">
+                                <input type="radio" id="rdQuarter" name="rdCal" value="rdQuarter" onclick="SelectDate('Quarter', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#ctl00_ContentPlaceHolder1_lblQuarter', 'hdnRecvDate', 'rdCal')" />
+                                Quarter
+                            </label>
+                        </li>
+                        <li>
+                            <label id="lblYear">
+                                <input type="radio" id="rdYear" name="rdCal" value="rdYear" onclick="SelectDate('Year', 'ctl00_ContentPlaceHolder1_txtFromDate', 'ctl00_ContentPlaceHolder1_txtToDate', '#ctl00_ContentPlaceHolder1_lblYear', 'hdnRecvDate', 'rdCal')" />
+                                Year
+                            </label>
+                        </li>
+                        <li>
+                            <a ID="incDate" onclick="dec_date('inc','ctl00_ContentPlaceHolder1_txtToDate','ctl00_ContentPlaceHolder1_txtFromDate','rdCal');return false"><i class='mdi-hardware-keyboard-arrow-right'></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col lblsz2 lblszfloat">
+                    <div class="row">
+                        <span class="tro trost">
+                            <a ID="lnkClear" onclick="ResetValue();">Clear </a>
+                        </span>
+                        <span class="tro trost">
+                            <a ID="lnkShowAll" onclick="ResetShowAll()">Show All </a>
+                        </span>
+                        <span class="tro trost">
+                            <a ID="lblRecordCount" style="font-size:14px!important;font-weight:900;">Record(s) found</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid_container">
+            <div class="form-section-row" style="margin-bottom: 0 !important;">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Hidden("hdnRcvPymtSelectDtRange", "")
+@Html.Hidden("hdnCssActive", "1")
+@Html.Hidden("ishowAllInvoice", "0")
+
+
+<!--end container-->
+<script src="~/MOMUI/Design/js/jquery-ui-1.9.2.custom.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $('#divButtons').addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $('#divButtons').removeClass('fixed-header');
+            }
+        });
+    });
+
+
+    function displyDeleteAlert() {
+        alert("These month/year period is closed out. You do not have permission to delete this record.");
+    }
+    function closedMesg() {
+        noty({
+            text: 'This receive payment has applied and can therefore not be deleted.',
+            type: 'warning',
+            layout: 'topCenter',
+            closeOnSelfClick: false,
+            timeout: 5000,
+            theme: 'noty_theme_default',
+            closable: true
+        });
+    }
+    function DatePermissionAlert(mesg) {
+        // alert("These month/year period is closed out. You do not have permission to " + mesg + " this record.");
+        noty({
+            text: 'These month/year period is closed out. You do not have permission to ' + mesg + ' this record.',
+            type: 'warning',
+            layout: 'topCenter',
+            closeOnSelfClick: false,
+            timeout: 5000,
+            theme: 'noty_theme_default',
+            closable: true
+        });
+    }
+    function DeleteSuccessMesg() {
+        noty({
+            text: 'Payment deleted successfully!',
+            type: 'success',
+            layout: 'topCenter',
+            closeOnSelfClick: false,
+            timeout: 5000,
+            theme: 'noty_theme_default',
+            closable: true
+        });
+    }
+    function CssClearLabel() {
+        $('#lblDay').removeClass("labelactive");
+        $('#lblWeek').removeClass("labelactive");
+        $('#lblMonth').removeClass("labelactive");
+        $("#lblQuarter").removeClass("labelactive");
+        $('#lblYear').removeClass("labelactive");
+    }
+
+    function ResetShowAll() {
+        debugger;
+        $('#lblDay').removeClass("labelactive");
+        $('#lblWeek').removeClass("labelactive");
+        $('#lblMonth').removeClass("labelactive");
+        $("#lblQuarter").removeClass("labelactive");
+        $('#lblYear').removeClass("labelactive");
+    }
+    function ResetSearch() {
+        //    <% --debugger;
+
+        //var SesVar = $('#<%= hdnCssActive.ClientID%>').val();
+        //if ($("#<%=txtFromDate.ClientID%>").val === '' || $("#<%=txtToDate.ClientID%>").val === '') {
+
+        //    return false;
+        //    noty({
+        //        text: 'Please enter valid start date and end date.',
+        //        type: 'warning',
+        //        layout: 'topCenter',
+        //        closeOnSelfClick: false,
+        //        timeout: false,
+        //        theme: 'noty_theme_default',
+        //        closable: true
+        //    });
+
+        //} --%>
+    }
+
+    function ResetValue() {
+        debugger;
+        if ($('#ishowAllInvoice').val(1)) {
+            $('#hdnRcvPymtSelectDtRange').val("Week");
+            $("#lblWeek").addClass("labelactive");
+            $("#rdWeek").prop('checked', true);
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $('label input[type=radio]').click(function () {
+            $('input[name="' + this.name + '"]').each(function () {
+                $(this.parentNode).toggleClass('labelactive', this.checked);
+            });
+
+
+        });
+        //debugger;
+        if (typeof (Storage) !== "undefined") {
+
+            // Retrieve
+            var SesVar = '<%= Convert.ToString(Session["lblActive"])%>';
+            var val;
+            val = localStorage.getItem("hdnRecvDate");
+            if ($("#hdnRcvPymtSelectDtRange").val("Week"))  { val = "Week"; }
+            if (SesVar == '2') {
+                $("#lblDay").addClass("");
+                $("#lblWeek").addClass("");
+                $("#lblMonth").addClass("");
+                $("#lblQuarter").addClass("");
+                $("#lblYear").addClass("");
+            }
+            else {
+                if (val == 'Day') {
+                    $("#lblDay").addClass("labelactive");
+                    $("#rdDay").prop('checked', true);
+                }
+                else if (val == 'Week') {
+
+                    $("#lblWeek").addClass("labelactive");
+                    $("#rdWeek").prop('checked', true);
+                }
+                else if (val == 'Month') {
+
+                    $("#lblMonth").addClass("labelactive");
+                    $("#rdMonth").prop('checked', true);
+                }
+                else if (val == 'Quarter') {
+
+                    $("#lblQuarter").addClass("labelactive");
+                    $("#rdQuarter").prop('checked', true);
+                }
+                else if (val == 'Year') {
+
+                    $("#lblYear").addClass("labelactive");
+                    $("#rdYear").prop('checked', true);
+                }
+                else {
+                    $("#lblWeek").addClass("labelactive");
+                    $("#rdWeek").prop('checked', true);
+                }
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    function dec_date(select, txtDateTo, txtDateFrom, rdGroup) {
+        debugger;
+        $("#lblDay").removeClass("labelactive");
+        $("#lblWeek").removeClass("labelactive");
+        $("#lblMonth").removeClass("labelactive");
+        $("#lblQuarter").removeClass("labelactive");
+        $("#lblYear").removeClass("labelactive");
+
+        var select = select;
+        var txtDateTo = txtDateTo;
+        var txtDateFrom = txtDateFrom;
+        var rdGroup = rdGroup;
+        var xday;
+        var xWeek;
+        var xMonth;
+        var xYear;
+        var xQuarter;
+        if (select == "dec") {
+            xday = -1;
+            xWeek = -7;
+            xMonth = -1;
+            xQuarter = -3;
+            xYear = -1;
+        }
+        if (select == "inc") {
+
+            xday = 1;
+            xWeek = 7;
+            xMonth = 1;
+            xQuarter = 3;
+            xYear = 1;
+        }
+        var radio = document.getElementsByName(rdGroup); //Client ID of the RadioButtonList1
+        var selected;
+        for (var i = 0; i < radio.length; i++) {
+            if (radio[i].checked) { // Checked property to check radio Button check or not
+                //alert("Radio button having value " + radio[i].value + " was checked."); // Show the checked value
+                selected = radio[i].value;
+
+            }
+            if (selected == "") {
+                selected = 'rdWeek';
+            }
+        }
+        if (selected == 'rdDay') {
+            $("#lblDay").addClass("labelactive");
+
+
+            //dec the from date
+            var tt = txtDateFrom;
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+
+            newdate.setDate(newdate.getDate() + xday);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            txtDateFrom = someFormattedDate;
+            //dec the to date
+
+            var TT = txtDateTo;
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+
+            NEWDATE.setDate(NEWDATE.getDate() + xday);
+
+            var DD = NEWDATE.getDate();
+            var MM = NEWDATE.getMonth() + 1;
+            var Y = NEWDATE.getFullYear();
+
+            var someFormattedDATE = MM + '/' + DD + '/' + Y;
+            txtDateTo = someFormattedDATE;
+        }
+        else if (selected == 'rdWeek') {
+            //dec the from date
+            $("#lblWeek").addClass("labelactive");
+
+            var tt = txtDateFrom;
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+
+            newdate.setDate(newdate.getDate() + xWeek);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            txtDateFrom = someFormattedDate;
+            //dec the to date
+
+            var TT = txtDateTo;
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+
+            NEWDATE.setDate(NEWDATE.getDate() + xWeek);
+
+            var DD = NEWDATE.getDate();
+            var MM = NEWDATE.getMonth() + 1;
+            var Y = NEWDATE.getFullYear();
+
+            var someFormattedDATE = MM + '/' + DD + '/' + Y;
+            txtDateTo = someFormattedDATE;
+        }
+        else if (selected == 'rdMonth') {
+            //dec the from date
+            $("#lblMonth").addClass("labelactive");
+
+
+            Date.isLeapYear = function (year) {
+                return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
+            };
+
+            Date.getDaysInMonth = function (year, month) {
+                return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+            };
+
+            Date.prototype.isLeapYear = function () {
+                return Date.isLeapYear(this.getFullYear());
+            };
+
+            Date.prototype.getDaysInMonth = function () {
+                return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+            };
+
+            Date.prototype.addMonths = function (value) {
+
+                var n = this.getDate();
+                this.setDate(1);
+                this.setMonth(this.getMonth() + value);
+                this.setDate(Math.min(n, this.getDaysInMonth()));
+                return this;
+            };
+
+            Date.prototype.addMonthsLast = function (value) {
+
+                var n = this.getDate();
+                this.setDate(1);
+                this.setMonth(this.getMonth() + 1);
+                if (this.getDaysInMonth() == 31) {
+
+                    this.setDate(Math.max(n, this.getDaysInMonth()));
+                }
+                else {
+                    this.setDate(Math.min(n, this.getDaysInMonth()));
+
+                }
+
+                return this;
+            };
+
+            Date.prototype.addMonthsLastDec = function (value) {
+
+                var n = this.getDate();
+                this.setDate(1);
+                this.setMonth(this.getMonth() - 1);
+                if (this.getDaysInMonth() == 31) {
+
+                    this.setDate(Math.max(n, this.getDaysInMonth()));
+                }
+                else {
+                    this.setDate(Math.min(n, this.getDaysInMonth()));
+
+                }
+
+                return this;
+            };
+            var tt = txtDateFrom;
+
+            var date = new Date(tt).toDateString();
+            var newdate = new Date(date);
+
+            newdate.addMonths(xMonth);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            txtDateFrom = someFormattedDate;
+
+
+            //dec the to date
+            if (select == 'dec') {
+                var ti = txtDateTo;
+                var date = new Date(ti).toDateString();
+                var newdateti = new Date(date);
+                newdateti.addMonthsLastDec(xMonth);
+
+                var dd = newdateti.getDate();
+                var mm = newdateti.getMonth() + 1;
+                var y = newdateti.getFullYear();
+
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                txtDateTo = someFormattedDate;
+            }
+
+            else {
+                var ti = txtDateTo;
+
+                var date = new Date(ti).toDateString();
+                var newdateti = new Date(date);
+                newdateti.addMonthsLast(xMonth);
+
+                var dd = newdateti.getDate();
+                var mm = newdateti.getMonth() + 1;
+                var y = newdateti.getFullYear();
+
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                txtDateTo = someFormattedDate;
+            }
+        }
+
+
+        else if (selected == 'rdQuarter') {
+            $("#lblQuarter").addClass("labelactive");
+
+            //dec the from date
+            var tt = txtDateFrom;
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+
+            newdate.setMonth(newdate.getMonth() + xQuarter);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            txtDateFrom = someFormattedDate;
+            //dec the to date
+
+            var TT = txtDateTo;
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+
+            //decrease date range
+            if (select == 'dec') {
+                xQuarter = -3;
+
+                if (DATE.getMonth() == 11) {
+                    NEWDATE.setDate(NEWDATE.getDate() - 1);
+                    NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+
+                }
+                else if (DATE.getMonth() == 5) {
+                    NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+                    NEWDATE.setDate(NEWDATE.getDate() + 1);
+
+                }
+                else {
+                    NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+
+                }
+            }
+            else {
+                xQuarter = 3;
+                NEWDATE.setDate(NEWDATE.getDate() - 1);
+                NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+                if (NEWDATE.getMonth() == 11 || NEWDATE.getMonth() == 12 || DATE.getMonth() == 11) {
+                    NEWDATE.setDate(31);
+                } else {
+                    if (DATE.getMonth() == 5) { NEWDATE.setDate(NEWDATE.getDate() + 1); }
+                    else { NEWDATE.setDate(NEWDATE.getDate()); }
+
+                }
+            }
+            var DD = NEWDATE.getDate();
+            var MM = NEWDATE.getMonth() + 1;
+            var Y = NEWDATE.getFullYear();
+
+            var someFormattedDATE = MM + '/' + DD + '/' + Y;
+            txtDateTo = someFormattedDATE;
+        }
+        else if (selected == 'rdYear') {
+            $("#lblYear").addClass("labelactive");
+            var tt = txtDateFrom;
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+
+            newdate.setFullYear(newdate.getFullYear() + xYear);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            txtDateFrom = someFormattedDate;
+            //dec the to date
+
+            var TT = txtDateTo;
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+
+            NEWDATE.setFullYear(NEWDATE.getFullYear() + xYear);
+            var DD = NEWDATE.getDate();
+            var MM = NEWDATE.getMonth() + 1;
+            var Y = NEWDATE.getFullYear();
+
+            var someFormattedDATE = MM + '/' + DD + '/' + Y;
+            txtDateTo = someFormattedDATE;
+        }
+        //document.getElementById('<%= hdnCssActive.ClientID%>').value = "CssActive";
+        $("#hdnCssActive").val("2");
+        //   <% -- var clickSearchButton = document.getElementById("<%= lnkSearch.ClientID %>");
+        //clickSearchButton.click(); --%>
+        // document.getElementById('<%= hdnCssActive.ClientID%>').value = "1";
+        return false;
+
+    }
+    function SelectDate(type, txtDateFrom, txtdateTo, label, UniqueVal, rdGroup) {
+        debugger;
+        ResetShowAll();
+        var type = type;
+        var txtDateFrom = txtDateFrom;
+        var txtdateTo = txtdateTo;
+        var UniqueVal = UniqueVal;
+        var label = label;
+        if (type == 'Day') {
+            var todaydate = new Date();
+            var day = todaydate.getDate();
+            var month = todaydate.getMonth() + 1;
+            var year = todaydate.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            txtdateTo = datestring;
+            txtDateFrom = datestring;
+            //$(label).addClass("labelactive");
+            $("#lblDay").addClass("labelactive");
+            $("#hdnRcvPymtSelectDtRange").val("Day");
+        }
+        if (type == 'Week') {
+
+            Date.prototype.GetFirstDayOfWeek = function () {
+                return (new Date(this.setDate(this.getDate() - this.getDay())));
+            }
+
+            Date.prototype.GetLastDayOfWeek = function () {
+                return (new Date(this.setDate(this.getDate() - this.getDay() + 6)));
+            }
+            var today = new Date();
+            var Firstdate = today.GetFirstDayOfWeek();
+            var day = Firstdate.getDate();
+            var month = Firstdate.getMonth() + 1;
+            var year = Firstdate.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            txtDateFrom = datestring;
+            var Lastdate = today.GetLastDayOfWeek();
+            var day = Lastdate.getDate();
+            var month = Lastdate.getMonth() + 1;
+            var year = Lastdate.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            txtdateTo = dateString;
+            //$(label).addClass("labelactive");
+            $("#lblWeek").addClass("labelactive");
+            $("#hdnRcvPymtSelectDtRange").val("Week");
+        }
+        if (type == 'Month') {
+            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+            var FirstDayOfMonth = new Date(y, m, 1);
+            var lastDayOfMonth = new Date(y, m + 1, 0);
+            var day = FirstDayOfMonth.getDate();
+            var month = FirstDayOfMonth.getMonth() + 1;
+            var year = FirstDayOfMonth.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            txtDateFrom = datestring;
+            var day = lastDayOfMonth.getDate();
+            var month = lastDayOfMonth.getMonth() + 1;
+            var year = lastDayOfMonth.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            txtdateTo = dateString;
+            //$(label).addClass("labelactive");
+            $("#lblMonth").addClass("labelactive");
+            $("#hdnRcvPymtSelectDtRange").val("Month");
+        }
+        if (type == 'Quarter') {
+            var d = new Date();
+            var quarter = Math.floor((d.getMonth() / 3));
+            var firstDate = new Date(d.getFullYear(), quarter * 3, 1);
+            var lastDate = new Date(firstDate.getFullYear(), firstDate.getMonth() + 3, 0);
+            var day = firstDate.getDate();
+            var month = firstDate.getMonth() + 1;
+            var year = firstDate.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            txtDateFrom = datestring;
+            var day = lastDate.getDate();
+            var month = lastDate.getMonth() + 1;
+            var year = lastDate.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            txtdateTo = dateString;
+            // $(label).addClass("labelactive");
+            $("#lblQuarter").addClass("labelactive");
+            $("#hdnRcvPymtSelectDtRange").val("Quarter");
+        }
+        if (type == 'Year') {
+            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+            var FirstDayOfYear = new Date(y, 1, 1);
+            var lastDayOfYear = new Date(y, 11, 31);
+            var day = FirstDayOfYear.getDate();
+            var month = FirstDayOfYear.getMonth();
+            var year = FirstDayOfYear.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            txtDateFrom = datestring;
+            var day = lastDayOfYear.getDate();
+            var month = lastDayOfYear.getMonth() + 1;
+            var year = lastDayOfYear.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            txtdateTo = dateString;
+            // $(label).addClass("labelactive");
+            $("#hdnRcvPymtSelectDtRange").val("Year");
+            $("#lblYear").addClass("labelactive");
+        }
+        if (typeof (Storage) !== "undefined") {
+            // Store
+            localStorage.setItem(UniqueVal, $("#hdnRcvPymtSelectDtRange").val());
+        }
+        // document.getElementById('<%= hdnCssActive.ClientID%>').value = "CssActive";
+        $("#hdnCssActive").val("2");
+        var clickSearchButton = $("#lnkSearchSelectDate").val();
+        clickSearchButton.click();
+        //document.getElementById('<%= hdnCssActive.ClientID%>').value = "1";
+    }
+</script>

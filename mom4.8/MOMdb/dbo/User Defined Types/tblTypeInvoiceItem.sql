@@ -1,0 +1,23 @@
+﻿CREATE TYPE [dbo].[tblTypeInvoiceItem] AS TABLE (
+	[Ref] [int] NULL,
+	[Line] [smallint] NULL,
+	[Acct] [int] NULL,
+	[Quan] [numeric](30, 2) NULL,
+	[fDesc] [varchar](8000) NULL,
+	[Price] [numeric](30, 4) NULL,
+	[Amount] [numeric](30, 2) NULL,
+	[STax] [smallint] NULL,
+	[Job] [int] NULL,
+	[JobItem] [int] NULL,
+	[TransID] [int] NULL,
+	[Measure] [varchar](15) NULL,
+	[Disc] [numeric](30, 4) NULL,
+	[StaxAmt] [numeric](30, 4) NULL,
+	[GSTAmt] [numeric](30, 4) NULL,
+	[Code] [int] NULL,
+	[JobOrg] [int] NULL,
+	[INVType] [int] NULL,
+	[Warehouse] [varchar](100) NULL,
+	[WHLocID] [int] NULL,
+	[EnableGSTTax] [bit] NULL);
+

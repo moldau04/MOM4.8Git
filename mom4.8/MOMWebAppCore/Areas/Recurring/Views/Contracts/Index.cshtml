@@ -1,0 +1,533 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+@*<%--Calendar CSS--%>*@
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+
+<!--start container-->
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-notification-sync"></i>&nbsp;Recurring Contracts</div>
+
+                                <div ID="pnlGridButtons">
+                                    <div class="buttonContainer">
+                                        <div class="btnlinks">
+                                            <a ID="lnkAddnew" href="@Url.Action("Index","AddContract")">Add</a>
+                                        </div>
+                                        <div class="btnlinks">
+                                            <a ID="btnEdit">Edit</a>
+                                        </div>
+
+                                        <div class="btnlinks menuAction">
+                                            <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                                Actions
+                                            </a>
+                                        </div>
+
+                                        <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                            <li>
+                                                <div class="btnlinks">
+                                                    <a ID="btnCopy">Copy</a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="btnlinks">
+                                                    <a ID="btnDelete">Delete</a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <ul id="dropdown2" class="dropdown-content">
+                                                    <li>
+                                                        <a ID="lnkExcelAllContracts">All Contracts</a>
+                                                    </li>
+                                                    <li>
+                                                        <a ID="lnkExcelRenewEscalte">Renew/Escalate</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="btnlinks">
+                                                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="dropdown2">
+                                                        Export to Excel
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <ul id="dropdown1" class="dropdown-content">
+                                                    <li>
+                                                        <a href="RecContractsModule.aspx?type=Recurring">Add New Recurring Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="EscalationListingReport.aspx?type=Escalation">Add New Escalation Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="MonthlyRecurringHoursReport.aspx?redirect=RecContracts.aspx">Monthly Recurring Hours By Location Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="MonthlyRecurringHoursByRouteReport.aspx?redirect=RecContracts.aspx">Monthly Recurring Hours By Route Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="OpenMaintenanceByEquipmentReport.aspx?redirect=RecContracts.aspx">Open Maintenance by Equipment Report</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="btnlinks">
+                                                    <a class="dropdown-button" data-beloworigin="true" href="RecContracts.aspx" data-activates="dropdown1">
+                                                        Reports
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a ID="btnClose" ToolTip="Close" CausesValidation="false"><i class="mdi-content-clear"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="text-align: center;">
+    <div class="row">
+        <div class="card" style="min-height: 70vh !important; border-radius: 6px; margin-top: -10px;">
+            <div class="card-content">
+                <ul class="tabs tab-demo-active white" style="width: 100%;">
+                    <li class="tab col s2">
+                        <a class="white-text waves-effect waves-light active" href="#activeone"><i class="mdi-action-done"></i>&nbsp;All Contracts</a>
+                    </li>
+                    <li class="tab col s2">
+                        <a class="white-text waves-effect waves-light" id="tabRenew" onclick="chkRenewEsclatePermission()" href="#two"><i class="mdi-notification-sync-problem"></i>&nbsp;Renew/Escalate</a>
+                    </li>
+
+                </ul>
+
+                <div id="activeone" class="col s12 tab-container-border lighten-4" style="display: block;">
+
+                    <div>
+                        <div class="srchpaneinner" style="padding: 20px;">
+                            <div class="srchtitle  srchtitlecustomwidth">
+                                Search
+                            </div>
+
+                            <div class="srchinputwrap">
+                                <select ID="ddlSearch" AutoPostBack="false" class="browser-default selectsml selectst" onchange="SelectSearch()">
+                                    <option Value="">Select</option>
+                                    <option Value="j.ctype">Service Type</option>
+                                    <option Value="c.Status">Status</option>
+                                    <option Value="c.bcycle">Billing Freqency</option>
+                                    <option Value="c.scycle">Ticket Freqency</option>
+                                    <option Value="r.name">Customer</option>
+                                    <option Value="l.tag">Location</option>
+                                    <option Value="B.Name">Company</option>
+                                    <option Value="r.State">State</option>
+                                    <option Value="j.SPHandle">Special Notes</option>
+
+                                </select>
+                            </div>
+                            <div class="srchinputwrap">
+                                <select ID="rbStatus" class="browser-default selectst selectsml" Style="display: none">
+                                    <option Value="0">Active</option>
+                                    <option Value="1">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="srchinputwrap">
+                                <select ID="ddlServiceType" class="browser-default selectst selectsml" Style="display: none">
+                                    <option Value="">Select</option>
+                                </select>
+                            </div>
+                            <div class="srchinputwrap">
+                                <select ID="ddlBillFreq" class="browser-default selectst selectsml" Style="display: none">
+                                    <option Value="0">Monthly</option>
+                                    <option Value="1">Bi-Monthly</option>
+                                    <option Value="2">Quarterly</option>
+                                    <option Value="3">3 Times/Year</option>
+                                    <option Value="4">Semi-Anually</option>
+                                    <option Value="5">Annually</option>
+                                    <option Value="6">Never</option>
+                                </select>
+                            </div>
+                            <div class="srchinputwrap">
+                                <select ID="ddlTicketFreq" class="browser-default selectst selectsml" Style="display: none">
+                                    <option Value="-1">Never</option>
+                                    <option Value="0">Monthly</option>
+                                    <option Value="1">Bi-Monthly</option>
+                                    <option Value="2">Quarterly</option>
+                                    <option Value="15">3 Times/Year</option>
+                                    <option Value="3">Semi-Annually </option>
+                                    <option Value="4">Annually</option>
+                                    <option Value="5">Weekly</option>
+                                    <option Value="6">Bi-Weekly</option>
+                                    <option Value="7">Every 13 Weeks</option>
+                                    <option Value="10">Every 2 Years</option>
+                                    <option Value="8">Every 3 Years</option>
+                                    <option Value="9">Every 5 Years</option>
+                                    <option Value="11">Every 7 Years</option>
+                                    <option Value="12">On-Demand</option>
+                                    <option Value="13">Daily</option>
+                                    <option Value="14">Twice a Month</option>
+                                </select>
+                            </div>
+                            <div class="srchinputwrap">
+                                <select ID="ddlCompany" class="browser-default selectst selectsml" Style="display: none">
+                                    <option Value="">Select</option>
+                                </select>
+                            </div>
+                            <div class="srchinputwrap">
+                                <select ID="ddlRoute" class="browser-default selectst selectsml" Style="display: none">
+                                    <option Value="">Select</option>
+                                </select>
+                            </div>
+                            <div class="srchinputwrap">
+                                <input type="text" ID="txtSearch" class="srchcstm" placeholder="Search..." Style="display: block" />
+                            </div>
+
+
+                            <div class="srchinputwrap">
+                                <select ID="ddlSpecialNotes" Width="100px" Style="display: none" class="browser-default selectst selectsml" TabIndex="7" AutoPostBack="false">
+                                    <option Value="-1">All</option>
+                                    <option Value="1">Yes</option>
+                                    <option Value="0">No</option>
+                                </select>
+                            </div>
+                            <div class="srchinputwrap srchclr btnlinksicon" style="margin-left: -10px; margin-top: -2px;">
+                                <a ID="lnkSearch" CausesValidation="false" ToolTip="Search"><i class="mdi-action-search"></i></a>
+                            </div>
+                            <div class="col lblsz2 lblszfloat">
+                                <div class="row">
+                                    <span class="tro trost">
+                                        <span class="css-checkbox">
+                                            <input type="checkbox" ID="chkcontractInactive" />
+                                        </span>
+                                        <label ID="lblChkSelect" for="chkcontractInactive" style="font-size:0.9rem">Incl. Closed</label>
+                                    </span>
+                                    <span class="tro trost">
+                                        <a id="lnkClear" onclick="ClearSearch()">Clear </a>
+                                    </span>
+                                    <span class="tro trost">
+                                        <a id="lnkShowAll" onclick="ClearSearch()">Show All </a>
+                                    </span>
+                                    <span class="tro trost">
+
+                                        <label ID="lblRecordCount" style="font-size:0.9rem">0 Record(s) found.</label>
+
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid_container">
+                            <div class="form-section-row" style="margin-bottom: 0 !important;">
+
+
+                                <div class="RadGrid RadGrid_Material">
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="two" class="col s12 tab-container-border lighten-4">
+
+                    <div id="divRevnewEsc">
+
+                        <div class="srchpaneinner" style="padding-top: 20px;">
+                            <div class="srchtitle  srchtitlecustomwidth" style="padding-left: 15px;">
+                                Escalation Prior to
+                            </div>
+
+                            <div class="srchinputwrap pd-negatenw input-field" style="padding-left: 18px;">
+                                <input type="text" ID="txtEscDate" class="srchcstm" />
+                            </div>
+
+                            <div class="srchinputwrap pd-negatenw">
+                                <div class="btnlinksicon" style="margin-left: -15px; margin-top: -2px;">
+                                    <a ID="lnkRefreshEsc" CausesValidation="false" ToolTip="Search"><i class="mdi-action-search"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="col lblsz2 lblszfloat">
+                                <div class="row">
+                                    <span class="tro trost">
+                                        <input type="checkbox" ID="lnkChk" AutoPostBack="True" />
+                                        <label ID="lblChkEsc" style="font-size:0.9rem">Incl. Closed</label>
+                                    </span>
+                                    <span class="tro trost">
+                                        <label ID="lblRenewRecord" style="font-size:0.9rem">0 Record(s) found</label>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="srchpaneinner" id="divRevnew">
+                            <div class="srchtitle  srchtitlecustomwidth" style="padding-left: 15px;">
+                                Select Date
+                            </div>
+                            <div class="srchinputwrap pd-negatenw input-field" style="margin-left: 56px;">
+                                <input type="text" ID="txtNextEscdate" class="srchcstm" />
+                            </div>
+                            <div class="srchtitle  srchtitlecustomwidth btnlinks">
+                                <a id="lnkEscalate" validationgroup="esc" onserverclick="lnkEscalate_Click" class="">Renew/Escalate</a>
+                            </div>
+
+                        </div>
+                        <div class="col lblsz2 lblszfloat" style="margin-bottom: 5px;">
+                            <div class="row">
+                            </div>
+                        </div>
+                        <div class="grid_container">
+                            <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                <div class="RadGrid RadGrid_Material">
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                @*<%--Need to be Confirm Anita to remove below code gvRenew Grid--%>*@
+                <div id="view2" style="display: none">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="com-cont">
+                            <div style="padding-bottom: 30px">
+                                <div ID="UpdatePanel3">
+                                    <div>
+                                        <div class="search-customer">
+                                            <div class="sc-form">
+                                                Expiration Date
+                                                <input type="text" ID="txtExpirationDate" class="form-control" Style="width: 100px" TabIndex="4" MaxLength="50" />
+
+
+                                                <a ID="lnkExpirationSearch" class="btn submit"
+                                                   CausesValidation="false" Width="33px"><i class="fa fa-search"></i></a>
+                                            </div>
+                                            <ul>
+                                                <li>
+                                                    <label ID="Label1" Style="font-style: italic; font-size:0.9rem;"></label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-scrollable">
+                                <div ID="Panel1" Style="background: #316b9d; width: 100%;">
+                                    <ul class="lnklist-header lnklist-panel">
+                                        <li>
+                                            <a ID="lnkRenew" ValidationGroup="expi" class="title_text">Renew Selected</a>
+
+                                        </li>
+                                        <li>
+                                            <input type="text" ID="txtSetExpiration" Style="width: 100px" MaxLength="50" />
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div ID="UpdatePanel4" UpdateMode="Conditional">
+                                    <div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end container-->
+<script src="~/MOMUI/Design/js/moment.js"></script>
+<script src="~/MOMUI/Design/js/pikaday.js"></script>
+
+<script>
+    var picker = new Pikaday(
+        {
+            field: $("#txtExpirationDate"),
+            firstDay: 0,
+            format: 'MM/DD/YYYY',
+            minDate: new Date(2000, 1, 1),
+            //maxDate: new Date(2020, 12, 31),
+            yearRange: [2000, 2050]
+        });
+    var picker = new Pikaday(
+        {
+            field: $("#txtEscDate"),
+            firstDay: 0,
+            format: 'MM/DD/YYYY',
+            minDate: new Date(2000, 1, 1),
+            //maxDate: new Date(2020, 12, 31)//,
+            yearRange: [2000, 2050]
+        });
+    var picker = new Pikaday(
+        {
+            field: $("#txtSetExpiration"),
+            firstDay: 0,
+            format: 'MM/DD/YYYY',
+            minDate: new Date(2000, 1, 1),
+            //maxDate: new Date(2020, 12, 31)//,
+            yearRange: [2000, 2050]
+        });
+    var picker = new Pikaday(
+        {
+            field: $("#txtNextEscdate"),
+            firstDay: 0,
+            format: 'MM/DD/YYYY',
+            minDate: new Date(2000, 1, 1),
+            //maxDate: new Date(2020, 12, 31)//,
+            yearRange: [2000, 2050]
+        });
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        $('#colorNav #dropdown1 li').remove();
+
+        //$(reports).each(function (index, report) {
+
+        //    var imagePath = null;
+        //    if (report.IsGlobal == true) {
+        //        imagePath = "images/globe.png";
+        //    }
+        //    else {
+        //        imagePath = "images/blog_private.png";
+        //    }
+
+        //    if (report.ReportType == 'Recurring') {
+        //        $('#dropdown1').append('<li><a href="RecContractsModule.aspx?reportId=' + report.ReportId + '&reportName=' + report.ReportName + '&type=Recurring"><img src=images/reportfolder.png> ' + report.ReportName + '</a></li>')
+        //    }
+        //    else if (report.ReportType == 'Escalation') {
+        //        $('#dropdown1').append('<li><a href="EscalationListingReport.aspx?reportId=' + report.ReportId + '&reportName=' + report.ReportName + '&type=Escalation"><img src=images/reportfolder.png> ' + report.ReportName + '</a></li>')
+        //    }
+
+        //    //$('#dynamicUI').append('<li><a href="RecurringListingReport.aspx?reportId=' + report.ReportId + '&reportName=' + report.ReportName + '&type=Recurring"><span> <img src=images/reportfolder.png> ' + report.ReportName + '</span><div style="clear:both;"></div></a></li>')
+        //});
+
+    });
+    function chkRenewEsclatePermission(hyperlink) {
+        var IsView = $("#hdnRenewEsclateView").val();
+        if (IsView == "N") {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+        }
+    }
+
+
+    function SelectSearch() {
+        debugger;
+        var ddlSearch = $("#ddlSearch");
+        var ddlServiceType = $("#ddlServiceType");
+        var rbStatus = $("#rbStatus");
+        var ddlBillFreq = $("#ddlBillFreq");
+        var ddlTicketFreq = $("#ddlTicketFreq");
+        var txtSearch = $("#txtSearch");
+        var ddlRoute = $("#ddlRoute");
+        var ddlSpecialNotes = $("#ddlSpecialNotes");
+
+        txtSearch.css("display", "none");
+        ddlServiceType.css("display", "none");
+        rbStatus.css("display", "none");
+        ddlBillFreq.css("display", "none");
+        ddlTicketFreq.css("display", "none");
+        ddlRoute.css("display", "none");
+        ddlSpecialNotes.css("display", "none");
+
+        txtSearch.val("");
+
+
+
+        try {
+            ddlServiceType.get(0).selectedIndex = 0;
+            rbStatus.get(0).selectedIndex = 0;
+            ddlBillFreq.get(0).selectedIndex = 0;
+            ddlTicketFreq.get(0).selectedIndex = 0;
+            ddlRoute.get(0).selectedIndex = 0;
+            ddlSpecialNotes.get(0).selectedIndex = 0;
+        } catch (ex) {
+
+        }
+
+
+        if (ddlSearch.val() === "j.ctype") {
+
+            ddlServiceType.css("display", "block");
+        }
+        else if (ddlSearch.val() == "c.Status") {
+            rbStatus.css("display", "block");
+        }
+        else if (ddlSearch.val() == "c.bcycle") {
+
+            ddlBillFreq.css("display", "block");
+        }
+        else if (ddlSearch.val() == "c.scycle") {
+
+            ddlTicketFreq.css("display", "block");
+        }
+        else if (ddlSearch.val() == "j.custom20") {
+
+            ddlRoute.css("display", "block");
+        }
+        else if (ddlSearch.val() == "j.SPHandle") {
+
+            ddlSpecialNotes.css("display", "block");
+        }
+        else {
+
+            txtSearch.css("display", "block");
+        }
+    }
+
+    function ClearSearch() {
+        debugger
+        var ddlSearch = $("#ddlSearch");
+        var ddlServiceType = $("#ddlServiceType");
+        var rbStatus = $("#rbStatus");
+        var ddlBillFreq = $("#ddlBillFreq");
+        var ddlTicketFreq = $("#ddlTicketFreq");
+        var txtSearch = $("#txtSearch");
+        var ddlRoute = $("#ddlRoute");
+        var ddlSpecialNotes = $("#ddlSpecialNotes");
+
+        txtSearch.css("display", "block");
+        ddlServiceType.css("display", "none");
+        rbStatus.css("display", "none");
+        ddlBillFreq.css("display", "none");
+        ddlTicketFreq.css("display", "none");
+        ddlRoute.css("display", "none");
+        ddlSpecialNotes.css("display", "none");
+        txtSearch.val("");
+
+        try {
+            ddlSearch.get(0).selectedIndex = 0;
+            ddlServiceType.get(0).selectedIndex = 0;
+            rbStatus.get(0).selectedIndex = 0;
+            ddlBillFreq.get(0).selectedIndex = 0;
+            ddlTicketFreq.get(0).selectedIndex = 0;
+            ddlRoute.get(0).selectedIndex = 0;
+            ddlSpecialNotes.get(0).selectedIndex = 0;
+        } catch (ex) {
+
+        }
+
+
+    }
+</script>

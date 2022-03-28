@@ -1,0 +1,250 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<style>
+    .RadComboBox_Bootstrap .rcbReadOnly {
+        margin-top: 9px !important;
+    }
+
+    .rcbInner {
+        margin-bottom: 10px !important;
+    }
+</style>
+<script type="text/javascript">
+        //Script remove googleapis lib to resolved issue included the Google Maps multiple times.
+        if (window.google !== undefined && google.maps !== undefined) {
+            delete google.maps;
+            $('script').each(function () {
+                if (this.src.indexOf('googleapis.com/maps') >= 0) {
+                    $(this).remove();
+                }
+            });
+        }
+
+        var myVar;
+        var TO;
+        var strtext;
+        function ajaxcall(randomid, Deviceid, DeviceType) {
+            if (DeviceType == 'iOS') {
+                strtext = '<strong>Request Timeout!</strong></br></br> Please check if the device </br>1) Is not switched off </br>2) Mobile Service Tracker is not installed </br>3) Has no internet connectivity';
+            }
+            else {
+                strtext = '<strong>Request Timeout!</strong></br></br> Please check if the device </br>1) Is not switched off </br>2) GPS tracking app is not installed </br>3) Has no google account configured </br>4) Has no internet connectivity';
+            }
+
+            TO = setTimeout(function () {
+                clearInterval(myVar);
+
+                noty({ text: strtext, dismissQueue: true, type: 'warning', layout: 'topCenter', closeOnSelfClick: false, timeout: false, theme: 'noty_theme_default', closable: true });
+
+                $("#btnPingClient").val('Ping');
+                $("#btnPingClient").attr("disabled", false);
+
+            }, 20000);
+            myVar = setInterval(function () {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "map.aspx/getUpdate",
+                    data: '{"Randomid":"' + randomid + '","deviceID":"' + Deviceid + '","DeviceType":"' + DeviceType + '"}',
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        if (data.d != '0') {
+                            noty({ text: data.d, dismissQueue: true, type: 'information', layout: 'topCenter', closeOnSelfClick: false, timeout: false, theme: 'noty_theme_default', closable: true });
+                            clearInterval(myVar);
+                            clearTimeout(TO);
+                            $("#btnPingClient").val('Ping');
+                            $("#btnPingClient").attr("disabled", false);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        var err = eval("(" + XMLHttpRequest.responseText + ")");
+                        alert(err.Message);
+                    }
+                });
+            }
+                , 2000
+            );
+
+        }
+
+        function ping() {
+            if ($("#ddlTech option:selected").text() == 'Select') {
+                alert('Please select Worker');
+                return;
+            }
+            $("#btnPingClient").val('Pinging...');
+            $("#btnPingClient").attr("disabled", true);
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "map.aspx/SendPushNoti",
+                data: '{"Username":"' + $("#ddlTech option:selected").text() + '"}',
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    var temp = JSON.parse(data.d);
+                    if (temp.length > 0) {
+                        if (temp[2] == '1') {
+                            ajaxcall(temp[1], temp[0], temp[3]);
+                        }
+                        else {
+                            noty({ text: temp[2], dismissQueue: true, type: 'warning', layout: 'topCenter', closeOnSelfClick: false, timeout: false, theme: 'noty_theme_default', closable: true });
+                            $("#btnPingClient").val('Ping');
+                            $("#btnPingClient").attr("disabled", false);
+                        }
+                    }
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    var err = eval("(" + XMLHttpRequest.responseText + ")");
+                    alert(err.Message);
+                }
+            });
+        }
+
+
+        function LocateAddress(Tech, Date, Time, AddressField, TicketID, timestamp) {
+            $("#" + AddressField).html('Loading...');
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "map.aspx/getlocationAddress",
+                data: '{"Tech":"' + Tech + '","Date":"' + Date + '","Time":"' + Time + '","TicketID":"' + TicketID + '","timestamp":"' + timestamp + '"}',
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    $("#" + AddressField).html(data.d);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    var err = eval("(" + XMLHttpRequest.responseText + ")");
+                    alert(err.Message);
+                }
+            });
+        }
+
+</script>
+
+
+<telerik:RadCodeBlock ID="codeBlock1" runat="server">
+    <script type="text/javascript">
+
+
+
+            (function (global, undefined) {
+                var telerikDemo = global.telerikDemo = {};
+                Showopencallsonmap = function (sender, args) {
+                    var btn = $("#btnchkOpencalls");
+                    btn.click();
+                };
+            })(window);
+
+
+
+
+            //<![CDATA[
+
+            function OnDateSelected(sender, eventArgs) {
+                //var date1 = sender.get_selectedDate();
+                //date1.setDate(date1.getDate() + 31);
+                var datepicker = $find("#txtDate");
+                //datepicker.set_maxDate(date1);
+            }
+
+
+            //]]>
+
+
+            function pageLoad() {
+
+                var grid = $find("#RadGridOpenCalls");
+                var columns = grid.get_masterTableView().get_columns();
+                for (var i = 0; i < columns.length; i++) {
+                    columns[i].resizeToFit(false, true);
+                }
+                var grid = $find("#RadgvTimeStmp");
+                var columns = grid.get_masterTableView().get_columns();
+                for (var i = 0; i < columns.length; i++) {
+                    columns[i].resizeToFit(false, true);
+                }
+
+
+            }
+            var requestInitiator = null;
+            var selectionStart = null;
+
+            function requestStart(sender, args) {
+                requestInitiator = document.activeElement.id;
+                if (document.activeElement.tagName == "INPUT") {
+                    selectionStart = document.activeElement.selectionStart;
+                }
+            }
+
+            function responseEnd(sender, args) {
+                var element = $(requestInitiator);
+                if (element && element.tagName == "INPUT") {
+                    element.focus();
+                    element.selectionStart = selectionStart;
+                }
+            }
+
+    </script>
+</telerik:RadCodeBlock>
+
+<div>
+    <div class="divbutton-container">
+        <div id="divButtons">
+            <div id="breadcrumbs-wrapper">
+                <header>
+                    <div class="container row-color-grey">
+                        <div class="row">
+                            <div class="col s12 m12 l12">
+                                <div class="row">
+                                    <div class="page-title"><i class="mdi-maps-pin-drop"></i>&nbsp;<label class="title_text" ID="lblHeader" style="font-size:14px">Map</label></div>
+
+                                    <div class="buttonContainer">
+                                        <div class="btnlinks">
+                                            <a ID="lnkReset" class="icon-addnew" CausesValidation="False"
+                                               ToolTip="Reset">Reset</a>
+                                        </div>
+                                    </div>
+                                    <div class="btnclosewrap">
+                                        <div class="container">
+                                            <div class="row">
+                                                
+
+
+                                            </div>
+                                        </div><a href="Home.aspx"><i class="mdi-content-clear"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+    });
+</script>
+

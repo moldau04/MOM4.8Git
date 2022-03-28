@@ -1,0 +1,1998 @@
+﻿
+@{
+    ViewData["Title"] = " List Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<!--File Upload Control-->
+<link href="~/MOMUI/Design/js/plugins/dropify/css/dropify.css" type="text/css" rel="stylesheet" media="screen,projection">
+<link href="~/MOMUI/Design/css/pikaday.css" rel="stylesheet" />
+
+<style type="text/css">
+
+
+    html {
+        position: fixed;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body {
+        width: 100vw;
+        height: 100vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .validatorPopup table {
+        width: 1px;
+    }
+
+    .TicketlistTooltip {
+        background: #000 none repeat scroll 0 0;
+        filter: alpha(opacity=80);
+        -moz-opacity: 0.80;
+        opacity: 0.80;
+        border-radius: 0px !important;
+        color: #fff;
+        display: none;
+        padding: 10px;
+        position: absolute;
+        width: 300px;
+        z-index: 1000;
+        margin-bottom: 20px;
+    }
+
+        .TicketlistTooltip:after {
+            top: 0%;
+            left: 0%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: rgba(0, 0, 0, 0);
+            border-top-color: #000;
+            border-width: 10px;
+            margin-left: -10px;
+            margin-bottom: 20px;
+        }
+
+    .RadGrid .rgNoRecords > td {
+        padding-left: 15px !important;
+        font-size: 15px !important;
+    }
+
+    #overlay {
+        position: fixed; /* Sit on top of the page content */
+        display: none; /* Hidden by default */
+        width: 100%; /* Full width (cover the whole page) */
+        height: 100%; /* Full height (cover the whole page) */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+        z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
+        cursor: pointer; /* Add a pointer on hover */
+    }
+
+    .labelButton {
+        padding: 5px 10px 5px 10px;
+        font-size: 0.9em;
+        float: left;
+        line-height: 19px !important;
+        border-radius: 3px;
+        background-color: #1C5FB1 !important;
+        color: #fff !important;
+        margin: 3px -9px;
+        cursor: pointer;
+    }
+
+    div.rmSlide {
+        top: 0 !important;
+    }
+
+        div.rmSlide > ul.rmVertical, div.rmSlide > div.rmScrollWrap > ul.rmVertical {
+            padding-left: 30px !important;
+            padding-right: 10px !important;
+        }
+
+        div.rmSlide input[type=checkbox] {
+            vertical-align: middle !important;
+            display: inline-block !important;
+        }
+
+    .dropdown-content li {
+        white-space: normal;
+    }
+
+    .GroupStatus input.rcbCheckBox {
+        display: none !important;
+    }
+
+    .GroupStatus label {
+        font-weight: bolder !important;
+        opacity: 100% !important;
+    }
+
+    .RadGvTicketList [id$='AddNewRecordButton'] {
+        display: none;
+    }
+
+    .RadGrid_Bootstrap .rgFilterRow .riTextBox {
+        border: none !important;
+        border-bottom: solid 1px !important;
+        border-radius: 0 !important;
+    }
+
+    div [id$='FilterTextBox_manualinvoice'] {
+        margin-top: -14px !important;
+    }
+</style>
+
+@*<%-- ----OLD Design------%>*@
+
+<script type="text/javascript">
+    function CssClearLabel() {
+        $("#lblDay").removeClass("labelactive");
+        $("#lblWeek").removeClass("labelactive");
+        $("#lblMonth").removeClass("labelactive");
+        $("#lblQuarter").removeClass("labelactive");
+        $("#lblYear").removeClass("labelactive");
+    }
+    function SetActiveDateRangeCss(rangeName) {
+        debugger
+        CssClearLabel();
+        if (rangeName == "Day")
+            $("#lblDay").addClass("labelactive");
+        else if (rangeName == "Week")
+            $("#lblWeek").addClass("labelactive");
+        else if (rangeName == "Month")
+            $("#lblMonth").addClass("labelactive");
+        else if (rangeName == "Quarter")
+            $("#lblQuarter").addClass("labelactive");
+        else if (rangeName == "Year")
+            $("#lblYear").addClass("labelactive");
+        $("#hdnTicketListSelectDtRange").val(rangeName);
+    }
+
+    function MassReview() {
+
+        //Ref SECO-450 we should not create projects automatically for mass review
+
+
+        var IsQBInt = $("#hdnIsQBInt").val();
+
+        if (Page_ClientValidate()) {
+            var alertmass = "";
+            if (IsQBInt != "1") {
+                alertmass = 'Please note tickets without a project number will be excluded.';
+            }
+            if (confirm('Do you want to make changes? \n\n' + alertmass)) {
+                return true;
+            }
+            else { return false; }
+
+        } else {
+
+            return false;
+        }
+    }
+
+    function selectReview(chkTimesheet) {
+
+        //if ($(chkTimesheet).is(":checked")) {
+        //    $(chkTimesheet).parent().find('input[id*=chkReview]').attr("checked", "checked");
+        //}
+    }
+
+    function RFC_Click(hyperlink) {
+        $("#divRFC").slideToggle('fast');
+        return true;
+    }
+    function AddTicketClick(hyperlink) {
+        var id = $("#hdnAddeTicket").val();
+        if (id == "Y") {
+            return true;
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function EditTicketClick(hyperlink) {
+
+        var id = $("#hdnEditeTicket").val();
+        if (id == "Y") { return editticket(); } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function CopyTicketClick(hyperlink) {
+
+        var id = $("#hdnAddeTicket").val();
+        if (id == "Y") { return Copyticket(); } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+    function isDeleteResolvedTicket() {
+        var isDeleteResolvedTicket = true;
+        var resolvedId = $("#hdnDeleteResolvedTicket").val();
+        if (resolvedId == "N") {
+            var gvOpenCalls = $("#RadGvTicketList");
+            $('input:checkbox[id$=chkSelect]:checked', gvOpenCalls).each(function (index, item) {
+                var statusValue = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().next()[0].innerText;
+
+                if (statusValue == "Completed") {
+                    isDeleteResolvedTicket = false
+                    //noty({ text: 'You do not have delete completed ticket permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+                    //return false;
+                }
+            });
+            return isDeleteResolvedTicket;
+        }
+    }
+    function DeleteTicketClick(hyperlink) {
+
+
+        var id = $("$hdnDeleteTicket").val();
+        var ss = isDeleteResolvedTicket();
+        console.log(ss);
+        if (ss == false) {
+            noty({ text: 'You do not have delete completed ticket permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+        else if (id == "Y") {
+            return DeleteAlert();
+
+        } else {
+
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+
+    function emailAllConfirm() {
+        var mess = "Are you sure you want to email a completed ticket report to all locations in the list?";
+        if (confirm(mess)) { return true; }
+        else { return false; }
+    }
+
+    function VoidedTicket(hyperlink) {
+
+        var id = $("#hdnTicketVoidPermission").val();
+
+        if (id == "Y") {
+
+            var mess = "All open tickets listed will be voided. Are you sure you want to proceed?";
+
+            if (confirm(mess)) { return true; }
+
+            else {
+
+                return false;
+            }
+
+        } else {
+            noty({ text: 'You do not have permission!', type: 'warning', layout: 'topCenter', closeOnSelfClick: true, timeout: 5000, theme: 'noty_theme_default', closable: false, dismissQueue: true });
+            return false;
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    function pageLoad() {
+        $addHandler($get("A1"), 'click', hideModalPopupViaClientCust);
+
+    }
+
+    function hideModalPopupViaClientCust(ev) {
+        ev.preventDefault();
+        var modalPopupBehavior = $find('PMPBehaviour');
+        modalPopupBehavior.hide();
+    }
+
+    function showModalPopupViaClientCust(lblTicketId, lblComp) {
+        //            $("#iframeCustomer.ClientID %>').width = "1024px";
+        $("#iframeCustomer").src = "addticket.aspx?id=" + lblTicketId + "&comp=" + lblComp;
+        $("#Panel2").css('display', 'none');
+        var modalPopupBehavior = $find('PMPBehaviour');
+        modalPopupBehavior.show();
+    }
+
+    function showModalPopupViaClientCustLogin(lblTicketId, lblComp) {
+        //            $("#iframeCustomer.ClientID %>').width = "1024px";
+        $("#iframeCustomer").src = "Printticket.aspx?popup=1&id=" + lblTicketId + "&c=" + lblComp;
+        $("#Panel2").css('display', 'none');
+        var modalPopupBehavior = $find('PMPBehaviour');
+        modalPopupBehavior.show();
+    }
+
+    function DeleteAlert() {
+        var gvOpenCalls = $("#RadGvTicketList");
+        var result = false;
+        $('input:checkbox[id$=chkSelect]:checked', gvOpenCalls).each(function (index, item) {
+            var id = $(this).parent().parent().find('span[id$=lblTicketId]');
+            result = confirm('Are you sure you want to delete ticket # ' + id.text() + ' ?');
+        });
+        return result;
+    }
+
+    function editticket() {
+        $("#RadGvTicketList").find('tr:not(:first,:last)').each(function () {
+            var $tr = $(this);
+            $tr.find('input[type="checkbox"]:checked').each(function (index, value) {
+                var ticket = $tr.find('span[id*=lblTicketId]').text();
+                var comp = $tr.find('span[id*=lblComp]').text();
+                if ('<%= Session["type"].ToString()%>' == "c") {
+                    var format = $("#hdnTicketReportFormat").val();
+                    var url = "printticket.aspx?id=" + ticket + "&c=" + comp;
+                    if (format == "mrt") {
+                        var url = "TicketReport.aspx?id=" + ticket + "&fr=tlv";
+                    }
+
+                    window.open(url, '_blank');
+                }
+                else {
+                    var url = "addticket.aspx?id=" + ticket + "&comp=" + comp;
+                    window.open(url, '_blank');
+                }
+            });
+        });
+    }
+
+    function Copyticket() {
+        $("#RadGvTicketList").find('tr:not(:first,:last)').each(function () {
+            var $tr = $(this);
+            $tr.find('input[type="checkbox"]:checked').each(function (index, value) {
+                var ticket = $tr.find('span[id*=lblTicketId]').text();
+                var comp = $tr.find('span[id*=lblComp]').text();
+                if ('<%= Session["type"].ToString()%>' == "c") {
+                    var url = "printticket.aspx?id=" + ticket + "&c=" + comp;
+                    window.open(url, '_blank');
+                }
+                else {
+                    var url = "addticket.aspx?copy=1&id=" + ticket + "&comp=" + comp;
+                    window.open(url, '_blank');
+                }
+            });
+        });
+    }
+
+    function HoverMenutext(row, tooltip, event) {
+        var left = event.pageX - (150) + 'px';
+        //var top = event.pageY + (10) + 'px';
+        //$('#' + tooltip).css({ top: top, left: left }).show();
+        $('#' + tooltip).css({ left: left }).show();
+    }
+
+    function ShowRestoreGridSettingsButton() {
+        $("#lbSaveGridSettings").css('display', 'none');
+        $("#lbRestoreGridSettings").css('display', 'block');
+    }
+
+    function SetDefaultDateRangeCss() {
+        debugger
+        CssClearLabel();
+        $("#lblWeek").addClass("labelactive");
+        $("#hdnTicketListSelectDtRange").val("Week");
+    }
+
+</script>
+
+<style>
+    .ModalWindowAbs {
+        position: absolute !important;
+    }
+
+    .cursorstyle {
+        cursor: pointer;
+    }
+
+    #chkcatlist label {
+        padding-right: 5px !important;
+        padding-bottom: 2px;
+    }
+
+    #chkcatlist input {
+        height: 0px !important;
+    }
+
+    .togglehide {
+        display: none;
+    }
+
+    .toggleshow {
+        display: block;
+    }
+
+    .chklist label {
+        margin-left: 10px !important;
+    }
+
+    .chklist input {
+        height: 12px !important;
+    }
+
+    .spanStyle {
+        color: grey;
+        font-weight: normal;
+        font-size: 14px;
+        font-family: sans-serif;
+        text-align: center;
+        align-self: center;
+    }
+
+    .form-control1, .form-control_2.input-sm {
+        border: 1px solid #e0e0e0;
+        padding: 5px;
+        color: #808080;
+        background: #fff;
+        width: 100%;
+        font-size: small;
+        font-weight: 300;
+        font-family: sans-serif;
+        border-radius: 2px !important;
+        -webkit-appearance: none;
+        outline: none;
+        height: 28px;
+    }
+
+    .btn {
+        border: 1px solid #0086b3;
+        font-weight: 500;
+        letter-spacing: 0px;
+        outline: ridge;
+        height: 28px;
+        margin-top: -4px !important;
+    }
+
+        .btn:focus, .btn:active:focus, .btn.active:focus {
+            outline: ridge;
+        }
+
+    .btn-primary {
+        background: #0099cc !important;
+        border-color: #208eb3 !important;
+        padding: 3px 10px !important;
+    }
+
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+            background: #33a6cc !important;
+            height: 28px;
+        }
+
+        .btn-primary:active, .btn-primary.active {
+            background: #007299 !important;
+            box-shadow: none;
+            height: 28px;
+        }
+
+    .istyle {
+        padding-right: 0px;
+        margin-right: -1px;
+        margin-top: -4px !important;
+        padding: 2px !important;
+        margin-left: -1px !important;
+    }
+
+    .dropdown-content {
+        width: 220px !important;
+        max-height: unset !important;
+    }
+
+        .dropdown-content .submenu {
+            min-width: 40px !important;
+            background: url("https://cdn0.iconfinder.com/data/icons/navigation-set-arrows-part-one/32/ChevronRight-16.png") no-repeat scroll;
+            background-position: center right;
+            z-index: 999;
+        }
+
+            .dropdown-content .submenu a {
+                background-color: transparent !important;
+            }
+
+            .dropdown-content .submenu:hover {
+                background-color: #1C5FB1 !important;
+            }
+</style>
+<script type="text/javascript">
+    //Sys.Application.add_init(appl_init);
+
+    function appl_init() {
+        var pgRegMgr = Sys.WebForms.PageRequestManager.getInstance();
+        pgRegMgr.add_beginRequest(BlockUI);
+        pgRegMgr.add_endRequest(UnblockUI);
+    }
+
+    function BlockUI(sender, args) {
+        $("overlay").css('display', 'block');
+    }
+    function UnblockUI(sender, args) {
+        $("overlay").css('display', 'none');
+    }
+</script>
+
+<div id="overlay">
+    <img src="~/MOMUI/images/wheel.gif" alt="Be patient..." style="position:` fixed; margin-top: 25%; margin-left: 50%;" />
+</div>
+@Html.Hidden("hdnHideDates", "0")
+@Html.Hidden("hdnIsShowAll", "0")
+
+@*<%------------Ajax Manager-------------%>*@
+
+@*<%-- -------Loading------------%>*@
+<script type="text/javascript">
+    function pageLoad() {
+        var grid = $find("#RadGvTicketList");
+        var columns = grid.get_masterTableView().get_columns();
+        for (var i = 0; i < columns.length; i++) {
+            columns[i].resizeToFit(false, true);
+        }
+
+        var grid = $find("#RadGvRequestForService");
+        var columns = grid.get_masterTableView().get_columns();
+        for (var i = 0; i < columns.length; i++) {
+            columns[i].resizeToFit(false, true);
+        }
+    }
+    var requestInitiator = null;
+    var selectionStart = null;
+
+    function requestStart(sender, args) {
+        requestInitiator = document.activeElement.id;
+        if (document.activeElement.tagName == "INPUT" && document.activeElement.type == 'text') {
+            selectionStart = document.activeElement.selectionStart;
+        }
+    }
+
+    function responseEnd(sender, args) {
+        var element = $(requestInitiator);
+        if (element && element.tagName == "INPUT" && element.type == 'text') {
+            element.focus();
+            element.selectionStart = selectionStart;
+        }
+    }
+
+</script>
+@*<%------------Ajax Manager-------------%>*@
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-image-filter-frames"></i>&nbsp;Tickets</div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks">
+                                        <a ID="lnkAddticket" TabIndex="23" href="@Url.Action("Index","AddList")" onclick="return AddTicketClick(this)" ToolTip="Add New Ticket" class="icon-addnew">Add</a>
+                                    </div>
+                                    <div class="btnlinks">
+                                        <a ID="btnEdit" onclick="return EditTicketClick(this)" class="icon-edit" ToolTip="Edit">Edit</a>
+                                    </div>
+                                    <div class="btnlinks menuAction">
+                                        <a onclick="DropdownMenu()" class="dropbtn" style="cursor: pointer;">
+                                            Actions
+                                        </a>
+                                    </div>
+                                    <ul id="drpMenu" class="nomgn hideMenu menuList">
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkCopy" onclick="return CopyTicketClick(this)" class="icon-edit" ToolTip="Copy">Copy</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkDelete" CausesValidation="False" ToolTip="Delete"
+                                                   onclick="return DeleteTicketClick(this)" TabIndex="23">Delete</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkVoided" onclick="return VoidedTicket(this)"> Void </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkExcel">Export to Excel</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkPDF">
+                                                    PDF
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a class="dropdown-button" data-beloworigin="true" data-activates="dynamicUI" ID="lnkPrint" CausesValidation="false" onclick="return false;"
+                                                   ToolTip="Print Ticket">
+                                                    Reports
+                                                </a>
+                                            </div>
+
+                                            <ul id="dynamicUI" class="dropdown-content">
+                                                <li>
+                                                    <a ID="lnkBuildingReportTemplate">Building Report Template</a>
+                                                </li>
+                                                <li>
+                                                <li>
+                                                    <a ID="lnkTicketReport">Ticket Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkTicketReportbyWO">Ticket Report by WO</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkTicketReportSignature">Ticket Report (Signature)</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkTicketListReport">Ticket List Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkExpenseReport">Expense Report</a>
+                                                </li>
+                                                <li>
+                                                    <a class='dropdown-button2' data-activates='dropdown5' data-hover="hover" data-alignment="left">Timesheet Report<i style="float: right;" class="mdi-av-play-arrow"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkCallbackReport">Callback Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkDetailsReport"> Details Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkWorkerReport">Worker Report</a>
+                                                </li>
+                                                <li>
+                                                    <a class='dropdown-button2' data-activates='dropdown4' data-hover="hover" data-alignment="left">Completed Ticket Report<i style="float: right;" class="mdi-av-play-arrow"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a class='dropdown-button2' data-activates='dropdown3' data-hover="hover" data-alignment="left">Call Warning Report<i style="float: right;" class="mdi-av-play-arrow"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkCallsPerRouteReport">Calls per Route Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkInstallationSchedule">Installation Schedule</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkLaborbyDepartment">Labor by Department</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkServiceSchedule">Schedule</a>
+                                                </li>
+                                                <li>
+                                                    <a class='dropdown-button2' data-activates='dropdown2' data-hover="hover" data-alignment="left" id="lnkServiceCallPastXDays">Service Call <i style="float: right;" class="mdi-av-play-arrow"></i></a>
+                                                </li>
+                                                <li>
+                                                <li>
+                                                    <a ID="lnkMonthlyMaintenanceTicketReport">Monthly Maintenance</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkMonthlyServiceCallBackReport">Monthly Service CallBack</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkMonthlyRecurringHoursReport">Monthly Recurring Hours By Location Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkOpenTicketsByMechanicReport">Open Tickets By Mechanic</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkOpenTicketDetailsByMechanicReport">Open Ticket Details By Mechanic</a>
+                                                </li>
+                                                <li>
+                                                    <a style="display:block;" ID="lnkTimeRecap">
+                                                        Time Recap
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkEquipmentHistoryPastXDays" style="display:block;">Equipment History Past 30 Days</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkCategoryDueReport" style="display:block;">Category Due Report</a>
+                                                </li>
+                                            </ul>
+                                            <ul id='dropdown2' class='dropdown-content'>
+                                                <li><a href="ServiceCallHistoryPastXdaysReport.aspx?PastXDays=7">Past 7 Days</a></li>
+                                                <li><a href="ServiceCallHistoryPastXdaysReport.aspx?PastXDays=30">Past 30 Days</a></li>
+                                                <li><a href="ServiceCallHistoryPastXdaysReport.aspx?PastXDays=90">Past 90 Days</a></li>
+                                                <li><a href="ServiceCallHistoryPastXdaysReport.aspx?PastXDays=180">Past 180 Days</a></li>
+                                                <li><a href="ServiceCallHistoryPastXdaysReport.aspx?PastXDays=365">Past 365 Days</a></li>
+                                            </ul>
+                                            <ul id='dropdown3' class='dropdown-content'>
+                                                <li>
+                                                    <a ID="lnkCallWarningReport">Call Warning by Route</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkCallWarningSalespersonReport">Call Warning by Salesperson</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkNewCallWarningReport">New Car Call Warning</a>
+                                                </li>
+                                            </ul>
+                                            <ul id='dropdown4' class='dropdown-content'>
+                                                <li>
+                                                    <a ID="lnkCompletedTicketReport">Completed Ticket Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkCompletedTicketSignatureReport">Completed Ticket Signature</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkCompletedTicketEntrapment">Completed Ticket Level</a>
+                                                </li>
+                                            </ul>
+                                            <ul id='dropdown5' class='dropdown-content'>
+                                                <li>
+                                                    <a ID="lnkTimeSheetReport">Timesheet Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkTimeSheetCertifiedProject">Timesheet Certified Project Report</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="knkTimesheetbyDepartment">Timesheet Report by Department</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkTimeSheetReportNoTT">Timesheet Report (no TT)</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkTimesheetbyWageCategory">Timesheet Report by Wage Category</a>
+                                                </li>
+                                                <li>
+                                                    <a ID="lnkModTimeSheetReport">Mod Timesheet Report</a>
+                                                </li>
+                                            </ul>
+
+                                        </li>
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkMailAll" onclick="return emailAllConfirm();">Email All</a>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div class="btnlinks">
+                                                <a ID="lnkRestoreGridSettings" CausesValidation="False">Restore Grid</a>
+                                            </div>
+                                            <div class="btnlinks">
+                                                <a ID="lnkSaveGridSettings" CausesValidation="False">Save Grid</a>
+                                            </div>
+
+                                            <label id="lbSaveGridSettings" class="labelButton" ToolTip="Save Grid Settings">
+                                                <input type="radio" id="rdSaveGridSettings" onclick="SaveGridSettings();" />
+                                                Save Grid
+                                            </label>
+                                            <label id="lbRestoreGridSettings" class="labelButton" ToolTip="Restore Default Settings for Grid">
+                                                <input type="radio" id="rdRestoreGridSettings" onclick="RestoreGridSettings();" />
+                                                Restore Grid
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a ID="lnkClose" ToolTip="Close" CausesValidation="false"> <i class="mdi-content-clear"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <ul class="anchor-links">
+                            <li style="text-align: center;"><a class="add-btn-click">Advanced Search</a> </li>
+                            <li id="liLogs"><a href="#accrdlogs">Email History Log</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div id="stats" style="background-color: #fff !important;">
+                <div id="addinfo" class="form-section-row" style="background-color: #fff; padding: 10px !important; box-shadow: 0 2px 2px 2px #ccc !important;">
+
+                    @*<telerik:RadAjaxPanel ID="RadAjaxPanelAdvancedSearch" LoadingPanelID="RadAjaxLoadingPanelSearch">*@
+
+                    <div class="form-section-row">
+                        <div class="section-ttle">Search Criteria</div>
+                        <div class="form-sectioncustom1">
+                            <div class="collapse_wrap">
+                                <div class="form-collapsewrap1" id="divSuper">
+                                    <div class="form_collapserow">
+                                        <div class="input-field col s12">
+                                            <label ID="lblSuper" class="drpdwn-label">Supervisor</label>
+                                            <select ID="ddlSuper" AutoPostBack="True" class="browser-default"
+                                                    TabIndex="6">
+                                                <option>Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form_collapserow">
+                                        <div class="input-field col s12">
+                                            <label class="drpdwn-label">Chargeable</label>
+                                            <select ID="ddlCharge" TabIndex="9" class="browser-default">
+                                                <option Value="">All</option>
+                                                <option Value="1">Yes</option>
+                                                <option Value="0">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form_collapserow" id="divReviewed">
+                                        <div class="input-field col s12">
+                                            <label ID="lblReviewed" class="drpdwn-label">Reviewed</label>
+                                            <select ID="ddlReviewed" TabIndex="12" class="browser-default">
+                                                <option Value="">All</option>
+                                                <option Value="1">Yes</option>
+                                                <option Value="0">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form_collapserow" id="divWorker">
+                                        <div class="input-field col s12">
+                                            <label ID="lblWorker" class="drpdwn-label">Worker</label>
+                                            <select ID="ddlworker" class="browser-default"
+                                                    TabIndex="7">
+                                                <option>Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form_collapserow" id="divRoute">
+                                        <div class="input-field col s12">
+                                            <label ID="lblRoute" class="drpdwn-label">Default Worker</label>
+                                            <select ID="ddlRoute" class="browser-default">
+                                                <option>Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-collapsewrap2">
+                                    <div class="form_collapserow" id="divStatus">
+                                        <div class="input-field col s12">
+                                            <label ID="lblStatus" class="drpdwn-label">Status</label>
+                                            <select ID="ddlStatus" class="browser-default"
+                                                    TabIndex="10">
+                                                <option Value="-1">All</option>
+                                                <option Value="-2">All Open</option>
+                                                <option Value="0">Un-Assigned</option>
+                                                <option Value="1">Assigned</option>
+                                                <option Value="2">Enroute</option>
+                                                <option Value="3">Onsite</option>
+                                                <option Value="4">Completed</option>
+                                                <option Value="5">Hold</option>
+                                                <option Value="6">Voided</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form_collapserow">
+                                        <div class="input-field col s12">
+                                            <label class="drpdwn-label">Department</label>
+                                            <select ID="ddlDepartment" TabIndex="13" class="browser-default">
+                                                <option>Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form_collapserow">
+                                        <div class="input-field col s12">
+                                            <label class="drpdwn-label">Portal</label>
+                                            <select ID="ddlportal" TabIndex="13" class="browser-default">
+                                                <option Value="">All</option>
+                                                <option Value="1">Yes</option>
+                                                <option Value="0">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form_collapserow">
+                                        <div class="input-field col s12">
+                                            <label class="drpdwn-label">Recommendation</label>
+
+                                            <select ID="ddlRecommendation" TabIndex="5" class="browser-default">
+                                                <option Value="">All</option>
+                                                <option Value="1">Yes</option>
+                                                <option Value="0">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form_collapserow" id="div1">
+                                        <div class="input-field col s12">
+                                            <label class="drpdwn-label">Category</label>
+                                            @*<telerik:RadComboBox ID="chkcatlist" BackColor="White" CssClass="browser-default" runat="server" CheckBoxes="true" Width="102%" EnableCheckAllItemsCheckBox="true" Style="margin-top: 10px;">
+        </telerik:RadComboBox>*@
+                                            <span class="rcbInner rcbReadOnly">
+                                            <input name="chkcatlist" type="text" class="rcbInput radPreventDecorate" id="chkcatlist_Input" value="All items check" readonly="readonly" style="background-color:White;" autocomplete="off">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-sectioncustom2">
+
+                            <div class="form_collapserow" id="divTimeSheet">
+                                <div class="input-field col s12">
+                                    <label ID="lblTimeSh" class="drpdwn-label">Time Sheet</label>
+                                    <select ID="ddlTimeS" TabIndex="8" class="browser-default">
+                                        <option Value="">All</option>
+                                        <option Value="1">Yes</option>
+                                        <option Value="0">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form_collapserow" id="divPayroll">
+                                <div class="input-field col s12">
+                                    <label class="drpdwn-label">Payroll</label>
+                                    <select ID="ddlPayroll" TabIndex="5" class="browser-default">
+                                        <option Value="-1">All</option>
+                                        <option Value="1">Yes</option>
+                                        <option Value="0">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form_collapserow" id="divMobile">
+                                <div class="input-field col s12">
+                                    <label ID="lblMobile" class="drpdwn-label">Mobile</label>
+                                    <select ID="ddlMobile" class="browser-default"
+                                            TabIndex="11">
+                                        <option Value="0">All</option>
+                                        <option Value="2">Yes</option>
+                                        <option Value="1">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form_collapserow">
+                                <div class="input-field col s12">
+                                    <label class="drpdwn-label">Invoiced</label>
+                                    <select ID="ddlInvoiced" class="browser-default"
+                                            TabIndex="11">
+                                        <option Value="0">All</option>
+                                        <option Value="1">Yes</option>
+                                        <option Value="2">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form_collapserow" id="divWO" style="display:block;">
+                                <div class="input-field col s12">
+                                    <label ID="lblWO" class="drpdwn-label">Work Order #</label>
+                                    <input type="text" ID="txtWo" class="browser-default" MaxLength="50"
+                                           style="display:block;" />
+                                </div>
+                            </div>
+
+                            <div class="form_collapserow" id="divShowAllSuper">
+                                <div class="input-field col s12">
+                                    <label for="chkShowAll"> 
+                                    <input type="checkbox" ID="chkShowAll" />Show All</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @*</telerik:RadAjaxPanel>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="srchpane-advanced">
+            <div class="srchpaneinner">
+                <div class="srchtitle srchtitlecustomwidth" style="padding-left: 0px;">
+                    Date
+                </div>
+                <div class="srchinputwrap">
+                    <input type="text" ID="txtfromDate" Width="80" TabIndex="3" class="srchcstm datepicker_mom" MaxLength="50" AutoPostBack="false" />
+                </div>
+                <div class="srchinputwrap">
+                    <input type="text" ID="txtToDate" Width="80" class="srchcstm datepicker_mom" TabIndex="4" MaxLength="50" AutoPostBack="false" />
+                </div>
+
+                <div class="srchinputwrap">
+                    <ul class="tabselect accrd-tabselect" id="testradiobutton">
+                        <li>
+                            <a AutoPostBack="False" ID="decDate" onclick="dec_date('dec');return false;"><i class='mdi-hardware-keyboard-arrow-left'></i></a>
+                        </li>
+                        <li>
+                            <label id="lblDay">
+                                <input type="radio" id="rdDay" GroupName="rdCal" AutoPostBack="false" onclick="SelectDate('Day')" />
+                                Day
+                            </label>
+                        </li>
+                        <li>
+                            <label id="lblWeek">
+                                <input type="radio" id="rdWeek" GroupName="rdCal" AutoPostBack="false" onclick="SelectDate('Week')" />
+                                Week
+                            </label>
+                        </li>
+                        <li>
+                            <label id="lblMonth">
+                                <input type="radio" id="rdMonth" GroupName="rdCal" AutoPostBack="false" onclick="SelectDate('Month')" />
+                                Month
+                            </label>
+                        </li>
+                        <li>
+                            <label id="lblQuarter">
+                                <input type="radio" id="rdQuarter" GroupName="rdCal" AutoPostBack="false" onclick="SelectDate('Quarter')" />
+                                Quarter
+                            </label>
+                        </li>
+                        <li>
+                            <label id="lblYear">
+
+                                <input type="radio" id="rdYear" GroupName="rdCal" AutoPostBack="false" onclick="SelectDate('Year')" />
+                                Year
+                            </label>
+                        </li>
+                        <li>
+                            <a ID="incDate" onclick="dec_date('inc');return false"><i class='mdi-hardware-keyboard-arrow-right'></i></a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+                @*<telerik:RadAjaxPanel ID="RadAjaxPanelSearch" LoadingPanelID="RadAjaxLoadingPanelSearch">*@
+                <div id="divLoc">
+                    <div class="srchinputwrap">
+                        <label ID="lblLoc">Location</label>
+                    </div>
+                    <div class="srchinputwrap">
+                        <select ID="ddllocation" class="browser-default selectst" AutoPostBack="True">
+                            <option>Select</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="srchtitle srchtitlecustomwidth" style="padding-left: 15px;">
+                    Search
+                </div>
+                <div class="srchinputwrap">
+
+                    <select ID="ddlSearch" TabIndex="1" class="browser-default selectst selectsml"
+                            AutoPostBack="True">
+                        <option Value="">Select</option>
+                        <option Value="t.ldesc4">Address</option>
+                        <option Value="r.name">Customer</option>
+                        <option Value="l.City">City</option>
+                        <option Value="t.cat">Category</option>
+                        <option Value="e.unit">Equipment ID</option>
+                        <option Value="l.tag">Location</option>
+                        <option Value="t.Level">Level</option>
+                        <option Value="t.fdesc">Reason for service</option>
+                        <option Value="l.state">State</option>
+                        <option Value="t.ID">Ticket #</option>
+                        <option Value="t.WorkOrder">WO #</option>
+                        <option Value="t.descres">Work Comp Desc</option>
+                        <option Value="l.Zip">Zip/Postal Code</option>
+                    </select>
+                </div>
+                <div class="srchinputwrap">
+                    <input type="text" ID="txtSearch" class="srchcstm" placeholder="Search..." />
+                </div>
+                <div class="srchinputwrap">
+                    <select ID="ddlCategory" class="browser-default selectst selectsml"
+                            style="display:block;">
+                        <option>Select</option>
+                    </select>
+                </div>
+                <div class="srchinputwrap">
+                    @*<telerik:RadComboBox ID="chkrcbLevel" BackColor="White" class="browser-default" CheckBoxes="true" EnableCheckAllItemsCheckBox="true">
+                        </telerik:RadComboBox>*@
+                </div>
+                <div class="srchinputwrap srchclr btnlinksicon">
+                    <a ID="btnSearch"><i class="mdi-notification-sync"></i></a>
+                    <a ID="btnRefresh"><i class="mdi-notification-sync"></i></a>
+                </div>
+                <span class="tro trost">
+                    <label ID="lblRecordCount" Style="font-style: italic;"></label>
+                </span>
+
+                @*</telerik:RadAjaxPanel>*@
+
+            </div>
+
+
+
+
+
+        </div>
+        <div style="display:block;">
+            <div id="divRequestForService" class="container breadcrumbs-bg-custom">
+                <div class="row">
+                    <div class="col s8 m8 l8">
+                        <div class="row">
+                            <ul class="anchor-links">
+                                <li style="text-align: center;">
+                                    <a onclick="return RFC_Click(this)" id="imgrfc"><span style="color: black; font-weight: bold">Request for Service from Portal </span></a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="grid_container">
+                <div class="form-section-row" style="margin-bottom: 0 !important;">
+                    <div class="table-scrollable">
+
+                        @*<%---Rad Grid-----%>*@
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<%-- --------------Main Rad Grid------------------%>*@
+
+
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <span class="tro trost">
+                            <span class="css-checkbox">
+                                <input type="checkbox" ID="cbReview" Style="padding-left: 5px; color: black; font-weight: 400" ForeColor="Black" AutoPostBack="true" />
+                            </span>
+                            <label for="cbReview">Review Tickets</label>
+
+                        </span>
+
+                        <span class="tro trost">
+                            <span class="css-checkbox">
+                                <input type="checkbox" ID="cbpayroll" Style="padding-left: 5px; color: black; font-weight: 400" ForeColor="Black" AutoPostBack="true" />
+                                </span>
+                                <label for="cbpayroll">Payroll</label>
+                            </span>
+
+                            <span class="tro trost" id="lnkRequestForService" style="display:block;">
+                                |<a class="add-btn-click" href="AddTicketFromCustPortal.aspx" onclick="return AddTicketClick(this)" title="Request for service" target="_blank">Request for service</a>
+
+                            </span>
+
+                            <span class="tro trost">
+                                <span class="css-checkbox">
+                                    <input type="checkbox" ID="chkHideTicketDesc" Style="padding-left: 5px; color: black; font-weight: 400" ForeColor="Black" AutoPostBack="true" />
+                                    </span>
+                                    <label for="chkHideTicketDesc">Hide Ticket Description</label>
+                                </span>
+
+                                @*<telerik:RadAjaxPanel ID="RadAjaxPanel1" LoadingPanelID="RadAjaxLoadingPanelSearch">*@
+
+                                <div class="col lblsz2 lblszfloat">
+                                    <div class="row">
+                                        <span class="tro trost">
+                                            <a ID="lnkClear">Clear</a>
+                                        </span>
+                                        <span class="tro trost">
+                                            <a ID="lnkShowAll">Show All Tickets</a>
+                                        </span>
+
+                                    </div>
+                                </div>
+                                @*</telerik:RadAjaxPanel>*@
+</div>
+
+                    <div ID="reviewPnl" style="display:block;">
+                        <div class="row validatorPopup">
+                            <div class="srchpane-advanced">
+                                <div class="srchpaneinner">
+
+                                    <div class="col s3 m3 l3" id="DivMassReview" style="display:block;">
+                                        <div class="input-field col s6">
+                                            <div class="btnlinks">
+                                                <a ID="btnMassUpdate"
+                                                   ValidationGroup="rev"
+                                                   onclick="return MassReview();">Mass Review</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col s3 m3 l3" id="ddlReviewPayrollDiv" style="display:block;">
+                                        <div class="input-field col s6">
+                                            <label class="drpdwn-label">Payroll Item</label>
+                                            <select ID="ddlReviewPayroll" class="browser-default" TabIndex="12">
+                                                <option>Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col s3 m3 l3" id="ddlReviewServiceDiv" style="display:block;">
+                                        <div class="input-field col s6">
+                                            <label class="drpdwn-label">Service Item</label>
+                                            <select ID="ddlReviewService" class="browser-default" TabIndex="12">
+                                                <option>Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col s3 m3 l3" id="ddlReviewDepartmentDiv" style="display:block;">
+                                        <div class="input-field col s6">
+                                            <label class="drpdwn-label">Department  </label>
+                                            <select ID="ddlReviewDepartment" style="display:block;" class="browser-default" TabIndex="12">
+                                                <option>Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col s3 m3 l3" id="DivMassPayroll" style="display:block;">
+                                        <div class="input-field col s6">
+                                            <div class="btnlinks">
+                                                <a ID="lnkmasspayroll" ValidationGroup="rev" onclick="return MassReview();">Mass Payroll</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="grid_container" style="margin-top: 5px;">
+            <div class="form-section-row" style="margin-bottom: 0 !important;">
+                <div class="table-scrollable">
+                    <div class="RadGrid RadGrid_Material">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*<%--  ----------------Main Rad Grid---------------%>*@
+    </div>
+</div>
+
+
+@*<%---------OLD Design-------------%>*@
+
+@*<%--Email Sending Logs--%>*@
+
+<div class="container accordian-wrap">
+    <div class="col s12 m12 l12">
+        <div class="row">
+            <ul class="collapsible popout collapsible-accordion form-accordion-head" data-collapsible="expandable">
+                <li id="tbLogs">
+                    <div id="accrdlogs" class="collapsible-header accrd accordian-text-custom"><i class="mdi-content-content-paste"></i>Email History Log</div>
+                    <div class="collapsible-body">
+                        <div class="form-content-wrap">
+                            <div class="form-content-pd">
+                                <div class="grid_container">
+                                    <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                        <div class="RadGrid RadGrid_Material">
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="cf"></div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<input type="button" ID="hiddenTargetControlForModalPopup" Style="display: none"
+       CausesValidation="False" />
+
+<div ID="Panel1" Style="display: none; background: #fff; border: solid;"
+     class="roundCorner shadow ModalWindowAbs">
+    <div ID="UpdatePanel4">
+        <div>
+            <div ID="Panel2" Style="background-color: #DDDDDD; border: solid 1px Gray; color: Black; text-align: center;">
+                <div class="title_bar_popup">
+                    <a id="A1" href="#" style="float: right; margin-right: 20px; color: #fff; margin-left: 10px; height: 16px;">Close</a>
+                </div>
+            </div>
+            <div>
+                @*<iframe id="iframeCustomer" frameborder="0" style="width:1040px; height:730px"></iframe>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ID="UpdatePanel3">
+    <div>
+        <input type="button" ID="hideModalPopupViaServer" Style="float: right; margin-right: 20px; color: #fff; margin-left: 10px; height: 16px; display: none;"
+               value="Close"
+               CausesValidation="false" />
+    </div>
+</div>
+
+
+<!-- Hidden Field -->
+@Html.Hidden("hdnAddeTicket", "Y")
+@Html.Hidden("hdnEditeTicket", "Y")
+@Html.Hidden("hdnDeleteTicket", "Y")
+@Html.Hidden("hdnViewTicket", "Y")
+@Html.Hidden("HiddenField1", "Y")
+@Html.Hidden("hdnIsQBInt", "0")
+@Html.Hidden("hdnTicketListSelectDtRange", "")
+@Html.Hidden("hdnCssActive", "1")
+@Html.Hidden("hdnRoute", "")
+@Html.Hidden("hdnDeleteResolvedTicket", "Y")
+@Html.Hidden("hdnTicketVoidPermission", "Y")
+@Html.Hidden("hdnTicketReportFormat", "rdlc")
+
+
+
+<script src="~/MOMUI/Design/js/moment.js"></script>
+
+<script src="~/MOMUI/Design/js/pikaday.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        //alert(($('.dropdown-content').width() * 2.4) / 2.5 + 5);
+        $('.dropdown-button2').dropdown({
+            inDuration: 300,
+            outDuration: 225,
+            constrain_width: false, // Does not change width of dropdown to that of the activator
+            hover: true, // Activate on hover
+            gutter: ($('.dropdown-content').width() * 2.4) / 2.5 + 5, // Spacing from edge
+            belowOrigin: false, // Displays dropdown below the button
+            alignment: 'left' // Displays dropdown with edge aligned to the left of button
+        });
+
+
+
+        $('a[href^="#accrd"]').on('click', function (e) {
+            e.preventDefault();
+
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+        $('#addinfo').hide();
+        $('.add-btn-click').click(function () {
+
+            $('#addinfo').slideToggle('2000', "swing", function () {
+                // Animation complete.
+
+            });
+
+            if ($('.divbutton-container').height() != 65)
+                $('.divbutton-container').animate({ height: 65 }, 500);
+            else
+                $('.divbutton-container').animate({ height: 350 }, 500);
+
+
+        });
+
+        $("#ddlRoute").change(function () {
+            $("#hdnRoute").val($(this).val());
+
+        });
+
+    });
+</script>
+
+<script>
+    var picker = new Pikaday(
+        {
+            field: $("#txtInvDt"),
+            firstDay: 0,
+            format: 'MM/DD/YYYY',
+            minDate: new Date(2000, 1, 1),
+            maxDate: new Date(2020, 12, 31),
+            yearRange: [2000, 2020]
+        });
+</script>
+
+<script type="text/javascript" src="~/MOMUI/Design/js/jquery.inputmask.bundle.min.js">
+</script>
+
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('label input[type=radio]').click(function () {
+            $('input[name="' + this.name + '"]').each(function () {
+                $(this.parentNode).toggleClass('labelactive', this.checked);
+            });
+        });
+
+        if (typeof (Storage) !== "undefined") {
+
+            // Retrieve
+
+            var val;
+            //val = localStorage.getItem("hdnTicketListDate");
+            val = $("#hdnTicketListSelectDtRange").val();
+
+            CssClearLabel();
+            if (val == 'Day') {
+                $("#lblDay").addClass("labelactive");
+                $("#rdDay").css('checked', true);
+            }
+            else if (val == 'Week') {
+
+                $("#lblWeek").addClass("labelactive");
+                $("#rdWeek").css('checked', true);
+            }
+            else if (val == 'Month') {
+
+                $("#lblMonth").addClass("labelactive");
+                $("#rdMonth").css('checked', true);
+            }
+            else if (val == 'Quarter') {
+
+                $("#lblQuarter").addClass("labelactive");
+                $("#rdQuarter").css('checked', true);
+            }
+            else if (val == 'Year') {
+
+                $("#lblYear").addClass("labelactive");
+                $("#rdYear").css('checked', true);
+            }
+            else {
+                $("#lblWeek").addClass("labelactive");
+                $("#rdWeek").css('checked', true);
+            }
+            //}
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    function dec_date(select) {
+        debugger
+        var select = select;
+        var txtDateTo = "#txtToDate";
+        var txtDateFrom = "#txtfromDate>";
+        var xday;
+        var xWeek;
+        var xMonth;
+        var xYear;
+        var xQuarter;
+        if (select == "dec") {
+            xday = -1;
+            xWeek = -7;
+            xMonth = -1;
+            xQuarter = -3;
+            xYear = -1;
+        }
+        if (select == "inc") {
+
+            xday = 1;
+            xWeek = 7;
+            xMonth = 1;
+            xQuarter = 3;
+            xYear = 1;
+        }
+        debugger
+
+        var rdDayName = $("#rdDay").name;
+        var radio = document.getElementsByName(rdDayName);
+        var selected;
+        for (var i = 0; i < radio.length; i++) {
+            if (radio[i].checked) { // Checked property to check radio Button check or not
+                //alert("Radio button having value " + radio[i].value + " was checked."); // Show the checked value
+                selected = radio[i].value;
+
+            }
+            if (selected == "") {
+                selected = 'rdDay';
+            }
+        }
+        if (selected == 'rdDay') {
+
+            //dec the from date
+            var tt = $(txtDateFrom).val();
+            debugger
+            var date = new Date(tt);
+            var newdate = new Date(date);
+
+            if (date.getDate() && newdate.getDate()) {
+                newdate.setDate(newdate.getDate() + xday);
+
+                var dd = newdate.getDate();
+                var mm = newdate.getMonth() + 1;
+                var y = newdate.getFullYear();
+
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                $(txtDateFrom).val(someFormattedDate);
+            }
+
+
+
+            //dec the to date
+
+            var TT = $(txtDateTo).val();
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+            if (DATE.getDate() && NEWDATE.getDate()) {
+                NEWDATE.setDate(NEWDATE.getDate() + xday);
+
+                var DD = NEWDATE.getDate();
+                var MM = NEWDATE.getMonth() + 1;
+                var Y = NEWDATE.getFullYear();
+
+                var someFormattedDATE = MM + '/' + DD + '/' + Y;
+                $(txtDateTo).val(someFormattedDATE);
+            }
+        }
+        else if (selected == 'rdWeek') {
+            //dec the from date
+            var tt = $(txtDateFrom).val();
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+            if (date.getDate() && newdate.getDate()) {
+                newdate.setDate(newdate.getDate() + xWeek);
+
+                var dd = newdate.getDate();
+                var mm = newdate.getMonth() + 1;
+                var y = newdate.getFullYear();
+
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                $(txtDateFrom).val(someFormattedDate);
+                //dec the to date
+            }
+            var TT = $(txtDateTo).val();
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+            if (DATE.getDate() && NEWDATE.getDate()) {
+                NEWDATE.setDate(NEWDATE.getDate() + xWeek);
+
+                var DD = NEWDATE.getDate();
+                var MM = NEWDATE.getMonth() + 1;
+                var Y = NEWDATE.getFullYear();
+
+                var someFormattedDATE = MM + '/' + DD + '/' + Y;
+                $(txtDateTo).val(someFormattedDATE);
+            }
+        }
+        else if (selected == 'rdMonth') {
+            //dec the from date
+            Date.isLeapYear = function (year) {
+                return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
+            };
+
+            Date.getDaysInMonth = function (year, month) {
+                return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+            };
+
+            Date.prototype.isLeapYear = function () {
+                return Date.isLeapYear(this.getFullYear());
+            };
+
+            Date.prototype.getDaysInMonth = function () {
+                return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+            };
+
+            Date.prototype.addMonths = function (value) {
+
+                var n = this.getDate();
+                this.setDate(1);
+                this.setMonth(this.getMonth() + value);
+                this.setDate(Math.min(n, this.getDaysInMonth()));
+                return this;
+            };
+
+            Date.prototype.addMonthsLast = function (value) {
+
+                var n = this.getDate();
+                this.setDate(1);
+                this.setMonth(this.getMonth() + 1);
+                if (this.getDaysInMonth() == 31) {
+
+                    this.setDate(Math.max(n, this.getDaysInMonth()));
+                }
+                else {
+                    this.setDate(Math.min(n, this.getDaysInMonth()));
+
+                }
+
+                return this;
+            };
+
+            Date.prototype.addMonthsLastDec = function (value) {
+
+                var n = this.getDate();
+                this.setDate(1);
+                this.setMonth(this.getMonth() - 1);
+                if (this.getDaysInMonth() == 31) {
+
+                    this.setDate(Math.max(n, this.getDaysInMonth()));
+                }
+                else {
+                    this.setDate(Math.min(n, this.getDaysInMonth()));
+
+                }
+
+                return this;
+            };
+            var tt = $(txtDateFrom).val();
+            //var date = new Date(tt).toDateString();
+            var date = new Date(tt);
+            var newdate = new Date(date);
+            if (date.getDate() && newdate.getDate()) {
+                newdate.addMonths(xMonth);
+
+                var dd = newdate.getDate();
+                var mm = newdate.getMonth() + 1;
+                var y = newdate.getFullYear();
+
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                $(txtDateFrom).val(someFormattedDate);
+                //dec the to date
+            }
+            if (select == 'dec') {
+                var ti = $(txtDateTo).val();
+                //var date = new Date(ti).toDateString();
+                var date = new Date(ti);
+                var newdateti = new Date(date);
+                if (date.getDate() && newdateti.getDate()) {
+                    newdateti.addMonthsLastDec(xMonth);
+
+                    var dd = newdateti.getDate();
+                    var mm = newdateti.getMonth() + 1;
+                    var y = newdateti.getFullYear();
+
+                    var someFormattedDate = mm + '/' + dd + '/' + y;
+                    $(txtDateTo).val(someFormattedDate);
+                }
+            }
+            else {
+                var ti = $(txtDateTo).val();
+
+                //var date = new Date(ti).toDateString();
+                var date = new Date(ti);
+                var newdateti = new Date(date);
+                if (date.getDate() && newdateti.getDate()) {
+                    newdateti.addMonthsLast(xMonth);
+
+                    var dd = newdateti.getDate();
+                    var mm = newdateti.getMonth() + 1;
+                    var y = newdateti.getFullYear();
+
+                    var someFormattedDate = mm + '/' + dd + '/' + y;
+                    $(txtDateTo).val(someFormattedDate);
+                }
+            }
+        }
+
+
+        else if (selected == 'rdQuarter') {
+            //dec the from date
+            var tt = $(txtDateFrom).val();
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+            if (date.getDate() && newdate.getDate()) {
+                newdate.setMonth(newdate.getMonth() + xQuarter);
+
+                var dd = newdate.getDate();
+                var mm = newdate.getMonth() + 1;
+                var y = newdate.getFullYear();
+
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                $(txtDateFrom).val(someFormattedDate);
+                //dec the to date
+            }
+            var TT = $(txtDateTo).val();
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+            if (DATE.getDate() && NEWDATE.getDate()) {
+                //decrease date range
+                if (select == 'dec') {
+                    xQuarter = -3;
+
+                    if (DATE.getMonth() == 11) {
+                        NEWDATE.setDate(NEWDATE.getDate() - 1);
+                        NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+
+                    }
+                    else if (DATE.getMonth() == 5) {
+                        NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+                        NEWDATE.setDate(NEWDATE.getDate() + 1);
+
+                    }
+                    else {
+                        NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+
+                    }
+
+                }
+                else {
+                    xQuarter = 3;
+                    NEWDATE.setDate(NEWDATE.getDate() - 1);
+                    NEWDATE.setMonth(NEWDATE.getMonth() + xQuarter);
+                    if (NEWDATE.getMonth() == 11 || NEWDATE.getMonth() == 12 || DATE.getMonth() == 11) {
+                        NEWDATE.setDate(31);
+                    } else {
+                        if (DATE.getMonth() == 5) { NEWDATE.setDate(NEWDATE.getDate() + 1); }
+                        else { NEWDATE.setDate(NEWDATE.getDate()); }
+
+                    }
+                }
+                var DD = NEWDATE.getDate();
+                var MM = NEWDATE.getMonth() + 1;
+                var Y = NEWDATE.getFullYear();
+
+                var someFormattedDATE = MM + '/' + DD + '/' + Y;
+                $(txtDateTo).val(someFormattedDATE);
+            }
+        }
+        else if (selected == 'rdYear') {
+
+            var tt = $(txtDateFrom).val();
+
+            var date = new Date(tt);
+            var newdate = new Date(date);
+            if (date.getDate() && newdate.getDate()) {
+                newdate.setFullYear(newdate.getFullYear() + xYear);
+
+                var dd = newdate.getDate();
+                var mm = newdate.getMonth() + 1;
+                var y = newdate.getFullYear();
+
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                $(txtDateFrom).val(someFormattedDate);
+            }
+            //dec the to date
+
+            var TT = $(txtDateTo).val();
+
+            var DATE = new Date(TT);
+            var NEWDATE = new Date(DATE);
+            if (DATE.getDate() && NEWDATE.getDate()) {
+                NEWDATE.setFullYear(NEWDATE.getFullYear() + xYear);
+                var DD = NEWDATE.getDate();
+                var MM = NEWDATE.getMonth() + 1;
+                var Y = NEWDATE.getFullYear();
+
+                var someFormattedDATE = MM + '/' + DD + '/' + Y;
+                $(txtDateTo).val(someFormattedDATE);
+            }
+        }
+
+        return false;
+
+    }
+    function SelectDate(type) {//, txtDateFrom, txtdateTo, label, UniqueVal, rdGroup
+        var type = type;
+        var txtDateFrom = "#txtfromDate";
+        var txtdateTo = "#txtToDate";
+        //var UniqueVal = UniqueVal;
+        //var label = label;
+        CssClearLabel();
+        if (type == 'Day') {
+            var todaydate = new Date();
+            var day = todaydate.getDate();
+            var month = todaydate.getMonth() + 1;
+            var year = todaydate.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtdateTo).val(datestring);
+            $(txtDateFrom).val(datestring);
+            $("#lblDay").addClass("labelactive");
+            $("#hdnTicketListSelectDtRange").val("Day");
+        }
+        if (type == 'Week') {
+
+            Date.prototype.GetFirstDayOfWeek = function () {
+                return (new Date(this.setDate(this.getDate() - this.getDay())));
+            }
+
+            Date.prototype.GetLastDayOfWeek = function () {
+                return (new Date(this.setDate(this.getDate() - this.getDay() + 6)));
+            }
+            var today = new Date();
+            var Firstdate = today.GetFirstDayOfWeek();
+            var day = Firstdate.getDate();
+            var month = Firstdate.getMonth() + 1;
+            var year = Firstdate.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtDateFrom).val(datestring);
+            var Lastdate = today.GetLastDayOfWeek();
+            var day = Lastdate.getDate();
+            var month = Lastdate.getMonth() + 1;
+            var year = Lastdate.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            $(txtdateTo).val(dateString);
+            $("#lblWeek").addClass("labelactive");
+            $("#hdnTicketListSelectDtRange").val("Week");
+        }
+        if (type == 'Month') {
+            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+            var FirstDayOfMonth = new Date(y, m, 1);
+            var lastDayOfMonth = new Date(y, m + 1, 0);
+            var day = FirstDayOfMonth.getDate();
+            var month = FirstDayOfMonth.getMonth() + 1;
+            var year = FirstDayOfMonth.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtDateFrom).val(datestring);
+            var day = lastDayOfMonth.getDate();
+            var month = lastDayOfMonth.getMonth() + 1;
+            var year = lastDayOfMonth.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            $(txtdateTo).val(dateString);
+            $("#lblMonth").addClass("labelactive");
+            $("#hdnTicketListSelectDtRange").val("Month");
+        }
+        if (type == 'Quarter') {
+            var d = new Date();
+            var quarter = Math.floor((d.getMonth() / 3));
+            var firstDate = new Date(d.getFullYear(), quarter * 3, 1);
+            var lastDate = new Date(firstDate.getFullYear(), firstDate.getMonth() + 3, 0);
+            var day = firstDate.getDate();
+            var month = firstDate.getMonth() + 1;
+            var year = firstDate.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtDateFrom).val(datestring);
+            var day = lastDate.getDate();
+            var month = lastDate.getMonth() + 1;
+            var year = lastDate.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            $(txtdateTo).val(dateString);
+            $("#lblQuarter").addClass("labelactive");
+            $("#hdnTicketListSelectDtRange").val("Quarter");
+        }
+        if (type == 'Year') {
+            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+            var FirstDayOfYear = new Date(y, 1, 1);
+            var lastDayOfYear = new Date(y, 11, 31);
+            var day = FirstDayOfYear.getDate();
+            var month = FirstDayOfYear.getMonth();
+            var year = FirstDayOfYear.getFullYear();
+            var datestring = month + "/" + day + "/" + year;
+            $(txtDateFrom).val(datestring);
+            var day = lastDayOfYear.getDate();
+            var month = lastDayOfYear.getMonth() + 1;
+            var year = lastDayOfYear.getFullYear();
+            var dateString = month + "/" + day + "/" + year;
+            $(txtdateTo).val(dateString);
+            $("#lblYear").addClass("labelactive");
+            $("#hdnTicketListSelectDtRange").val("Year");
+        }
+
+        $("#hdnCssActive").val("CssActive");
+        var clickSearchButton = $("#btnSearch");
+        clickSearchButton.click();
+        $("#hdnCssActive").val("1");
+    }
+
+
+    // rangeName: Day, Week, Month, Quarter, Year
+
+
+    function OnGridCreated(sender, args) {
+        //alert('OnGridCreated');
+        var frozenScroll = $get(sender.get_id() + "_Frozen");
+        var allColumns = sender.get_masterTableView().get_columns();
+        var scrollLeftOffset = 0;
+        var allColumnsWidth = new Array;
+        var grid = sender.get_element();
+        for (var i = 0; i < allColumns.length; i++) {
+            allColumnsWidth[i] = allColumns[i].get_element().offsetWidth;
+        }
+
+        $get(sender.get_id() + "_GridData").onscroll = function (e) {
+            for (var i = 0; i < allColumns.length; i++) {
+                if (!allColumns[i].get_visible()) {
+                    scrollLeftOffset += allColumnsWidth[i];
+                }
+                if ($telerik.isIE7) {
+                    var thisColumn = grid.getElementsByTagName("colgroup")[0].getElementsByTagName("col")[i];
+                    if (thisColumn.style.display == "none") {
+                        scrollLeftOffset += parseInt(thisColumn.style.width);
+                    }
+                }
+            }
+            var thisScrollLeft = this.scrollLeft;
+            if (frozenScroll != null) {
+                if (thisScrollLeft > 0)
+                    frozenScroll.scrollLeft = thisScrollLeft + scrollLeftOffset + 300;
+                this.scrollLeft = 0;
+            }
+
+            scrollLeftOffset = 0;
+        };
+    }
+
+    function headerMenuShowing(sender, args) {
+        var menu = args.get_menu();
+
+        for (var i = 0; i < menu.get_items().get_count(); i++) {
+            var item = menu.get_items().getItem(i);
+            if (item.get_value() != 'ColumnsContainer') {
+                item.get_element().css('display', 'none');
+            }
+        }
+
+        var columnsItem = menu.findItemByText("Columns");
+        columnsItem.get_items().getItem(0).get_element().css('display', 'none');
+        columnsItem.get_items().getItem(1).get_element().css('display', 'none');
+        //columnsItem.get_items().getItem(2).get_element().style.display = "none";
+    }
+
+    function ColumnSettingsChange(menu, args) {
+        $("#lbSaveGridSettings").css('display', 'block');
+        $("#lbRestoreGridSettings").css('display', 'none');
+    }
+
+    function GridCommand(sender, args) {
+        if (args.get_commandName() == "Sort") {
+            ColumnSettingsChange();
+        }
+    }
+
+    function SaveGridSettings() {
+        $("#lnkSaveGridSettings").click();
+        $("#lbSaveGridSettings").css('display', 'none');
+        $("#lbRestoreGridSettings").css('display', 'block');
+    }
+
+    function RestoreGridSettings() {
+        $("#lnkRestoreGridSettings").click();
+        $("#lbRestoreGridSettings").css('display', 'none');
+        $("#lbSaveGridSettings").css('display', 'none');
+    }
+
+</script>

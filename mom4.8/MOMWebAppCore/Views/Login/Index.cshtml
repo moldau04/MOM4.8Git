@@ -1,0 +1,377 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head  >
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no" />
+    <title>ESS - LOGIN</title>
+    <link href="~/LoginUI/css/layouts/page-center.css" rel="stylesheet" />
+    <link href="~/LoginUI/css/custom/custom.css" rel="stylesheet" />
+    <link href="~/LoginUI/css/materialize.css" rel="stylesheet" />
+    <link href="~/LoginUI/css/style.css" rel="stylesheet" />
+    <link href="~/LoginUI/Appearance/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/LoginUI/js/plugins/jquery-1.11.2.min.js"></script>
+    <script src="~/LoginUI/js/materialize.js"></script>
+    <script src="~/LoginUI/js/plugins/prism/prism.js"></script>
+
+    <style>
+        video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            height: 100vh;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translateX(-40%) translateY(-40%);
+            background-size: cover;
+            transition: 1s opacity;
+            min-width: 130%;
+        }
+
+        .mgntop {
+            margin-top: 40px !important;
+        }
+
+        .mgnbtm {
+            margin-bottom: 15px !important;
+        }
+
+        .stopfade {
+            opacity: .5;
+        }
+
+   
+
+        #polina {
+            font-family: Agenda-Light, Agenda Light, Agenda, Arial Narrow, sans-serif;
+            font-weight: 100;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            padding: 2rem;
+            width: 33%;
+            margin: 2rem;
+            float: right;
+            font-size: 1.2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            margin-top: 0;
+            letter-spacing: .3rem;
+        }
+
+        #polina button {
+            display: block;
+            width: 80%;
+            padding: .4rem;
+            border: none;
+            margin: 1rem auto;
+            font-size: 1.3rem;
+            background: rgba(255,255,255,0.23);
+            color: #fff;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: .3s background;
+        }
+
+            #polina button:hover {
+                background: rgba(0,0,0,0.5);
+            }
+
+        a {
+            display: inline-block;
+            color: #fff;
+            text-decoration: none;
+            background: rgba(0,0,0,0.5);
+            padding: .5rem;
+            transition: .6s background;
+        }
+
+            a:hover {
+                background: rgba(0,0,0,0.9);
+            }
+
+        .lgpd {
+            padding: 10px !important;
+            padding-bottom: 30px !important;
+            padding-top: 30px !important;
+        }
+
+        #lnkPasswordResetting {
+            background: none;
+            font-size: 1.2rem;
+            width: inherit;
+            text-align: center;
+            color: #03a9f4 !important;
+        }
+
+        i > #btnForgotPassword,
+        i > #btnUpdateFogotPw,
+        i > #btnResetPassword,
+        i > #btnUpdatePassword {
+            height: inherit;
+            width: inherit;
+        }
+
+        .ajax__validatorcallout_error_message_cell {
+            color: black;
+        }
+
+
+
+        span.lgpbtnClose {
+            float: right;
+            margin-top: -10px;
+        }
+
+            span.lgpbtnClose > a {
+                width: inherit;
+                border-top-right-radius: 8px;
+                padding: .7rem;
+            }
+
+        .lblpErrMsg {
+            color: #03a9f4 !important;
+            text-align: center;
+            width: 100%;
+            float: left;
+            /*min-height: 30px;*/
+        }
+
+        .lblpMsg {
+            width: 100%;
+            float: left;
+            text-align: center;
+        }
+
+        #pnlPopupForgotPassword,
+        #pnlPopupResetPassword,
+        #pnlPopupUpdateForgotPw {
+            background: rgba(0, 0, 0, 0.59);
+            border-radius: 8px;
+            box-shadow: #222 0px 0px 8px 0px;
+            padding-bottom: 15px;
+            color: #fff !important;
+            min-height: 200px !important;
+        }
+
+        .errorMessMargin {
+            margin-top: 40px;
+        }
+    </style>
+    <script type="text/javascript">
+        function pageLoad(sender, args) {
+            $(function () {
+                Materialize.updateTextFields();
+            });
+        }
+        function showLoginForm() {
+            $('#loginbox').show();
+
+        }
+        function hideLoginForm() {
+            $('#loginbox').hide();
+        }
+
+        function addRemoveMarginForErrorMessage(isAdd, messControlID) {
+            var messControl = $(messControlID);
+            if (messControl != null) {
+                if (isAdd == true) {
+                    messControl.addClass('errorMessMargin');
+                } else {
+                    messControl.removeClass('errorMessMargin');
+                }
+            }
+        }
+
+        @*$(document).ready(function () { 
+            $.ajax({
+                url: '@ViewBag.MOMBaseWebAPIURL' +'Login/GetDatabaselist',
+                type: "get",
+                success: function (result) {
+                    var $listdb = $("#DatabaseList");
+                    $.each(result, function (i, db) {
+                        $("<option></option>").val(db.value).text(db.text).appendTo($listdb);
+                    });
+                }
+            })
+        });*@
+    </script> 
+</head>
+<body>
+
+
+
+    @using (Html.BeginForm("PleaseLogin", "Login", FormMethod.Post))
+    {
+
+        <div id="login-page" class="row loginalign">
+            <video id="bgvid" playsinline autoplay muted loop>
+                <source src="~/LoginUI/images/vid.mp4" type="video/webm">
+                <source src="~/LoginUI/images/vid.mp4" type="video/mp4">
+            </video>
+            <div id="loginbox" class="col s12 z-depth-4 card-panel test-width lgpd">
+                <div class="col s5 loginlogowrap">
+                    <div class="input-field col s12 center">
+                        <img src="~/LoginUI/images/login-logo.png" alt="" class="circle responsive-img valign profile-image-login logologin mgntop">
+                        <p class="center login-form-text webkitmgnnil">
+                            MOBILE OFFICE MANAGER
+                            <br />
+                            v6.0
+                        </p>
+                    </div>
+                </div>
+                <div class="col s7 loginformwrap">
+                    <div class="row margin mgnbtm">
+                        <div class="input-field col s12">
+                            <i class="mdi-communication-business prefix"></i>
+                            <label for="drp" class="drpdwn-label drpdwn-label-white lbl-big">Database</label>
+                            <select class="center-align" id="DatabaseList" name="DatabaseList"
+                                    style="padding-left: 8px;margin-left: 3rem;width: calc(100% - 3rem);margin-top: 20px !important;border-bottom: 2px solid #fff;">
+                                <option value="Dbvalue"> Db Name</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row margin mgnbtm">
+                        <div class="input-field col s12">
+                            <i class="mdi-social-person-outline prefix"></i>
+                            <div>
+                                <label class="center-align drpdwn-label drpdwn-label-white drpdwn-labelpd40  lbl-big">Username</label>
+                            </div>
+
+                            <input type="text" name="username" />
+                        </div>
+                    </div>
+                    <div class="row margin mgnbtm">
+                        <div class="input-field col s12">
+                            <i class="mdi-action-lock-outline prefix"></i>
+                            <div>
+                                <label class="center-align drpdwn-label drpdwn-label-white drpdwn-labelpd40 lbl-big">Password</label>
+                            </div>
+                            <input type="password" name="password" />
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <span class="col s12">
+
+
+                        </span>
+                    </div>
+                    <div class="row">
+                        <div class="valid-box" id="validation"></div>
+                        <div class="valid-box" visible="false" id="divValidationBox">
+                            <button data-close="alert" class="close" style="display: none;"></button>
+                            <span>
+                                <span></span>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="row margin">
+                        <div class="input-field col s7">
+                            <div class="switch" style="color: #fff;">
+                                <label class="drpdwn-label-white">
+
+                                    <asp:CheckBox ID="chkRemember" />
+                                    Remember me
+                                    <span class="lever"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="input-field col s5" style="float: right;">
+                            <input type="submit" asp-controller="Login" asp-action="PleaseLogin" value="Login" class="btn waves-effect waves-light col s12 light-blue" Style="border-radius: 6px !important;" />
+
+                         
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <input type="button" value="" style="display: none;" />
+
+
+            <div style="display: none; color: #fff !important; border-radius: 8px; background-color: #222; box-shadow: #222 0px 0px 8px 0px; padding-bottom: 15px;">
+
+
+
+                <div class="section-ttle-popupheading">
+                    <span>
+                        Register
+                    </span>
+                    <span class="lgpbtnClose">
+
+                        <input type="button" value="" />
+                    </span>
+
+                </div>
+
+
+                <div class="regi-box modal-content company-modal">
+
+                    <div>
+
+
+
+
+
+                        <div class="login-box input-serialkey">
+                            <i class="fa fa-key"></i>
+                            <input type="text" placeholder="SERIAL NUMBER" />
+                        </div>
+
+                        <div class="modal-footer btnwrap-right">
+                            <input type="button" value="Register" />
+                        </div>
+
+                        <div class="modal-footer btnwrap-right" style="float: left; clear: both; width: 100%; margin-top: 10px; border-top: 1px solid #f9f9f9">
+                            <input type="button" value="Register Now" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="cf"></div>
+
+            <div class="clearfix"></div>
+
+            <div class="cf"></div>
+
+
+            <div class="clearfix"></div>
+
+
+
+            <div class="cf"></div>
+
+            <div class="clearfix"></div>
+
+
+
+            <div class="cf"></div>
+
+            <div class="clearfix"></div>
+
+
+            <div class="cf"></div>
+
+            <div class="clearfix"></div>
+
+        </div>
+    }
+
+</body>
+</html>
+
+

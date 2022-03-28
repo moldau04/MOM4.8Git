@@ -1,0 +1,1718 @@
+﻿@{
+    ViewData["Title"] = "Add Page";
+    Layout = "~/Views/Shared/MOMLayout.cshtml";
+}
+
+
+<style>
+    .highlight {
+        background-color: Yellow;
+    }
+
+    .highlighted {
+        background-color: Yellow;
+    }
+
+    .RadGrid_Material th a {
+        padding: 0;
+    }
+</style>
+<style>
+    .rptSti tr:nth-child(2n+1) {
+        background: none !important;
+    }
+
+    .rm_mm td {
+        background-color: none !important;
+    }
+</style>
+
+<!--Grid Control-->
+<link href="~/MOMUI/Design/css/grid.css" rel="stylesheet" />
+<!--File Upload Control-->
+<link href="~/MOMUI/Design/js/plugins/dropify/css/dropify.css" type="text/css" rel="stylesheet" media="screen,projection" />
+
+<script type="text/javascript">
+    function showMessageAndRedirect(strMsg, type, url) {
+        noty({
+            text: strMsg,
+            type: type,
+            layout: 'topCenter',
+            closeOnSelfClick: false,
+            timeout: false,
+            theme: 'noty_theme_default',
+            closable: true
+        });
+
+        setTimeout(function () {
+            window.location.replace(url);
+        }, 1000); //will call the function after 1 secs.
+
+    }
+
+    function isNumberKey(evt, txt) {
+
+        var charCode = (evt.which) ? evt.which : event.keyCode
+
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+    var isSave = false;
+
+    function VisibleRowOnFocus(txt) {  //To make row's textbox visible
+
+        $("#RadGrid_gvInvoice input:text.non-trans").each(function () {
+
+            $(this).removeClass("non-trans");
+            $(this).addClass("texttransparent");
+        });
+        $("#RadGrid_gvInvoice select.non-trans").each(function () {
+
+            $(this).removeClass("non-trans");
+            $(this).addClass("texttransparent");
+
+        });
+
+        var txtPAmount = $(txt.id);
+        $(txtPAmount).removeClass("texttransparent");
+        $(txtPAmount).addClass("non-trans");
+    }
+    function isDecimalKey(el, evt) {
+
+        //var re = /^-?\d*\.?\d{0,6}$/;
+        //var text = $(evt).val();
+
+        //var isValid = (text.match(re) !== null);
+        //if (isValid)
+        //    return true;
+        //else
+        //    return false;
+
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46)
+            return false;
+
+        return true;
+
+    }
+    function getSelectionStart(o) {
+        if (o.createTextRange) {
+            var r = document.selection.createRange().duplicate()
+            r.moveEnd('character', o.value.length)
+            if (r.text == '') return o.value.length
+            return o.value.lastIndexOf(r.text)
+        } else return o.selectionStart
+    }
+    function ChkCustID(sender, args) {
+        var hdnCustID = $("#hdnCustID");
+        if (hdnCustID.val() == '') {
+            args.IsValid = false;
+        }
+        else if (hdnCustID.val() == '0') {
+            args.IsValid = false;
+        }
+    }
+
+    function ChkLocID(sender, args) {
+
+        var total = 0.00;
+        var expression = /[\(\)]/g                     // to identify parentheses
+        $("[id*=txtPAmount]").each(function () {
+            var txtPay = $(this).attr('id')
+            //var expression = /^\$?\(?[\d,\.]*\)?$/;      // to identify parentheses and $
+
+            var chk = $(txtPay.replace('txtPAmount', 'chkSelect'));
+            if ($(chk).prop('checked') == true) {
+                if ($(this).val() != '') {
+
+                    var val = $(this).val()
+
+                    if (val.match(expression))     /// check is parentheses exists (negative value)
+                    {
+                        total = total - parseFloat($(this).val().replace(/[\$\(\),]/g, ''));
+                    }
+                    else {
+                        total = total + parseFloat($(this).val().replace(/[\$\(\),]/g, ''));
+                    }
+                }
+            }
+        });
+        var vartotal = 0;
+        if ($("#txtAmount").val().match(expression))     /// check is parentheses exists (negative value)
+        {
+            vartotal = parseFloat($("#txtAmount").val().replace(/[\$\(\),]/g, '')) * -1;
+        }
+        else {
+            vartotal = parseFloat($("#txtAmount").val().replace(/[\$\(\),]/g, ''));
+        }
+        if (total != vartotal) {
+            var hdnLocID = $("#hdnLocID");
+            if (hdnLocID.val() == "") {
+                args.IsValid = false;
+                //alert('invalid')
+            }
+            else if (hdnLocID.val() == "0") {
+                args.IsValid = false;
+                //alert('invalid')
+            }
+        }
+
+    }
+</script>
+<script type="text/javascript">
+    function pageLoad(sender, args) {
+        $(function () {
+            $('.js-amt').keypress(function (e) {
+                if (e.which != 46 && e.which != 45 && e.which != 46 &&
+                    !(e.which >= 48 && e.which <= 57)) {
+                    return false;
+                }
+            });
+            var query = "";
+
+            $("#txtCustomer").keyup(function (event) {
+                var hdnCustID = $("#hdnCustID");
+                if ($("#txtCustomer").val() == "") {
+                    hdnCustID.val() = "";
+                }
+            });
+
+            $("#txtLocation").keyup(function (event) {
+                var hdnLocId = $("#hdnLocID");
+                if ($("#txtLocation").val() == "") {
+                    hdnLocId.val() = "";
+                }
+            });
+        });
+
+    }
+    function cleanUpCurrency(s) {
+
+        var expression = '-';
+
+        //Check if it is in the proper format
+        if (s.match(expression)) {
+            //It matched - strip out - and append parentheses
+            return s.replace("$-", "\($") + ")";
+
+        }
+        else {
+            return s;
+        }
+    }
+
+</script>
+
+
+
+<!--start container-->
+
+<div class="divbutton-container">
+    <div id="divButtons">
+        <div id="breadcrumbs-wrapper">
+            <header>
+                <div class="container row-color-grey">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="row">
+                                <div class="page-title"><i class="mdi-editor-attach-money"></i>&nbsp;<label ID="lblHeader" style="font-size:15px">Add Receive Payment</label></div>
+                                <div class="btnlinks">
+                                    <a ToolTip="Save" ID="btnSubmit" ValidationGroup="Payment" onclick="return ValidateZero();">Save</a>
+                                </div>
+                                <div class="buttonContainer">
+                                    <div class="btnlinks" style="float:left">
+                                        <a ID="lnkPrint" ToolTip="Print" CausesValidation="true">Report</a>
+
+                                    </div>
+                                    <div class="btnlinks" style="float:left">
+                                        <a ID="lnkWriteOff" ToolTip="Write Off" CausesValidation="true" onclick="return OpenWriteOffWindow();disableAccountWriteOff();">Write off</a>
+
+                                    </div>
+                                    <div class="btnlinks" style="float:left">
+                                        <a ID="lnkTranfer" ToolTip="Transfer Payment" CausesValidation="true" onclick=" OpenTransferPaymentWindow(); return false;">Transfer Payment</a>
+
+                                    </div>
+                                    <div class="btnlinks" style="float:left">
+                                        <a ID="lnkUnApply" ToolTip="Unapply" CausesValidation="true" onclick=" return OpenUnapply(); ">Unapply</a>
+
+                                    </div>
+                                </div>
+                                <div class="buttonContainer">
+
+                                </div>
+                                <div class="btnclosewrap">
+                                    <a ToolTip="Close" ID="lnkClose" CausesValidation="false">
+                                        <i class="mdi-content-clear"></i>
+                                    </a>
+                                </div>
+                                <div class="rght-content">
+                                    <div class="editlabel" id="trDeposit" visible="false">
+                                        Deposit #:&nbsp;<a ID="lnkDepID"></a>
+
+                                    </div>
+                                    <div class="editlabel" style="display: none" id="divlblRef">
+                                        <label ID="lblReceiveRef" Text="Ref #"></label>
+                                        <label ID="lblReceiveID"></label>
+                                    </div>
+
+                                </div>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <div class="container breadcrumbs-bg-custom">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="row">
+                        <div class="tblnks">
+                            <ul class="anchor-links">
+                                <li><a href="#accrdPaymentTab">Payment Info</a></li>
+                                <li><a href="#accrdOutstanding">Outstanding Payments</a></li>
+                                <li id="liLogs"><a href="#accrdlogs">Logs</a></li>
+                            </ul>
+                        </div>
+                        <div class="tblnksright">
+                            <div class="nextprev">
+                                <div ID="pnlNext">
+                                    <span class="angleicons">
+                                        <a ID="lnkFirst" ToolTip="First" CausesValidation="False">
+                                            <i class="fa fa-angle-double-left"></i>
+                                        </a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkPrevious" ToolTip="Previous" CausesValidation="False">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkNext" ToolTip="Next" CausesValidation="False">
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </span>
+                                    <span class="angleicons">
+                                        <a ID="lnkLast" ToolTip="Last" CausesValidation="False" class="icon-last">
+                                            <i class="fa fa-angle-double-right"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container accordian-wrap">
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <div class="row">
+                <ul class="collapsible popout collapsible-accordion form-accordion-head" data-collapsible="expandable">
+                    <li>
+                        <div id="accrdPaymentTab" class="collapsible-header accrd active accordian-text-custom ">
+                            <i class="mdi-action-info"></i>Payment Info
+                        </div>
+                        <div class="alert alert-success" id="divSuccess">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            These month/year period is closed out. You do not have permission to add/update this record.
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div ID="RadAjaxPanel_Content" EnableAJAX="true">
+
+                                    <div class="form-content-pd">
+                                        <div class="form-section-row">
+
+                                            <div class="form-section3">
+                                                <div class="input-field col s12">
+                                                    <div class="row">
+                                                        <label class="drpdwn-label">Filter option</label>
+                                                        <select ID="ddlFilter" class="browser-default" AutoPostBack="true">
+                                                            <option>Select</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s12">
+                                                    <div class="row">
+                                                        <label class="drpdwn-label">Customer</label>
+                                                        <select ID="ddlCustomer" class="browser-default" onchange="ddl_changedCustomer()">
+                                                            <option>Select</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s12">
+                                                    <div class="row" id="divCustomer">
+                                                        <input type="button" ID="btnSelectCustomer" value="Button" Style="display: none;" />
+                                                        <input type="button" ID="btnSelectLoc" value="Button" Style="display: none;" />
+                                                        @Html.Hidden("hdnOwner")
+                                                        @Html.Hidden("hdnButtonClick")
+                                                        @Html.Hidden("hdnDate")
+                                                        <input id="hdnCon" type="hidden" />
+
+                                                        <input type="text" ID="txtCustomer" class="clearable"
+                                                               autocomplete="off" placeholder="Search by customer name, phone#, address etc." />
+                                                        @Html.Hidden("hdnCustID")
+                                                        <label ID="Label2" for="txtCustomer">Customer</label>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s12">
+                                                    <div class="row">
+                                                        <input type="text" ID="txtLocation"
+                                                               autocomplete="off" placeholder="Search by location name, phone#, address etc." class="searchinputloc ui-autocomplete-input clearable" />
+
+                                                        @Html.Hidden("hdnLocID")
+                                                        <label ID="Label1" for="txtLocation">Location</label>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s12">
+                                                    <div class="row">
+                                                        <input type="text" ID="txtInvoice" class="searchinput_invoice clearable"
+                                                               onkeypress="return isNumberKey(event,this)" placeholder="Search by Invoice#" />
+
+                                                        <label ID="lbltxtInvoice" for="txtInvoice">Invoice #</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-section3-blank">
+                                                &nbsp;
+                                            </div>
+                                            <div class="form-section3">
+                                                <div class="input-field2 col s5">
+                                                    <div class="row">
+                                                        <input type="text" ID="txtDate" class="datepicker_mom" autocomplete="off" />
+
+                                                        <label for="txtDate" class="date-label">Date</label>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field2 col s2">
+                                                    <div class="row">
+                                                        &nbsp;
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s5">
+                                                    <div class="row">
+                                                        <label class="drpdwn-label">Payment Method</label>
+                                                        <select ID="ddlPayment" class="browser-default" onchange="ddl_changed(this)">
+                                                            <option>Select</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s5">
+                                                    <div class="row">
+                                                        <input type="text" ID="txtCheck"
+                                                               autocomplete="off" Text=" " />
+                                                        <label for="txtCheck" id="lblCheck" class="active">Check #</label>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field2 col s2">
+                                                    <div class="row">
+                                                        &nbsp;
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s5">
+                                                    <div class="row">
+                                                        <input type="text" ID="txtAmount" class="form-control"
+                                                               MaxLength="15" autocomplete="off" Style="text-align: right" />
+                                                        <label for="lblAmount" id="lblAmount" class="active">Check Amount</label>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s12">
+                                                    <div class="row">
+                                                        <input type="text" ID="txtMemo" autocomplete="off" />
+                                                        <label for="txtMemo">Memo</label>
+                                                    </div>
+                                                    <div id="dvCompanyPermission" style="display: none">
+                                                        <input type="text" ID="txtCompany" Enabled="false" class="form-control" />
+                                                        <label for="txtCompany">Company</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-section3-blank">
+                                                &nbsp;
+                                            </div>
+
+                                            <div class="form-section3">
+                                                <div class="input-field col s12">
+                                                    <div class="row">
+                                                        <label class="active">Customer Balance</label>
+
+                                                        <input type="text" ID="lblCustomerBalance" class="form-control"
+                                                               MaxLength="15" autocomplete="off" Style="text-align: right" value="$0.00"/>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s12 ">
+                                                    <div class="row">
+                                                        <label class="active">Deposit to:</label>
+                                                        <input type="text" ID="lblDepositTo" class="form-control"
+                                                               MaxLength="15" autocomplete="off" Style="text-align: right" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-field col s12">
+                                                    <div class="row">
+                                                        <input type="text" ID="txtStatus" />
+                                                        <label for="txtStatus">Status</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="cf"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div id="accrdOutstanding" class="collapsible-header accrd accordian-text-custom active">
+                            <i class="mdi-content-flag"></i>Outstanding Payments
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+
+                                            <div class="RadGrid RadGrid_Material FormGrid" style="margin-bottom: 10px!important;">
+
+                                            </div>
+                                        </div>
+                                        <div class="cf"></div>
+                                    </div>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li id="tbLogs">
+                        <div id="accrdlogs" class="collapsible-header accrd accordian-text-custom"><i class="mdi-content-content-paste"></i>Logs</div>
+                        <div class="collapsible-body">
+                            <div class="form-content-wrap">
+                                <div class="form-content-pd">
+                                    <div class="grid_container">
+                                        <div class="form-section-row" style="margin-bottom: 0 !important;">
+                                            <div class="RadGrid RadGrid_Material">
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="cf"></div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end container-->
+
+@Html.Hidden("hdTabIndex")
+<input id="hdnPatientId" runat="server" type="hidden" />
+<input id="hdnIsWriteOff" runat="server" type="hidden" value="0" />
+<input id="hdnAmountSelected" runat="server" type="hidden" value="0" />
+
+<script src="~/MOMUI/Design/js/plugins/dropify/js/dropify.min.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('a[href^="#accrd"]').on('click', function (e) {
+            e.preventDefault();
+
+            var target = this.hash;
+            var $target = $(target);
+            if ($(target).hasClass('active') || target == "") {
+
+            }
+            else {
+                $(target).click();
+            }
+
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - 125
+            }, 900, 'swing');
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 0) {
+                $("#divButtons").addClass('fixed-header');
+            }
+            if ($(window).scrollTop() <= 0) {
+                $("#divButtons").removeClass('fixed-header');
+            }
+        });
+
+        $(".dropdown-content.select-dropdown li").on("click", function () {
+            var that = this;
+            setTimeout(function () {
+                if ($(that).parent().hasClass('active')) {
+                    $(that).parent().removeClass('active');
+                    $(that).parent().hide();
+                }
+            }, 100);
+        });
+
+
+    });
+    function ddl_changed(ddl) {
+        //debugger;
+        if (ddl.value == 0) {
+            $('lblCheck').innerHTML = 'Check';
+            $('lblAmount').innerHTML = 'Check amount';
+        }
+        else {
+            $('lblCheck').innerHTML = 'Reference';
+            $('lblAmount').innerHTML = 'Amount received';
+        }
+    }
+
+    function check(obj) { }
+    function SelectedRowStyle(gridview) {
+        var grid = $(gridview);
+        $('#' + gridview + ' tr').each(function () {
+            var $tr = $(this);
+            var chk = $tr.find('input[id*=chkSelect]');
+            if (chk.prop('checked') == true) {
+                $tr.css('background-color', '#e0eefe');
+            }
+        })
+    }
+
+    function GetInvoiceTotal() {
+        var total = 0.00;
+        var totalDueAmount = 0.00;
+        $("[id*=txtPAmount]").each(function () {
+
+            var txtPay = $(this).attr('id')
+            var expression = /[\(\)]/g                     // to identify parentheses
+            var chk = $(txtPay.replace('txtPAmount', 'chkSelect'));
+            if ($(chk).prop('checked') == true) {
+                if ($(this).val() != '') {
+
+                    var val = $(this).val()
+
+                    if (val.match(expression))     /// check is parentheses exists (negative value)
+                    {
+                        total = total - parseFloat($(this).val().replace(/[\$\(\),]/g, ''));
+                    }
+                    else {
+                        total = total + parseFloat($(this).val().replace(/[\$\(\),]/g, ''));
+                    }
+                }
+            }
+        });
+
+        if (total == -0) {
+            total = 0;
+        }
+
+        var totalval = cleanUpCurrency('$' + total.toLocaleString("en-US", { minimumFractionDigits: 2 }))
+        $("#txtAmount").val(totalval);
+        $("[id*=lblTotalPayAmount]").text(totalval);
+
+        $("#RadGrid_gvInvoice input[id*='chkSelect']:checkbox").each(function (index) {
+            var chk = $(this).attr('id');
+            var expression = /[\(\)]/g;
+            var lblDue = $(chk.replace('chkSelect', 'lblDueAmount'));
+            var val = $(lblDue).text();
+
+            if (val.match(expression)) {
+                totalDueAmount = totalDueAmount - parseFloat($(lblDue).text().toString().replace(/[\$\(\),]/g, ''));
+            }
+            else {
+                totalDueAmount = totalDueAmount + parseFloat($(lblDue).text().toString().replace(/[\$\(\),]/g, ''));
+            }
+        });
+
+        var totalBalance = cleanUpCurrency('$' + totalDueAmount.toLocaleString("en-US", { minimumFractionDigits: 2 }))
+        $("[id*=lblTotalDueAmount]").text(totalBalance);
+    }
+    function check(val) {
+        //console.log(val);
+    }
+    function getCurrentTotalPayment() {
+        var total = 0.00;
+        $("[id*=txtPAmount]").each(function () {
+
+            var txtPay = $(this).attr('id')
+            var expression = /[\(\)]/g                     // to identify parentheses
+            var chk = $(txtPay.replace('txtPAmount', 'chkSelect'));
+            if ($(chk).prop('checked') == true) {
+                if ($(this).val() != '') {
+
+                    var val = $(this).val()
+
+                    if (val.match(expression))     /// check is parentheses exists (negative value)
+                    {
+                        total = total - parseFloat($(this).val().replace(/[\$\(\),]/g, ''));
+                    }
+                    else {
+                        total = total + parseFloat($(this).val().replace(/[\$\(\),]/g, ''));
+                    }
+                }
+            }
+        });
+
+        if (total == -0) {
+            total = 0;
+        }
+        var totalval = cleanUpCurrency('$' + total.toLocaleString("en-US", { minimumFractionDigits: 2 }))
+        $("[id*=lblTotalPayAmount]").text(totalval);
+        $("[id*=hdnAmountSelected]").value = 0;
+        $("[id*=hdnAmountSelected]").val(totalval);
+    }
+    function pageLoad(sender, args) {
+        loadControlAutoComplete();
+        CheckInvoicesCheckBox();
+        $("[id*=btnSubmit]").unbind("click");
+        $("[id*=btnSubmit]").bind({
+            click: function () {
+
+                return ValidateLess(this);
+            },
+
+        });
+
+        $("[id*=chkSelect]").change(function () {
+            //debugger
+            var chk = $(this).attr('id');
+            var PaidCredit = $(chk.replace('chkSelect', 'lblIsCredit'));
+            if ($(PaidCredit).val() != '2') {
+                var txtPay = $(chk.replace('chkSelect', 'txtPAmount'));
+                var lblDue = $(chk.replace('chkSelect', 'lblDueAmount'));
+                var hdnPrevDue = $(chk.replace('chkSelect', 'hdnPrevDue'));
+                var hdPAmount = $(chk.replace('chkSelect', 'hdPAmount'));
+                var due = parseFloat($(lblDue).text().toString().replace(/[\$\(\),]/g, ''))
+                var prevDue = parseFloat($(hdnPrevDue).val())
+                var pay = 0;
+
+                var rpay = cleanUpCurrency('$' + pay.toLocaleString("en-US", { minimumFractionDigits: 2 }));
+                var rprevDue = cleanUpCurrency('$' + prevDue.toLocaleString("en-US", { minimumFractionDigits: 2 }))
+                if ($(this).prop('checked') == true) {
+                    $(hdPAmount).val(rprevDue)
+                    $(txtPay).val(rprevDue)
+                    $(lblDue).text(rpay)
+                    SelectedRowStyle("#RadGrid_gvInvoice")
+                }
+                else if ($(this).prop('checked') == false) {
+                    $(hdPAmount).val(rpay)
+                    $(txtPay).val(rpay)
+                    $(lblDue).text(rprevDue)
+                    $(this).closest('tr').removeAttr("style");
+                }
+                GetInvoiceTotal();
+            }
+        });
+
+        $("[id*=chkAll]").change(function () {
+            $("#RadGrid_gvInvoice input[id*='chkSelect']:checkbox").prop('checked', $(this).prop("checked"));
+            $("#RadGrid_gvInvoice input[id*='chkSelect']:checkbox").each(function (index) {
+                var chk = $(this).attr('id');
+                var PaidCredit = $(chk.replace('chkSelect', 'lblIsCredit'));
+                if ($(PaidCredit).val() != '2') {
+                    var txtPay = $(chk.replace('chkSelect', 'txtPAmount'));
+                    var lblDue = $(chk.replace('chkSelect', 'lblDueAmount'));
+                    var hdnPrevDue = $(chk.replace('chkSelect', 'hdnPrevDue'));
+                    var hdPAmount = $(chk.replace('chkSelect', 'hdPAmount'));
+                    var due = parseFloat($(lblDue).text().toString().replace(/[\$\(\),]/g, ''))
+                    var prevDue = parseFloat($(hdnPrevDue).val())
+                    var pay = 0;
+
+                    var rpay = cleanUpCurrency('$' + pay.toLocaleString("en-US", { minimumFractionDigits: 2 }));
+                    var rprevDue = cleanUpCurrency('$' + prevDue.toLocaleString("en-US", { minimumFractionDigits: 2 }))
+                    if ($(this).prop('checked') == true) {
+                        $(hdPAmount).val(rpay)
+                        $(txtPay).val(rprevDue)
+                        $(lblDue).text(rpay)
+                        SelectedRowStyle("#RadGrid_gvInvoice")
+                    }
+                    else if ($(this).prop('checked') == false) {
+                        $(hdPAmount).val(rprevDue)
+                        $(txtPay).val(rpay)
+                        $(lblDue).text(rprevDue)
+                        $(this).closest('tr').removeAttr("style");
+                    }
+                }
+            });
+
+            GetInvoiceTotal();
+        });
+
+        $("[id*=txtPAmount]").change(function () {
+            //debugger;
+            var txtPay = $(this).attr('id');
+            var lblDue = $(txtPay.replace('txtPAmount', 'lblDueAmount'));
+            var hdnPrevDue = $(txtPay.replace('txtPAmount', 'hdnPrevDue'));
+            var hdPAmount = $(txtPay.replace('txtPAmount', 'hdPAmount'));
+            var chk = $(txtPay.replace('txtPAmount', 'chkSelect'));
+            //var pay = $(this).val().toString().replace(/[\(,]/g, '');
+            //var pay = pay.toString().replace(/[\$\),]/g, '');
+
+            var pay = $(this).val().toString();
+
+            var expression = /[\(\)]/g
+            if (pay.match(expression))     /// check is parentheses exists (negative value)
+            {
+                pay = -1 * parseFloat(pay.replace(/[\$\(\),]/g, ''));
+            }
+            else {
+                pay = parseFloat(pay.replace(/[\$\(\),]/g, ''));
+            }
+
+            if (pay == '') {
+                pay = 0;
+                $(this).val('$' + pay.toLocaleString("en-US", { minimumFractionDigits: 2 }))
+            }
+
+            if (pay != 0) {
+
+                pay = parseFloat(pay);
+                var due = parseFloat($(lblDue).text().toString().replace(/[\$\(\),]/g, ''))
+                var prevDue = parseFloat($(hdnPrevDue).val())
+                var IsNeg = false;
+
+                if (pay < 0) {
+                    IsNeg = true;
+                    pay = pay * -1;
+                    prevDue = prevDue * -1;
+                }
+
+
+                due = prevDue - pay;
+                /* */
+
+                if (pay > prevDue) {
+                    alert("Payment cannot be greater than amount due");
+
+                    return;
+                }
+
+                if (IsNeg) {
+                    pay = pay * -1;
+                    prevDue = prevDue * -1;
+                    due = due * -1;
+                }
+
+                var rPay = cleanUpCurrency('$' + pay.toLocaleString("en-US", { minimumFractionDigits: 2 }));
+                var rDue = cleanUpCurrency('$' + due.toLocaleString("en-US", { minimumFractionDigits: 2 }));
+                $(this).val(rPay);
+                $(lblDue).text(rDue);
+                $(chk).prop('checked', true);
+                SelectedRowStyle("#RadGrid_gvInvoice")
+                hdPAmount.value = rPay;
+            }
+            else {
+                $(chk).prop('checked', false);
+                $(this).closest('tr').removeAttr("style");
+            }
+
+            GetInvoiceTotal();
+        });
+
+
+
+
+        Materialize.updateTextFields();
+
+        var customerText = $("#txtCustomer").val();
+        if (customerText) {
+            $("#txtCustomer").addClass('x');
+        }
+
+        var locationText = $("#txtLocation").val();
+        if (locationText) {
+            $("#txtLocation").addClass('x');
+        }
+
+        var invoiceText = $("#txtInvoice").val();
+        if (invoiceText) {
+            $("#txtInvoice").addClass('x');
+        }
+
+        $("#txtWriteOffDate").pikaday({
+            firstDay: 0,
+            format: 'MM/DD/YYYY',
+            minDate: new Date(1900, 1, 1),
+            maxDate: new Date(2100, 12, 31),
+            yearRange: [1900, 2100]
+        });
+        Materialize.updateTextFields();
+
+    }
+
+    function CheckMultipleLocation() {
+        var oldValue = "";
+        var retValue = false;
+        $("#RadGrid_gvInvoice input[id*='chkSelect']:checkbox").each(function (index) {
+            var chk = $(this).attr('id');
+            if ($(this).prop("checked") == true) {
+                var lblID = $(chk.replace('chkSelect', 'lblID'));
+                var data = $(lblID).text();
+                if (oldValue == "") {
+                    oldValue = data;
+                }
+                if (oldValue == data) {
+                    oldValue = data;
+                }
+                else {
+                    retValue = true;
+                }
+            }
+        });
+        return retValue;
+    }
+    $(document).ready(function () {
+        //debugger
+        var customerText = $("#txtCustomer").val();
+        if (customerText) {
+            $("#txtCustomer").addClass('x');
+        }
+
+        var locationText = $("#txtLocation").val();
+        if (locationText) {
+            $("#txtLocation").addClass('x');
+        }
+
+        var invoiceText = $("#txtInvoice").val();
+        if (invoiceText) {
+            $("#txtInvoice").addClass('x');
+        }
+
+        CheckInvoicesCheckBox();
+
+    });
+
+    function tog(v) { return v ? 'addClass' : 'removeClass'; }
+    $(document).on('input', '.clearable', function () {
+        $(this)[tog(this.value)]('x');
+    }).on('mousemove', '.x', function (e) {
+        $(this)[tog(this.offsetWidth - 18 < e.clientX - this.getBoundingClientRect().left)]('onX');
+    }).on('touchstart click', '.onX', function (ev) {
+        var id = $(this).attr('id');
+        ClearData(id);
+        ev.preventDefault();
+        $(this).removeClass('x onX').val("").change();
+    });
+
+    function ClearData(id) {
+        if (id == "#txtCustomer") {
+            $("#txtCustomer").val("");
+            $("#txtLocation").val("");
+            $("#hdnCustID").val("");
+            $("#hdnLocID").val("");
+        }
+
+        if (id == "#txtLocation") {
+            $("#txtLocation").val("");
+            $("#hdnLocID").val("");
+        }
+    }
+
+    function CheckInvoicesCheckBox() {
+        //debugger;
+        $("#RadGrid_gvInvoice input[id*='chkSelect']:checkbox").each(function (index) {
+            var chk = $(this).attr('id');
+            var txtPay = $(chk.replace('chkSelect', 'txtPAmount'));
+            var data = $(txtPay).val();
+            if (data != '$0.00') {
+                $(this).prop('checked', true);
+                SelectedRowStyle("#RadGrid_gvInvoice");
+            }
+        });
+    }
+    function countSelectedOnGrid() {
+        var number = 0;
+        $("#RadGrid_gvInvoice").find('tr:not(:first,:last)').each(function () {
+            var $tr = $(this);
+            $tr.find('input[type="checkbox"]:first:checked').each(function (index, value) {
+                number = number + 1;
+            });
+        });
+        return number;
+    }
+
+    function ValidateLess(element) {
+        debugger
+        var totalPay = 0;
+        var flag = 0;
+        $("#RadGrid_gvInvoice input[id*='chkSelect']:checkbox").each(function (index) {
+            var chk = $(this).attr('id');
+            if ($(this).prop('checked') == true) {
+                var txtPay = $(chk.replace('chkSelect', 'txtPAmount'));
+                var hdnPrevDue = $(chk.replace('chkSelect', 'hdnPrevDue'));
+                var PaidCredit = $(chk.replace('chkSelect', 'lblIsCredit'));
+                if ($(PaidCredit).val() != '2') {
+                    var dataPay = $(txtPay).val();
+                    var dataPrevDue = $(hdnPrevDue).val();
+                    var expression = /[\(\)]/g
+                    if (dataPay.match(expression))     /// check is parentheses exists (negative value)
+                    {
+                        dataPay = -1 * parseFloat($(txtPay).val().replace(/[\$\(\),]/g, ''));
+                    }
+                    else {
+                        dataPay = parseFloat($(txtPay).val().replace(/[\$\(\),]/g, ''));
+                    }
+                    if (dataPrevDue.match(expression))     /// check is parentheses exists (negative value)
+                    {
+                        dataPrevDue = -1 * parseFloat($(hdnPrevDue).val().replace(/[\$\(\),]/g, ''));
+                    }
+                    else {
+                        dataPrevDue = parseFloat($(hdnPrevDue).val().replace(/[\$\(\),]/g, ''));
+                    }
+
+                    if (dataPrevDue < 0) {
+                        if (dataPay * (-1) > dataPrevDue * (-1)) {
+                            flag = 1
+                            return;
+                        }
+                    } else {
+                        if (dataPay > dataPrevDue) {
+                            flag = 1
+                            return;
+                        }
+                    }
+                }
+            }
+        });
+        if (flag == 1) {
+            noty({
+                text: 'Payment cannot be greater than amount due',
+                type: 'warning',
+                layout: 'topCenter',
+                closeOnSelfClick: false,
+                timeout: false,
+                theme: 'noty_theme_default',
+                closable: true
+            });
+
+            return false;
+        } else {
+            var totalPay = $("[id*=lblTotalPayAmount]").text().replace(/[\$\(\),]/g, '');
+
+            var fTotalPay = parseFloat(totalPay);
+
+            var amountPay = parseFloat($("#txtAmount").val().replace(/[\$\(\),]/g, ''));
+            var famountPay = parseFloat(amountPay);
+            if (famountPay < fTotalPay) {
+
+                var permission = $("#lnkWriteOff").is(":visible");
+                if (permission == false) {
+                    noty({
+                        text: 'Check Amount should not less than Payment Amount Total.',
+                        type: 'warning',
+                        layout: 'topCenter',
+                        closeOnSelfClick: false,
+                        timeout: false,
+                        theme: 'noty_theme_default',
+                        closable: true
+                    });
+                    return false;
+                }
+                if (countSelectedOnGrid() > 0) {
+                    if (confirm("Check Amount should not less than Payment Amount Total.Do you want to write off amount?")) {
+                        $("#hdnIsWriteOff").val("1");
+
+                        getCurrentTotalPayment();
+                        var countcheck = 0;
+                        var ID = "";
+                        var Amount = "";
+                        var today = new Date();
+                        var isCredit = "";
+                        var custID = "";
+                        $("#txtWriteOffDate").val(today.toLocaleDateString("en-US"));
+
+                        $("#txtDescription").val("");
+                        $("#txtInvoiceWriteOff").val("");
+                        $("#txtWriteOffAmount").val("");
+                        $("#txtWriteOffCust").val("");
+                        $("#txtWriteOffLoc").val("");
+
+                        $("#txtWriteOffCustID").val("");
+                        $("#RadGrid_gvInvoice").find('tr:not(:first,:last)').each(function () {
+                            var $tr = $(this);
+                            $tr.find('input[type="checkbox"]:first:checked').each(function (index, value) {
+                                if (countcheck == 0) {
+
+                                    // debugger
+                                    ID = $tr.find('input[id*=hdnID]').val();
+                                    Amount = $tr.find('input[id*=hdnPrevDue]').val();
+
+                                    custID = $tr.find('span[id*=lblID]').text();
+                                    isCredit = $tr.find('input[id*=lblIsCredit]').val();
+                                    countcheck = 1;
+                                }
+                            });
+                        });
+
+                        if (ID != "") {
+                            if (isCredit == 1) {
+                                noty({
+                                    text: 'Please select a invoice',
+                                    type: 'warning',
+                                    layout: 'topCenter',
+                                    closeOnSelfClick: false,
+                                    timeout: false,
+                                    theme: 'noty_theme_default',
+                                    closable: true
+                                });
+                                return false;
+                            } else {
+                                $("#txtWriteOffAmount").val(parseFloat(Amount).toLocaleString("en-US", { minimumFractionDigits: 2 }));
+                                $("#txtWriteOffCustID").val(custID);
+                                var wnd = $find("#RadWindowWriteOff");
+                                wnd.Show();
+                                Materialize.updateTextFields();
+                                return true;
+                            }
+                        } else {
+                            return false;
+                        }
+
+                    } else {
+                        return false;
+                    }
+                }
+
+
+            }
+            else {
+                if (famountPay > fTotalPay) {
+                    var txtLocation = $("[id*=txtLocation]").val();
+                    if (txtLocation == "") {
+                        var lsLoc = [];
+                        $("#RadGrid_gvInvoice input[id*='chkSelect']:checkbox").each(function (index) {
+                            var chk = $(this).attr('id');
+                            if ($(this).prop('checked') == true) {
+                                var grid_hdnLoc = $(chk.replace('chkSelect', 'hdnLoc'));
+                                var locID = $(grid_hdnLoc).val()
+                                if (lsLoc.includes(locID) == false) {
+                                    lsLoc.push(locID)
+                                }
+                            }
+                        });
+                        if (lsLoc.length == 1) {
+                            $("#hdnLocID").val(lsLoc[0]);
+                        } else {
+                            var wnd = $find("#LocationsWindow");
+                            wnd.Show();
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+
+
+                //  element.onclick = function () { return false; };
+
+            }
+        }
+
+    }
+
+    function ddl_changedCustomer() {
+        //debugger
+        var ddl = $("#ddlCustomer");
+        if ($("#ddlCustomer").val() != 0) {
+            var str = $("#ddlCustomer").find("option:selected").text();
+
+            $("#txtCustomer").val(str);
+            var hdnCustID = $("#hdnCustID");
+            hdnCustID.value = $("#ddlCustomer").val();
+            $("#txtLocation").val("");
+            $("#hdnLocID").val("");
+
+        }
+        if ($("#ddlFilter").val() != 1) {
+            $("#btnSelectCustomer").click();
+        }
+    }
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+</script>
+
+<script>
+    function loadControlAutoComplete() {
+        function dtaa() {
+            this.prefixText = null;
+            this.con = $("#hdnCon").val();
+            //this.custID = null;
+        }
+
+
+        $("#txtCustomer").autocomplete({
+
+            source: function (request, response) {
+                //debugger
+                var dtaaa = new dtaa();
+                dtaaa.prefixText = request.term;
+                query = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/GetCustomerWithInactive",
+                    //data: '{"prefixText":' + JSON.stringify(request.term) + ',"con":' + JSON.stringify($('ctl00_ContentPlaceHolder1_hdnCon').value) + '}',
+                    data: JSON.stringify(dtaaa),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+                        alert("Due to unexpected errors we were unable to load customers");
+                    }
+
+                });
+            },
+            select: function (event, ui) {
+                $("#txtCustomer").val(ui.item.label);
+                $("#hdnCustID").val(ui.item.value);
+                $("#txtLocation").val("");
+                $("#hdnLocID").val("");
+                $("#btnSelectCustomer").click();
+                return false;
+            },
+            focus: function (event, ui) {
+                $("#txtCustomer").val(ui.item.label);
+                $("#hdnCustID").val(ui.item.value);
+                $("#txtCustomer").focus();
+                return false;
+            },
+
+            minLength: 0,
+            delay: 250
+        })._renderItem = function (ul, item) {
+            var result_item = item.label;
+            var result_desc = item.desc;
+            var x = new RegExp('\\b' + query, 'ig'); // notice the escape \ here...
+            if (result_item) {
+                result_item = result_item.replace(x, function (FullMatch, n) {
+                    return '<span class="highlight">' + FullMatch + '</span>'
+                });
+            }
+            if (result_desc != null) {
+                result_desc = result_desc.replace(x, function (FullMatch, n) {
+                    return '<span class="highlight">' + FullMatch + '</span>'
+                });
+            }
+            if (result_item) {
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<a>" + result_item + ", <span style='color:Gray;'>" + result_desc + "</span></a>")
+                    .appendTo(ul);
+            }
+        };
+
+
+        $("#txtAmount").change(function () {
+            //debugger;
+            //var temp = $(this).val().replace(/[\$\(\),]/g, '')
+            //var amt = parseFloat($(this).val().replace(/[\$\(\),]/g, ''))
+            var amt = convertNumber($(this).val().replace("$", ''))
+            amt = parseFloat(amt)
+
+            var amtval = cleanUpCurrency('$' + amt.toLocaleString("en-US", { minimumFractionDigits: 2 }))
+            $(this).val(amtval)
+
+        });
+
+        $("#txtInvoice").change(function () {
+
+            var txtInvoice = $(this);
+            var strRef = $(this).val();
+
+            var txtInvoice1 = $(txtInvoice).attr('id');
+
+            if (strRef != '') {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    //url: "AccountAutoFill.asmx/GetInvoiceNos",
+                    url: "AccountAutoFill.asmx/GetInvoiceNosChange",
+                    data: '{"prefixText":' + strRef + ',"Customer":' + JSON.stringify($("#hdnCustID").val()) + ',"Loc":' + JSON.stringify($("#hdnLocID").val()) + '}',
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+
+                        var ui = $.parseJSON(data.d);
+
+                        if (ui.length == 0) {
+                            noty({
+                                text: 'Invoice #' + strRef + ' could not be found!',
+                                type: 'warning',
+                                layout: 'topCenter',
+                                closeOnSelfClick: false,
+                                timeout: false,
+                                theme: 'noty_theme_default',
+                                closable: true
+                            });
+                        }
+                        else {
+
+                            if (ui[0].Status == "1") {
+
+                                console.log('Invoice #' + strRef + ' is already paid.!');
+                            }
+                            else if (ui[0].Status == "2") {
+
+                                console.log('Invoice #' + strRef + ' is voided.!');
+                            }
+                            else {
+                                if (ui[0].Loc) {
+                                    $("#txtCustomer").val(ui[0].OwnerName);
+                                    $("#hdnCustID").val(ui[0].Owner);
+                                    $("#txtLocation").val(ui[0].Tag);
+                                    $("#hdnLocID").val(ui[0].Loc);
+                                    $("#btnSelectLoc").click();
+                                }
+                                else {
+                                    noty({
+                                        text: 'Invoice #' + strRef + ' could not be found!',
+                                        type: 'warning',
+                                        layout: 'topCenter',
+                                        closeOnSelfClick: false,
+                                        timeout: false,
+                                        theme: 'noty_theme_default',
+                                        closable: true
+                                    });
+
+                                }
+                            }
+
+                        }
+                    },
+                    error: function (result) {
+                        //alert("Due to unexpected errors we were unable to load Invoice#");
+                        console.log("Due to unexpected errors we were unable to load Invoice#");
+                    }
+                });
+            }
+
+        });
+
+        $("#txtInvoice").autocomplete({
+
+            source: function (request, response) {
+                var dta = new dtaa();
+                dta.prefixText = request.term;
+                query = request.term;
+
+                var str = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "AccountAutoFill.asmx/GetInvoiceNos",
+                    data: '{"prefixText":' + JSON.stringify(request.term) + ',"Customer":' + JSON.stringify('') + ',"Loc":' + JSON.stringify('') + '}',
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+                        //alert("Due to unexpected errors we were unable to load invoice");
+                        console.log("Due to unexpected errors we were unable to load invoice");
+                    }
+                });
+            },
+            select: function (event, ui) {
+                var str = ui.item.Ref;
+                if (str == "No Record Found!") {
+                    $(this).val("");
+                }
+                else {
+                    $(this).val(ui.item.Ref);
+                    $("#txtCustomer").val(ui.item.OwnerName);
+                    $("#hdnCustID").val(ui.item.Owner);
+                    $("#txtLocation").val(ui.item.Tag);
+                    $("#hdnLocID").val(ui.item.Loc);
+                    $("#hdTabIndex").val("2");
+                    $("#btnSelectLoc").click();
+
+                }
+                return false;
+            },
+            focus: function (event, ui) {
+
+                $(this).val(ui.item.Ref);
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        }).click(function () {
+            $(this).autocomplete('search', $(this).val())
+        })
+        $.each($(".searchinput_invoice"), function (index, item) {
+            $(item).data("ui-autocomplete")._renderItem = function (ul, item) {
+
+                var result_item = item.Ref;
+                //var result_amt = item.Due;
+                //var result_inv = item.LabelRef;
+
+                var x = new RegExp('\\b' + query, 'ig'); // notice the escape \ here...
+
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<a>" + result_item + "</a>")
+                    //.append("<a>" + result_inv + " " + result_item + ", <span style='color:Gray;'>" + result_amt + "</span></a>")
+                    .appendTo(ul);
+
+            };
+        });
+
+
+        ///////////// Ajax call for location auto search ////////////////////
+        var queryloc = "";
+        $("#txtLocation").autocomplete({
+
+            source: function (request, response) {
+                //  if ($('ctl00_ContentPlaceHolder1_hdnPatientId').value != '') {
+                var dtaaa = new dtaa();
+                dtaaa.prefixText = request.term;
+                dtaaa.custID = 0;
+                if ($("#hdnCustID").val() != "" && $("#hdnCustID").val() != 'undefined') {
+
+                    dtaaa.custID = $("#hdnCustID").val();
+                }
+                queryloc = request.term;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CustomerAuto.asmx/GetLocationWithInactive",
+                    //  data: "{'prefixText':'" + request.term + "','con':'" + $('ctl00_ContentPlaceHolder1_hdnCon').value + "','custID':" + $('ctl00_ContentPlaceHolder1_hdnPatientId').value + "}",
+                    data: JSON.stringify(dtaaa),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        response($.parseJSON(data.d));
+                    },
+                    error: function (result) {
+                        alert("Due to unexpected errors we were unable to load customers");
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $("#txtLocation").val(ui.item.label);
+                $("#hdnLocID").val(ui.item.value);
+                $("#hdTabIndex").val("1");
+                $("#btnSelectLoc").click();
+
+                return false;
+            },
+            focus: function (event, ui) {
+                $("#txtLocation").val(ui.item.label);
+                return false;
+            },
+            minLength: 0,
+            delay: 250
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            //_renderItem = function (ul, item) {
+            var result_item = item.label;
+            var result_desc = item.desc;
+            var x = new RegExp('\\b' + queryloc, 'ig'); // notice the escape \ here...
+            result_item = result_item.replace(x, function (FullMatch, n) {
+                return '<span class="highlight">' + FullMatch + '</span>'
+            });
+            if (result_desc != null) {
+                result_desc = result_desc.replace(x, function (FullMatch, n) {
+                    return '<span class="highlight">' + FullMatch + '</span>'
+                });
+            }
+            return $("<li></li>")
+                .data("item.autocomplete", item)
+                .append("<span class='auto_item'>" + result_item + "</span> <span class='auto_desc'>" + result_desc + "</span>")
+                .appendTo(ul);
+        };
+
+
+
+
+    }
+    $(document).ready(function () {
+        loadControlAutoComplete();
+        var ref = getUrlParameter('uid');
+        if (ref != '') {
+            if ($("#txtInvoice").val() != "") {
+                $("#btnSelectLoc").click();
+            }
+        }
+
+    });
+
+    function EmptyValue(txt) {
+        if ($(txt).val() == "") { $("#hdnPatientId").val(""); }
+    }
+
+
+</script>
+
+
+<script>
+    function disableAccountWriteOff() {
+        if ($("#hdnIsCreditWriteOff").val() == "1") {
+            $("#ddlCode").attr('disabled', true);
+        }
+    }
+
+    function OpenWriteOffWindow() {
+        var countItem = 0;
+        var countcheck = 0;
+        var ID = "";
+        var Amount = "";
+        var today = new Date();
+        var isCredit = "";
+        var custID = "";
+        $("#txtWriteOffDate").val(today.toLocaleDateString("en-US"));
+
+        $("#txtDescription").val("");
+        $("#txtInvoiceWriteOff").val("");
+        $("#txtWriteOffAmount").val("");
+        $("#txtWriteOffCust").val("");
+        $("#txtWriteOffLoc").val("");
+
+        $("#txtWriteOffCustID").val("");
+        $("#RadGrid_gvInvoice").find('tr:not(:first,:last)').each(function () {
+            var $tr = $(this);
+            $tr.find('input[type="checkbox"]:first:checked').each(function (index, value) {
+                if (countcheck == 0) {
+                    // debugger
+                    ID = $tr.find('input[id*=hdnID]').val();
+                    Amount = $tr.find('input[id*=hdnPrevDue]').val();
+
+                    custID = $tr.find('span[id*=lblID]').text();
+                    isCredit = $tr.find('input[id*=lblIsCredit]').val();
+                    countcheck = 1;
+                }
+                countItem = countItem + 1;
+            });
+
+        });
+        if (countItem > 1) {
+            noty({
+                text: 'Please select only one invoice',
+                type: 'warning',
+                layout: 'topCenter',
+                closeOnSelfClick: false,
+                timeout: false,
+                theme: 'noty_theme_default',
+                closable: true
+            });
+            return false;
+        }
+
+
+            if (confirm("Are you sure you want to write off this item in the amount off " + cleanUpCurrency('$' + parseFloat(Amount).toLocaleString("en-US", { minimumFractionDigits: 2 })) + " ?")) {
+            $("#txtInvoiceWriteOff").val(ID);
+            $("#txtWriteOffAmount").val(parseFloat(Amount).toLocaleString("en-US", { minimumFractionDigits: 2 }));
+
+
+            $("#txtWriteOffCustID").val(custID);
+            $("#hdnIsWriteOff").val("0");
+            $("#hdnIsCreditWriteOff").val(isCredit);
+
+
+
+            var wnd = $find("#RadWindowWriteOff");
+            wnd.Show();
+            Materialize.updateTextFields();
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    function CloseWriteOffWindow() {
+        var wnd = $find("#RadWindowWriteOff");
+        wnd.Close();
+    }
+    function convertNumber(obj) {
+        var expression = /[\(\)]/g;
+
+        if (obj.match(expression))     /// check is parentheses exists (negative value)
+        {
+            return parseFloat(obj.replace(/[\$\(\),]/g, '')) * (-1);
+        }
+        else {
+            return parseFloat(obj.replace(/[\$\(\),]/g, ''));
+        }
+
+    }
+    function OpenUnapply() {
+        if (confirm("Are you sure you want to unapply payment?")) {
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    function OpenTransferPaymentWindow() {
+        var hasInv = 0;
+        var isApplied = 0;
+        var Amount = "";
+        var Original = "";
+        var countItem = 0;
+        var isCredit = "";
+        var hdnAcctID = $("#hdnNewLocID");
+        var txtNewAddress = $("#txtNewAddress");
+        var txtAccount = $("#txtAccount");
+        hdnAcctID.val("0");
+        txtNewAddress.innerHTML = "";
+        txtAccount.val("");
+        $("#RadGrid_gvInvoice").find('tr:not(:first,:last)').each(function () {
+            var $tr = $(this);
+            $tr.find('input[type="checkbox"]:first:checked').each(function (index, value) {
+                isCredit = $tr.find('input[id*=lblIsCredit]').val();
+
+                //  debugger
+                Amount = convertNumber($tr.find('input[id*=hdnPrevDue]').val());
+                Original = convertNumber($tr.find('span[id*=lblOrigAmount]').text().replace('$', ''));
+
+                if (isCredit == "1") {
+                    countItem = countItem + 1;
+                    if (Amount != Original) {
+                        isApplied = 1;
+                    }
+
+                } else {
+                    hasInv = 1;
+                }
+
+            });
+        });
+        if (hasInv == 1) {
+            noty({
+                text: 'Please do not select invoice to transfer',
+                type: 'warning',
+                layout: 'topCenter',
+                closeOnSelfClick: false,
+                timeout: false,
+                theme: 'noty_theme_default',
+                closable: true
+            });
+            return false;
+        }
+        if (countItem == 0) {
+            noty({
+                text: 'Please select a credit to transfer',
+                type: 'warning',
+                layout: 'topCenter',
+                closeOnSelfClick: false,
+                timeout: false,
+                theme: 'noty_theme_default',
+                closable: true
+            });
+            return false;
+        } else {
+            //debugger
+            if (isApplied == 1) {
+                noty({
+                    text: 'Payment has already been partially applied and can therefore not be transfer',
+                    type: 'warning',
+                    layout: 'topCenter',
+                    closeOnSelfClick: false,
+                    timeout: false,
+                    theme: 'noty_theme_default',
+                    closable: true
+                });
+
+            } else {
+                var oWnd = $find("#RadWindowTransfer");
+                oWnd.show();
+            }
+
+        }
+
+    }
+    function CloseTransferPaymentWindow() {
+        var wnd = $find("#RadWindowTransfer");
+        wnd.Close();
+    }
+    function aceLoc_itemSelected(sender, e) {
+        //debugger
+        var hdnAcctID = $("#hdnNewLocID");
+        var txtNewAddress = $("#txtNewAddress");
+        var result = e.get_value().split("^");
+        hdnAcctID.val(result[0]);
+        txtNewAddress.innerHTML = result[1];
+
+
+    }
+
+
+</script>
+<script>
+    function ValidateZero() {
+        var flag = true;
+        var countCheck = 0;
+        var amount = parseFloat($("#txtAmount").val().replace(/[\$\(\),]/g, ''))
+        if (amount == 0) {
+
+            $("#RadGrid_gvInvoice input[id*='chkSelect']:checkbox").each(function (index) {
+
+                var chk = $(this).attr('id');
+                if ($(this).prop('checked') == true) { countCheck = countcheck + 1; }
+
+            });
+            if (countCheck == 0) {
+                flag = false;
+            }
+        }
+        if (flag == false) {
+            noty({
+                text: 'Please enter the amount or select any invoice',
+                type: 'warning',
+                layout: 'topCenter',
+                closeOnSelfClick: false,
+                timeout: false,
+                theme: 'noty_theme_default',
+                closable: true
+            });
+        }
+        return flag;
+    }
+</script>
+
+<script>
+    function CloseLocationsWindow() {
+
+        var wnd = $find("#LocationsWindow");
+        wnd.Close();
+    }
+
+    function ShowTeamMemberWindow(txtTeamMember) {
+
+        var wnd = $find("#LocationsWindow");
+        wnd.set_title("Location ");
+        wnd.Show();
+    }
+</script>

@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+
+namespace MOMWebAppCore.Areas.Recurring.Controllers
+{
+    [Area("Recurring")]
+    public class AddSafetyTestsController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+    }
+}
